@@ -10,6 +10,8 @@
   <meta property="og:type" content="website">
   <title>DRESSOPP — Find your style</title>
   <link rel="icon" type="image/svg+xml" href="./assets/favicon.svg">
+  <link rel="icon" type="image/png" sizes="512x512" href="./assets/logo-square.png">
+  <link rel="apple-touch-icon" href="./assets/logo-square.png">
   <link rel="manifest" href="./manifest.webmanifest">
   <link rel="stylesheet" href="./styles.css">
   <script type="module" src="./app.js"></script>
@@ -20,14 +22,15 @@
   <div class="app-shell">
     <header class="topbar">
       <a class="brand" href="./" aria-label="DRESSOPP, accueil">
-        <span class="brand-fallback" aria-hidden="true">D</span>
-        <span class="brand-name">DRESSOPP<span class="brand-dot">.</span></span>
+        <span class="brand-fallback" aria-hidden="true">D.</span>
+        <img class="brand-logo" src="./assets/logo-horizontal.png" alt="DRESSOPP" onerror="this.hidden=true;">
       </a>
       <nav class="main-nav" aria-label="Navigation principale">
         <button class="nav-link is-active" type="button" data-view="discover"><span class="nav-icon">✳</span><span>Découvrir</span></button>
         <button class="nav-link" type="button" data-view="wardrobe"><span class="nav-icon">♡</span><span>Ma garde-robe</span><span class="nav-count" id="wardrobe-count">0</span></button>
         <button class="nav-link" type="button" data-view="training"><span class="nav-icon">↗</span><span>Entraînement</span></button>
-        <button class="nav-link" type="button" data-view="inspirations"><span class="nav-icon">⌁</span><span>Inspirations</span></button>
+        <button class="nav-link" type="button" data-view="inspirations"><span class="nav-icon">⌁</span><span>Pinterest</span></button>
+        <button class="nav-link" type="button" data-view="outfits"><span class="nav-icon">✦</span><span>Tenues</span></button>
       </nav>
       <div class="top-actions">
         <button class="icon-button" type="button" data-view="profile" aria-label="Mon profil" title="Mon profil"><span>◉</span></button>
@@ -47,7 +50,8 @@
     <button type="button" data-view="discover" class="is-active"><span>✳</span><small>Découvrir</small></button>
     <button type="button" data-view="wardrobe"><span>♡</span><small>Garde-robe</small></button>
     <button type="button" data-view="training"><span>↗</span><small>Entraînement</small></button>
-    <button type="button" data-view="inspirations"><span>⌁</span><small>Inspirations</small></button>
+    <button type="button" data-view="inspirations"><span>⌁</span><small>Pinterest</small></button>
+    <button type="button" data-view="outfits"><span>✦</span><small>Tenues</small></button>
     <button type="button" data-view="profile"><span>◉</span><small>Profil</small></button>
     <button type="button" data-view="settings"><span>⚙</span><small>Réglages</small></button>
   </nav>
