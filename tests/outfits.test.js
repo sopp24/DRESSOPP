@@ -22,7 +22,7 @@ test("productSlot distinguishes wardrobe pieces", function() {
 });
 
 test("outfit ideas use saved pieces and only suggest catalogue products with merchant links", function() {
-  const pin = { id: "pin-1", title: "Minimalist beige summer outfit", description: "Linen shirt and sneakers" };
+  const pin = { id: "pin-1", title: "Minimalist beige summer outfit", description: "Linen shirt and white sneakers" };
   const wardrobe = [
     { id: "top-1", name: "Chemise en lin beige", objective: "Vêtements", materials: ["lin"], colors: ["beige"], url: "https://shop.example/top" },
     { id: "shoes-1", name: "Sneakers blanches", objective: "Chaussures", colors: ["blanc"], url: "https://shop.example/shoes" }
