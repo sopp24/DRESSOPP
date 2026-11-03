@@ -31,6 +31,8 @@ jobs:
       - name: Lire le tableau Pinterest et repérer les nouvelles épingles
         run: node scripts/sync-pinterest.mjs
         env:
+          PINTEREST_APP_ID: ${{ secrets.PINTEREST_APP_ID }}
+          PINTEREST_APP_SECRET: ${{ secrets.PINTEREST_APP_SECRET }}
           PINTEREST_ACCESS_TOKEN: ${{ secrets.PINTEREST_ACCESS_TOKEN }}
           PINTEREST_BOARD_NAME: mode
 
