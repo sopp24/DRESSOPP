@@ -12,7 +12,7 @@ function arrayOf(value) {
 function safeHttpUrl(value) {
   if (!value) return "";
   try {
-    const url = new URL(String(value), globalThis.location ? location.href : "https://dressopp.app");
+    const url = new URL(String(value).trim());
     return url.protocol === "http:" || url.protocol === "https:" ? url.href : "";
   } catch (error) { return ""; }
 }
@@ -46,7 +46,7 @@ export function createInitialState(products) {
     },
     products: Array.isArray(products) ? products : [],
     likedProducts: [], removedFavorites: [],
-    interactions: { likes: [], dislikes: [], views: [], undoEvents: [] },
+    interactions: { likes: [], dislikes: [], views: [], saves: [], undoEvents: [] },
     learnedPreferences: {}, inspirations: [],
     integrations: {
       pinterest: { status: "manual", lastSync: null },
@@ -197,6 +197,7 @@ export function rankProducts(products, state, options) {
     (state.interactions.likes || []).forEach(function(item) { seen.add(item.productId); });
     (state.interactions.dislikes || []).forEach(function(item) { seen.add(item.productId); });
     (state.interactions.saves || []).forEach(function(item) { seen.add(item.productId); });
+    (state.likedProducts || []).forEach(function(item) { seen.add(item.productId); });
   }
   const scored = (products || []).filter(function(product) {
     return matchesFilters(product, opts.filters || config) && !seen.has(product.id);
