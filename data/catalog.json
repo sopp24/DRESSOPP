@@ -1,0 +1,5 @@
+{
+  "schemaVersion": 1,
+  "description": "Catalogue initial volontairement vide : aucun produit marchand n'est inventé. Ajoute des fiches vérifiables ou importe un catalogue JSON.",
+  "products": []
+}

@@ -1,0 +1,12 @@
+{
+  "name": "DRESSOPP",
+  "short_name": "DRESSOPP",
+  "description": "Ton assistant personnel de style.",
+  "lang": "fr-FR",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#080808",
+  "theme_color": "#080808",
+  "icons": [{ "src": "./assets/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }]
+}
