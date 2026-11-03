@@ -11,7 +11,9 @@ let state = null;
 let currentView = "discover";
 let currentModalProduct = null;
 let toastTimer = null;
-let isSaving = false;
+let persistPending = false;
+let persistRevision = 0;
+let persistPromise = Promise.resolve();
 let pinterestFeed = { privacy: "UNKNOWN", pins: [], lastSync: null, newPinIds: [] };
 
 const OBJECTIVES = ["Vêtements", "Chaussures", "Sous-vêtements", "Accessoires"];
@@ -52,23 +54,38 @@ function updateSaveStatus(message, status) {
   const label = saveStatus.querySelector("span");
   if (label) label.textContent = message;
 }
-async function persist() {
-  if (isSaving) return;
-  isSaving = true;
+function persist() {
+  persistRevision += 1;
+  if (persistPending) return persistPromise;
+
+  persistPending = true;
   updateSaveStatus("Sauvegarde…", "saving");
-  try {
-    const result = await saveState(state);
-    if (result.ok) {
-      state.updatedAt = result.updatedAt;
+  persistPromise = (async function() {
+    let result = null;
+    try {
+      let savedRevision = -1;
+      do {
+        savedRevision = persistRevision;
+        result = await saveState(state);
+        if (!result.ok) {
+          updateSaveStatus("Échec de la sauvegarde locale", "error");
+          showToast("La sauvegarde locale a échoué. Exporte tes données avant de quitter.", false);
+          return result;
+        }
+        state.updatedAt = result.updatedAt;
+      } while (savedRevision !== persistRevision);
+
       updateSaveStatus(result.warning ? "Sauvegarde locale de secours" : "Données enregistrées sur cet appareil", "ok");
-    } else {
-      updateSaveStatus("Échec de la sauvegarde locale", "error");
-      showToast("La sauvegarde locale a échoué. Exporte tes données avant de quitter.", false);
+      return result;
+    } catch (error) {
+      updateSaveStatus("Échec de la sauvegarde", "error");
+      showToast("Erreur de sauvegarde : " + error.message, false);
+      return { ok: false, error: error.message };
+    } finally {
+      persistPending = false;
     }
-  } catch (error) {
-    updateSaveStatus("Échec de la sauvegarde", "error");
-    showToast("Erreur de sauvegarde : " + error.message, false);
-  } finally { isSaving = false; }
+  })();
+  return persistPromise;
 }
 function imageMarkup(url, label) {
   if (url) return '<img class="product-photo" src="' + esc(url) + '" alt="' + esc(label || "Photo du produit") + '" loading="lazy">';
@@ -396,6 +413,12 @@ function undoLast() {
 }
 function removeFavorite(productId) {
   state.likedProducts = state.likedProducts.filter(function(item) { return item.productId !== productId; });
+  state.interactions.saves = (state.interactions.saves || []).filter(function(item) { return item.productId !== productId; });
+  if (state.interactions.lastAction && state.interactions.lastAction.productId === productId &&
+      ["save", "save-list"].includes(state.interactions.lastAction.action)) {
+    state.interactions.lastAction = null;
+  }
+  state.removedFavorites = Array.isArray(state.removedFavorites) ? state.removedFavorites : [];
   state.removedFavorites.push({ productId: productId, removedAt: new Date().toISOString() });
   persist();
   render();
@@ -420,7 +443,7 @@ function openProductDetails(productId) {
     ["Dernière vérification", product.verifiedAt ? new Date(product.verifiedAt).toLocaleDateString("fr-FR") : "Information non disponible"]
   ];
   const sourceLink = safeExternalUrl(product.url);
-  modalRoot.innerHTML = '<div class="modal-backdrop" data-action="close-modal"><section class="modal modal-wide" role="dialog" aria-modal="true" aria-labelledby="product-modal-title" data-modal-content>' +
+  modalRoot.innerHTML = '<div class="modal-backdrop"><section class="modal modal-wide" role="dialog" aria-modal="true" aria-labelledby="product-modal-title" data-modal-content>' +
     '<div class="modal-head"><div><span class="eyebrow">Fiche produit</span><h2 id="product-modal-title">Détails de la pièce</h2><p>Informations issues de la fiche enregistrée. Les données manquantes sont indiquées explicitement.</p></div><button class="close-button" type="button" data-action="close-modal" aria-label="Fermer">×</button></div>' +
     '<div class="details-layout"><div class="details-image">' + imageMarkup(product.imageUrl, product.name) + '</div><div class="details-copy">' +
     '<span class="detail-brand">' + esc(product.brand || "Marque non renseignée") + '</span><h3>' + esc(product.name) + '</h3><div class="details-price">' + esc(formatPrice(product.price)) + '</div>' +
@@ -445,7 +468,7 @@ function attachImageFallbacks(scope) {
   });
 }
 function openProductForm() {
-  modalRoot.innerHTML = '<div class="modal-backdrop" data-action="close-modal"><section class="modal" role="dialog" aria-modal="true" aria-labelledby="add-product-title" data-modal-content>' +
+  modalRoot.innerHTML = '<div class="modal-backdrop"><section class="modal" role="dialog" aria-modal="true" aria-labelledby="add-product-title" data-modal-content>' +
     '<div class="modal-head"><div><span class="eyebrow">Catalogue personnel</span><h2 id="add-product-title">Ajouter un article</h2><p>Renseigne les informations connues depuis la page du marchand. DRESSOPP ne devine pas les prix ni les compositions.</p></div><button class="close-button" type="button" data-action="close-modal" aria-label="Fermer">×</button></div>' +
     '<form id="product-form"><div class="form-grid"><div class="field"><label for="product-name">Nom du produit *</label><input id="product-name" name="name" required placeholder="Ex. Chemise en popeline"></div>' +
     '<div class="field"><label for="product-brand">Marque</label><input id="product-brand" name="brand" placeholder="Marque"></div>' +
@@ -467,7 +490,7 @@ function openProductForm() {
   });
 }
 function openInspirationForm() {
-  modalRoot.innerHTML = '<div class="modal-backdrop" data-action="close-modal"><section class="modal" role="dialog" aria-modal="true" aria-labelledby="add-inspiration-title" data-modal-content>' +
+  modalRoot.innerHTML = '<div class="modal-backdrop"><section class="modal" role="dialog" aria-modal="true" aria-labelledby="add-inspiration-title" data-modal-content>' +
     '<div class="modal-head"><div><span class="eyebrow">Pinterest uniquement</span><h2 id="add-inspiration-title">Ajouter un Pin</h2><p>Ajoute une épingle de ton tableau ou une référence Pinterest. Les tags manuels aident à relier la tenue à tes pièces.</p></div><button class="close-button" type="button" data-action="close-modal" aria-label="Fermer">×</button></div>' +
     '<form id="inspiration-form"><div class="form-grid"><div class="field" style="grid-column:1/-1"><label for="inspiration-url">Lien du Pin Pinterest *</label><input id="inspiration-url" name="sourceUrl" type="url" required placeholder="https://www.pinterest.com/pin/…"></div>' +
     '<div class="field" style="grid-column:1/-1"><label for="inspiration-title">Titre (facultatif)</label><input id="inspiration-title" name="title" placeholder="Une silhouette, une ambiance…"></div>' +
@@ -646,7 +669,15 @@ function resetProfile() {
   if (!window.confirm("Réinitialiser les préférences apprises et le profil ? Les favoris et le catalogue seront conservés.")) return;
   const base = createInitialState(state.products);
   state.profile = base.profile;
-  state.interactions = { likes: [], dislikes: [], views: [], undoEvents: [], lastAction: null };
+  const previousInteractions = state.interactions || {};
+  state.interactions = {
+    likes: [],
+    dislikes: [],
+    views: Array.isArray(previousInteractions.views) ? previousInteractions.views : [],
+    saves: Array.isArray(previousInteractions.saves) ? previousInteractions.saves : [],
+    undoEvents: [],
+    lastAction: null
+  };
   state.learnedPreferences = {};
   persist();
   render();
@@ -654,6 +685,7 @@ function resetProfile() {
 }
 async function deleteAllData() {
   if (!window.confirm("Supprimer définitivement toutes les données DRESSOPP enregistrées sur cet appareil ? Exporte une sauvegarde avant de continuer.")) return;
+  await persistPromise.catch(function() {});
   await clearState();
   state = createInitialState([]);
   currentView = "discover";
@@ -714,7 +746,8 @@ function handleChange(event) {
   if (target.matches("[data-filter]")) {
     const key = target.dataset.filter;
     if (key === "preset") {
-      const preset = state.settings.savedFilters[Number(target.value)];
+      const presets = Array.isArray(state.settings.savedFilters) ? state.settings.savedFilters : [];
+      const preset = presets[Number(target.value)];
       if (preset) {
         ["objective","style","season","maxPrice"].forEach(function(field) { state.settings[field] = preset[field]; });
       }
