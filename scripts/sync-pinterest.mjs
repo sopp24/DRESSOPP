@@ -1,13 +1,37 @@
 import { readFile, writeFile } from "node:fs/promises";
 
-const TOKEN = process.env.PINTEREST_ACCESS_TOKEN;
+const APP_ID = process.env.PINTEREST_APP_ID;
+const APP_SECRET = process.env.PINTEREST_APP_SECRET;
+const STATIC_TOKEN = process.env.PINTEREST_ACCESS_TOKEN;
 const BOARD_NAME = (process.env.PINTEREST_BOARD_NAME || "mode").trim().toLowerCase();
+let TOKEN = "";
 const BOARD_URL = "https://fr.pinterest.com/sopppx24/mode/";
 const OUTPUT = "data/pinterest-pins.json";
 
-if (!TOKEN) {
-  console.log("::notice::Pinterest non synchronisé : ajoute le secret Actions PINTEREST_ACCESS_TOKEN pour activer la synchronisation.");
-  process.exit(0);
+async function obtainAccessToken() {
+  if (STATIC_TOKEN) return STATIC_TOKEN;
+  if (!APP_ID || !APP_SECRET) {
+    console.log("::notice::Pinterest non synchronisé : ajoute les secrets PINTEREST_APP_ID et PINTEREST_APP_SECRET.");
+    return "";
+  }
+  const credentials = Buffer.from(APP_ID + ":" + APP_SECRET).toString("base64");
+  const response = await fetch("https://api.pinterest.com/v5/oauth/token", {
+    method: "POST",
+    headers: {
+      Authorization: "Basic " + credentials,
+      "Content-Type": "application/x-www-form-urlencoded",
+      Accept: "application/json"
+    },
+    body: new URLSearchParams({
+      grant_type: "client_credentials",
+      scope: "boards:read,pins:read"
+    })
+  });
+  const payload = await response.json().catch(() => ({}));
+  if (!response.ok || !payload.access_token) {
+    throw new Error("Impossible d'obtenir un jeton Pinterest : " + (payload.message || response.statusText));
+  }
+  return payload.access_token;
 }
 
 async function apiGet(path) {
@@ -48,6 +72,8 @@ function pickImage(pin) {
 }
 
 async function main() {
+  TOKEN = await obtainAccessToken();
+  if (!TOKEN) return;
   const boards = await listAll("/boards");
   const matches = boards.filter(board => String(board.name || "").trim().toLowerCase() === BOARD_NAME);
   if (matches.length !== 1) {
