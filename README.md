@@ -2,27 +2,47 @@
 
 **Find your style. Build your identity.**
 
-DRESSOPP est une application personnelle de découverte vestimentaire qui combine une interface de swipe avec un catalogue e-commerce, une garde-robe, un mode Entraînement, un profil de style et un espace Inspirations.
+DRESSOPP associe la découverte de vêtements par décisions rapides, une garde-robe personnelle, un moteur d'apprentissage et un espace de tenues inspirées d'un tableau Pinterest unique.
 
-## Fonctionnalités livrées
+## Expérience
 
-- Découverte en cartes ou en grille, swipe tactile/souris et raccourcis clavier.
-- Like, dislike et annulation de la dernière action.
-- Filtres cumulables : objectif, style, saison et plafond de prix.
-- Classement adaptatif basé sur likes, dislikes et préférences déclarées.
-- Garde-robe, recherche, tri et suppression d'un favori sans créer de dislike.
-- Fiches produits et liens sortants vers le marchand.
-- Ajout manuel de produits et import de catalogue JSON.
-- Import manuel d'inspirations (lien, image, tags).
-- Profil vestimentaire modifiable.
-- Export/import de l'ensemble des données au format JSON.
-- Stockage persistant local via IndexedDB, avec repli localStorage.
-- Interface responsive et shell PWA installable.
-- Tests unitaires de la normalisation, des filtres et du classement.
+- **Découvrir** : une pièce à la fois, gestes tactiles/souris et navigation clavier.
+- **Non** à gauche : signal négatif pour le moteur.
+- **Oui** à droite : signal positif pour le moteur, sans sauvegarde automatique dans la liste.
+- **Ajouter à ma liste** au centre : sauvegarde dans la garde-robe sans le confondre avec un vote.
+- **Annulation** de la dernière décision (Oui, Non ou ajout à la liste).
+- **Entraînement** : découverte prioritaire avec le même système de votes.
+- **Ma garde-robe** : recherche, filtres, tri et retrait d'un article sans créer de Non.
+- **Pinterest** : le tableau `sopppx24/mode` est l'unique source d'inspiration.
+- **Tenues** : rapproche les Pins des pièces enregistrées et propose des compléments uniquement lorsqu'une fiche produit vérifiable existe dans le catalogue.
+- **Profil** : tailles et préférences facultatives.
+- Import de produits, export/import JSON et stockage local IndexedDB avec repli localStorage.
+
+Le moteur apprend des réponses Oui/Non, de tes préférences déclarées et des mots-clés détectables dans les métadonnées des Pins. Cette version ne fait pas d'analyse visuelle IA des photographies : les rapprochements de tenues se basent sur les titres, descriptions, textes alternatifs, tags et attributs des fiches produits.
+
+## Pinterest : synchronisation quotidienne
+
+Le workflow `.github/workflows/pinterest-daily.yml` est prévu pour s'exécuter chaque jour à **12 h, fuseau Europe/Paris**, via l'API Pinterest v5.
+
+La synchronisation n'est pas encore active tant que le secret n'a pas été ajouté. Procédure complète dans [docs/PINTEREST.md](docs/PINTEREST.md).
+
+- Secret requis : `PINTEREST_ACCESS_TOKEN`.
+- Permissions minimales : `boards:read` et `pins:read` pour un tableau public.
+- Le script retrouve le tableau nommé `mode`, récupère ses Pins, compare leurs identifiants avec le dernier passage et met à jour `data/pinterest-pins.json`.
+- Le script refuse de copier un tableau qui n'est pas explicitement public dans ce dépôt public.
+- Le flux est visible publiquement dans le repository. Ne configure pas le secret pour un tableau secret/protégé ; une destination privée est nécessaire dans ce cas.
+
+L'horaire est une cible planifiée GitHub Actions ; l'exécution peut être retardée par la disponibilité de la plateforme.
+
+## Déploiement Pages
+
+Le workflow `.github/workflows/deploy-pages.yml` lance les tests puis tente de publier GitHub Pages sur chaque push. À la première activation, vérifier **Settings → Pages → Build and deployment → Source : GitHub Actions**.
+
+Adresse prévue : https://sopp24.github.io/DRESSOPP/
 
 ## Lancer en local
 
-Le projet ne nécessite aucune dépendance externe.
+Aucune dépendance externe n'est nécessaire pour l'application.
 
 ~~~bash
 python3 -m http.server 8000
@@ -30,47 +50,39 @@ python3 -m http.server 8000
 
 Puis ouvrir http://localhost:8000.
 
-Les tests se lancent avec :
+Tests :
 
 ~~~bash
 npm test
 ~~~
 
-## Déploiement GitHub Pages
-
-Le workflow de déploiement exécute les tests puis publie le contenu de main.
-
-Lors de la première publication, vérifier dans **Settings → Pages → Build and deployment** que la source est réglée sur **GitHub Actions**. Le site sera disponible à :
-
-https://sopp24.github.io/DRESSOPP/
-
 ## Données et confidentialité
 
-Le dépôt DRESSOPP est public. Les préférences, inspirations, favoris et historiques personnels ne sont donc **pas** écrits dans le dépôt. Ils sont conservés dans IndexedDB sur l'appareil, ce qui assure leur persistance sur ce navigateur mais ne synchronise pas automatiquement plusieurs appareils.
+Les préférences, votes Oui/Non, articles enregistrés et Pins parcourus sont conservés dans IndexedDB sur cet appareil. L'export JSON permet de sauvegarder et transférer ces données manuellement.
 
-L'export JSON permet de sauvegarder et transférer les données manuellement. Une synchronisation GitHub multi-appareils nécessite un backend privé (ou une fonction serveur) et un dépôt de données privé. Aucun token personnel GitHub n'est embarqué dans le JavaScript public.
+Le dépôt est public : aucun token, historique personnel, liste de favoris ou profil n'y est écrit. Le flux `data/pinterest-pins.json` est le seul contenu Pinterest publié, et uniquement si l'API confirme que le tableau est public.
 
-## Intégrations externes — état réel
+## Logos
 
-- **Pinterest :** import manuel de liens et d'images disponible. OAuth n'est pas activé : le secret client et les jetons doivent être gérés côté serveur.
-- **Zalando et autres marchands :** ajout manuel de fiches et import de catalogue JSON disponibles. Aucun catalogue partenaire/API n'est configuré dans ce dépôt.
-- **Instagram :** import manuel de liens et d'images ; aucun accès automatique au fil publicitaire personnel.
-- **Scraping :** aucun scraping ni contournement de restriction.
+Les emplacements sont prévus, mais les fichiers originaux n'ont pas encore été fournis :
 
-L'application n'invente ni disponibilité, ni prix, ni composition, ni note marchand. Le catalogue initial est vide tant que des produits vérifiables n'ont pas été importés.
+- `assets/logo-horizontal.png` — logo du coin supérieur gauche du site, fond transparent conseillé.
+- `assets/logo-square.png` — version carrée, idéalement au moins 512 × 512 px ; utilisée par les métadonnées d'icône PWA et le raccourci mobile.
+- `assets/favicon.svg` — favicon provisoire existant, à conserver comme fallback tant que le logo carré n'est pas fourni.
 
-## Logo
-
-Le logo DRESSOPP définitif n'était pas présent dans le dépôt au moment de l'initialisation. L'interface utilise donc provisoirement un repère typographique et un favicon temporaire. Le logo original pourra être ajouté dans assets/ puis branché dans index.html et assets/favicon.svg sans changer l'interface.
+Ne renomme pas ces fichiers : ajoute tes deux images avec ces noms exacts dans le dossier `assets/`.
 
 ## Structure
 
-- index.html — shell de l'application.
-- styles.css — identité visuelle et responsive.
-- app.js — navigation et interactions.
-- modules/engine.js — normalisation, filtres et moteur de recommandation.
-- modules/store.js — persistance locale.
-- modules/integrations.js — registre des connecteurs et état des intégrations.
-- data/catalog.json — catalogue initial, volontairement vide.
-- tests/engine.test.js — tests unitaires.
-- .github/workflows/deploy-pages.yml — tests et déploiement GitHub Pages.
+- `index.html` — shell de l'application et navigation.
+- `styles.css` — direction artistique et responsive.
+- `app.js` — navigation, décisions, sauvegarde et vues.
+- `modules/engine.js` — normalisation, filtres et classement.
+- `modules/outfits.js` — analyse textuelle légère des Pins et génération des compositions.
+- `modules/store.js` — stockage local.
+- `modules/integrations.js` — configuration Pinterest.
+- `scripts/sync-pinterest.mjs` — synchronisation API Pinterest v5.
+- `data/pinterest-pins.json` — flux Pinterest public.
+- `tests/` — tests unitaires.
+- `.github/workflows/deploy-pages.yml` — déploiement du site.
+- `.github/workflows/pinterest-daily.yml` — synchronisation Pinterest quotidienne.
