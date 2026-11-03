@@ -1,6 +1,6 @@
-const CACHE_NAME = "dressopp-static-v2";
+const CACHE_NAME = "dressopp-static-v3";
 const CORE_FILES = [
-  "./", "./index.html", "./styles.css", "./app.js",
+  "./", "./index.html", "./privacy.html", "./styles.css", "./app.js",
   "./modules/store.js", "./modules/engine.js", "./modules/integrations.js", "./modules/outfits.js",
   "./data/catalog.json", "./data/pinterest-pins.json", "./manifest.webmanifest", "./assets/favicon.svg",
   "./assets/logo-horizontal.png", "./assets/logo-square.png"
