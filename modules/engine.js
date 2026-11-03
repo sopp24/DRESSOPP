@@ -102,7 +102,7 @@ export function matchesFilters(product, filters) {
   const season = normalizeText(selected.season || "Toute saison");
   const maxPrice = selected.maxPrice === null || selected.maxPrice === "" ? null : Number(selected.maxPrice);
   if (category !== "Tout" && normalizeText(product.objective || product.category) !== normalizeText(category)) return false;
-  if (style && style !== "tous" && !product.styleTags.some(function(tag) { return normalizeText(tag) === style; })) return false;
+  if (style && style !== "tous" && product.styleTags.length && !product.styleTags.some(function(tag) { return normalizeText(tag) === style; })) return false;
   if (season && season !== "toute saison") {
     const tags = product.seasonTags.map(normalizeText);
     if (tags.length && !tags.includes("toute saison") && !tags.includes(season)) return false;
