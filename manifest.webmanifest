@@ -9,6 +9,7 @@
   "background_color": "#080808",
   "theme_color": "#080808",
   "icons": [
-    { "src": "./assets/logo-square.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+    { "src": "./assets/logo-square.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" },
+    { "src": "./assets/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
   ]
 }
