@@ -132,7 +132,7 @@ export function deriveLearnedPreferences(state) {
     const product = (state.products || []).find(function(candidate) { return candidate.id === item.productId; });
     if (product) featureTokens(product).forEach(function(token) { totals[token] = (totals[token] || 0) - 4; });
   });
-  (state.inspirations || []).forEach(function(pin) {
+  (state.inspirations || []).concat(state.pinterestPins || []).forEach(function(pin) {
     const values = (pin.tags || []).concat(pin.inferredTags || []);
     values.forEach(function(value) {
       const token = "styleTags:" + normalizeText(value);
