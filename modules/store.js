@@ -21,20 +21,33 @@ function openDatabase() {
 }
 
 export async function loadState() {
+  let indexedState = null;
+  let fallbackState = null;
+
   try {
     const database = await openDatabase();
-    const result = await new Promise(function(resolve, reject) {
+    indexedState = await new Promise(function(resolve, reject) {
       const transaction = database.transaction(STORE_NAME, "readonly");
       const request = transaction.objectStore(STORE_NAME).get(STATE_KEY);
       request.onsuccess = function() { resolve(request.result ? request.result.value : null); };
       request.onerror = function() { reject(request.error); };
     });
-    if (result) return result;
-  } catch (error) { console.warn("Lecture IndexedDB impossible, essai du stockage de secours.", error); }
+  } catch (error) {
+    console.warn("Lecture IndexedDB impossible, essai du stockage de secours.", error);
+  }
+
   try {
     const backup = localStorage.getItem(FALLBACK_KEY);
-    return backup ? JSON.parse(backup) : null;
-  } catch (error) { console.warn("Aucune sauvegarde locale lisible.", error); return null; }
+    fallbackState = backup ? JSON.parse(backup) : null;
+  } catch (error) {
+    console.warn("Aucune sauvegarde locale de secours lisible.", error);
+  }
+
+  const indexedDate = indexedState && Date.parse(indexedState.updatedAt || "") || 0;
+  const fallbackDate = fallbackState && Date.parse(fallbackState.updatedAt || "") || 0;
+  return fallbackState && fallbackDate > indexedDate
+    ? fallbackState
+    : (indexedState || fallbackState || null);
 }
 
 export async function saveState(state) {
