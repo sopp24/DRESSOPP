@@ -19,13 +19,14 @@ Le script s'arrête volontairement si Pinterest ne confirme pas que le tableau e
 
 1. Crée une application dans le portail développeur Pinterest : https://developers.pinterest.com/
 2. Crée l'application en étant connecté au compte Pinterest qui possède le tableau.
-3. Active la double authentification Pinterest et configure l'accès API v5 avec les permissions minimales `boards:read` et `pins:read`.
-4. Dans GitHub, ouvre **Settings → Secrets and variables → Actions → New repository secret** et ajoute :
+3. Crée l'application en étant connecté au même compte Pinterest que celui qui possède le tableau `sopppx24/mode`. Le flux Client Credentials agit au nom du propriétaire de l'application : les deux comptes doivent donc correspondre.
+4. Active la double authentification Pinterest et configure l'accès API v5 avec les permissions minimales `boards:read` et `pins:read`.
+5. Dans GitHub, ouvre **Settings → Secrets and variables → Actions → New repository secret** et ajoute :
    - `PINTEREST_APP_ID` : l'ID de ton application Pinterest ;
    - `PINTEREST_APP_SECRET` : le secret de ton application.
-5. Le workflow génère un jeton OAuth court à chaque synchronisation avec le flux `client_credentials`. Aucun jeton d'accès réutilisable n'a besoin d'être enregistré.
-6. En alternative, tu peux fournir un secret `PINTEREST_ACCESS_TOKEN` déjà généré ; il sera prioritaire, mais il expirera et devra être renouvelé manuellement.
-7. Ouvre l'onglet **Actions**, puis le workflow **DRESSOPP — Synchronisation Pinterest quotidienne** et lance **Run workflow** pour le premier test.
+6. Le workflow génère un jeton OAuth court à chaque synchronisation avec le flux `client_credentials`. Aucun jeton d'accès réutilisable n'a besoin d'être enregistré.
+7. En alternative, tu peux fournir un secret `PINTEREST_ACCESS_TOKEN` déjà généré ; il sera prioritaire, mais il expirera et devra être renouvelé manuellement.
+8. Ouvre l'onglet **Actions**, puis le workflow **DRESSOPP — Synchronisation Pinterest quotidienne** et lance **Run workflow** pour le premier test.
 
 Si le tableau est secret, l'API requiert les scopes adaptés (`boards:read_secret` et `pins:read_secret`) et les données doivent être stockées dans un dépôt privé ou un backend privé. Le script actuel refuse de publier ce tableau dans le dépôt public.
 
