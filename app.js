@@ -150,7 +150,8 @@ function renderDiscover(training) {
     ? renderPageHeading("Élargis ton univers", "Entraînement", "Explore volontairement de nouvelles coupes, matières et associations. Tes likes enrichissent ton profil comme dans Découvrir, sans ajout automatique à la garde-robe.", '<button class="button-secondary" type="button" data-view="discover">Retour à Découvrir</button>')
     : renderPageHeading("Ton œil, tes règles", "Découvrir", "Des pièces sélectionnées selon tes préférences. Like, passe, compare et laisse ton style se préciser au fil des découvertes.", '<button class="button-secondary" type="button" data-action="toggle-discovery-view">' + (state.settings.discoveryView === "grid" ? "Vue cartes" : "Explorer la grille") + '</button>');
   const products = rankProducts(state.products, state, { training: training });
-  const liked = state.likedProducts.length;
+  const yesCount = state.interactions.likes.length;
+  const savedCount = state.likedProducts.length;
   const rejected = state.interactions.dislikes.length;
   const isGrid = state.settings.discoveryView === "grid" && !training;
   const body = isGrid ? renderGridCards(products) : (products.length ? renderDeckCard(products[0], training) : renderEmptyProducts(training));
@@ -160,7 +161,7 @@ function renderDiscover(training) {
     '<span>' + (training ? "Nouveauté prioritaire" : "Personnalisation active") + '</span></div>' + body +
     '</section><aside class="deck-aside"><section class="panel aside-card"><h2 class="aside-title">Ton évolution <span>en direct</span></h2>' +
     '<p>Chaque décision affine ton profil. Une consultation reste un signal léger ; un like ou un dislike compte davantage.</p>' +
-    '<div class="aside-stat"><div class="stat-box"><strong>' + liked + '</strong><small>Coups de cœur</small></div><div class="stat-box"><strong>' + rejected + '</strong><small>Articles passés</small></div></div></section>' +
+    '<div class="aside-stat"><div class="stat-box"><strong>' + yesCount + '</strong><small>Oui</small></div><div class="stat-box"><strong>' + rejected + '</strong><small>Non</small></div><div class="stat-box"><strong>' + savedCount + '</strong><small>Dans ma liste</small></div></div></section>' +
     '<section class="panel aside-card"><h2 class="aside-title">Équilibre du moment <span>' + esc(training ? state.settings.trainingDiscoveryLevel : state.settings.discoveryLevel) + '% découverte</span></h2>' +
     '<p>' + (training ? "Le mode Entraînement donne plus de poids à la nouveauté pour élargir ton terrain de jeu." : "Le curseur mélange tes goûts déjà identifiés et des propositions plus inattendues. Ajuste-le à tout moment.") + '</p></section>' +
     '<div class="source-note">Le catalogue initial est volontairement vide. Les articles ajoutés sont conservés avec leurs liens marchands ; les informations absentes restent signalées.</div>' +
@@ -210,7 +211,7 @@ function pinterestPinCards() {
   });
 }
 function renderInspirations() {
-  const items = pinterestPinCards();
+  const items = pinterestPinCards().slice(0, 60);
   const unseen = items.filter(function(item) {
     return item.fromFeed && !(state.seenPinterestPins || []).includes(String(item.pinId));
   });
@@ -234,7 +235,11 @@ function renderInspirations() {
     cards;
 }
 function renderOutfits() {
-  const pins = pinterestPinCards();
+  const pins = pinterestPinCards().slice(0, 24);
+  if (state.selectedPinterestPin) pins.sort(function(a, b) {
+    const selected = String(state.selectedPinterestPin);
+    return (String(a.pinId || a.id) === selected ? -1 : 0) - (String(b.pinId || b.id) === selected ? -1 : 0);
+  });
   const wardrobe = state.likedProducts.map(function(item) { return productById(item.productId); }).filter(Boolean);
   const dislikedIds = (state.interactions.dislikes || []).map(function(item) { return item.productId; });
   const ideas = buildOutfitIdeas(pins, wardrobe, state.products, dislikedIds);
