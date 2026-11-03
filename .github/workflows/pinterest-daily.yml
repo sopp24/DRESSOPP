@@ -1,0 +1,44 @@
+name: DRESSOPP — Synchronisation Pinterest quotidienne
+
+on:
+  schedule:
+    - cron: "0 12 * * *"
+      timezone: "Europe/Paris"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: dressopp-pinterest-sync
+  cancel-in-progress: false
+
+jobs:
+  sync-pinterest:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Récupérer DRESSOPP
+        uses: actions/checkout@v4
+
+      - name: Configurer Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Lire le tableau Pinterest et repérer les nouvelles épingles
+        run: node scripts/sync-pinterest.mjs
+        env:
+          PINTEREST_ACCESS_TOKEN: ${{ secrets.PINTEREST_ACCESS_TOKEN }}
+          PINTEREST_BOARD_NAME: mode
+
+      - name: Enregistrer le flux public des épingles
+        run: |
+          if [[ -n "$(git status --porcelain data/pinterest-pins.json)" ]]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add data/pinterest-pins.json
+            git commit -m "Synchroniser les nouvelles épingles Pinterest"
+            git push
+          else
+            echo "Aucune modification Pinterest à enregistrer."
+          fi
