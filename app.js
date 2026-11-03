@@ -1,6 +1,7 @@
 import { loadState, saveState, clearState } from "./modules/store.js";
 import { createInitialState, normalizeProduct, productIdentity, seasonFor, rankProducts, deriveLearnedPreferences, matchesFilters } from "./modules/engine.js";
-import { INTEGRATIONS, getPersistenceNotice } from "./modules/integrations.js";
+import { INTEGRATIONS, getPersistenceNotice, PINTEREST_BOARD_URL } from "./modules/integrations.js";
+import { inferPinterestTags, buildOutfitIdeas } from "./modules/outfits.js";
 
 const main = document.querySelector("#app-main");
 const modalRoot = document.querySelector("#modal-root");
@@ -11,6 +12,7 @@ let currentView = "discover";
 let currentModalProduct = null;
 let toastTimer = null;
 let isSaving = false;
+let pinterestFeed = { privacy: "UNKNOWN", pins: [], lastSync: null, newPinIds: [] };
 
 const OBJECTIVES = ["Vêtements", "Chaussures", "Sous-vêtements", "Accessoires"];
 const STYLES = ["Classique", "Créatif", "Classe", "Sport", "Été"];
@@ -120,10 +122,13 @@ function renderDeckCard(product, training) {
     '<div class="product-info"><div class="product-copy"><span class="product-brand">' + esc(product.brand || "Marque non renseignée") + '</span>' +
       '<h2 class="product-title">' + esc(product.name) + '</h2><div class="product-meta"><span>' + esc(product.objective || product.category) + '</span><i class="meta-dot"></i><span>' + esc(sourceName) + '</span></div></div>' +
       '<button class="button-quiet button-small" type="button" data-action="details" data-id="' + esc(product.id) + '">Détails ↗</button></div>' +
-    '</article><div class="deck-actions"><button class="vote-button undo" type="button" data-action="undo" aria-label="Annuler la dernière action" title="Annuler la dernière action" ' + (state.interactions.lastAction ? "" : "disabled") + '>↶</button>' +
-    '<button class="vote-button dislike" type="button" data-action="vote" data-vote="dislike" data-id="' + esc(product.id) + '" aria-label="Je n’aime pas">×</button>' +
-    '<button class="vote-button like" type="button" data-action="vote" data-vote="like" data-id="' + esc(product.id) + '" aria-label="J’aime">♡</button></div>' +
-    '<p class="deck-hint">Glisse à gauche pour passer · à droite pour ajouter à ta garde-robe</p></div>';
+    '</article><div class="deck-actions">' +
+    '<button class="vote-button vote-no" type="button" data-action="vote" data-vote="no" data-id="' + esc(product.id) + '" aria-label="Non">Non</button>' +
+    '<button class="vote-button save-list" type="button" data-action="save-list" data-id="' + esc(product.id) + '" aria-label="Ajouter à ma liste">' +
+      (isLiked(product.id) ? "✓" : "＋") + '<small>' + (isLiked(product.id) ? "Dans ma liste" : "Ajouter à ma liste") + '</small></button>' +
+    '<button class="vote-button vote-yes" type="button" data-action="vote" data-vote="yes" data-id="' + esc(product.id) + '" aria-label="Oui">Oui</button>' +
+    '</div><div class="deck-undo"><button class="button-quiet button-small" type="button" data-action="undo" ' + (state.interactions.lastAction ? "" : "disabled") + '>↶ Annuler la dernière action</button></div>' +
+    '<p class="deck-hint">Glisse à gauche pour dire Non · à droite pour dire Oui</p></div>';
 }
 function renderGridCards(products, options) {
   const opts = options || {};
@@ -135,8 +140,8 @@ function renderGridCards(products, options) {
       '<h3 class="product-title">' + esc(product.name) + '</h3><div class="product-meta"><span>' + esc(product.merchant || product.source) + '</span><i class="meta-dot"></i><span>' + esc(product.objective) + '</span></div>' +
       '<div class="grid-bottom"><span class="grid-price">' + esc(formatPrice(product.price)) + '</span><div class="grid-actions">' +
       '<button class="mini-icon-button" type="button" data-action="details" data-id="' + esc(product.id) + '" aria-label="Voir les détails">↗</button>' +
-      (opts.wardrobe ? '<button class="mini-icon-button" type="button" data-action="remove-favorite" data-id="' + esc(product.id) + '" aria-label="Retirer des favoris">−</button>' :
-        '<button class="mini-icon-button ' + (liked ? "is-liked" : "") + '" type="button" data-action="' + (liked ? "remove-favorite" : "vote") + '" data-vote="like" data-id="' + esc(product.id) + '" aria-label="' + (liked ? "Retirer des favoris" : "Ajouter aux favoris") + '">' + (liked ? "♥" : "♡") + '</button>') +
+      (opts.wardrobe ? '<button class="mini-icon-button" type="button" data-action="remove-favorite" data-id="' + esc(product.id) + '" aria-label="Retirer de ma liste">−</button>' :
+        '<button class="mini-icon-button ' + (liked ? "is-liked" : "") + '" type="button" data-action="' + (liked ? "remove-favorite" : "save-list") + '" data-id="' + esc(product.id) + '" aria-label="' + (liked ? "Retirer de ma liste" : "Ajouter à ma liste") + '">' + (liked ? "♥" : "♡") + '</button>') +
       '</div></div></div></article>';
   }).join("") + '</div>';
 }
@@ -185,15 +190,78 @@ function renderWardrobe() {
     selectOption("price-desc", state.settings.wardrobeSort || "recent", "Prix décroissant") + selectOption("name", state.settings.wardrobeSort || "recent", "Nom") + '</select></div></div>' +
     '<div id="wardrobe-grid">' + (favorites.length ? cards : '<div class="empty-state"><div class="empty-mark">♡</div><h2>Ta garde-robe est encore vide</h2><p>Les articles que tu likes dans Découvrir apparaîtront ici. Tu peux aussi ajouter un produit manuellement.</p><div class="empty-actions"><button class="button-primary" type="button" data-view="discover">Commencer à découvrir</button><button class="button-secondary" type="button" data-action="add-product">Ajouter un article</button></div></div>') + '</div>';
 }
+function pinterestPinCards() {
+  const remote = (pinterestFeed.pins || []).map(function(pin) {
+    const id = String(pin.id);
+    return {
+      id: id, pinId: id, title: pin.title || pin.description || pin.altText || "Épingle Pinterest",
+      description: pin.description || pin.altText || "",
+      imageUrl: pin.imageUrl || "", sourceUrl: pin.pinUrl || "https://www.pinterest.com/pin/" + encodeURIComponent(id) + "/",
+      tags: inferPinterestTags(pin), importedAt: pin.createdAt || null, fromFeed: true
+    };
+  });
+  const local = (state.inspirations || []).filter(function(pin) { return pin.source === "Pinterest"; });
+  const seen = new Set();
+  return remote.concat(local).filter(function(pin) {
+    const key = pin.pinId || pin.sourceUrl || pin.id;
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+}
 function renderInspirations() {
-  const heading = renderPageHeading("Ton univers visuel", "Inspirations", "Enregistre les références qui t’inspirent, qu’il s’agisse d’une tenue, d’une silhouette, d’une couleur ou d’une ambiance.", '<button class="button-primary" type="button" data-action="add-inspiration">＋ Ajouter une inspiration</button>');
-  const items = state.inspirations || [];
-  const grid = items.length ? '<div class="inspiration-grid">' + items.map(function(item) {
-    return '<article class="inspiration-card"><div class="inspiration-image">' + imageMarkup(item.imageUrl, item.title) + '</div><div class="inspiration-copy"><strong>' + esc(item.title || "Inspiration sans titre") + '</strong><small>' + esc(item.source || "Import personnel") + '</small>' +
+  const items = pinterestPinCards();
+  const unseen = items.filter(function(item) {
+    return item.fromFeed && !(state.seenPinterestPins || []).includes(String(item.pinId));
+  });
+  const lastSync = pinterestFeed.lastSync ? new Date(pinterestFeed.lastSync).toLocaleString("fr-FR") : "Synchronisation non activée";
+  const heading = renderPageHeading("Une seule source d’inspiration", "Pinterest", "Ton tableau « mode » nourrit le moteur de style. Les nouvelles épingles sont distinguées de celles déjà parcourues dans DRESSOPP.", 
+    '<a class="button-secondary" href="' + esc(PINTEREST_BOARD_URL) + '" target="_blank" rel="noopener noreferrer">Ouvrir mon tableau ↗</a><button class="button-primary" type="button" data-action="add-inspiration">＋ Ajouter un Pin</button>');
+  const cards = items.length ? '<div class="inspiration-grid">' + items.map(function(item) {
+    const seen = item.fromFeed && (state.seenPinterestPins || []).includes(String(item.pinId));
+    const newBadge = item.fromFeed && !seen ? '<span class="pin-new-badge">NOUVEAU</span>' : '';
+    const pinDate = item.importedAt ? new Date(item.importedAt).toLocaleDateString("fr-FR") : "Ajout manuel";
+    return '<article class="inspiration-card"><div class="inspiration-image">' + imageMarkup(item.imageUrl, item.title) + newBadge + '</div><div class="inspiration-copy"><strong>' + esc(item.title || "Épingle Pinterest") + '</strong><small>Pinterest · ' + esc(pinDate) + '</small>' +
       '<div class="inspiration-tags">' + (item.tags || []).map(function(tag) { return '<span>' + esc(tag) + '</span>'; }).join("") + '</div>' +
-      '<div class="grid-bottom"><a class="button-quiet button-small" href="' + esc(safeExternalUrl(item.sourceUrl) || "#") + '" target="_blank" rel="noopener noreferrer">Ouvrir la source ↗</a><button class="mini-icon-button" type="button" data-action="remove-inspiration" data-id="' + esc(item.id) + '" aria-label="Supprimer cette inspiration">×</button></div></div></article>';
-  }).join("") + '</div>' : '<div class="empty-state"><div class="empty-mark">⌁</div><h2>Garde une trace de ce qui t’inspire</h2><p>Ajoute un lien Pinterest, une image ou une capture. Les tags renseignés peuvent ensuite enrichir tes recommandations.</p><div class="empty-actions"><button class="button-primary" type="button" data-action="add-inspiration">Ajouter une inspiration</button></div></div>';
-  return heading + '<div class="source-note" style="margin-bottom:18px">Import manuel actif. Une image Pinterest est conservée comme inspiration, pas comme un produit disponible à l’achat.</div>' + grid;
+      '<div class="grid-bottom"><a class="button-quiet button-small" href="' + esc(safeExternalUrl(item.sourceUrl) || "#") + '" target="_blank" rel="noopener noreferrer">Voir le Pin ↗</a>' +
+      (item.fromFeed && !seen ? '<button class="button-secondary button-small" type="button" data-action="mark-pin-seen" data-id="' + esc(item.pinId) + '">Marquer vu</button>' : '') +
+      '<button class="mini-icon-button" type="button" data-action="use-pin-outfit" data-id="' + esc(item.pinId || item.id) + '" aria-label="Composer une tenue depuis ce Pin">✦</button></div></div></article>';
+  }).join("") + '</div>' : '<div class="empty-state"><div class="empty-mark">⌁</div><h2>Ton tableau Pinterest va guider les propositions</h2><p>Le flux se remplira après la configuration du secret Pinterest dans GitHub Actions et le premier lancement de synchronisation.</p><div class="empty-actions"><a class="button-primary" href="' + esc(PINTEREST_BOARD_URL) + '" target="_blank" rel="noopener noreferrer">Ouvrir mon tableau Pinterest ↗</a><a class="button-secondary" href="https://github.com/sopp24/DRESSOPP/actions/workflows/pinterest-daily.yml" target="_blank" rel="noopener noreferrer">Configurer la synchronisation ↗</a></div></div>';
+  const privacy = pinterestFeed.privacy === "PUBLIC" ? "Tableau public confirmé par Pinterest" : "Tableau pas encore vérifié par l’API";
+  return heading +
+    '<div class="pinterest-status-strip"><div><strong>' + unseen.length + '</strong><span>nouvelle(s) épingle(s) non parcourue(s)</span></div><div><small>' + esc(privacy) + '</small><small>Dernière synchronisation : ' + esc(lastSync) + '</small></div></div>' +
+    '<div class="source-note pinterest-notice">DRESSOPP ne traite comme inspiration que les Pins de ce tableau. Le contenu photographique reste une référence visuelle : il n’est jamais présenté comme un article achetable sans lien marchand vérifié.</div>' +
+    cards;
+}
+function renderOutfits() {
+  const pins = pinterestPinCards();
+  const wardrobe = state.likedProducts.map(function(item) { return productById(item.productId); }).filter(Boolean);
+  const dislikedIds = (state.interactions.dislikes || []).map(function(item) { return item.productId; });
+  const ideas = buildOutfitIdeas(pins, wardrobe, state.products, dislikedIds);
+  const heading = renderPageHeading("De Pinterest à ton dressing", "Tenues", "À partir de tes références Pinterest, DRESSOPP rapproche les pièces de ta liste et suggère ce qui manque lorsque le catalogue contient une option vérifiable.",
+    '<a class="button-secondary" href="' + esc(PINTEREST_BOARD_URL) + '" target="_blank" rel="noopener noreferrer">Voir Pinterest ↗</a>');
+  if (!ideas.length) {
+    return heading + '<div class="empty-state"><div class="empty-mark">✦</div><h2>Les tenues viendront de ton tableau Pinterest</h2><p>La synchronisation du tableau est nécessaire pour afficher tes références et construire des propositions.</p><a class="button-primary" href="https://github.com/sopp24/DRESSOPP/actions/workflows/pinterest-daily.yml" target="_blank" rel="noopener noreferrer">Configurer Pinterest ↗</a></div>';
+  }
+  return heading + '<div class="outfit-intro panel"><div><strong>' + wardrobe.length + ' pièce(s) dans ta liste</strong><p>Les correspondances se basent sur les textes, couleurs et tags fournis avec les Pins et les fiches produits. Les images ne sont pas analysées visuellement par cette version.</p></div><button class="button-secondary button-small" type="button" data-view="wardrobe">Voir ma liste</button></div>' +
+    '<div class="outfit-list">' + ideas.map(function(idea) {
+      const pin = idea.pin;
+      const saved = idea.pieces.map(function(entry) {
+        const product = entry.product;
+        return '<article class="outfit-piece"><div class="outfit-piece-image">' + imageMarkup(product.imageUrl, product.name) + '</div><div><small>Dans ta liste · ' + esc(product.objective) + '</small><strong>' + esc(product.name) + '</strong><span>' + esc(formatPrice(product.price)) + '</span><button class="button-quiet button-small" type="button" data-action="details" data-id="' + esc(product.id) + '">Détails</button></div></article>';
+      }).join("");
+      const suggested = idea.suggestions.map(function(entry) {
+        const product = entry.product;
+        return '<article class="outfit-piece is-suggestion"><div class="outfit-piece-image">' + imageMarkup(product.imageUrl, product.name) + '</div><div><small>À compléter · ' + esc(entry.slot === "top" ? "Haut" : entry.slot === "bottom" ? "Bas" : "Chaussures") + '</small><strong>' + esc(product.name) + '</strong><span>' + esc(formatPrice(product.price)) + '</span><button class="button-quiet button-small" type="button" data-action="details" data-id="' + esc(product.id) + '">Voir la pièce</button></div></article>';
+      }).join("");
+      const missing = idea.missingSlots.filter(function(slot) {
+        return !idea.suggestions.some(function(entry) { return entry.slot === slot; });
+      });
+      return '<article class="panel outfit-card"><div class="outfit-reference"><div class="outfit-reference-image">' + imageMarkup(pin.imageUrl, pin.title) + '</div><div><span class="eyebrow">Inspiration Pinterest</span><h2>' + esc(pin.title || "Tenue de référence") + '</h2><p>' + esc((pin.description || "").slice(0,180)) + '</p><a href="' + esc(safeExternalUrl(pin.sourceUrl) || "#") + '" target="_blank" rel="noopener noreferrer">Ouvrir le Pin ↗</a><div class="inspiration-tags">' + idea.tags.map(function(tag) { return '<span>' + esc(tag) + '</span>'; }).join("") + '</div></div></div>' +
+      '<div class="outfit-pieces"><div class="outfit-column"><h3>Tes pièces qui s’en rapprochent</h3>' + (saved || '<p class="field-hint">Aucune pièce enregistrée ne correspond encore aux métadonnées de cette épingle.</p>') + '</div>' +
+      '<div class="outfit-column"><h3>Pour compléter la tenue</h3>' + (suggested || '<p class="field-hint">' + (missing.length ? "Pas encore d’article correspondant dans le catalogue. Ajoute ou importe des produits pour obtenir des compléments." : "Ta sélection couvre déjà les catégories principales identifiées.") + '</p>') +
+      '</div></div></article>';
+    }).join("") + '</div>';
 }
 function renderProfile() {
   const profile = state.profile;
@@ -221,18 +289,17 @@ function preferenceField(label, name, values) {
   return '<div class="preference-block"><h3>' + esc(label) + '</h3><div class="field"><input name="' + esc(name) + '" value="' + esc((values || []).join(", ")) + '" placeholder="Sépare les valeurs par des virgules"></div></div>';
 }
 function renderSettings() {
-  const integrationMarkup = INTEGRATIONS.map(function(item) {
-    const pending = item.id === "pinterest" || item.id === "instagram";
-    return '<article class="connector-item"><div><strong>' + esc(item.name) + '</strong><small>' + esc(item.status) + '</small></div><p>' + esc(item.detail) + '</p><span class="status-pill ' + (pending ? "pending" : "") + '">' + (pending ? "À configurer" : "Manuel") + '</span></article>';
-  }).join("");
   const updated = state.updatedAt ? new Date(state.updatedAt).toLocaleString("fr-FR") : "Pas encore enregistrée";
-  return renderPageHeading("Contrôle & confidentialité", "Paramètres", "Gère tes données, tes imports et les connexions qui pourront être activées lorsque les accès sécurisés seront disponibles.", "") +
+  const lastPinterestSync = pinterestFeed.lastSync ? new Date(pinterestFeed.lastSync).toLocaleString("fr-FR") : "Aucune synchronisation réussie";
+  const status = pinterestFeed.privacy === "PUBLIC" ? "Tableau public détecté" : "Connexion à configurer";
+  return renderPageHeading("Contrôle & confidentialité", "Paramètres", "Pinterest est l’unique source d’inspiration. Les connexions et synchronisations ne sont annoncées comme actives qu’après une réponse API vérifiée.", "") +
+    '<section class="panel section-panel"><h2 class="section-title">Pinterest · mon tableau mode</h2><div class="connector-item pinterest-connector"><div><strong>Pinterest</strong><small>' + esc(status) + '</small></div><p>Synchronisation quotidienne à 12 h (Europe/Paris) via le workflow GitHub. La première activation nécessite un token OAuth Pinterest stocké dans les secrets du dépôt.</p><a class="button-secondary button-small" href="' + esc(PINTEREST_BOARD_URL) + '" target="_blank" rel="noopener noreferrer">Ouvrir le tableau ↗</a></div>' +
+    '<p class="field-hint">Dernière synchronisation : ' + esc(lastPinterestSync) + '</p><div class="form-actions"><a class="button-primary button-small" href="https://github.com/sopp24/DRESSOPP/actions/workflows/pinterest-daily.yml" target="_blank" rel="noopener noreferrer">Voir / lancer le workflow ↗</a><a class="button-quiet button-small" href="https://github.com/sopp24/DRESSOPP/blob/main/docs/PINTEREST.md" target="_blank" rel="noopener noreferrer">Guide de configuration ↗</a></div></section>' +
     '<section class="panel section-panel"><h2 class="section-title">Sauvegarde des données</h2><div class="source-note">' + esc(getPersistenceNotice()) + '</div>' +
-    '<div class="form-grid" style="margin-top:16px"><div class="preference-block"><h3>État local</h3><p class="field-hint">Dernière modification : ' + esc(updated) + '</p><p class="field-hint">Produits : ' + state.products.length + ' · Favoris : ' + state.likedProducts.length + ' · Inspirations : ' + state.inspirations.length + '</p></div>' +
-    '<div class="preference-block"><h3>Copie de sécurité</h3><p class="field-hint">Exporte régulièrement ton fichier JSON. Il contient les produits importés, tes préférences et ton historique.</p><div class="form-actions"><button class="button-primary button-small" type="button" data-action="export">Exporter mes données</button><button class="button-secondary button-small" type="button" data-action="import-backup">Importer une sauvegarde</button></div></div></div>' +
+    '<div class="form-grid" style="margin-top:16px"><div class="preference-block"><h3>État local</h3><p class="field-hint">Dernière modification : ' + esc(updated) + '</p><p class="field-hint">Produits : ' + state.products.length + ' · Articles dans ma liste : ' + state.likedProducts.length + ' · Décisions Oui : ' + state.interactions.likes.length + ' · Décisions Non : ' + state.interactions.dislikes.length + '</p></div>' +
+    '<div class="preference-block"><h3>Copie de sécurité</h3><p class="field-hint">Exporte régulièrement ton fichier JSON. Il contient tes articles, préférences, votes et Pins ajoutés manuellement.</p><div class="form-actions"><button class="button-primary button-small" type="button" data-action="export">Exporter mes données</button><button class="button-secondary button-small" type="button" data-action="import-backup">Importer une sauvegarde</button></div></div></div>' +
     '<input id="backup-file" type="file" accept=".json,application/json" hidden></section>' +
-    '<section class="panel section-panel"><h2 class="section-title">Sources & intégrations</h2><div class="connector-list">' + integrationMarkup + '</div></section>' +
-    '<section class="panel section-panel"><h2 class="section-title">Catalogue marchand</h2><p class="field-hint">Tu peux importer un fichier JSON contenant une liste de produits normalisables. Chaque fiche doit comporter un nom et, pour être considérée comme achetable, un lien marchand vérifiable.</p>' +
+    '<section class="panel section-panel"><h2 class="section-title">Catalogue marchand</h2><p class="field-hint">Les compléments de tenues viennent uniquement des articles déjà importés et dotés d’un lien marchand. DRESSOPP ne crée pas de fausses fiches produits.</p>' +
     '<div class="form-actions"><button class="button-secondary" type="button" data-action="import-catalog">Importer un catalogue JSON</button></div><input id="catalog-file" type="file" accept=".json,application/json" hidden></section>' +
     '<section class="panel section-panel"><h2 class="section-title">Zone sensible</h2><p class="field-hint">La réinitialisation supprime les données enregistrées sur cet appareil. Exporte d’abord une copie de sécurité.</p><div class="form-actions"><button class="button-danger button-small" type="button" data-action="delete-data">Supprimer toutes mes données locales</button></div></section>';
 }
@@ -245,6 +312,7 @@ function render() {
   if (currentView === "wardrobe") main.innerHTML = renderWardrobe();
   else if (currentView === "training") main.innerHTML = renderDiscover(true);
   else if (currentView === "inspirations") main.innerHTML = renderInspirations();
+  else if (currentView === "outfits") main.innerHTML = renderOutfits();
   else if (currentView === "profile") main.innerHTML = renderProfile();
   else if (currentView === "settings") main.innerHTML = renderSettings();
   else main.innerHTML = renderDiscover(false);
@@ -268,25 +336,39 @@ function vote(productId, value) {
   const product = productById(productId);
   if (!product || hasRated(productId)) return;
   const event = { productId: productId, createdAt: new Date().toISOString(), view: currentView };
-  if (value === "like") {
+  if (value === "yes" || value === "like") {
     state.interactions.likes.push(event);
-    state.likedProducts.push({ productId: productId, addedAt: event.createdAt });
-    showToast("Article ajouté à ta garde-robe", true);
+    showToast("Réponse Oui enregistrée : tes préférences sont affinées", true);
   } else {
     state.interactions.dislikes.push(event);
-    showToast("Article retiré de ta sélection", true);
+    showToast("Réponse Non enregistrée : cette piste sera moins proposée", true);
   }
   state.interactions.lastAction = { productId: productId, action: value, createdAt: event.createdAt };
   state.learnedPreferences = deriveLearnedPreferences(state);
   persist();
   render();
 }
+function saveToList(productId) {
+  const product = productById(productId);
+  if (!product || isLiked(productId)) return;
+  const createdAt = new Date().toISOString();
+  state.likedProducts.push({ productId: productId, addedAt: createdAt });
+  state.interactions.saves = Array.isArray(state.interactions.saves) ? state.interactions.saves : [];
+  state.interactions.saves.push({ productId: productId, createdAt: createdAt, view: currentView });
+  state.interactions.lastAction = { productId: productId, action: "save", createdAt: createdAt };
+  persist();
+  render();
+  showToast("Article ajouté à ta liste", true);
+}
 function undoLast() {
   const action = state.interactions.lastAction;
   if (!action) return;
-  if (action.action === "like") {
-    state.interactions.likes = state.interactions.likes.filter(function(item) { return item.productId !== action.productId || item.createdAt !== action.createdAt; });
+  if (action.action === "save" || action.action === "save-list") {
+    state.interactions.saves = (state.interactions.saves || []).filter(function(item) { return item.productId !== action.productId || item.createdAt !== action.createdAt; });
     state.likedProducts = state.likedProducts.filter(function(item) { return item.productId !== action.productId || item.addedAt !== action.createdAt; });
+  } else if (action.action === "yes" || action.action === "like") {
+    state.interactions.likes = state.interactions.likes.filter(function(item) { return item.productId !== action.productId || item.createdAt !== action.createdAt; });
+    if (action.action === "like") state.likedProducts = state.likedProducts.filter(function(item) { return item.productId !== action.productId || item.addedAt !== action.createdAt; });
   } else {
     state.interactions.dislikes = state.interactions.dislikes.filter(function(item) { return item.productId !== action.productId || item.createdAt !== action.createdAt; });
   }
@@ -371,14 +453,11 @@ function openProductForm() {
 }
 function openInspirationForm() {
   modalRoot.innerHTML = '<div class="modal-backdrop" data-action="close-modal"><section class="modal" role="dialog" aria-modal="true" aria-labelledby="add-inspiration-title" data-modal-content>' +
-    '<div class="modal-head"><div><span class="eyebrow">Moodboard personnel</span><h2 id="add-inspiration-title">Ajouter une inspiration</h2><p>Un pin ou une photo peut nourrir ton univers esthétique sans être traité comme un produit à acheter.</p></div><button class="close-button" type="button" data-action="close-modal" aria-label="Fermer">×</button></div>' +
-    '<form id="inspiration-form"><div class="form-grid"><div class="field"><label for="inspiration-title">Titre</label><input id="inspiration-title" name="title" placeholder="Une silhouette, une ambiance…"></div>' +
-    '<div class="field"><label for="inspiration-source">Source</label><select id="inspiration-source" name="source"><option>Pinterest</option><option>Instagram</option><option>Photo personnelle</option><option>Autre</option></select></div>' +
-    '<div class="field" style="grid-column:1/-1"><label for="inspiration-url">Lien de la source</label><input id="inspiration-url" name="sourceUrl" type="url" placeholder="https://…"></div>' +
-    '<div class="field"><label for="inspiration-image-url">URL de l’image</label><input id="inspiration-image-url" name="imageUrl" type="url" placeholder="https://…"></div>' +
-    '<div class="field"><label for="inspiration-file">Ou importer une image</label><input id="inspiration-file" name="imageFile" type="file" accept="image/*"><span class="field-hint">L’image reste sur cet appareil.</span></div>' +
-    '<div class="field" style="grid-column:1/-1"><label for="inspiration-tags">Tags esthétiques</label><input id="inspiration-tags" name="tags" placeholder="Oversized, tons neutres, tailoring…"></div></div>' +
-    '<div class="form-actions"><button class="button-primary" type="submit">Enregistrer l’inspiration</button><button class="button-quiet" type="button" data-action="close-modal">Annuler</button></div></form></section></div>';
+    '<div class="modal-head"><div><span class="eyebrow">Pinterest uniquement</span><h2 id="add-inspiration-title">Ajouter un Pin</h2><p>Ajoute une épingle de ton tableau ou une référence Pinterest. Les tags manuels aident à relier la tenue à tes pièces.</p></div><button class="close-button" type="button" data-action="close-modal" aria-label="Fermer">×</button></div>' +
+    '<form id="inspiration-form"><div class="form-grid"><div class="field" style="grid-column:1/-1"><label for="inspiration-url">Lien du Pin Pinterest *</label><input id="inspiration-url" name="sourceUrl" type="url" required placeholder="https://www.pinterest.com/pin/…"></div>' +
+    '<div class="field" style="grid-column:1/-1"><label for="inspiration-title">Titre (facultatif)</label><input id="inspiration-title" name="title" placeholder="Une silhouette, une ambiance…"></div>' +
+    '<div class="field" style="grid-column:1/-1"><label for="inspiration-tags">Tags esthétiques (facultatif)</label><input id="inspiration-tags" name="tags" placeholder="Oversized, tons neutres, tailoring…"></div></div>' +
+    '<div class="form-actions"><button class="button-primary" type="submit">Enregistrer le Pin</button><button class="button-quiet" type="button" data-action="close-modal">Annuler</button></div></form></section></div>';
   modalRoot.querySelector(".modal-backdrop").addEventListener("click", function(event) {
     if (event.target.classList.contains("modal-backdrop")) closeModal();
   });
@@ -434,23 +513,36 @@ async function submitProduct(form) {
 }
 async function submitInspiration(form) {
   const data = new FormData(form);
-  const imageFile = data.get("imageFile");
-  const uploadedImage = imageFile && imageFile.size ? await fileToDataUrl(imageFile) : "";
+  const sourceUrl = safeExternalUrl(data.get("sourceUrl"));
+  let host = "";
+  try { host = new URL(sourceUrl).hostname.toLowerCase(); } catch (error) {}
+  if (!sourceUrl || !(host === "pinterest.com" || host.endsWith(".pinterest.com") || host === "pin.it")) {
+    throw new Error("Seuls les liens Pinterest sont acceptés comme inspirations.");
+  }
+  if (!sourceUrl.includes("/pin/") && host !== "pin.it") {
+    throw new Error("Ajoute le lien d’une épingle précise (Pinterest.com/pin/…), pas seulement celui du tableau.");
+  }
+  if ((state.inspirations || []).some(function(item) { return item.sourceUrl === sourceUrl; })) {
+    showToast("Cette épingle est déjà dans tes inspirations.", false);
+    closeModal();
+    return;
+  }
   const item = {
-    id: "inspo-" + Date.now().toString(36),
-    title: String(data.get("title") || "Inspiration").trim(),
-    source: String(data.get("source") || "Import personnel"),
-    sourceUrl: safeExternalUrl(data.get("sourceUrl")),
-    imageUrl: uploadedImage || safeExternalUrl(data.get("imageUrl")),
+    id: "pinterest-" + Date.now().toString(36),
+    title: String(data.get("title") || "Épingle Pinterest").trim(),
+    source: "Pinterest",
+    sourceUrl: sourceUrl,
+    imageUrl: "",
     tags: normalizeWords(data.get("tags")),
     importedAt: new Date().toISOString()
   };
-  if (!item.sourceUrl && !item.imageUrl) throw new Error("Ajoute au moins un lien ou une image.");
   state.inspirations.unshift(item);
+  state.learnedPreferences = deriveLearnedPreferences(state);
   persist();
   closeModal();
+  currentView = "inspirations";
   render();
-  showToast("Inspiration enregistrée", false);
+  showToast("Pin Pinterest enregistré", false);
 }
 function saveProfile(form) {
   const data = new FormData(form);
@@ -579,7 +671,8 @@ function handleClick(event) {
   if (action === "add-product") openProductForm();
   else if (action === "add-inspiration") openInspirationForm();
   else if (action === "close-modal") closeModal(); else if (action === "details") openProductDetails(actionButton.dataset.id);
-  else if (action === "vote") vote(actionButton.dataset.id, actionButton.dataset.vote || "like");
+  else if (action === "vote") vote(actionButton.dataset.id, actionButton.dataset.vote || "no");
+  else if (action === "save-list") saveToList(actionButton.dataset.id);
   else if (action === "undo") undoLast();
   else if (action === "remove-favorite") removeFavorite(actionButton.dataset.id);
   else if (action === "toggle-discovery-view") toggleDiscoveryView();
@@ -589,7 +682,14 @@ function handleClick(event) {
   else if (action === "import-catalog") document.querySelector("#catalog-file")?.click();
   else if (action === "reset-profile") resetProfile();
   else if (action === "delete-data") deleteAllData();
-  else if (action === "remove-inspiration") {
+  else if (action === "mark-pin-seen") {
+    state.seenPinterestPins = Array.isArray(state.seenPinterestPins) ? state.seenPinterestPins : [];
+    if (!state.seenPinterestPins.includes(String(actionButton.dataset.id))) state.seenPinterestPins.push(String(actionButton.dataset.id));
+    persist(); render(); showToast("Épingle marquée comme parcourue", false);
+  } else if (action === "use-pin-outfit") {
+    state.selectedPinterestPin = String(actionButton.dataset.id);
+    persist(); setView("outfits");
+  } else if (action === "remove-inspiration") {
     state.inspirations = state.inspirations.filter(function(item) { return item.id !== actionButton.dataset.id; });
     persist(); render(); showToast("Inspiration supprimée", false);
   }
@@ -688,7 +788,7 @@ function attachSwipe() {
     card.classList.remove("is-dragging");
     card.style.transform = "";
     card.style.borderColor = "";
-    if (Math.abs(deltaX) > 95) vote(card.dataset.productId, deltaX > 0 ? "like" : "dislike");
+    if (Math.abs(deltaX) > 95) vote(card.dataset.productId, deltaX > 0 ? "yes" : "no");
     else if (Math.abs(deltaX) < 12 && Math.abs(event.clientY - startY) < 12) openProductDetails(card.dataset.productId);
   });
   card.addEventListener("pointercancel", function() {
@@ -711,13 +811,20 @@ document.addEventListener("keydown", function(event) {
   if (currentView === "discover" || currentView === "training") {
     const card = document.querySelector("#active-product-card");
     if (!card) return;
-    if (event.key === "ArrowRight") vote(card.dataset.productId, "like");
-    else if (event.key === "ArrowLeft") vote(card.dataset.productId, "dislike");
+    if (event.key === "ArrowRight") vote(card.dataset.productId, "yes");
+    else if (event.key === "ArrowLeft") vote(card.dataset.productId, "no");
     else if (event.key.toLowerCase() === "z" && (event.metaKey || event.ctrlKey)) undoLast();
   }
 });
 async function boot() {
   let catalog = [];
+  try {
+    const pinResponse = await fetch("./data/pinterest-pins.json", { cache: "no-store" });
+    if (pinResponse.ok) {
+      const payload = await pinResponse.json();
+      if (payload.privacy === "PUBLIC" && Array.isArray(payload.pins)) pinterestFeed = payload;
+    }
+  } catch (error) { console.warn("Flux Pinterest non chargé.", error); }
   try {
     const response = await fetch("./data/catalog.json", { cache: "no-store" });
     if (response.ok) {
@@ -735,11 +842,14 @@ async function boot() {
   state.interactions.likes = Array.isArray(state.interactions.likes) ? state.interactions.likes : [];
   state.interactions.dislikes = Array.isArray(state.interactions.dislikes) ? state.interactions.dislikes : [];
   state.interactions.views = Array.isArray(state.interactions.views) ? state.interactions.views : [];
+  state.interactions.saves = Array.isArray(state.interactions.saves) ? state.interactions.saves : [];
   state.interactions.undoEvents = Array.isArray(state.interactions.undoEvents) ? state.interactions.undoEvents : [];
   state.likedProducts = Array.isArray(state.likedProducts) ? state.likedProducts : [];
   state.products = Array.isArray(state.products) ? state.products.map(normalizeProduct) : catalog;
   if (!state.products.length && catalog.length) state.products = catalog;
-  state.inspirations = Array.isArray(state.inspirations) ? state.inspirations : [];
+  state.inspirations = Array.isArray(state.inspirations) ? state.inspirations.filter(function(item) { return item.source === "Pinterest"; }) : [];
+  state.seenPinterestPins = Array.isArray(state.seenPinterestPins) ? state.seenPinterestPins : [];
+  state.pinterestPins = pinterestFeed.pins || [];
   state.learnedPreferences = deriveLearnedPreferences(state);
   render();
   updateSaveStatus("Stockage local prêt", "ok");
