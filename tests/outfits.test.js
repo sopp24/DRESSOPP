@@ -36,5 +36,5 @@ test("outfit ideas use saved pieces and only suggest catalogue products with mer
   assert.equal(ideas[0].pieces.length, 2);
   assert.equal(ideas[0].suggestions.length, 1);
   assert.equal(ideas[0].suggestions[0].product.id, "bottom-1");
-  assert.ok(ideas[0].missingSlots.includes("bottom") === false);
+  assert.ok(ideas[0].missingSlots.includes("bottom"));
 });
