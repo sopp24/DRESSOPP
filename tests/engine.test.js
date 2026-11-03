@@ -63,3 +63,20 @@ test("Pinterest board metadata contributes positive learned style signals", func
   assert.ok(learned["materials:lin"] > 0);
   assert.ok(learned["cuts:oversized"] > 0);
 });
+
+
+test("normalizeProduct rejects relative URLs as merchant links", function() {
+  const product = normalizeProduct({ name: "Produit", url: "/produits/chemise" });
+  assert.equal(product.url, "");
+});
+
+test("rankProducts never recommends an item already saved in the wardrobe", function() {
+  const product = normalizeProduct({ id: "saved", name: "Chemise", objective: "Vêtements", price: 15 });
+  const state = createInitialState([product]);
+  state.likedProducts.push({ productId: "saved", addedAt: new Date().toISOString() });
+  state.interactions.saves = [];
+  const result = rankProducts([product], state, {
+    filters: { objective: "Vêtements", style: "Tous", season: "Toute saison", maxPrice: null }
+  });
+  assert.equal(result.length, 0);
+});
