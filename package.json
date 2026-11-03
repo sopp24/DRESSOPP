@@ -4,5 +4,5 @@
   "private": true,
   "type": "module",
   "description": "DRESSOPP — assistant personnel de découverte vestimentaire",
-  "scripts": { "test": "node --check app.js && node --test" }
+  "scripts": { "test": "node --check app.js && node --check scripts/sync-pinterest.mjs && node --test" }
 }
