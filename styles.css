@@ -169,7 +169,7 @@ a { color: inherit; }
 .aside-title { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 0 0 12px; color: #f3f3f3; font-size: 12px; font-weight: 750; }
 .aside-title span { color: #707070; font-size: 10px; font-weight: 500; }
 .aside-card p { margin: 0; color: #898989; font-size: 11px; line-height: 1.65; }
-.aside-stat { display: grid; grid-template-columns: repeat(2,1fr); gap: 9px; margin-top: 14px; }
+.aside-stat { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 7px; margin-top: 14px; }
 .stat-box { padding: 11px; border: 1px solid var(--line); border-radius: 12px; background: rgba(255,255,255,.025); }
 .stat-box strong { display: block; color: #fff; font-size: 20px; letter-spacing: -.06em; }
 .stat-box small { color: #777; font-size: 9px; }
