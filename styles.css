@@ -266,6 +266,8 @@ a { color: inherit; }
 .outfit-piece button { margin-top: 3px; padding-left: 0; }
 .app-footer { display: flex; align-items: center; justify-content: space-between; gap: 15px; width: min(1380px, calc(100% - 64px)); margin: 0 auto; padding: 14px 0 0; border-top: 1px solid var(--line); color: #656565; font-size: 9px; letter-spacing: .06em; text-transform: uppercase; }
 .footer-separator { padding: 0 5px; color: var(--accent); }
+.footer-legal-link { color: #999; text-decoration: none; white-space: nowrap; transition: color .2s ease; }
+.footer-legal-link:hover { color: #fff; text-decoration: underline; text-decoration-color: var(--accent); text-underline-offset: 4px; }
 .save-status { display: inline-flex; align-items: center; gap: 7px; }
 .status-dot { width: 6px; height: 6px; border-radius: 50%; background: #8dca9d; box-shadow: 0 0 8px rgba(141,202,157,.4); }
 .save-status.is-saving .status-dot { background: #e0a63b; }
