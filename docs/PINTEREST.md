@@ -18,11 +18,14 @@ Le script s'arrête volontairement si Pinterest ne confirme pas que le tableau e
 ## Activation
 
 1. Crée une application dans le portail développeur Pinterest : https://developers.pinterest.com/
-2. Configure l'accès OAuth 2.0 avec les permissions minimales `boards:read` et `pins:read`.
-3. Autorise ton compte Pinterest et obtiens un access token valide.
-4. Dans GitHub, ouvre **Settings → Secrets and variables → Actions → New repository secret**.
-5. Nomme le secret exactement `PINTEREST_ACCESS_TOKEN` et colle le token. Ne le place jamais dans le code, le dépôt ou un fichier JSON.
-6. Ouvre l'onglet **Actions**, puis le workflow **DRESSOPP — Synchronisation Pinterest quotidienne** et lance **Run workflow** pour le premier test.
+2. Crée l'application en étant connecté au compte Pinterest qui possède le tableau.
+3. Active la double authentification Pinterest et configure l'accès API v5 avec les permissions minimales `boards:read` et `pins:read`.
+4. Dans GitHub, ouvre **Settings → Secrets and variables → Actions → New repository secret** et ajoute :
+   - `PINTEREST_APP_ID` : l'ID de ton application Pinterest ;
+   - `PINTEREST_APP_SECRET` : le secret de ton application.
+5. Le workflow génère un jeton OAuth court à chaque synchronisation avec le flux `client_credentials`. Aucun jeton d'accès réutilisable n'a besoin d'être enregistré.
+6. En alternative, tu peux fournir un secret `PINTEREST_ACCESS_TOKEN` déjà généré ; il sera prioritaire, mais il expirera et devra être renouvelé manuellement.
+7. Ouvre l'onglet **Actions**, puis le workflow **DRESSOPP — Synchronisation Pinterest quotidienne** et lance **Run workflow** pour le premier test.
 
 Si le tableau est secret, l'API requiert les scopes adaptés (`boards:read_secret` et `pins:read_secret`) et les données doivent être stockées dans un dépôt privé ou un backend privé. Le script actuel refuse de publier ce tableau dans le dépôt public.
 
