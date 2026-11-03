@@ -103,6 +103,12 @@ async function main() {
     boardId: String(board.id)
   })).filter(pin => pin.id);
 
+  normalized.sort((a, b) => {
+    const dateA = a.createdAt ? Date.parse(a.createdAt) : 0;
+    const dateB = b.createdAt ? Date.parse(b.createdAt) : 0;
+    return dateB - dateA;
+  });
+
   const newPinIds = normalized.filter(pin => !previousIds.has(pin.id)).map(pin => pin.id);
   const payload = {
     schemaVersion: 1,
