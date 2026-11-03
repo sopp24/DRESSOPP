@@ -9,6 +9,13 @@ const STYLE_HINTS = {
   "Workwear": ["workwear", "utility", "cargo", "denim", "work jacket"]
 };
 const COLOR_HINTS = ["noir","blanc","écru","beige","gris","anthracite","marron","chocolat","camel","kaki","vert","olive","bleu","marine","bordeaux","rouge","rose","jaune","orange","violet"];
+const COLOR_ALIASES = {
+  "noir": ["black"], "blanc": ["white"], "écru": ["cream","off white"],
+  "beige": ["sand"], "gris": ["grey","gray"], "marron": ["brown"],
+  "marine": ["navy"], "vert": ["green"], "bleu": ["blue"],
+  "rouge": ["red"], "rose": ["pink"], "jaune": ["yellow"],
+  "orange": ["orange"], "violet": ["purple"]
+};
 const MATERIAL_HINTS = ["coton","lin","laine","cuir","suède","suede","denim","jean","maille","velours","soie","nylon"];
 const CUT_HINTS = ["oversized","oversize","ample","baggy","wide leg","large","droit","straight","slim","regular","cropped","court","long"];
 const SLOT_TERMS = {
@@ -35,7 +42,10 @@ export function inferPinterestFeatures(pin) {
   Object.entries(STYLE_HINTS).forEach(function(entry) {
     if (entry[1].some(function(term) { return source.includes(clean(term)); })) features.styleTags.push(entry[0]);
   });
-  COLOR_HINTS.forEach(function(term) { if (source.includes(clean(term))) features.colors.push(term); });
+  COLOR_HINTS.forEach(function(term) {
+    const aliases = COLOR_ALIASES[term] || [];
+    if (source.includes(clean(term)) || aliases.some(function(alias) { return source.includes(clean(alias)); })) features.colors.push(term);
+  });
   MATERIAL_HINTS.forEach(function(term) { if (source.includes(clean(term))) features.materials.push(term); });
   CUT_HINTS.forEach(function(term) { if (source.includes(clean(term))) features.cuts.push(term); });
   Object.keys(features).forEach(function(key) { features[key] = unique(features[key]); });
