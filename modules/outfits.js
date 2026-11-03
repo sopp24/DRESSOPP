@@ -29,16 +29,21 @@ export function pinterestText(pin) {
   return [pin.title, pin.description, pin.altText, pin.alt_text, ...(pin.tags || [])].filter(Boolean).join(" ");
 }
 
-export function inferPinterestTags(pin) {
+export function inferPinterestFeatures(pin) {
   const source = clean(pinterestText(pin));
-  const tags = [];
+  const features = { styleTags: [], colors: [], materials: [], cuts: [] };
   Object.entries(STYLE_HINTS).forEach(function(entry) {
-    if (entry[1].some(function(term) { return source.includes(clean(term)); })) tags.push(entry[0]);
+    if (entry[1].some(function(term) { return source.includes(clean(term)); })) features.styleTags.push(entry[0]);
   });
-  COLOR_HINTS.forEach(function(term) { if (source.includes(clean(term))) tags.push(term); });
-  MATERIAL_HINTS.forEach(function(term) { if (source.includes(clean(term))) tags.push(term); });
-  CUT_HINTS.forEach(function(term) { if (source.includes(clean(term))) tags.push(term); });
-  return unique(tags);
+  COLOR_HINTS.forEach(function(term) { if (source.includes(clean(term))) features.colors.push(term); });
+  MATERIAL_HINTS.forEach(function(term) { if (source.includes(clean(term))) features.materials.push(term); });
+  CUT_HINTS.forEach(function(term) { if (source.includes(clean(term))) features.cuts.push(term); });
+  Object.keys(features).forEach(function(key) { features[key] = unique(features[key]); });
+  return features;
+}
+export function inferPinterestTags(pin) {
+  const features = inferPinterestFeatures(pin);
+  return unique([].concat(features.styleTags, features.colors, features.materials, features.cuts));
 }
 
 export function productSlot(product) {
