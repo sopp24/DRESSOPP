@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { seasonFor, normalizeProduct, matchesFilters, rankProducts, createInitialState } from "../modules/engine.js";
+import { seasonFor, normalizeProduct, matchesFilters, rankProducts, createInitialState, deriveLearnedPreferences } from "../modules/engine.js";
 
 test("seasonFor follows northern hemisphere seasons", function() {
   assert.equal(seasonFor(new Date(2026, 0, 15)), "Hiver");
@@ -50,4 +50,16 @@ test("rankProducts excludes already rated products and respects price cap", func
     filters: { objective: "Vêtements", style: "Classique", season: "Toute saison", maxPrice: 20 }
   });
   assert.deepEqual(result.map(function(item) { return item.id; }).sort(), ["c"]);
+});
+
+test("Pinterest board metadata contributes positive learned style signals", function() {
+  const state = createInitialState([]);
+  state.pinterestPins = [
+    { title: "Minimalist beige linen oversized outfit", description: "Clean summer streetwear" }
+  ];
+  const learned = deriveLearnedPreferences(state);
+  assert.ok(learned["styleTags:classique"] > 0);
+  assert.ok(learned["colors:beige"] > 0);
+  assert.ok(learned["materials:lin"] > 0);
+  assert.ok(learned["cuts:oversized"] > 0);
 });
