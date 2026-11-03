@@ -21,7 +21,7 @@ function hash(value) {
 }
 
 export function seasonFor(date) {
-  const month = (date || new Date()).getMonth() + 1;
+  const month = Number(new Intl.DateTimeFormat("en-US", { month: "numeric", timeZone: "Europe/Paris" }).format(date || new Date()));
   if (month === 12 || month <= 2) return "Hiver";
   if (month >= 3 && month <= 5) return "Printemps";
   if (month >= 6 && month <= 8) return "Été";
