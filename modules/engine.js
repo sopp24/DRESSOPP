@@ -1,3 +1,5 @@
+import { inferPinterestFeatures } from "./outfits.js";
+
 const FEATURE_FIELDS = ["styleTags", "colors", "materials", "cuts", "patterns", "categories"];
 
 function text(value) { return String(value == null ? "" : value).trim(); }
@@ -133,13 +135,15 @@ export function deriveLearnedPreferences(state) {
     if (product) featureTokens(product).forEach(function(token) { totals[token] = (totals[token] || 0) - 4; });
   });
   (state.inspirations || []).concat(state.pinterestPins || []).forEach(function(pin) {
-    const values = (pin.tags || []).concat(pin.inferredTags || []);
-    values.forEach(function(value) {
-      const token = "styleTags:" + normalizeText(value);
-      totals[token] = (totals[token] || 0) + 1.5;
+    const features = inferPinterestFeatures(pin);
+    Object.entries(features).forEach(function(entry) {
+      entry[1].forEach(function(value) {
+        const token = entry[0] + ":" + normalizeText(value);
+        totals[token] = (totals[token] || 0) + 1.5;
+      });
     });
-    (pin.colors || []).forEach(function(value) {
-      const token = "colors:" + normalizeText(value);
+    (pin.tags || []).forEach(function(value) {
+      const token = "styleTags:" + normalizeText(value);
       totals[token] = (totals[token] || 0) + 1.5;
     });
   });
