@@ -8,6 +8,7 @@ on:
 
 permissions:
   contents: write
+  actions: write
 
 concurrency:
   group: dressopp-pinterest-sync
@@ -37,6 +38,7 @@ jobs:
           PINTEREST_BOARD_NAME: mode
 
       - name: Enregistrer le flux public des épingles
+        id: save-feed
         run: |
           if [[ -n "$(git status --porcelain data/pinterest-pins.json)" ]]; then
             git config user.name "github-actions[bot]"
@@ -44,6 +46,14 @@ jobs:
             git add data/pinterest-pins.json
             git commit -m "Synchroniser les nouvelles épingles Pinterest"
             git push
+            echo "changed=true" >> "$GITHUB_OUTPUT"
           else
             echo "Aucune modification Pinterest à enregistrer."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
           fi
+
+      - name: Publier le flux Pinterest sur GitHub Pages
+        if: steps.save-feed.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run deploy-pages.yml --ref main
