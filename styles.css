@@ -357,7 +357,9 @@ a { color: inherit; }
   .product-info { padding: 13px; }
   .product-title { font-size: 15px; }
   .photo-price { font-size: 20px; }
-  .deck-actions { gap: 17px; padding-top: 13px; }
+  .deck-actions { gap: 8px; padding-top: 13px; }
+  .vote-button.vote-no, .vote-button.vote-yes { flex: 0 0 49px; width: 49px; height: 48px; font-size: 11px; }
+  .vote-button.save-list { flex: 1 1 auto; width: auto; max-width: 160px; height: 52px; }
   .vote-button { width: 50px; height: 50px; font-size: 21px; }
   .vote-button.like { width: 60px; height: 60px; }
   .deck-aside { grid-template-columns: 1fr; }
