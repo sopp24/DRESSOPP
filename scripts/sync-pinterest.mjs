@@ -11,8 +11,7 @@ const OUTPUT = "data/pinterest-pins.json";
 async function obtainAccessToken() {
   if (STATIC_TOKEN) return STATIC_TOKEN;
   if (!APP_ID || !APP_SECRET) {
-    console.log("::notice::Pinterest non synchronisé : ajoute les secrets PINTEREST_APP_ID et PINTEREST_APP_SECRET.");
-    return "";
+    throw new Error("Configuration manquante : ajoute les secrets PINTEREST_APP_ID et PINTEREST_APP_SECRET dans Settings → Secrets and variables → Actions. La synchronisation n'a pas été effectuée.");
   }
   const credentials = Buffer.from(APP_ID + ":" + APP_SECRET).toString("base64");
   const response = await fetch("https://api.pinterest.com/v5/oauth/token", {
