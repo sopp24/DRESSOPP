@@ -147,8 +147,8 @@ function renderGridCards(products, options) {
 }
 function renderDiscover(training) {
   const heading = training
-    ? renderPageHeading("Élargis ton univers", "Entraînement", "Explore volontairement de nouvelles coupes, matières et associations. Tes likes enrichissent ton profil comme dans Découvrir, sans ajout automatique à la garde-robe.", '<button class="button-secondary" type="button" data-view="discover">Retour à Découvrir</button>')
-    : renderPageHeading("Ton œil, tes règles", "Découvrir", "Des pièces sélectionnées selon tes préférences. Like, passe, compare et laisse ton style se préciser au fil des découvertes.", '<button class="button-secondary" type="button" data-action="toggle-discovery-view">' + (state.settings.discoveryView === "grid" ? "Vue cartes" : "Explorer la grille") + '</button>');
+    ? renderPageHeading("Élargis ton univers", "Entraînement", "Explore volontairement de nouvelles coupes, matières et associations. Tes réponses Oui et Non affinent le profil, sans ajout automatique à ta liste.", '<button class="button-secondary" type="button" data-view="discover">Retour à Découvrir</button>')
+    : renderPageHeading("Ton œil, tes règles", "Découvrir", "Des pièces sélectionnées selon tes préférences. Réponds Oui, Non ou ajoute directement une pièce à ta liste.", '<button class="button-secondary" type="button" data-action="toggle-discovery-view">' + (state.settings.discoveryView === "grid" ? "Vue cartes" : "Explorer la grille") + '</button>');
   const products = rankProducts(state.products, state, { training: training });
   const yesCount = state.interactions.likes.length;
   const savedCount = state.likedProducts.length;
@@ -160,7 +160,7 @@ function renderDiscover(training) {
     '<div class="deck-topline"><span><strong>' + (training ? "Exploration active" : "Ta sélection") + '</strong> <span>· ' + products.length + ' article(s) à découvrir</span></span>' +
     '<span>' + (training ? "Nouveauté prioritaire" : "Personnalisation active") + '</span></div>' + body +
     '</section><aside class="deck-aside"><section class="panel aside-card"><h2 class="aside-title">Ton évolution <span>en direct</span></h2>' +
-    '<p>Chaque décision affine ton profil. Une consultation reste un signal léger ; un like ou un dislike compte davantage.</p>' +
+    '<p>Chaque décision affine ton profil. Une consultation reste un signal léger ; tes réponses Oui et Non comptent davantage.</p>' +
     '<div class="aside-stat"><div class="stat-box"><strong>' + yesCount + '</strong><small>Oui</small></div><div class="stat-box"><strong>' + rejected + '</strong><small>Non</small></div><div class="stat-box"><strong>' + savedCount + '</strong><small>Dans ma liste</small></div></div></section>' +
     '<section class="panel aside-card"><h2 class="aside-title">Équilibre du moment <span>' + esc(training ? state.settings.trainingDiscoveryLevel : state.settings.discoveryLevel) + '% découverte</span></h2>' +
     '<p>' + (training ? "Le mode Entraînement donne plus de poids à la nouveauté pour élargir ton terrain de jeu." : "Le curseur mélange tes goûts déjà identifiés et des propositions plus inattendues. Ajuste-le à tout moment.") + '</p></section>' +
@@ -189,7 +189,7 @@ function renderWardrobe() {
     '<span class="result-count">' + favorites.length + ' pièce(s)</span><select data-sort="wardrobe" aria-label="Trier les favoris">' +
     selectOption("recent", state.settings.wardrobeSort || "recent", "Ajouts récents") + selectOption("price-asc", state.settings.wardrobeSort || "recent", "Prix croissant") +
     selectOption("price-desc", state.settings.wardrobeSort || "recent", "Prix décroissant") + selectOption("name", state.settings.wardrobeSort || "recent", "Nom") + '</select></div></div>' +
-    '<div id="wardrobe-grid">' + (favorites.length ? cards : '<div class="empty-state"><div class="empty-mark">♡</div><h2>Ta garde-robe est encore vide</h2><p>Les articles que tu likes dans Découvrir apparaîtront ici. Tu peux aussi ajouter un produit manuellement.</p><div class="empty-actions"><button class="button-primary" type="button" data-view="discover">Commencer à découvrir</button><button class="button-secondary" type="button" data-action="add-product">Ajouter un article</button></div></div>') + '</div>';
+    '<div id="wardrobe-grid">' + (favorites.length ? cards : '<div class="empty-state"><div class="empty-mark">♡</div><h2>Ta garde-robe est encore vide</h2><p>Les articles que tu ajoutes à ta liste dans Découvrir apparaîtront ici. Tu peux aussi ajouter un produit manuellement.</p><div class="empty-actions"><button class="button-primary" type="button" data-view="discover">Commencer à découvrir</button><button class="button-secondary" type="button" data-action="add-product">Ajouter un article</button></div></div>') + '</div>';
 }
 function pinterestPinCards() {
   const remote = (pinterestFeed.pins || []).map(function(pin) {
