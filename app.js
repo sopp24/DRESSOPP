@@ -224,7 +224,7 @@ function renderInspirations() {
     const pinDate = item.importedAt ? new Date(item.importedAt).toLocaleDateString("fr-FR") : "Ajout manuel";
     return '<article class="inspiration-card"><div class="inspiration-image">' + imageMarkup(item.imageUrl, item.title) + newBadge + '</div><div class="inspiration-copy"><strong>' + esc(item.title || "Épingle Pinterest") + '</strong><small>Pinterest · ' + esc(pinDate) + '</small>' +
       '<div class="inspiration-tags">' + (item.tags || []).map(function(tag) { return '<span>' + esc(tag) + '</span>'; }).join("") + '</div>' +
-      '<div class="grid-bottom"><a class="button-quiet button-small" href="' + esc(safeExternalUrl(item.sourceUrl) || "#") + '" target="_blank" rel="noopener noreferrer">Voir le Pin ↗</a>' +
+      '<div class="grid-bottom"><a class="button-quiet button-small" data-mark-seen-on-open="' + esc(item.pinId || item.id) + '" href="' + esc(safeExternalUrl(item.sourceUrl) || "#") + '" target="_blank" rel="noopener noreferrer">Voir le Pin ↗</a>' +
       (item.fromFeed && !seen ? '<button class="button-secondary button-small" type="button" data-action="mark-pin-seen" data-id="' + esc(item.pinId) + '">Marquer vu</button>' : '') +
       '<button class="mini-icon-button" type="button" data-action="use-pin-outfit" data-id="' + esc(item.pinId || item.id) + '" aria-label="Composer une tenue depuis ce Pin">✦</button></div></div></article>';
   }).join("") + '</div>' : '<div class="empty-state"><div class="empty-mark">⌁</div><h2>Ton tableau Pinterest va guider les propositions</h2><p>Le flux se remplira après la configuration du secret Pinterest dans GitHub Actions et le premier lancement de synchronisation.</p><div class="empty-actions"><a class="button-primary" href="' + esc(PINTEREST_BOARD_URL) + '" target="_blank" rel="noopener noreferrer">Ouvrir mon tableau Pinterest ↗</a><a class="button-secondary" href="https://github.com/sopp24/DRESSOPP/actions/workflows/pinterest-daily.yml" target="_blank" rel="noopener noreferrer">Configurer la synchronisation ↗</a></div></div>';
@@ -322,6 +322,16 @@ function render() {
   else if (currentView === "settings") main.innerHTML = renderSettings();
   else main.innerHTML = renderDiscover(false);
   attachSwipe();
+  main.querySelectorAll("[data-mark-seen-on-open]").forEach(function(link) {
+    link.addEventListener("click", function() {
+      const pinId = String(link.dataset.markSeenOnOpen || "");
+      state.seenPinterestPins = Array.isArray(state.seenPinterestPins) ? state.seenPinterestPins : [];
+      if (pinId && !state.seenPinterestPins.includes(pinId)) {
+        state.seenPinterestPins.push(pinId);
+        persist();
+      }
+    });
+  });
   main.querySelectorAll("img.product-photo").forEach(function(image) {
     image.addEventListener("error", function() {
       const fallback = document.createElement("div");
