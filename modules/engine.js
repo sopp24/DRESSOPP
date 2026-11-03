@@ -132,6 +132,17 @@ export function deriveLearnedPreferences(state) {
     const product = (state.products || []).find(function(candidate) { return candidate.id === item.productId; });
     if (product) featureTokens(product).forEach(function(token) { totals[token] = (totals[token] || 0) - 4; });
   });
+  (state.inspirations || []).forEach(function(pin) {
+    const values = (pin.tags || []).concat(pin.inferredTags || []);
+    values.forEach(function(value) {
+      const token = "styleTags:" + normalizeText(value);
+      totals[token] = (totals[token] || 0) + 1.5;
+    });
+    (pin.colors || []).forEach(function(value) {
+      const token = "colors:" + normalizeText(value);
+      totals[token] = (totals[token] || 0) + 1.5;
+    });
+  });
   return totals;
 }
 
@@ -181,6 +192,7 @@ export function rankProducts(products, state, options) {
   if (!opts.includeSeen) {
     (state.interactions.likes || []).forEach(function(item) { seen.add(item.productId); });
     (state.interactions.dislikes || []).forEach(function(item) { seen.add(item.productId); });
+    (state.interactions.saves || []).forEach(function(item) { seen.add(item.productId); });
   }
   const scored = (products || []).filter(function(product) {
     return matchesFilters(product, opts.filters || config) && !seen.has(product.id);
