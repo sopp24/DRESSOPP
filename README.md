@@ -30,15 +30,16 @@ La synchronisation n'est pas encore active tant que le secret n'a pas été ajou
 - Permissions minimales : `boards:read` et `pins:read` pour un tableau public.
 - Le script retrouve le tableau nommé `mode`, récupère ses Pins, compare leurs identifiants avec le dernier passage et met à jour `data/pinterest-pins.json`.
 - Le script refuse de copier un tableau qui n'est pas explicitement public dans ce dépôt public.
+- Lorsqu'un flux change, le workflow déclenche aussi `deploy-pages.yml` pour publier les nouvelles épingles sur le site. Aucun déploiement redondant n'est lancé si le JSON est inchangé.
 - Le flux est visible publiquement dans le repository. Ne configure pas le secret pour un tableau secret/protégé ; une destination privée est nécessaire dans ce cas.
 
 L'horaire est une cible planifiée GitHub Actions ; l'exécution peut être retardée par la disponibilité de la plateforme.
 
 ## Déploiement Pages
 
-Le workflow `.github/workflows/deploy-pages.yml` lance les tests puis tente de publier GitHub Pages sur chaque push. À la première activation, vérifier **Settings → Pages → Build and deployment → Source : GitHub Actions**.
+Le workflow `.github/workflows/deploy-pages.yml` lance les tests puis publie GitHub Pages sur chaque push. Le workflow Pinterest le déclenche également après une mise à jour effective du flux. La source Pages doit être **GitHub Actions** dans **Settings → Pages → Build and deployment**.
 
-Adresse prévue : https://sopp24.github.io/DRESSOPP/
+Adresse du site : https://sopp24.github.io/DRESSOPP/
 
 ## Lancer en local
 
@@ -64,13 +65,13 @@ Le dépôt est public : aucun token, historique personnel, liste de favoris ou p
 
 ## Logos
 
-Les emplacements sont prévus, mais les fichiers originaux n'ont pas encore été fournis :
+Les deux logos fournis sont intégrés aux emplacements prévus :
 
-- `assets/logo-horizontal.png` — logo du coin supérieur gauche du site, fond transparent conseillé.
-- `assets/logo-square.png` — version carrée, idéalement au moins 512 × 512 px ; utilisée par les métadonnées d'icône PWA et le raccourci mobile.
-- `assets/favicon.svg` — favicon provisoire existant, à conserver comme fallback tant que le logo carré n'est pas fourni.
+- `assets/logo-horizontal.png` — logo du coin supérieur gauche du site.
+- `assets/logo-square.png` — version carrée utilisée par le favicon, le manifeste PWA et le raccourci mobile.
+- `assets/favicon.svg` — favicon SVG de secours.
 
-Ne renomme pas ces fichiers : ajoute tes deux images avec ces noms exacts dans le dossier `assets/`.
+Les deux PNG sont également inclus dans le cache hors ligne de l'application.
 
 ## Structure
 
