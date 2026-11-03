@@ -1,7 +1,7 @@
 const CACHE_NAME = "dressopp-static-v1";
 const CORE_FILES = [
   "./", "./index.html", "./styles.css", "./app.js",
-  "./modules/store.js", "./modules/engine.js", "./modules/integrations.js",
+  "./modules/store.js", "./modules/engine.js", "./modules/integrations.js", "./modules/outfits.js",
   "./data/catalog.json", "./manifest.webmanifest", "./assets/favicon.svg"
 ];
 self.addEventListener("install", function(event) {
