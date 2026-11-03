@@ -8,6 +8,8 @@ https://fr.pinterest.com/sopppx24/mode/
 
 Le workflow `.github/workflows/pinterest-daily.yml` est prévu pour se lancer chaque jour à 12 h, fuseau `Europe/Paris`. Il peut également être déclenché manuellement depuis Actions.
 
+Lorsqu'une synchronisation modifie `data/pinterest-pins.json`, le workflow déclenche explicitement `deploy-pages.yml` afin que les nouveaux Pins soient publiés sur le site. Ce déclenchement utilise l'événement `workflow_dispatch`, car une simple poussée réalisée avec le `GITHUB_TOKEN` ne relance pas automatiquement un workflow `push`.
+
 Il utilise l'API Pinterest officielle v5 :
 - `GET /boards` pour retrouver le tableau `mode` ;
 - `GET /boards/{board_id}/pins` pour charger ses épingles ;
