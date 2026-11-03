@@ -147,10 +147,10 @@ function renderDiscover(training) {
   const products = rankProducts(state.products, state, { training: training });
   const liked = state.likedProducts.length;
   const rejected = state.interactions.dislikes.length;
-  const body = state.settings.discoveryView === "grid" && !training
-    ? renderGridCards(products)
-    : (products.length ? renderDeckCard(products[0], training) : renderEmptyProducts(training));
-  return heading + renderFilterBar(training) + '<div class="discovery-layout"><section class="deck-column">' +
+  const isGrid = state.settings.discoveryView === "grid" && !training;
+  const body = isGrid ? renderGridCards(products) : (products.length ? renderDeckCard(products[0], training) : renderEmptyProducts(training));
+  const searchToolbar = isGrid ? '<div class="toolbar"><div class="toolbar-left"><input class="search-input" type="search" data-search="discover" placeholder="Rechercher un vêtement, une marque, une couleur…" aria-label="Rechercher dans le catalogue"></div><span class="result-count">' + products.length + ' article(s)</span></div>' : "";
+  return heading + renderFilterBar(training) + searchToolbar + '<div class="discovery-layout"><section class="deck-column">' +
     '<div class="deck-topline"><span><strong>' + (training ? "Exploration active" : "Ta sélection") + '</strong> <span>· ' + products.length + ' article(s) à découvrir</span></span>' +
     '<span>' + (training ? "Nouveauté prioritaire" : "Personnalisation active") + '</span></div>' + body +
     '</section><aside class="deck-aside"><section class="panel aside-card"><h2 class="aside-title">Ton évolution <span>en direct</span></h2>' +
@@ -636,9 +636,10 @@ function handleInput(event) {
     const output = document.querySelector("#discovery-output");
     if (output) output.textContent = target.value + "%";
   }
-  if (target.matches("[data-search='wardrobe']")) {
+  if (target.matches("[data-search='wardrobe'],[data-search='discover']")) {
     const query = target.value.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
-    document.querySelectorAll("#wardrobe-grid .grid-card").forEach(function(card) {
+    const selector = target.dataset.search === "discover" ? ".deck-column .grid-card" : "#wardrobe-grid .grid-card";
+    document.querySelectorAll(selector).forEach(function(card) {
       const haystack = card.textContent.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
       card.hidden = !haystack.includes(query);
     });
