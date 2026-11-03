@@ -26,7 +26,7 @@ Le workflow `.github/workflows/pinterest-daily.yml` est prévu pour s'exécuter 
 
 La synchronisation n'est pas encore active tant que le secret n'a pas été ajouté. Procédure complète dans [docs/PINTEREST.md](docs/PINTEREST.md).
 
-- Secret requis : `PINTEREST_ACCESS_TOKEN`.
+- Secrets recommandés : `PINTEREST_APP_ID` et `PINTEREST_APP_SECRET` (jeton renouvelé à chaque exécution).
 - Permissions minimales : `boards:read` et `pins:read` pour un tableau public.
 - Le script retrouve le tableau nommé `mode`, récupère ses Pins, compare leurs identifiants avec le dernier passage et met à jour `data/pinterest-pins.json`.
 - Le script refuse de copier un tableau qui n'est pas explicitement public dans ce dépôt public.
