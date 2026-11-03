@@ -110,7 +110,7 @@ export function buildOutfitIdeas(pins, wardrobe, catalogue, dislikedIds) {
     const selected = [];
     const usedSlots = new Set();
     rankedWardrobe.forEach(function(entry) {
-      if (selected.length >= 4 || entry.slot === "other" || usedSlots.has(entry.slot)) return;
+      if (selected.length >= 4 || entry.slot === "other" || usedSlots.has(entry.slot) || entry.score <= 0) return;
       selected.push(entry);
       usedSlots.add(entry.slot);
     });
@@ -121,7 +121,7 @@ export function buildOutfitIdeas(pins, wardrobe, catalogue, dislikedIds) {
       const candidate = (catalogue || []).map(function(product) {
         return { product: product, score: matchScore(product, pin), slot: productSlot(product) };
       }).filter(function(entry) {
-        return entry.slot === slot && !savedIds.has(entry.product.id) && !disliked.has(entry.product.id) && Boolean(entry.product.url);
+        return entry.slot === slot && entry.score > 0 && !savedIds.has(entry.product.id) && !disliked.has(entry.product.id) && Boolean(entry.product.url);
       }).sort(function(a, b) { return b.score - a.score; })[0];
       if (candidate) suggestions.push(candidate);
     });
