@@ -1,9 +1,9 @@
-const CACHE_NAME = "dressopp-static-v4";
+const CACHE_NAME = "dressopp-static-v5";
 const CORE_FILES = [
   "./", "./index.html", "./privacy.html", "./styles.css", "./app.js",
   "./modules/store.js", "./modules/engine.js", "./modules/integrations.js", "./modules/outfits.js",
-  "./data/catalog.json", "./data/pinterest-pins.json", "./manifest.webmanifest", "./assets/favicon.svg",
-  "./assets/logo-horizontal.png", "./assets/logo-square.png"
+  "./data/catalog.json", "./data/pinterest-pins.json", "./manifest.webmanifest",
+  "./assets/logo-square.png"
 ];
 self.addEventListener("install", function(event) {
   event.waitUntil(caches.open(CACHE_NAME).then(function(cache) {
