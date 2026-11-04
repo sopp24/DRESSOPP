@@ -463,3 +463,186 @@ a { color: inherit; }
     white-space: nowrap;
   }
 }
+
+
+/* Tenues : tableau de cartes façon Pinterest et retours utilisateur. */
+.outfit-board {
+  columns: 4 245px;
+  column-gap: 15px;
+  column-fill: balance;
+}
+.outfit-card {
+  display: inline-block;
+  width: 100%;
+  margin: 0 0 15px;
+  overflow: hidden;
+  vertical-align: top;
+  break-inside: avoid;
+  border-radius: 16px;
+}
+.outfit-feedback {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 11px 13px;
+  border-bottom: 1px solid var(--line);
+  background: #171717;
+}
+.outfit-feedback > span {
+  color: #aaa;
+  font-size: 10px;
+  font-weight: 650;
+}
+.outfit-feedback-actions {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 6px;
+}
+.outfit-rate-button {
+  display: inline-flex;
+  min-width: 34px;
+  min-height: 32px;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 0 9px;
+  border: 1px solid var(--line-strong);
+  border-radius: 9px;
+  color: #aaa;
+  background: rgba(255,255,255,.025);
+  cursor: pointer;
+  transition: color .18s ease, border-color .18s ease, background .18s ease, transform .18s ease;
+}
+.outfit-rate-button:hover { color: #fff; border-color: rgba(255,255,255,.35); transform: translateY(-1px); }
+.outfit-rate-button span { font-size: 16px; font-weight: 800; line-height: 1; }
+.outfit-rate-button small { font-size: 9px; font-weight: 700; }
+.outfit-rate-button.is-positive.is-selected {
+  color: #a7d9b2;
+  border-color: rgba(141,202,157,.48);
+  background: rgba(141,202,157,.1);
+}
+.outfit-rate-button.is-negative.is-selected {
+  color: #fff;
+  border-color: rgba(255,0,0,.55);
+  background: rgba(255,0,0,.15);
+}
+.outfit-reference {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding: 0;
+  border-bottom: 1px solid var(--line);
+}
+.outfit-reference-image {
+  display: grid;
+  width: 100%;
+  min-height: 150px;
+  max-height: none;
+  aspect-ratio: 4 / 4.7;
+  place-items: center;
+  overflow: hidden;
+  border-radius: 0;
+  background: #1b1b1b;
+}
+.outfit-reference-image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  object-fit: cover;
+}
+.outfit-reference-copy {
+  min-width: 0;
+  padding: 14px 14px 12px;
+}
+.outfit-reference-copy .eyebrow { margin-bottom: 7px; }
+.outfit-reference-copy h2 {
+  margin: 0 0 7px;
+  font-size: 16px;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+.outfit-reference-copy p {
+  margin: 6px 0 9px;
+  font-size: 10px;
+  line-height: 1.6;
+}
+.outfit-reference-copy > a {
+  display: inline-block;
+  margin-top: 2px;
+}
+.outfit-reference-copy .inspiration-tags { margin-top: 8px; }
+.outfit-pieces {
+  display: grid;
+  grid-template-columns: minmax(0,1fr);
+  gap: 13px;
+  padding: 13px;
+}
+.outfit-column { min-width: 0; }
+.outfit-column h3 {
+  margin: 0 0 8px;
+  color: #ddd;
+  font-size: 10px;
+  line-height: 1.4;
+}
+.outfit-piece {
+  grid-template-columns: 54px minmax(0,1fr);
+  gap: 8px;
+  padding: 7px;
+  margin-bottom: 7px;
+}
+.outfit-piece-image { width: 54px; height: 64px; }
+.outfit-piece strong { overflow-wrap: anywhere; line-height: 1.4; }
+.outfit-feedback-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 9px;
+}
+.outfit-feedback-summary span {
+  padding: 5px 8px;
+  border: 1px solid var(--line);
+  border-radius: 99px;
+  color: #999;
+  font-size: 9px;
+}
+.outfit-card.is-approved { border-color: rgba(141,202,157,.25); }
+.outfit-card.is-rejected { border-color: rgba(255,0,0,.2); }
+
+@media (max-width: 1100px) {
+  .outfit-board { columns: 3 225px; }
+}
+@media (max-width: 850px) {
+  .outfit-board { columns: 2 215px; column-gap: 12px; }
+  .outfit-feedback { padding: 10px; }
+}
+@media (max-width: 600px) {
+  .outfit-board { columns: 2 145px; column-gap: 9px; }
+  .outfit-card { margin-bottom: 9px; border-radius: 13px; }
+  .outfit-feedback {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 7px;
+    padding: 9px;
+  }
+  .outfit-feedback-actions { width: 100%; }
+  .outfit-rate-button { flex: 1 1 0; min-height: 30px; padding: 0 6px; }
+  .outfit-reference-image { min-height: 120px; }
+  .outfit-reference-copy { padding: 10px; }
+  .outfit-reference-copy h2 { font-size: 13px; }
+  .outfit-reference-copy p { font-size: 9px; }
+  .outfit-pieces { gap: 10px; padding: 9px; }
+  .outfit-column h3 { font-size: 9px; }
+  .outfit-piece { grid-template-columns: 43px minmax(0,1fr); gap: 6px; padding: 6px; }
+  .outfit-piece-image { width: 43px; height: 53px; }
+  .outfit-piece strong { font-size: 9px; }
+  .outfit-piece small, .outfit-piece span { font-size: 7px; }
+  .outfit-piece button { font-size: 8px; }
+}
+@media (max-width: 380px) {
+  .outfit-board { columns: 1; }
+  .outfit-feedback { align-items: center; flex-direction: row; }
+  .outfit-feedback-actions { width: auto; }
+}
