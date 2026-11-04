@@ -80,3 +80,22 @@ test("rankProducts never recommends an item already saved in the wardrobe", func
   });
   assert.equal(result.length, 0);
 });
+
+test("validating and rejecting an outfit changes learned style preferences", function() {
+  const state = createInitialState([]);
+  state.pinterestPins = [
+    { id: "look-1", title: "Minimalist beige linen oversized outfit" }
+  ];
+  const baseline = deriveLearnedPreferences(state);
+  assert.deepEqual(state.outfitFeedback, {});
+
+  state.outfitFeedback = { "look-1": { vote: "yes" } };
+  const approved = deriveLearnedPreferences(state);
+  assert.ok(approved["colors:beige"] > baseline["colors:beige"]);
+  assert.ok(approved["materials:lin"] > baseline["materials:lin"]);
+
+  state.outfitFeedback = { "look-1": { vote: "no" } };
+  const rejected = deriveLearnedPreferences(state);
+  assert.ok(rejected["colors:beige"] < baseline["colors:beige"]);
+  assert.ok(rejected["materials:lin"] < baseline["materials:lin"]);
+});
