@@ -98,13 +98,80 @@ function matchScore(product, pin) {
   return score;
 }
 
-export function buildOutfitIdeas(pins, wardrobe, catalogue, dislikedIds) {
+function pinIdentity(pin) {
+  return String(pin && (pin.pinId || pin.id || pin.sourceUrl || pin.pinUrl) || "");
+}
+
+function pinterestFeatureTokens(pin) {
+  const features = inferPinterestFeatures(pin);
+  const tokens = [];
+  Object.entries(features).forEach(function(entry) {
+    entry[1].forEach(function(value) {
+      tokens.push(entry[0] + ":" + clean(value));
+    });
+  });
+  (pin && Array.isArray(pin.tags) ? pin.tags : []).forEach(function(value) {
+    if (value) tokens.push("styleTags:" + clean(value));
+  });
+  return unique(tokens);
+}
+
+function buildFeedbackProfile(pins, feedback) {
+  const byId = new Map();
+  (pins || []).forEach(function(pin) {
+    const id = pinIdentity(pin);
+    if (id) byId.set(id, pin);
+  });
+
+  const profile = {};
+  Object.entries(feedback && typeof feedback === "object" ? feedback : {}).forEach(function(entry) {
+    const pin = byId.get(String(entry[0]));
+    const vote = entry[1] && entry[1].vote;
+    if (!pin || (vote !== "yes" && vote !== "no")) return;
+    const weight = vote === "yes" ? 5 : -6;
+    pinterestFeatureTokens(pin).forEach(function(token) {
+      profile[token] = (profile[token] || 0) + weight;
+    });
+  });
+  return profile;
+}
+
+function productFeedbackScore(product, profile) {
+  const tokens = [];
+  ["styleTags", "colors", "materials", "cuts"].forEach(function(field) {
+    (product[field] || []).forEach(function(value) {
+      tokens.push(field + ":" + clean(value));
+    });
+  });
+  if (!tokens.length) return 0;
+  const total = tokens.reduce(function(score, token) {
+    return score + (profile[token] || 0);
+  }, 0);
+  return Math.max(-8, Math.min(8, total / tokens.length));
+}
+
+function pinFeedbackScore(pin, profile) {
+  const tokens = pinterestFeatureTokens(pin);
+  if (!tokens.length) return 0;
+  return tokens.reduce(function(score, token) {
+    return score + (profile[token] || 0);
+  }, 0) / tokens.length;
+}
+
+export function buildOutfitIdeas(pins, wardrobe, catalogue, dislikedIds, outfitFeedback) {
   const disliked = new Set(dislikedIds || []);
   const savedIds = new Set((wardrobe || []).map(function(product) { return product.id; }));
+  const feedbackProfile = buildFeedbackProfile(pins, outfitFeedback);
+  const hasFeedback = Object.keys(feedbackProfile).length > 0;
   const ideas = [];
   (pins || []).forEach(function(pin) {
     const rankedWardrobe = (wardrobe || []).map(function(product) {
-      return { product: product, score: matchScore(product, pin), slot: productSlot(product) };
+      const personalScore = hasFeedback ? productFeedbackScore(product, feedbackProfile) : 0;
+      return {
+        product: product,
+        score: matchScore(product, pin) + personalScore * 0.35,
+        slot: productSlot(product)
+      };
     }).sort(function(a, b) { return b.score - a.score; });
 
     const selected = [];
@@ -119,7 +186,12 @@ export function buildOutfitIdeas(pins, wardrobe, catalogue, dislikedIds) {
     const suggestions = [];
     missingSlots.forEach(function(slot) {
       const candidate = (catalogue || []).map(function(product) {
-        return { product: product, score: matchScore(product, pin), slot: productSlot(product) };
+        const personalScore = hasFeedback ? productFeedbackScore(product, feedbackProfile) : 0;
+        return {
+          product: product,
+          score: matchScore(product, pin) + personalScore * 0.35,
+          slot: productSlot(product)
+        };
       }).filter(function(entry) {
         return entry.slot === slot && entry.score > 0 && !savedIds.has(entry.product.id) && !disliked.has(entry.product.id) && Boolean(entry.product.url);
       }).sort(function(a, b) { return b.score - a.score; })[0];
@@ -132,8 +204,15 @@ export function buildOutfitIdeas(pins, wardrobe, catalogue, dislikedIds) {
       pieces: selected,
       missingSlots: missingSlots,
       suggestions: suggestions,
-      matchCount: selected.filter(function(entry) { return entry.score > 0; }).length
+      matchCount: selected.filter(function(entry) { return entry.score > 0; }).length,
+      feedbackScore: hasFeedback ? pinFeedbackScore(pin, feedbackProfile) : 0
     });
   });
+
+  if (hasFeedback) {
+    ideas.sort(function(a, b) {
+      return b.feedbackScore - a.feedbackScore || b.matchCount - a.matchCount;
+    });
+  }
   return ideas;
 }
