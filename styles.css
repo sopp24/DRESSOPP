@@ -393,3 +393,50 @@ a { color: inherit; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }
+
+
+/* Retour à SOPP Agents : affiché uniquement après une entrée depuis le hub. */
+.sopp-home-float {
+  position: fixed;
+  z-index: 80;
+  left: 50%;
+  bottom: max(10px, env(safe-area-inset-bottom));
+  display: grid;
+  width: 54px;
+  height: 54px;
+  place-items: center;
+  transform: translateX(-50%);
+  border: 1px solid rgba(16,25,30,.12);
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 8px 28px rgba(0,0,0,.3), 0 2px 7px rgba(0,0,0,.14);
+  transition: transform .22s ease, box-shadow .22s ease;
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.sopp-home-float img {
+  display: block;
+  width: 78%;
+  height: 78%;
+  object-fit: contain;
+}
+.sopp-home-float:hover {
+  transform: translateX(-50%) translateY(-3px) scale(1.045);
+  box-shadow: 0 12px 34px rgba(0,0,0,.36), 0 0 0 5px rgba(255,255,255,.1);
+}
+.sopp-home-float:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 4px;
+}
+/* La navigation mobile reste entièrement visible : le bouton flotte au-dessus. */
+@media (max-width: 850px) {
+  body:not(.privacy-page) .sopp-home-float {
+    bottom: calc(82px + env(safe-area-inset-bottom));
+  }
+}
+body.privacy-page .sopp-home-float {
+  bottom: max(10px, env(safe-area-inset-bottom));
+}
+@media (prefers-reduced-motion: reduce) {
+  .sopp-home-float { transition: none; }
+}

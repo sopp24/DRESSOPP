@@ -1,4 +1,4 @@
-const CACHE_NAME = "dressopp-static-v5";
+const CACHE_NAME = "dressopp-static-v6";
 const CORE_FILES = [
   "./", "./index.html", "./privacy.html", "./styles.css", "./app.js",
   "./modules/store.js", "./modules/engine.js", "./modules/integrations.js", "./modules/outfits.js",
