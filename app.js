@@ -15,9 +15,10 @@ let persistPending = false;
 let persistRevision = 0;
 let persistPromise = Promise.resolve();
 let pinterestFeed = { privacy: "UNKNOWN", pins: [], lastSync: null, newPinIds: [] };
+let lookbookFeed = { source: "lookbook", season: "Automne / Hiver", pins: [] };
 
 const OBJECTIVES = ["Vêtements", "Chaussures", "Sous-vêtements", "Accessoires"];
-const STYLES = ["Classique", "Créatif", "Classe", "Sport", "Été"];
+const STYLES = ["Classique", "Créatif", "Classe", "Sport", "Été", "Preppy", "Smart Casual", "Casual", "Streetwear", "Vintage", "Workwear", "Heritage"];
 const SEASONS = ["Printemps", "Automne", "Été", "Hiver", "Toute saison"];
 
 function esc(value) {
@@ -209,53 +210,71 @@ function renderWardrobe() {
     '<div id="wardrobe-grid">' + (favorites.length ? cards : '<div class="empty-state"><div class="empty-mark">♡</div><h2>Ta garde-robe est encore vide</h2><p>Les articles que tu ajoutes à ta liste dans Découvrir apparaîtront ici. Tu peux aussi ajouter un produit manuellement.</p><div class="empty-actions"><button class="button-primary" type="button" data-view="discover">Commencer à découvrir</button><button class="button-secondary" type="button" data-action="add-product">Ajouter un article</button></div></div>') + '</div>';
 }
 function pinterestPinCards() {
+  const curated = (lookbookFeed.pins || []).map(function(pin) {
+    const id = String(pin.id || "");
+    return {
+      id: id, pinId: id, title: pin.title || "Référence du lookbook",
+      description: pin.description || "", imageUrl: pin.imageUrl || "",
+      sourceUrl: "", tags: inferPinterestTags(pin), importedAt: null,
+      fromFeed: false, origin: "lookbook", kind: pin.kind || "outfit",
+      season: pin.season || lookbookFeed.season || "Automne / Hiver"
+    };
+  });
   const remote = (pinterestFeed.pins || []).map(function(pin) {
     const id = String(pin.id);
     return {
       id: id, pinId: id, title: pin.title || pin.description || pin.altText || "Épingle Pinterest",
       description: pin.description || pin.altText || "",
       imageUrl: pin.imageUrl || "", sourceUrl: pin.pinUrl || "https://www.pinterest.com/pin/" + encodeURIComponent(id) + "/",
-      tags: inferPinterestTags(pin), importedAt: pin.createdAt || null, fromFeed: true
+      tags: inferPinterestTags(pin), importedAt: pin.createdAt || null,
+      fromFeed: true, origin: "Pinterest", kind: "outfit"
     };
   });
-  const local = (state.inspirations || []).filter(function(pin) { return pin.source === "Pinterest"; });
+  const local = (state.inspirations || []).filter(function(pin) { return pin.source === "Pinterest"; }).map(function(pin) {
+    return Object.assign({ origin: "Pinterest", kind: "outfit" }, pin);
+  });
   const seen = new Set();
-  return remote.concat(local).filter(function(pin) {
+  return curated.concat(remote, local).filter(function(pin) {
     const key = pin.pinId || pin.sourceUrl || pin.id;
-    if (seen.has(key)) return false;
+    if (!key || seen.has(key)) return false;
     seen.add(key);
     return true;
   });
 }
 function renderInspirations() {
-  const items = pinterestPinCards().slice(0, 60);
+  const items = pinterestPinCards().slice(0, 80);
   const unseen = items.filter(function(item) {
     return item.fromFeed && !(state.seenPinterestPins || []).includes(String(item.pinId));
   });
-  const lastSync = pinterestFeed.lastSync ? new Date(pinterestFeed.lastSync).toLocaleString("fr-FR") : "Synchronisation non activée";
-  const heading = renderPageHeading("Une seule source d’inspiration", "Pinterest", "Ton tableau « mode » nourrit le moteur de style. Les nouvelles épingles sont distinguées de celles déjà parcourues dans DRESSOPP.", 
+  const lookCount = items.filter(function(item) { return item.origin === "lookbook"; }).length;
+  const lastSync = pinterestFeed.lastSync ? new Date(pinterestFeed.lastSync).toLocaleString("fr-FR") : "API Pinterest non synchronisée";
+  const heading = renderPageHeading("20 références · Automne / Hiver", "Pinterest & Lookbook", "Ton lookbook importé et les nouvelles épingles Pinterest nourrissent le moteur de style. Les références restent consultables même sans connexion à l’API Pinterest.",
     '<a class="button-secondary" href="' + esc(PINTEREST_BOARD_URL) + '" target="_blank" rel="noopener noreferrer">Ouvrir mon tableau ↗</a><button class="button-primary" type="button" data-action="add-inspiration">＋ Ajouter un Pin</button>');
   const cards = items.length ? '<div class="inspiration-grid">' + items.map(function(item) {
     const seen = item.fromFeed && (state.seenPinterestPins || []).includes(String(item.pinId));
     const newBadge = item.fromFeed && !seen ? '<span class="pin-new-badge">NOUVEAU</span>' : '';
-    const pinDate = item.importedAt ? new Date(item.importedAt).toLocaleDateString("fr-FR") : "Ajout manuel";
-    return '<article class="inspiration-card"><div class="inspiration-image">' + imageMarkup(item.imageUrl, item.title) + newBadge + '</div><div class="inspiration-copy"><strong>' + esc(item.title || "Épingle Pinterest") + '</strong><small>Pinterest · ' + esc(pinDate) + '</small>' +
-      '<div class="inspiration-tags">' + (item.tags || []).map(function(tag) { return '<span>' + esc(tag) + '</span>'; }).join("") + '</div>' +
-      '<div class="grid-bottom"><a class="button-quiet button-small" data-mark-seen-on-open="' + esc(item.pinId || item.id) + '" href="' + esc(safeExternalUrl(item.sourceUrl) || "#") + '" target="_blank" rel="noopener noreferrer">Voir le Pin ↗</a>' +
+    const sourceLabel = item.origin === "lookbook" ? "Lookbook · " + (item.season || "Automne / Hiver") : "Pinterest · " + (item.importedAt ? new Date(item.importedAt).toLocaleDateString("fr-FR") : "Ajout manuel");
+    const link = safeExternalUrl(item.sourceUrl)
+      ? '<a class="button-quiet button-small" data-mark-seen-on-open="' + esc(item.pinId || item.id) + '" href="' + esc(safeExternalUrl(item.sourceUrl)) + '" target="_blank" rel="noopener noreferrer">Voir le Pin ↗</a>'
+      : '<span class="button-quiet button-small">Référence du lookbook</span>';
+    return '<article class="inspiration-card"><div class="inspiration-image">' + imageMarkup(item.imageUrl, item.title) + newBadge + '</div><div class="inspiration-copy"><strong>' + esc(item.title || "Référence vestimentaire") + '</strong><small>' + esc(sourceLabel) + '</small>' +
+      '<div class="inspiration-tags">' + (item.tags || []).slice(0, 8).map(function(tag) { return '<span>' + esc(tag) + '</span>'; }).join("") + '</div>' +
+      '<div class="grid-bottom">' + link +
       (item.fromFeed && !seen ? '<button class="button-secondary button-small" type="button" data-action="mark-pin-seen" data-id="' + esc(item.pinId) + '">Marquer vu</button>' : '') +
-      '<button class="mini-icon-button" type="button" data-action="use-pin-outfit" data-id="' + esc(item.pinId || item.id) + '" aria-label="Composer une tenue depuis ce Pin">✦</button></div></div></article>';
-  }).join("") + '</div>' : '<div class="empty-state"><div class="empty-mark">⌁</div><h2>Ton tableau Pinterest va guider les propositions</h2><p>Le flux se remplira après la configuration du secret Pinterest dans GitHub Actions et le premier lancement de synchronisation.</p><div class="empty-actions"><a class="button-primary" href="' + esc(PINTEREST_BOARD_URL) + '" target="_blank" rel="noopener noreferrer">Ouvrir mon tableau Pinterest ↗</a><a class="button-secondary" href="https://github.com/sopp24/DRESSOPP/actions/workflows/pinterest-daily.yml" target="_blank" rel="noopener noreferrer">Configurer la synchronisation ↗</a></div></div>';
-  const privacy = pinterestFeed.privacy === "PUBLIC" ? "Tableau public confirmé par Pinterest" : "Tableau pas encore vérifié par l’API";
+      (item.kind !== "detail" ? '<button class="mini-icon-button" type="button" data-action="use-pin-outfit" data-id="' + esc(item.pinId || item.id) + '" aria-label="Composer une tenue depuis cette référence">✦</button>' : '') +
+      '</div></div></article>';
+  }).join("") + '</div>' : '<div class="empty-state"><div class="empty-mark">⌁</div><h2>Aucune inspiration chargée</h2><p>Le lookbook local ou les Pins Pinterest pourront être ajoutés ici. Tu peux aussi importer des références depuis ton tableau.</p><div class="empty-actions"><a class="button-primary" href="' + esc(PINTEREST_BOARD_URL) + '" target="_blank" rel="noopener noreferrer">Ouvrir mon tableau Pinterest ↗</a><button class="button-secondary" type="button" data-action="add-inspiration">Ajouter une référence</button></div></div>';
+  const pinterestStatus = pinterestFeed.privacy === "PUBLIC" ? "Tableau Pinterest public confirmé par l’API" : "API Pinterest non vérifiée (non nécessaire pour le lookbook)";
   return heading +
-    '<div class="pinterest-status-strip"><div><strong>' + unseen.length + '</strong><span>nouvelle(s) épingle(s) non parcourue(s)</span></div><div><small>' + esc(privacy) + '</small><small>Dernière synchronisation : ' + esc(lastSync) + '</small></div></div>' +
-    '<div class="source-note pinterest-notice">DRESSOPP ne traite comme inspiration que les Pins de ce tableau. Le contenu photographique reste une référence visuelle : il n’est jamais présenté comme un article achetable sans lien marchand vérifié.</div>' +
+    '<div class="pinterest-status-strip"><div><strong>' + lookCount + '</strong><span>références du lookbook intégrées</span><strong>' + unseen.length + '</strong><span>nouvelle(s) épingle(s) Pinterest</span></div><div><small>Lookbook local · ' + esc(lookbookFeed.season || "Automne / Hiver") + '</small><small>' + esc(pinterestStatus) + '</small><small>Dernière synchronisation : ' + esc(lastSync) + '</small></div></div>' +
+    '<div class="source-note pinterest-notice">Les 20 références du book sont intégrées avec leurs visuels et leurs caractéristiques. Elles servent à apprendre tes préférences et à composer des tenues ; elles ne sont pas présentées comme des articles marchands ni associées à de faux prix ou liens.</div>' +
     cards;
 }
 function outfitPinKey(pin) {
   return String(pin && (pin.pinId || pin.id || pin.sourceUrl || pin.pinUrl) || "");
 }
 function renderOutfits() {
-  const pins = pinterestPinCards().slice(0, 24);
+  const pins = pinterestPinCards().filter(function(pin) { return pin.kind !== "detail"; }).slice(0, 40);
   const wardrobe = state.likedProducts.map(function(item) { return productById(item.productId); }).filter(Boolean);
   const dislikedIds = (state.interactions.dislikes || []).map(function(item) { return item.productId; });
   const feedbacks = state.outfitFeedback && typeof state.outfitFeedback === "object" ? state.outfitFeedback : {};
@@ -302,7 +321,7 @@ function renderOutfits() {
       '<button class="outfit-rate-button is-negative' + (rejected ? ' is-selected' : '') + '" type="button" data-action="rate-outfit" data-id="' + esc(pinId) + '" data-vote="no" aria-pressed="' + String(rejected) + '" aria-label="Refuser cette tenue" title="Refuser cette tenue"><span aria-hidden="true">✕</span><small>Refuser</small></button>' +
       '</div></div>' +
       '<div class="outfit-reference"><div class="outfit-reference-image">' + imageMarkup(pin.imageUrl, pin.title) + '</div>' +
-      '<div class="outfit-reference-copy"><span class="eyebrow">Inspiration Pinterest</span><h2>' + esc(pin.title || "Tenue de référence") + '</h2>' +
+      '<div class="outfit-reference-copy"><span class="eyebrow">' + (pin.origin === "lookbook" ? "Référence lookbook · " + esc(pin.season || "Automne / Hiver") : "Inspiration Pinterest") + '</span><h2>' + esc(pin.title || "Tenue de référence") + '</h2>' +
       (pin.description ? '<p>' + esc(String(pin.description).slice(0, 180)) + '</p>' : '') +
       (pinLink ? '<a href="' + esc(pinLink) + '" target="_blank" rel="noopener noreferrer">Ouvrir le Pin ↗</a>' : '') +
       '<div class="inspiration-tags">' + idea.tags.map(function(tag) { return '<span>' + esc(tag) + '</span>'; }).join("") + '</div></div></div>' +
@@ -314,7 +333,7 @@ function renderOutfits() {
   }).join("");
 
   return heading +
-    '<div class="outfit-intro panel"><div><strong>' + wardrobe.length + ' pièce(s) dans ta liste</strong><p>Les correspondances se basent sur les textes, couleurs et tags fournis avec les Pins et les fiches produits. Les images ne sont pas analysées visuellement par cette version. Valide ou refuse chaque composition : tes retours affineront le classement des prochaines tenues et des articles proposés.</p><div class="outfit-feedback-summary"><span>' + approvedCount + ' validée(s)</span><span>' + rejectedCount + ' refusée(s)</span></div></div><button class="button-secondary button-small" type="button" data-view="wardrobe">Voir ma liste</button></div>' +
+    '<div class="outfit-intro panel"><div><strong>' + wardrobe.length + ' pièce(s) dans ta liste</strong><p>Les 19 silhouettes du lookbook sont prêtes à être évaluées. Les associations reposent sur les descriptions et caractéristiques structurées ; les images ne sont pas analysées automatiquement. Valide ou refuse chaque tenue : tes retours affinent progressivement ton profil de style et les correspondances avec les pièces de ta garde-robe.</p><div class="outfit-feedback-summary"><span>' + approvedCount + ' validée(s)</span><span>' + rejectedCount + ' refusée(s)</span></div></div><button class="button-secondary button-small" type="button" data-view="wardrobe">Voir ma liste</button></div>' +
     '<div class="outfit-board">' + cards + '</div>';
 }
 
@@ -926,6 +945,13 @@ async function boot() {
     }
   } catch (error) { console.warn("Flux Pinterest non chargé.", error); }
   try {
+    const lookbookResponse = await fetch("./data/lookbook-pins.json", { cache: "no-store" });
+    if (lookbookResponse.ok) {
+      const payload = await lookbookResponse.json();
+      if (Array.isArray(payload.pins)) lookbookFeed = payload;
+    }
+  } catch (error) { console.warn("Lookbook local non chargé.", error); }
+  try {
     const response = await fetch("./data/catalog.json", { cache: "no-store" });
     if (response.ok) {
       const payload = await response.json();
@@ -950,7 +976,7 @@ async function boot() {
   if (!state.products.length && catalog.length) state.products = catalog;
   state.inspirations = Array.isArray(state.inspirations) ? state.inspirations.filter(function(item) { return item.source === "Pinterest"; }) : [];
   state.seenPinterestPins = Array.isArray(state.seenPinterestPins) ? state.seenPinterestPins : [];
-  state.pinterestPins = pinterestFeed.pins || [];
+  state.pinterestPins = (pinterestFeed.pins || []).concat(lookbookFeed.pins || []);
   state.learnedPreferences = deriveLearnedPreferences(state);
   render();
   updateSaveStatus("Stockage local prêt", "ok");

@@ -1,8 +1,28 @@
-const CACHE_NAME = "dressopp-static-v6";
+const CACHE_NAME = "dressopp-static-v7";
 const CORE_FILES = [
   "./", "./index.html", "./privacy.html", "./styles.css", "./app.js",
   "./modules/store.js", "./modules/engine.js", "./modules/integrations.js", "./modules/outfits.js",
-  "./data/catalog.json", "./data/pinterest-pins.json", "./manifest.webmanifest",
+  "./data/catalog.json", "./data/pinterest-pins.json", "./data/lookbook-pins.json",
+  "./assets/lookbook/look-01.webp",
+  "./assets/lookbook/look-02.webp",
+  "./assets/lookbook/look-03.webp",
+  "./assets/lookbook/look-04.webp",
+  "./assets/lookbook/look-05.webp",
+  "./assets/lookbook/look-06.webp",
+  "./assets/lookbook/look-07.webp",
+  "./assets/lookbook/look-08.webp",
+  "./assets/lookbook/look-09.webp",
+  "./assets/lookbook/look-10.webp",
+  "./assets/lookbook/look-11.webp",
+  "./assets/lookbook/look-12.webp",
+  "./assets/lookbook/look-13.webp",
+  "./assets/lookbook/look-14.webp",
+  "./assets/lookbook/look-15.webp",
+  "./assets/lookbook/look-16.webp",
+  "./assets/lookbook/look-17.webp",
+  "./assets/lookbook/look-18.webp",
+  "./assets/lookbook/look-19.webp",
+  "./assets/lookbook/look-20.webp", "./manifest.webmanifest",
   "./assets/logo-square.png"
 ];
 self.addEventListener("install", function(event) {

@@ -6,18 +6,32 @@ const STYLE_HINTS = {
   "Été": ["summer", "été", "vacances", "beach", "linen", "lin", "estival"],
   "Streetwear": ["streetwear", "street", "skate", "urban", "urbain", "oversized", "baggy"],
   "Vintage": ["vintage", "retro", "rétro", "90s", "2000s", "y2k"],
-  "Workwear": ["workwear", "utility", "cargo", "denim", "work jacket"]
+  "Workwear": ["workwear", "utility", "cargo", "denim", "work jacket"],
+  "Preppy": ["preppy", "ivy", "rugby", "cravate", "col v", "polo"],
+  "Smart Casual": ["smart casual", "tailoring", "tailleur", "loafer", "loafers", "mocassin", "mocassins", "derby", "derbies", "old money", "quiet luxury", "pantalon a pinces"],
+  "Casual": ["casual", "cosy", "hoodie", "jogging", "sneakers"],
+  "Heritage": ["heritage", "patine", "vieilli", "classic menswear"]
 };
-const COLOR_HINTS = ["noir","blanc","écru","beige","gris","anthracite","marron","chocolat","camel","kaki","vert","olive","bleu","marine","bordeaux","rouge","rose","jaune","orange","violet"];
+const COLOR_HINTS = ["noir","blanc","écru","crème","beige","gris","anthracite","marron","chocolat","camel","kaki","vert","vert forêt","olive","bleu","bleu ciel","marine","bordeaux","rouge","rose","jaune","orange","violet","prune"];
 const COLOR_ALIASES = {
   "noir": ["black"], "blanc": ["white"], "écru": ["cream","off white"],
   "beige": ["sand"], "gris": ["grey","gray"], "marron": ["brown"],
   "marine": ["navy"], "vert": ["green"], "bleu": ["blue"],
   "rouge": ["red"], "rose": ["pink"], "jaune": ["yellow"],
-  "orange": ["orange"], "violet": ["purple"]
+  "orange": ["orange"], "violet": ["purple"], "prune": ["plum"],
+  "chocolat": ["chocolate"], "crème": ["cream"], "vert forêt": ["forest green"],
+  "bleu ciel": ["sky blue", "light blue"], "bordeaux": ["burgundy", "wine"]
 };
-const MATERIAL_HINTS = ["coton","lin","laine","cuir","suède","suede","denim","jean","maille","velours","soie","nylon"];
-const CUT_HINTS = ["oversized","oversize","ample","baggy","wide leg","large","droit","straight","slim","regular","cropped","court","long"];
+const MATERIAL_HINTS = ["coton","lin","laine","cuir","daim","moumoute","fourrure","suède","suede","denim","jean","maille","velours","soie","nylon"];
+const CUT_HINTS = ["oversized","oversize","ample","baggy","wide leg","large","droit","straight","slim","regular","cropped","court","long","à pinces","a pinces","pleated"]; 
+const PATTERN_HINTS = [
+  { value: "rayures", terms: ["rayure", "striped", "stripes"] },
+  { value: "carreaux", terms: ["carreau", "checked", "checkered", "plaid"] },
+  { value: "damier", terms: ["damier", "checkerboard"] },
+  { value: "jacquard", terms: ["jacquard"] },
+  { value: "zèbre", terms: ["zèbre", "zebra"] },
+  { value: "graphique", terms: ["graphique", "graphic", "motif graphique"] }
+];
 const SLOT_TERMS = {
   top: ["t-shirt","tee","shirt","chemise","polo","pull","sweat","hoodie","débardeur","top","cardigan","maille"],
   bottom: ["pantalon","jean","jeans","trouser","trousers","short","bermuda","cargo","chino"],
@@ -38,7 +52,7 @@ export function pinterestText(pin) {
 
 export function inferPinterestFeatures(pin) {
   const source = clean(pinterestText(pin));
-  const features = { styleTags: [], colors: [], materials: [], cuts: [] };
+  const features = { styleTags: [], colors: [], materials: [], cuts: [], patterns: [] };
   Object.entries(STYLE_HINTS).forEach(function(entry) {
     if (entry[1].some(function(term) { return source.includes(clean(term)); })) features.styleTags.push(entry[0]);
   });
@@ -48,12 +62,15 @@ export function inferPinterestFeatures(pin) {
   });
   MATERIAL_HINTS.forEach(function(term) { if (source.includes(clean(term))) features.materials.push(term); });
   CUT_HINTS.forEach(function(term) { if (source.includes(clean(term))) features.cuts.push(term); });
+  PATTERN_HINTS.forEach(function(pattern) {
+    if (pattern.terms.some(function(term) { return source.includes(clean(term)); })) features.patterns.push(pattern.value);
+  });
   Object.keys(features).forEach(function(key) { features[key] = unique(features[key]); });
   return features;
 }
 export function inferPinterestTags(pin) {
   const features = inferPinterestFeatures(pin);
-  return unique([].concat(features.styleTags, features.colors, features.materials, features.cuts));
+  return unique([].concat(features.styleTags, features.colors, features.materials, features.cuts, features.patterns));
 }
 
 export function productSlot(product) {
@@ -80,7 +97,7 @@ function matchScore(product, pin) {
   const tags = inferPinterestTags(pin).map(clean);
   const fields = [
     ...(product.styleTags || []), ...(product.colors || []),
-    ...(product.materials || []), ...(product.cuts || [])
+    ...(product.materials || []), ...(product.cuts || []), ...(product.patterns || [])
   ].map(clean);
   let score = fields.reduce(function(total, field) {
     return total + (tags.includes(field) ? 4 : 0);
@@ -138,7 +155,7 @@ function buildFeedbackProfile(pins, feedback) {
 
 function productFeedbackScore(product, profile) {
   const tokens = [];
-  ["styleTags", "colors", "materials", "cuts"].forEach(function(field) {
+  ["styleTags", "colors", "materials", "cuts", "patterns"].forEach(function(field) {
     (product[field] || []).forEach(function(value) {
       tokens.push(field + ":" + clean(value));
     });
