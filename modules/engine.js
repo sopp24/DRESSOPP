@@ -47,7 +47,7 @@ export function createInitialState(products) {
     products: Array.isArray(products) ? products : [],
     likedProducts: [], removedFavorites: [],
     interactions: { likes: [], dislikes: [], views: [], saves: [], undoEvents: [] },
-    learnedPreferences: {}, inspirations: [],
+    learnedPreferences: {}, inspirations: [], outfitFeedback: {},
     integrations: {
       pinterest: { status: "manual", lastSync: null },
       zalando: { status: "catalog-only", lastSync: null },
@@ -124,17 +124,23 @@ function featureTokens(product) {
 }
 
 export function deriveLearnedPreferences(state) {
+  const source = state || {};
   const totals = {};
-  const interactions = state && state.interactions ? state.interactions : { likes: [], dislikes: [] };
+  const interactions = source.interactions || { likes: [], dislikes: [] };
   (interactions.likes || []).forEach(function(item) {
-    const product = (state.products || []).find(function(candidate) { return candidate.id === item.productId; });
+    const product = (source.products || []).find(function(candidate) { return candidate.id === item.productId; });
     if (product) featureTokens(product).forEach(function(token) { totals[token] = (totals[token] || 0) + 3; });
   });
   (interactions.dislikes || []).forEach(function(item) {
-    const product = (state.products || []).find(function(candidate) { return candidate.id === item.productId; });
+    const product = (source.products || []).find(function(candidate) { return candidate.id === item.productId; });
     if (product) featureTokens(product).forEach(function(token) { totals[token] = (totals[token] || 0) - 4; });
   });
-  (state.inspirations || []).concat(state.pinterestPins || []).forEach(function(pin) {
+
+  const pins = (source.inspirations || []).concat(source.pinterestPins || []);
+  const pinsById = new Map();
+  pins.forEach(function(pin) {
+    const id = String(pin.pinId || pin.id || pin.sourceUrl || pin.pinUrl || "");
+    if (id) pinsById.set(id, pin);
     const features = inferPinterestFeatures(pin);
     Object.entries(features).forEach(function(entry) {
       entry[1].forEach(function(value) {
@@ -147,6 +153,25 @@ export function deriveLearnedPreferences(state) {
       totals[token] = (totals[token] || 0) + 1.5;
     });
   });
+
+  Object.entries(source.outfitFeedback && typeof source.outfitFeedback === "object" ? source.outfitFeedback : {}).forEach(function(entry) {
+    const pin = pinsById.get(String(entry[0]));
+    const vote = entry[1] && entry[1].vote;
+    if (!pin || (vote !== "yes" && vote !== "no")) return;
+    const weight = vote === "yes" ? 5 : -6;
+    const features = inferPinterestFeatures(pin);
+    Object.entries(features).forEach(function(feature) {
+      feature[1].forEach(function(value) {
+        const token = feature[0] + ":" + normalizeText(value);
+        totals[token] = (totals[token] || 0) + weight;
+      });
+    });
+    (pin.tags || []).forEach(function(value) {
+      const token = "styleTags:" + normalizeText(value);
+      totals[token] = (totals[token] || 0) + weight;
+    });
+  });
+
   return totals;
 }
 
