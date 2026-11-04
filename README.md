@@ -63,15 +63,12 @@ Les préférences, votes Oui/Non, articles enregistrés et Pins parcourus sont c
 
 Le dépôt est public : aucun token, historique personnel, liste de favoris ou profil n'y est écrit. Le flux `data/pinterest-pins.json` est le seul contenu Pinterest publié, et uniquement si l'API confirme que le tableau est public.
 
-## Logos
+## Logo
 
-Les deux logos fournis sont intégrés aux emplacements prévus :
+- `assets/logo-square.png` est utilisé dans l'en-tête, comme favicon du navigateur, dans le manifeste PWA et comme icône de raccourci mobile (Apple Touch Icon).
+- Le même PNG est inclus dans le cache hors ligne de l'application.
 
-- `assets/logo-horizontal.png` — logo du coin supérieur gauche du site.
-- `assets/logo-square.png` — version carrée utilisée par le favicon, le manifeste PWA et le raccourci mobile.
-- `assets/favicon.svg` — favicon SVG de secours.
-
-Les deux PNG sont également inclus dans le cache hors ligne de l'application.
+Le dépôt ne contient plus de favicon SVG de remplacement.
 
 ## Structure
 
