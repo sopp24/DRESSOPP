@@ -251,40 +251,73 @@ function renderInspirations() {
     '<div class="source-note pinterest-notice">DRESSOPP ne traite comme inspiration que les Pins de ce tableau. Le contenu photographique reste une référence visuelle : il n’est jamais présenté comme un article achetable sans lien marchand vérifié.</div>' +
     cards;
 }
+function outfitPinKey(pin) {
+  return String(pin && (pin.pinId || pin.id || pin.sourceUrl || pin.pinUrl) || "");
+}
 function renderOutfits() {
   const pins = pinterestPinCards().slice(0, 24);
-  if (state.selectedPinterestPin) pins.sort(function(a, b) {
-    const selected = String(state.selectedPinterestPin);
-    return (String(a.pinId || a.id) === selected ? -1 : 0) - (String(b.pinId || b.id) === selected ? -1 : 0);
-  });
   const wardrobe = state.likedProducts.map(function(item) { return productById(item.productId); }).filter(Boolean);
   const dislikedIds = (state.interactions.dislikes || []).map(function(item) { return item.productId; });
-  const ideas = buildOutfitIdeas(pins, wardrobe, state.products, dislikedIds);
-  const heading = renderPageHeading("De Pinterest à ton dressing", "Tenues", "À partir de tes références Pinterest, DRESSOPP rapproche les pièces de ta liste et suggère ce qui manque lorsque le catalogue contient une option vérifiable.",
-    '<a class="button-secondary" href="' + esc(PINTEREST_BOARD_URL) + '" target="_blank" rel="noopener noreferrer">Voir Pinterest ↗</a>');
-  if (!ideas.length) {
-    return heading + '<div class="empty-state"><div class="empty-mark">✦</div><h2>Les tenues viendront de ton tableau Pinterest</h2><p>La synchronisation du tableau est nécessaire pour afficher tes références et construire des propositions.</p><a class="button-primary" href="https://github.com/sopp24/DRESSOPP/actions/workflows/pinterest-daily.yml" target="_blank" rel="noopener noreferrer">Configurer Pinterest ↗</a></div>';
+  const feedbacks = state.outfitFeedback && typeof state.outfitFeedback === "object" ? state.outfitFeedback : {};
+  const ideas = buildOutfitIdeas(pins, wardrobe, state.products, dislikedIds, feedbacks);
+  if (state.selectedPinterestPin) {
+    ideas.sort(function(a, b) {
+      const selected = String(state.selectedPinterestPin);
+      return Number(outfitPinKey(b.pin) === selected) - Number(outfitPinKey(a.pin) === selected);
+    });
   }
-  return heading + '<div class="outfit-intro panel"><div><strong>' + wardrobe.length + ' pièce(s) dans ta liste</strong><p>Les correspondances se basent sur les textes, couleurs et tags fournis avec les Pins et les fiches produits. Les images ne sont pas analysées visuellement par cette version.</p></div><button class="button-secondary button-small" type="button" data-view="wardrobe">Voir ma liste</button></div>' +
-    '<div class="outfit-list">' + ideas.map(function(idea) {
-      const pin = idea.pin;
-      const saved = idea.pieces.map(function(entry) {
-        const product = entry.product;
-        return '<article class="outfit-piece"><div class="outfit-piece-image">' + imageMarkup(product.imageUrl, product.name) + '</div><div><small>Dans ta liste · ' + esc(product.objective) + '</small><strong>' + esc(product.name) + '</strong><span>' + esc(formatPrice(product.price)) + '</span><button class="button-quiet button-small" type="button" data-action="details" data-id="' + esc(product.id) + '">Détails</button></div></article>';
-      }).join("");
-      const suggested = idea.suggestions.map(function(entry) {
-        const product = entry.product;
-        return '<article class="outfit-piece is-suggestion"><div class="outfit-piece-image">' + imageMarkup(product.imageUrl, product.name) + '</div><div><small>À compléter · ' + esc(entry.slot === "top" ? "Haut" : entry.slot === "bottom" ? "Bas" : "Chaussures") + '</small><strong>' + esc(product.name) + '</strong><span>' + esc(formatPrice(product.price)) + '</span><button class="button-quiet button-small" type="button" data-action="details" data-id="' + esc(product.id) + '">Voir la pièce</button></div></article>';
-      }).join("");
-      const missing = idea.missingSlots.filter(function(slot) {
-        return !idea.suggestions.some(function(entry) { return entry.slot === slot; });
-      });
-      return '<article class="panel outfit-card"><div class="outfit-reference"><div class="outfit-reference-image">' + imageMarkup(pin.imageUrl, pin.title) + '</div><div><span class="eyebrow">Inspiration Pinterest</span><h2>' + esc(pin.title || "Tenue de référence") + '</h2><p>' + esc((pin.description || "").slice(0,180)) + '</p><a href="' + esc(safeExternalUrl(pin.sourceUrl) || "#") + '" target="_blank" rel="noopener noreferrer">Ouvrir le Pin ↗</a><div class="inspiration-tags">' + idea.tags.map(function(tag) { return '<span>' + esc(tag) + '</span>'; }).join("") + '</div></div></div>' +
-      '<div class="outfit-pieces"><div class="outfit-column"><h3>Tes pièces qui s’en rapprochent</h3>' + (saved || '<p class="field-hint">Aucune pièce enregistrée ne correspond encore aux métadonnées de cette épingle.</p>') + '</div>' +
-      '<div class="outfit-column"><h3>Pour compléter la tenue</h3>' + (suggested || '<p class="field-hint">' + (missing.length ? "Pas encore d’article correspondant dans le catalogue. Ajoute ou importe des produits pour obtenir des compléments." : "Ta sélection couvre déjà les catégories principales identifiées.") + '</p>') +
+
+  const feedbackValues = Object.values(feedbacks);
+  const approvedCount = feedbackValues.filter(function(item) { return item && item.vote === "yes"; }).length;
+  const rejectedCount = feedbackValues.filter(function(item) { return item && item.vote === "no"; }).length;
+  const heading = renderPageHeading("De Pinterest à ton dressing", "Tenues", "Des compositions inspirées de tes références, rapprochées des pièces de ta garde-robe et complétées uniquement avec des produits vérifiables.",
+    '<a class="button-secondary" href="' + esc(PINTEREST_BOARD_URL) + '" target="_blank" rel="noopener noreferrer">Voir Pinterest ↗</a>');
+
+  if (!ideas.length) {
+    return heading + '<div class="empty-state"><div class="empty-mark">✦</div><h2>Les tenues viendront de tes inspirations</h2><p>Ajoute des Pins depuis la rubrique Pinterest pour commencer à composer des propositions à partir de ta garde-robe et du catalogue disponible.</p><div class="empty-actions"><button class="button-primary" type="button" data-view="inspirations">Voir mes inspirations</button><button class="button-secondary" type="button" data-view="wardrobe">Voir ma garde-robe</button></div></div>';
+  }
+
+  const cards = ideas.map(function(idea) {
+    const pin = idea.pin;
+    const pinId = outfitPinKey(pin);
+    const feedback = feedbacks[pinId] && feedbacks[pinId].vote || "";
+    const pinLink = safeExternalUrl(pin.sourceUrl || pin.pinUrl);
+    const saved = idea.pieces.map(function(entry) {
+      const product = entry.product;
+      return '<article class="outfit-piece"><div class="outfit-piece-image">' + imageMarkup(product.imageUrl, product.name) + '</div><div><small>Dans ta liste · ' + esc(product.objective || product.category) + '</small><strong>' + esc(product.name) + '</strong><span>' + esc(formatPrice(product.price)) + '</span><button class="button-quiet button-small" type="button" data-action="details" data-id="' + esc(product.id) + '">Détails</button></div></article>';
+    }).join("");
+    const suggested = idea.suggestions.map(function(entry) {
+      const product = entry.product;
+      return '<article class="outfit-piece is-suggestion"><div class="outfit-piece-image">' + imageMarkup(product.imageUrl, product.name) + '</div><div><small>À compléter · ' + esc(entry.slot === "top" ? "Haut" : entry.slot === "bottom" ? "Bas" : "Chaussures") + '</small><strong>' + esc(product.name) + '</strong><span>' + esc(formatPrice(product.price)) + '</span><button class="button-quiet button-small" type="button" data-action="details" data-id="' + esc(product.id) + '">Voir la pièce</button></div></article>';
+    }).join("");
+    const missing = idea.missingSlots.filter(function(slot) {
+      return !idea.suggestions.some(function(entry) { return entry.slot === slot; });
+    });
+    const approved = feedback === "yes";
+    const rejected = feedback === "no";
+
+    return '<article class="panel outfit-card' + (approved ? ' is-approved' : rejected ? ' is-rejected' : '') + '">' +
+      '<div class="outfit-feedback"><span>Cette tenue te plaît ?</span><div class="outfit-feedback-actions">' +
+      '<button class="outfit-rate-button is-positive' + (approved ? ' is-selected' : '') + '" type="button" data-action="rate-outfit" data-id="' + esc(pinId) + '" data-vote="yes" aria-pressed="' + String(approved) + '" aria-label="Valider cette tenue" title="Valider cette tenue"><span aria-hidden="true">✓</span><small>Valider</small></button>' +
+      '<button class="outfit-rate-button is-negative' + (rejected ? ' is-selected' : '') + '" type="button" data-action="rate-outfit" data-id="' + esc(pinId) + '" data-vote="no" aria-pressed="' + String(rejected) + '" aria-label="Refuser cette tenue" title="Refuser cette tenue"><span aria-hidden="true">✕</span><small>Refuser</small></button>' +
+      '</div></div>' +
+      '<div class="outfit-reference"><div class="outfit-reference-image">' + imageMarkup(pin.imageUrl, pin.title) + '</div>' +
+      '<div class="outfit-reference-copy"><span class="eyebrow">Inspiration Pinterest</span><h2>' + esc(pin.title || "Tenue de référence") + '</h2>' +
+      (pin.description ? '<p>' + esc(String(pin.description).slice(0, 180)) + '</p>' : '') +
+      (pinLink ? '<a href="' + esc(pinLink) + '" target="_blank" rel="noopener noreferrer">Ouvrir le Pin ↗</a>' : '') +
+      '<div class="inspiration-tags">' + idea.tags.map(function(tag) { return '<span>' + esc(tag) + '</span>'; }).join("") + '</div></div></div>' +
+      '<div class="outfit-pieces"><div class="outfit-column"><h3>Tes pièces qui s’en rapprochent</h3>' +
+      (saved || '<p class="field-hint">Aucune pièce enregistrée ne correspond encore aux métadonnées de cette épingle.</p>') + '</div>' +
+      '<div class="outfit-column"><h3>Pour compléter la tenue</h3>' +
+      (suggested || '<p class="field-hint">' + (missing.length ? "Pas encore d’article correspondant dans le catalogue. Ajoute ou importe des produits pour obtenir des compléments." : "Ta sélection couvre déjà les catégories principales identifiées.") + '</p>') +
       '</div></div></article>';
-    }).join("") + '</div>';
+  }).join("");
+
+  return heading +
+    '<div class="outfit-intro panel"><div><strong>' + wardrobe.length + ' pièce(s) dans ta liste</strong><p>Les correspondances se basent sur les textes, couleurs et tags fournis avec les Pins et les fiches produits. Les images ne sont pas analysées visuellement par cette version. Valide ou refuse chaque composition : tes retours affineront le classement des prochaines tenues et des articles proposés.</p><div class="outfit-feedback-summary"><span>' + approvedCount + ' validée(s)</span><span>' + rejectedCount + ' refusée(s)</span></div></div><button class="button-secondary button-small" type="button" data-view="wardrobe">Voir ma liste</button></div>' +
+    '<div class="outfit-board">' + cards + '</div>';
 }
+
 function renderProfile() {
   const profile = state.profile;
   const sizes = profile.sizes || {};
@@ -391,6 +424,22 @@ function saveToList(productId) {
   persist();
   render();
   showToast("Article ajouté à ta liste", true);
+}
+function rateOutfit(pinId, vote) {
+  const id = String(pinId || "");
+  if (!id || (vote !== "yes" && vote !== "no")) return;
+  state.outfitFeedback = state.outfitFeedback && typeof state.outfitFeedback === "object" ? state.outfitFeedback : {};
+  const current = state.outfitFeedback[id] && state.outfitFeedback[id].vote;
+  if (current === vote) {
+    delete state.outfitFeedback[id];
+    showToast("Ton avis sur cette tenue a été retiré", false);
+  } else {
+    state.outfitFeedback[id] = { vote: vote, createdAt: new Date().toISOString() };
+    showToast(vote === "yes" ? "Tenue validée : ce style sera davantage privilégié" : "Tenue refusée : ce style sera moins proposé", false);
+  }
+  state.learnedPreferences = deriveLearnedPreferences(state);
+  persist();
+  render();
 }
 function undoLast() {
   const action = state.interactions.lastAction;
@@ -658,6 +707,7 @@ async function importBackupFile(file) {
   state.interactions = Object.assign(base.interactions, imported.interactions || {});
   state.likedProducts = Array.isArray(imported.likedProducts) ? imported.likedProducts : [];
   state.inspirations = Array.isArray(imported.inspirations) ? imported.inspirations : [];
+  state.outfitFeedback = imported.outfitFeedback && typeof imported.outfitFeedback === "object" && !Array.isArray(imported.outfitFeedback) ? imported.outfitFeedback : {};
   state.products = imported.products.map(normalizeProduct);
   state.learnedPreferences = deriveLearnedPreferences(state);
   await persist();
@@ -678,6 +728,7 @@ function resetProfile() {
     undoEvents: [],
     lastAction: null
   };
+  state.outfitFeedback = {};
   state.learnedPreferences = {};
   persist();
   render();
@@ -721,6 +772,7 @@ function handleClick(event) {
   else if (action === "vote") vote(actionButton.dataset.id, actionButton.dataset.vote || "no");
   else if (action === "save-list") saveToList(actionButton.dataset.id);
   else if (action === "undo") undoLast();
+  else if (action === "rate-outfit") rateOutfit(actionButton.dataset.id, actionButton.dataset.vote);
   else if (action === "remove-favorite") removeFavorite(actionButton.dataset.id);
   else if (action === "toggle-discovery-view") toggleDiscoveryView();
   else if (action === "save-filters") saveFilters();
@@ -893,6 +945,7 @@ async function boot() {
   state.interactions.saves = Array.isArray(state.interactions.saves) ? state.interactions.saves : [];
   state.interactions.undoEvents = Array.isArray(state.interactions.undoEvents) ? state.interactions.undoEvents : [];
   state.likedProducts = Array.isArray(state.likedProducts) ? state.likedProducts : [];
+  state.outfitFeedback = state.outfitFeedback && typeof state.outfitFeedback === "object" && !Array.isArray(state.outfitFeedback) ? state.outfitFeedback : {};
   state.products = Array.isArray(state.products) ? state.products.map(normalizeProduct) : catalog;
   if (!state.products.length && catalog.length) state.products = catalog;
   state.inspirations = Array.isArray(state.inspirations) ? state.inspirations.filter(function(item) { return item.source === "Pinterest"; }) : [];
