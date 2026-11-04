@@ -38,3 +38,16 @@ test("outfit ideas use saved pieces and only suggest catalogue products with mer
   assert.equal(ideas[0].suggestions[0].product.id, "bottom-1");
   assert.ok(ideas[0].missingSlots.includes("bottom"));
 });
+
+test("approved outfit references move ahead of rejected ones", function() {
+  const rejected = { id: "rejected", title: "Streetwear red oversized outfit" };
+  const approved = { id: "approved", title: "Minimalist beige linen outfit" };
+  const untrained = buildOutfitIdeas([rejected, approved], [], [], []);
+  assert.deepEqual(untrained.map(function(idea) { return idea.pin.id; }), ["rejected", "approved"]);
+
+  const trained = buildOutfitIdeas([rejected, approved], [], [], [], {
+    rejected: { vote: "no" },
+    approved: { vote: "yes" }
+  });
+  assert.deepEqual(trained.map(function(idea) { return idea.pin.id; }), ["approved", "rejected"]);
+});
