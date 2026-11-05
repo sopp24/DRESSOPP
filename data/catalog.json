@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "description": "Catalogue vérifié DRESSOPP : références éditoriales temporaires et produits importés de flux marchands autorisés. Les fiches éditoriales expirent après sept jours si elles ne sont pas revérifiées.",
-  "syncedAt": "2026-11-05T16:33:05.606Z",
+  "syncedAt": "2026-11-05T16:36:56.203Z",
   "products": [
     {
       "id": "seed-nike-cw2288-111",
@@ -353,6 +353,107 @@
       "verifiedAt": "2026-11-05T16:33:05.606Z",
       "expiresAt": "2026-11-12T16:33:05.610Z",
       "priceUpdatedAt": "2026-11-05T16:33:05.606Z"
+    },
+    {
+      "id": "seed-uniqlo-450540-09",
+      "name": "Cardigan col V 100 % laine mérinos – Noir",
+      "brand": "UNIQLO",
+      "merchant": "UNIQLO",
+      "url": "https://www.uniqlo.com/fr/fr/products/E450540-000/00",
+      "imageUrl": "https://image.uniqlo.com/UQ/ST3/eu/imagesgoods/450540/item/eugoods_09_450540_3x4.jpg?width=600",
+      "price": 49.9,
+      "originalPrice": null,
+      "objective": "Vêtements",
+      "category": "Cardigan",
+      "styleTags": [
+        "Preppy",
+        "Smart Casual",
+        "Heritage",
+        "Classique"
+      ],
+      "seasonTags": [
+        "Automne",
+        "Hiver",
+        "Printemps"
+      ],
+      "colors": [
+        "Noir"
+      ],
+      "materials": [
+        "Laine mérinos"
+      ],
+      "cuts": [
+        "Classique"
+      ],
+      "patterns": [],
+      "description": "Cardigan col V en 100 % laine mérinos extra-fine de 19,5 microns, lavable en machine selon les consignes d’entretien UNIQLO.",
+      "sizes": [
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "XXL",
+        "3XL"
+      ],
+      "availability": "Fiche UNIQLO FR avec tailles XS à 3XL et ajout au panier ; vérifier le stock de la taille choisie.",
+      "availabilityStatus": "listed",
+      "productRating": 4.7,
+      "productRatingCount": 48,
+      "productRatingSource": "Avis produit UNIQLO FR",
+      "source": "UNIQLO FR",
+      "sourceType": "curated",
+      "catalogStatus": "active",
+      "verifiedAt": "2026-11-05T16:36:56.203Z",
+      "expiresAt": "2026-11-12T16:36:56.203Z",
+      "priceUpdatedAt": "2026-11-05T16:36:56.203Z"
+    },
+    {
+      "id": "seed-asos-208080131",
+      "name": "Pull oversize côtelé en maille mélange laine – Bordeaux",
+      "brand": "ASOS DESIGN",
+      "merchant": "ASOS",
+      "url": "https://www.asos.com/fr/asos-design/asos-design-pull-oversize-cotele-en-maille-melange-laine-tissu-epais-bordeaux/prd/208080131",
+      "imageUrl": "https://images.asos-media.com/products/asos-design-oversized-heavyweight-knit-wool-blend-ribbed-sweater-in-burgundy/208080131-1-burgundy?%24n_640w%24=&fit=constrain&wid=513",
+      "price": 42.99,
+      "originalPrice": 47.99,
+      "objective": "Vêtements",
+      "category": "Pull",
+      "styleTags": [
+        "Preppy",
+        "Smart Casual",
+        "Heritage",
+        "Casual"
+      ],
+      "seasonTags": [
+        "Automne",
+        "Hiver"
+      ],
+      "colors": [
+        "Bordeaux"
+      ],
+      "materials": [
+        "Acrylique",
+        "Laine",
+        "Nylon"
+      ],
+      "cuts": [
+        "Oversized",
+        "Ample"
+      ],
+      "patterns": [
+        "Côtelé"
+      ],
+      "description": "Pull oversize en maille côtelée épaisse, col rond et épaules tombantes. Composition annoncée : 75 % acrylique, 15 % laine, 10 % nylon.",
+      "sizes": [],
+      "availability": "Fiche ASOS FR avec bouton Ajouter au panier ; disponibilité par taille à confirmer.",
+      "availabilityStatus": "listed",
+      "source": "ASOS FR",
+      "sourceType": "curated",
+      "catalogStatus": "active",
+      "verifiedAt": "2026-11-05T16:36:56.203Z",
+      "expiresAt": "2026-11-12T16:36:56.203Z",
+      "priceUpdatedAt": "2026-11-05T16:36:56.203Z"
     }
   ]
 }
