@@ -19,9 +19,33 @@ const MERCHANT_PATTERNS = [
   ["Uniqlo", /\buniqlo\b/i],
   ["BZB", /\bbzb\b/i],
   ["Pull & Bear", /pull\s*(?:&|and)\s*bear|pullandbear/i],
+  ["Bershka", /\bbershka\b/i],
+  ["H&M", /\bh\s*&\s*m\b|\bhm\b/i],
+  ["Mango", /\bmango\b/i],
+  ["Massimo Dutti", /massimo[\s-]*dutti/i],
+  ["COS", /\bcos\b/i],
+  ["ARKET", /\barket\b/i],
+  ["Weekday", /\bweekday\b/i],
+  ["Levi's", /levi['’]?s/i],
+  ["Carhartt WIP", /carhartt[\s-]*wip/i],
+  ["Jack & Jones", /jack\s*(?:&|and)\s*jones/i],
+  ["Celio", /\bcelio\b/i],
+  ["Jules", /\bjules\b/i],
+  ["Fred Perry", /fred\s+perry/i],
+  ["Lacoste", /\blacoste\b/i],
+  ["Tommy Hilfiger", /tommy[\s-]*hilfiger/i],
+  ["Polo Ralph Lauren", /polo\s+ralph\s+lauren|ralph\s+lauren/i],
   ["Nike", /\bnike\b/i],
   ["adidas", /\badidas\b/i],
+  ["New Balance", /new[\s-]*balance/i],
+  ["Puma", /\bpuma\b/i],
+  ["ASICS", /\basics\b/i],
+  ["Converse", /\bconverse\b/i],
   ["Courir", /\bcourir\b/i],
+  ["JD Sports", /jd\s*sports/i],
+  ["Foot Locker", /foot\s*locker/i],
+  ["Snipes", /\bsnipes\b/i],
+  ["Sarenza", /\bsarenza\b/i],
   ["Calvin Klein", /calvin[\s-]*klein/i],
   ["Undiz", /\bundiz\b/i],
   ["Louis Vuitton", /louis[\s-]*vuitton/i],
@@ -211,9 +235,9 @@ function splitValues(value) {
 }
 function inferCategory(value) {
   const source = key(value);
-  if (/shoe|sneaker|footwear|chaussure|basket|boot|sandale|mocassin/.test(source)) return "Chaussures";
-  if (/underwear|underpant|boxer|brief|slip|sous_vetement|lingerie/.test(source)) return "Sous-vêtements";
-  if (/accessor|belt|bag|wallet|cap|hat|ceinture|sac|casquette|bonnet|montre|jewellery/.test(source)) return "Accessoires";
+  if (/shoe|sneaker|footwear|chaussure|basket|boot|bottine|sandale|mocassin|loafer|derby|oxford_shoe/.test(source)) return "Chaussures";
+  if (/underwear|underpant|boxer|brief|slip|sous_vetement|lingerie|chaussette/.test(source)) return "Sous-vêtements";
+  if (/accessor|belt|bag|wallet|cap|hat|ceinture|sac|casquette|bonnet|montre|jewellery|watch|bracelet|necklace|ring|portefeuille|bijou/.test(source)) return "Accessoires";
   return "Vêtements";
 }
 function inferStyles(source) {
@@ -225,7 +249,8 @@ function inferCuts(source) {
 function validDate(value) {
   if (!value) return true;
   const time = Date.parse(value);
-  return !Number.isFinite(time) || time <= Date.now();
+  // Une date de fin doit être future (ou absente/inexploitable), pas déjà dépassée.
+  return !Number.isFinite(time) || time > Date.now();
 }
 function validFromDate(value) {
   if (!value) return true;
@@ -253,6 +278,8 @@ export function filterFeedRows(rows) {
     const advertiser = field(row, "advertiser_name", "advertiser");
     if (!merchantGroup(advertiser)) return false;
     if (!isFrenchFeed(row)) return false;
+    const membership = key(field(row, "membership_status", "membership status", "program_status"));
+    if (["inactive", "terminated", "rejected", "declined", "suspended", "revoked"].includes(membership)) return false;
     const url = field(row, "url", "download_url", "feed_url");
     try { checkedAwinUrl(url); } catch { return false; }
     return true;
@@ -277,8 +304,15 @@ export function mapFeedProduct(row, feed, syncedAt = new Date().toISOString()) {
   if (/\b(adult only|sex toy|pornograph|explicit adult)\b/i.test(fullText)) return null;
   const category = inferCategory(categoryRaw + " " + name);
   const externalId = field(row, "aw_product_id", "merchant_product_id", "product_id", "id", "ean", "product_gtin", "gtin") || url;
-  const productRating = parsePrice(field(row, "average_rating", "rating"));
-  const ratingCount = countFrom(field(row, "reviews", "review_count", "rating_count"));
+  const productRating = parsePrice(field(row, "average_rating", "product_rating", "rating"));
+  const ratingCount = countFrom(field(row, "product_review_count", "reviews", "review_count", "rating_count"));
+  // Les avis produit et la réputation du marchand restent deux mesures distinctes.
+  const merchantRating = parsePrice(field(row, "merchant_rating", "store_rating", "advertiser_rating", "retailer_rating"));
+  const merchantRatingCount = countFrom(field(row, "merchant_rating_count", "store_review_count", "advertiser_review_count", "retailer_review_count"));
+  const merchantRatingSource = field(row, "merchant_rating_source", "store_rating_source", "advertiser_rating_source", "retailer_rating_source") ||
+    (merchantRating != null ? "Note marchand fournie par le flux" : "");
+  const popularityScore = parsePrice(field(row, "popularity_score", "trending_score", "trend_score"));
+  const isBestSeller = positive(field(row, "is_best_seller", "best_seller", "bestseller", "is_bestseller"));
   const originalPrice = parsePrice(field(row, "rrp_price", "product_price_old", "base_price"));
   const colors = splitValues(field(row, "colour", "color"));
   const materials = splitValues(field(row, "material", "composition"));
@@ -301,7 +335,12 @@ export function mapFeedProduct(row, feed, syncedAt = new Date().toISOString()) {
     stockVerifiedAt: syncedAt, verifiedAt: syncedAt, catalogStatus: "active",
     productRating: productRating != null && productRating <= 5 ? productRating : null,
     productRatingCount: ratingCount,
-    productRatingSource: productRating != null ? "Avis produit · flux Awin" : ""
+    productRatingSource: productRating != null ? "Avis produit · flux Awin" : "",
+    merchantRating: merchantRating != null && merchantRating <= 5 ? merchantRating : null,
+    merchantRatingCount: merchantRatingCount,
+    merchantRatingSource,
+    popularityScore: popularityScore != null ? Math.max(0, Math.min(100, popularityScore)) : null,
+    isBestSeller
   };
 }
 function relevance(product) {
@@ -309,7 +348,10 @@ function relevance(product) {
   const terms = ["merino", "merinos", "laine", "wool", "cuir", "leather", "suede", "daim", "maille", "knit", "polo", "oxford", "chino", "plisse", "wide", "ample", "relaxed", "oversize", "oversized", "brown", "marron", "beige", "cream", "creme", "ecru", "burgundy", "bordeaux", "grey", "gris", "navy", "marine", "heritage", "preppy"];
   return terms.reduce((score, term) => score + (source.includes(term) ? 1 : 0), 0) +
     (Number(product.productRating) >= 4.5 ? 2 : 0) +
-    (Number(product.productRatingCount) >= 50 ? 1 : 0);
+    (Number(product.productRatingCount) >= 50 ? 1 : 0) +
+    (Number(product.merchantRating) >= 4.5 ? 2 : 0) +
+    (Number(product.merchantRatingCount) >= 100 ? 1 : 0) +
+    (product.isBestSeller ? 1 : 0);
 }
 function productIdentity(product) {
   const raw = String(product.url || "").split("?")[0].replace(/\/+$/, "").toLowerCase();

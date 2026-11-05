@@ -93,6 +93,8 @@ export function normalizeProduct(raw) {
     merchantRating: source.merchantRating == null ? null : Number(source.merchantRating),
     merchantRatingCount: source.merchantRatingCount == null ? null : Number(source.merchantRatingCount),
     merchantRatingSource: text(source.merchantRatingSource),
+    popularityScore: source.popularityScore == null || source.popularityScore === "" ? null : Number(source.popularityScore),
+    isBestSeller: source.isBestSeller === true || source.isBestSeller === 1 || source.isBestSeller === "true",
     sourceType: text(source.sourceType),
     feedId: text(source.feedId),
     advertiserId: text(source.advertiserId),
@@ -273,6 +275,19 @@ export function rankProducts(products, state, options) {
     const count = Number(product.productRatingCount) || 0;
     return (rating - 3) * 1.5 + (count >= 100 ? 3 : count >= 20 ? 1.5 : 0);
   }
+  function merchantTrustBoost(product) {
+    const rating = Number(product.merchantRating);
+    if (!Number.isFinite(rating) || rating <= 0 || rating > 5) return 0;
+    const count = Number(product.merchantRatingCount) || 0;
+    const ratingSignal = (rating - 3.5) * 1.5;
+    const confidenceSignal = count >= 500 ? 2 : count >= 100 ? 1.2 : count >= 20 ? 0.5 : 0;
+    return Math.max(-3, Math.min(4, ratingSignal + confidenceSignal));
+  }
+  function popularityBoost(product) {
+    const raw = Number(product.popularityScore);
+    const measured = Number.isFinite(raw) ? Math.max(0, Math.min(100, raw)) / 40 : 0;
+    return Math.min(2.5, measured) + (product.isBestSeller ? 1.25 : 0);
+  }
   const scored = (products || []).filter(function(product) {
     const expired = product.catalogStatus === "expired" ||
       (product.expiresAt && Date.parse(product.expiresAt) <= Date.now());
@@ -284,7 +299,8 @@ export function rankProducts(products, state, options) {
     const familiarity = preferenceScore(product, learned) + explicitProfileScore(product, profile);
     const novelty = noveltyScore(product, learned);
     const baseScore = familiarity * (1 - discovery / 100) + novelty * (discovery / 100) * (training ? 1.25 : 1);
-    const score = baseScore + freshnessBoost(product) + reviewBoost(product);
+    const score = baseScore + freshnessBoost(product) + reviewBoost(product) +
+      merchantTrustBoost(product) + popularityBoost(product);
     return { product: product, score: score };
   });
   scored.sort(function(a, b) { return b.score - a.score; });

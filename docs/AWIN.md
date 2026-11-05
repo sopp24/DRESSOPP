@@ -2,9 +2,9 @@
 
 ## Ce qui est automatisé
 
-DRESSOPP utilise les flux produits Awin quand un marchand les met à disposition du compte éditeur et que le compte a le droit de les télécharger. Le connecteur sélectionne les enseignes demandées lorsqu'elles apparaissent dans la liste de flux française : Zalando, ASOS, UNIQLO, BZB, Pull & Bear, Nike, adidas, Courir, Calvin Klein, Undiz, Louis Vuitton, Dior et Lothaire.
+DRESSOPP utilise les flux produits Awin quand un marchand les met à disposition du compte éditeur et que le compte a le droit de les télécharger. Le connecteur sélectionne les enseignes demandées lorsqu'elles apparaissent dans la liste de flux française : Zalando, ASOS, UNIQLO, BZB, Pull & Bear, Bershka, H&M, Zara, Mango, COS, ARKET, Massimo Dutti, Levi's, Carhartt WIP, Jack & Jones, Celio, Jules, Weekday, Nike, adidas, New Balance, Puma, ASICS, Converse, Courir, JD Sports, Foot Locker, Snipes, Calvin Klein, Undiz, Louis Vuitton, Dior, Lothaire, Charles Tyrwhitt, Lacoste, Fred Perry, Tommy Hilfiger et Polo Ralph Lauren. Seules les enseignes qui apparaissent dans le flux autorisé sont importées ; cette liste ne garantit pas que chaque programme soit disponible au compte éditeur.
 
-Les fiches intégrées doivent comporter un nom, un prix en EUR, un lien produit HTTPS, une image HTTPS et un état de stock positif. Les fiches en rupture, expirées, sans prix ou sans image sont écartées. Les attributs couleur, matière, taille, coupe et motif sont transmis au moteur quand le flux les fournit.
+Les fiches intégrées doivent comporter un nom, un prix en EUR, un lien produit HTTPS, une image HTTPS et un état de stock positif. Le classement recalcule les affinités à chaque ouverture et à chaque vote ; les prix et stocks suivent la cadence de mise à jour du flux marchand, pas une interrogation en continu à la seconde. Les fiches en rupture, expirées, sans prix ou sans image sont écartées. Les attributs couleur, matière, taille, coupe et motif sont transmis au moteur quand le flux les fournit.
 
 Le flux Awin n'est pas un accès universel à tous les sites : chaque programme doit être accessible au compte éditeur et l'annonceur doit proposer un flux produit. Les boutiques sans flux restent accessibles par les liens officiels dans DRESSOPP, mais leurs pages ne sont pas aspirées.
 

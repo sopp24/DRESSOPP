@@ -88,6 +88,6 @@ Le dépôt ne contient plus de favicon SVG de remplacement.
 
 ## Catalogue multi-boutiques
 
-DRESSOPP peut alimenter le swipe depuis les flux produits Awin accessibles au compte éditeur. Le connecteur met à jour les fiches six fois par jour, ne télécharge que les flux modifiés et écarte les articles sans prix EUR, lien, photo ou stock positif. Les notes d'articles, lorsqu'elles existent, sont séparées de la réputation de la boutique.
+DRESSOPP peut alimenter le swipe depuis les flux produits Awin accessibles au compte éditeur. Le connecteur met à jour les fiches six fois par jour, ne télécharge que les flux modifiés et écarte les articles expirés, sans prix EUR, lien, photo ou stock positif. Le moteur classe les articles en temps réel selon les votes, le lookbook, les préférences, les tailles et le budget ; la fraîcheur du stock et des prix dépend de la dernière mise à jour du flux. Les notes d'articles restent distinctes de la réputation du marchand, qui n'est prise en compte que si la source la fournit explicitement.
 
 Pour activer les flux, ajouter le secret GitHub Actions `AWIN_PRODUCT_FEED_LIST_URL` avec le lien complet de liste obtenu dans Awin → Boîte à outils → Créer un flux. Voir [le guide Awin](docs/AWIN.md). Sans ce secret, les trois références de départ expirent le 12 novembre 2026 et les autres boutiques restent accessibles depuis Découvrir par liens officiels.

@@ -2,19 +2,21 @@
   "schemaVersion": 1,
   "provider": "Awin Product Feeds",
   "status": "needs-configuration",
-  "syncedAt": "2026-11-05T15:29:00.000Z",
-  "productCount": 3,
+  "syncedAt": "2026-11-05T16:33:05.606Z",
+  "productCount": 6,
   "liveProductCount": 0,
-  "curatedProductCount": 3,
+  "curatedProductCount": 6,
   "feedCount": 0,
   "updatedFeeds": 0,
   "errorFeeds": 0,
   "sources": [
+    "adidas",
+    "ASOS",
+    "Charles Tyrwhitt",
     "Nike",
-    "UNIQLO",
-    "Charles Tyrwhitt"
+    "UNIQLO"
   ],
   "refreshCadence": "6 synchronisations planifiées par jour ; la fraîcheur dépend de la mise à jour du flux par chaque marchand.",
   "feeds": {},
-  "message": "Le connecteur Awin est prêt, mais la clé Data Feed doit encore être ajoutée aux secrets GitHub. Les trois fiches de départ sont temporaires et leurs prix/tailles doivent être revérifiés sur les boutiques."
+  "message": "Le moteur de recommandation fonctionne à partir du profil, des votes, du lookbook, du budget et des tailles. Les références éditoriales sont temporaires ; la synchronisation des flux Awin exige le secret AWIN_PRODUCT_FEED_LIST_URL et reste conditionnée aux programmes marchands réellement accessibles au compte éditeur."
 }

@@ -85,7 +85,7 @@ test("mapFeedProduct rejects items with no stock, non-EUR prices or no usable im
   assert.equal(mapFeedProduct({ ...base, aw_deep_link:"javascript:alert(1)" }, { advertiserId:"1", feedId:"1" }), null);
 });
 
-test("mapFeedProduct excludes female-only and expired feed items", function() {
+test("mapFeedProduct excludes female-only, expired and not-yet-started feed items", function() {
   const base = {
     product_name:"Pull en laine",
     merchant_name:"Uniqlo FR",
@@ -98,6 +98,8 @@ test("mapFeedProduct excludes female-only and expired feed items", function() {
   };
   assert.equal(mapFeedProduct({ ...base, suitable_for:"female" }, { advertiserId:"1", feedId:"1" }), null);
   assert.equal(mapFeedProduct({ ...base, valid_to:"2020-01-01" }, { advertiserId:"1", feedId:"1" }), null);
+  assert.equal(mapFeedProduct({ ...base, valid_from:"2099-01-01" }, { advertiserId:"1", feedId:"1" }), null);
+  assert.ok(mapFeedProduct({ ...base, valid_to:"2099-01-01" }, { advertiserId:"1", feedId:"1" }));
 });
 
 test("buildCatalogFromFeeds reuses unchanged feeds without downloading them", async function() {
@@ -174,4 +176,41 @@ test("mapFeedProduct maps Google Enhanced JSONL products with currency in the pr
   assert.equal(product.imageUrl, "https://image.uniqlo.com/product.jpg");
   assert.deepEqual(product.colors, ["Cream"]);
   assert.deepEqual(product.materials, ["Wool"]);
+});
+
+
+test("filterFeedRows recognises additional French retailers and rejects inactive programs", function() {
+  const rows = [
+    { "Advertiser Name":"Bershka FR", "Primary Region":"FR", "Language":"French", "Membership Status":"active", "URL":"https://productdata.awin.com/feed/1" },
+    { "Advertiser Name":"Polo Ralph Lauren FR", "Primary Region":"FR", "Language":"French", "Membership Status":"active", "URL":"https://productdata.awin.com/feed/2" },
+    { "Advertiser Name":"ASOS FR", "Primary Region":"FR", "Language":"French", "Membership Status":"rejected", "URL":"https://productdata.awin.com/feed/3" }
+  ];
+  assert.deepEqual(filterFeedRows(rows).map(row => row["Advertiser Name"]), ["Bershka FR", "Polo Ralph Lauren FR"]);
+});
+
+test("mapFeedProduct keeps merchant trust ratings separate from product reviews", function() {
+  const product = mapFeedProduct({
+    product_name:"Pull mérinos",
+    merchant_name:"UNIQLO FR",
+    aw_deep_link:"https://www.uniqlo.com/fr/pull.html",
+    large_image:"https://image.uniqlo.com/pull.jpg",
+    search_price:"49.90",
+    currency:"EUR",
+    in_stock:"1",
+    average_rating:"4.2",
+    product_review_count:"80",
+    merchant_rating:"4.8",
+    merchant_rating_count:"1250",
+    merchant_rating_source:"Trustpilot",
+    popularity_score:"92",
+    is_best_seller:"1"
+  }, { advertiserId:"4", feedId:"4" }, "2026-11-05T15:45:00.000Z");
+  assert.ok(product);
+  assert.equal(product.productRating, 4.2);
+  assert.equal(product.productRatingCount, 80);
+  assert.equal(product.merchantRating, 4.8);
+  assert.equal(product.merchantRatingCount, 1250);
+  assert.equal(product.merchantRatingSource, "Trustpilot");
+  assert.equal(product.popularityScore, 92);
+  assert.equal(product.isBestSeller, true);
 });

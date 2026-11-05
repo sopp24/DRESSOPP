@@ -122,3 +122,38 @@ test("rankProducts never puts withdrawn or expired feed products back in discove
   });
   assert.deepEqual(result.map(item => item.id), ["active"]);
 });
+
+
+test("rankProducts uses merchant reputation separately from product reviews", function() {
+  const trusted = normalizeProduct({
+    id:"trusted", name:"Pull marron", merchant:"Shop A", objective:"Vêtements",
+    price:45, merchantRating:4.9, merchantRatingCount:1200
+  });
+  const unknown = normalizeProduct({
+    id:"unknown", name:"Pull marron", merchant:"Shop B", objective:"Vêtements",
+    price:45
+  });
+  const state = createInitialState([trusted, unknown]);
+  const result = rankProducts([unknown, trusted], state, {
+    includeSeen:true,
+    filters:{ objective:"Vêtements", style:"Tous", season:"Toute saison", maxPrice:null }
+  });
+  assert.equal(result[0].id, "trusted");
+});
+
+test("rankProducts gives a small lift to explicit best-seller signals", function() {
+  const popular = normalizeProduct({
+    id:"popular", name:"Polo maille", merchant:"Shop A", objective:"Vêtements",
+    price:40, popularityScore:95, isBestSeller:true
+  });
+  const standard = normalizeProduct({
+    id:"standard", name:"Polo maille", merchant:"Shop B", objective:"Vêtements",
+    price:40
+  });
+  const state = createInitialState([popular, standard]);
+  const result = rankProducts([standard, popular], state, {
+    includeSeen:true,
+    filters:{ objective:"Vêtements", style:"Tous", season:"Toute saison", maxPrice:null }
+  });
+  assert.equal(result[0].id, "popular");
+});

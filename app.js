@@ -204,6 +204,15 @@ function renderProductReview(product) {
       (Number.isFinite(count) && count > 0 ? ' · ' + count.toLocaleString("fr-FR") + ' avis' : '') +
       ' <span>· ' + esc(ratingSource) + '</span></p>'
     : '';
+  const merchantRating = Number(product.merchantRating);
+  const hasMerchantRating = Number.isFinite(merchantRating) && merchantRating > 0 && merchantRating <= 5;
+  const merchantCount = Number(product.merchantRatingCount);
+  const merchantSource = product.merchantRatingSource || "Source marchand";
+  const merchantRatingText = hasMerchantRating
+    ? '<p class="product-review-note merchant-review-note"><strong>Fiabilité marchand : ★ ' + merchantRating.toFixed(1).replace(".", ",") + '/5</strong>' +
+      (Number.isFinite(merchantCount) && merchantCount > 0 ? ' · ' + merchantCount.toLocaleString("fr-FR") + ' avis' : '') +
+      ' <span>· ' + esc(merchantSource) + '</span></p>'
+    : '';
   const verified = product.verifiedAt ? new Date(product.verifiedAt).toLocaleDateString("fr-FR") : "";
   let freshness = "";
   if (product.catalogStatus === "stale") {
@@ -213,7 +222,7 @@ function renderProductReview(product) {
   } else if (product.sourceType === "awin") {
     freshness = '<p class="product-freshness">Disponibilité confirmée par le flux marchand · ' + esc(verified) + '</p>';
   }
-  return ratingText + freshness;
+  return ratingText + merchantRatingText + freshness;
 }
 function renderCatalogStatus() {
   const liveCount = Number(catalogMeta.liveProductCount) ||

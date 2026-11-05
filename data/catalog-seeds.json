@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "description": "Trois fiches de départ relevées sur des fiches officielles le 5 novembre 2026. Elles expirent le 12 novembre 2026 si aucun flux actualisé ne les remplace.",
+  "description": "Six fiches de départ, dont trois références ajoutées et relevées sur des fiches officielles le 5 novembre 2026. Les références éditoriales expirent le 12 novembre 2026 si aucun flux autorisé ne les remplace.",
   "products": [
     {
       "id": "seed-nike-cw2288-111",
@@ -178,6 +178,180 @@
       "verifiedAt": "2026-11-05T15:29:00.000Z",
       "expiresAt": "2026-11-12T15:29:00.000Z",
       "priceUpdatedAt": "2026-11-05T15:29:00.000Z"
+    },
+    {
+      "id": "seed-asos-208036205",
+      "name": "Pull oversize côtelé en maille épaisse avec col polo – Marron",
+      "brand": "ASOS DESIGN",
+      "merchant": "ASOS",
+      "url": "https://www.asos.com/fr/asos-design/asos-design-pull-oversize-cotele-en-maille-epaisse-de-laine-melangee-avec-col-polo-marron/prd/208036205",
+      "imageUrl": "https://images.asos-media.com/products/asos-design-oversized-heavyweight-knit-wool-blend-ribbed-polo-sweater-in-brown/208036205-1-brown?%24n_640w%24=&fit=constrain&wid=513",
+      "price": 49.99,
+      "originalPrice": null,
+      "objective": "Vêtements",
+      "category": "Pull",
+      "styleTags": [
+        "Preppy",
+        "Smart Casual",
+        "Heritage",
+        "Casual"
+      ],
+      "seasonTags": [
+        "Automne",
+        "Hiver"
+      ],
+      "colors": [
+        "Marron"
+      ],
+      "materials": [
+        "Acrylique",
+        "Laine",
+        "Nylon"
+      ],
+      "cuts": [
+        "Oversized",
+        "Ample"
+      ],
+      "patterns": [
+        "Côtelé"
+      ],
+      "description": "Maille côtelée épaisse, col polo, patte de boutonnage partielle et coupe oversize. Composition annoncée : 75 % acrylique, 15 % laine, 10 % nylon.",
+      "sizes": [],
+      "availability": "Fiche produit relevée sur ASOS FR ; tailles et disponibilité à confirmer au panier.",
+      "availabilityStatus": "listed",
+      "source": "ASOS FR",
+      "sourceType": "curated",
+      "catalogStatus": "active",
+      "verifiedAt": "2026-11-05T16:33:05.606Z",
+      "expiresAt": "2026-11-12T16:33:05.610Z",
+      "priceUpdatedAt": "2026-11-05T16:33:05.606Z"
+    },
+    {
+      "id": "seed-uniqlo-460938-07",
+      "name": "Pull col roulé 100 % laine mérinos – Gris",
+      "brand": "UNIQLO",
+      "merchant": "UNIQLO",
+      "url": "https://www.uniqlo.com/fr/fr/products/E460938-000/00?colorDisplayCode=07",
+      "imageUrl": "https://image.uniqlo.com/UQ/ST3/eu/imagesgoods/460938/item/eugoods_07_460938_3x4.jpg?width=600",
+      "price": 39.9,
+      "originalPrice": null,
+      "objective": "Vêtements",
+      "category": "Pull",
+      "styleTags": [
+        "Smart Casual",
+        "Preppy",
+        "Heritage",
+        "Classique"
+      ],
+      "seasonTags": [
+        "Automne",
+        "Hiver",
+        "Printemps"
+      ],
+      "colors": [
+        "Gris"
+      ],
+      "materials": [
+        "Laine mérinos"
+      ],
+      "cuts": [
+        "Classique"
+      ],
+      "patterns": [],
+      "description": "Pull col roulé pour homme en 100 % laine mérinos. Lavable en machine selon les consignes d’entretien de la fiche UNIQLO.",
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "XXL",
+        "3XL"
+      ],
+      "availability": "En stock lors du relevé sur UNIQLO FR ; vérifier la disponibilité de la taille et du coloris au panier.",
+      "availabilityStatus": "available",
+      "productRating": 4.7,
+      "productRatingCount": 529,
+      "productRatingSource": "Avis produit UNIQLO",
+      "source": "UNIQLO FR",
+      "sourceType": "curated",
+      "catalogStatus": "active",
+      "verifiedAt": "2026-11-05T16:33:05.606Z",
+      "expiresAt": "2026-11-12T16:33:05.610Z",
+      "priceUpdatedAt": "2026-11-05T16:33:05.606Z"
+    },
+    {
+      "id": "seed-adidas-samba-js3830",
+      "name": "Chaussures Samba OG – Wonder White / Shadow Red / Gum",
+      "brand": "adidas",
+      "merchant": "adidas",
+      "url": "https://www.adidas.fr/chaussures-samba-og/JS3830.html",
+      "imageUrl": "https://assets.adidas.com/images/w_500%2Cf_auto%2Cq_auto/478caedf11a74195924dddcf5cd3f57f_9366/Chaussures_Samba_OG_Blanc_JS3830_01_00_standard.jpg",
+      "price": 120,
+      "originalPrice": null,
+      "objective": "Chaussures",
+      "category": "Sneakers",
+      "styleTags": [
+        "Classique",
+        "Preppy",
+        "Casual",
+        "Streetwear"
+      ],
+      "seasonTags": [
+        "Toute saison"
+      ],
+      "colors": [
+        "Blanc cassé",
+        "Rouge",
+        "Gomme"
+      ],
+      "materials": [
+        "Cuir",
+        "Daim",
+        "Caoutchouc"
+      ],
+      "cuts": [
+        "Basse",
+        "Classique"
+      ],
+      "patterns": [],
+      "description": "Samba OG basse avec tige en cuir, empiècement avant en suède et semelle extérieure en caoutchouc. Coloris Wonder White / Shadow Red / Gum.",
+      "sizes": [
+        "35 1/2",
+        "36",
+        "36 2/3",
+        "37 1/3",
+        "38",
+        "38 2/3",
+        "39 1/3",
+        "40",
+        "40 2/3",
+        "41 1/3",
+        "42",
+        "42 2/3",
+        "43 1/3",
+        "44",
+        "44 2/3",
+        "45 1/3",
+        "46",
+        "46 2/3",
+        "47 1/3",
+        "48",
+        "48 2/3",
+        "49 1/3"
+      ],
+      "availability": "Tailles indiquées sur la fiche adidas FR ; disponibilité par pointure à confirmer au panier.",
+      "availabilityStatus": "listed",
+      "productRating": 4.8,
+      "productRatingCount": 2694,
+      "productRatingSource": "Avis produit adidas FR",
+      "source": "adidas FR",
+      "sourceType": "curated",
+      "catalogStatus": "active",
+      "verifiedAt": "2026-11-05T16:33:05.606Z",
+      "expiresAt": "2026-11-12T16:33:05.610Z",
+      "priceUpdatedAt": "2026-11-05T16:33:05.606Z"
     }
   ]
 }
