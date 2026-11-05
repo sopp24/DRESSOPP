@@ -646,3 +646,239 @@ a { color: inherit; }
   .outfit-feedback { align-items: center; flex-direction: row; }
   .outfit-feedback-actions { width: auto; }
 }
+
+
+.product-card { user-select: none; -webkit-user-select: none; }
+
+/* Découvrir — carte Tinder éditoriale inspirée de la référence fournie. */
+.discovery-layout--swipe {
+  display: flex;
+  width: min(100%, 760px);
+  align-items: center;
+  flex-direction: column;
+  gap: 0;
+  margin: 0 auto;
+}
+.discovery-layout--swipe .deck-column { width: 100%; }
+.discovery-layout--swipe .deck-topline { justify-content: center; margin-bottom: 14px; }
+.discovery-layout--swipe .deck-topline > span:last-child { display: none; }
+.discovery-layout--swipe .deck-aside { display: none; }
+.discovery-layout--swipe .deck-card-wrap { width: min(100%, 640px); }
+.discovery-layout--swipe .product-card {
+  display: flex;
+  padding: 20px 20px 22px;
+  flex-direction: column;
+  overflow: hidden;
+  border: 0;
+  border-radius: 30px;
+  color: #080808;
+  background: #fff;
+  box-shadow: 0 22px 70px rgba(0,0,0,.42);
+  cursor: grab;
+}
+.discovery-layout--swipe .product-card.is-dragging { cursor: grabbing; }
+.discovery-layout--swipe .product-visual {
+  display: block;
+  width: 100%;
+  min-height: 0;
+  max-height: none;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  border-radius: 17px;
+  background: #ececec;
+}
+.discovery-layout--swipe .product-visual img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  object-fit: cover;
+  -webkit-user-drag: none;
+  user-select: none;
+}
+.discovery-layout--swipe .product-visual .image-fallback {
+  min-height: 0;
+  color: #777;
+  background: #eee;
+}
+.discovery-layout--swipe .product-visual .image-fallback small { color: #666; }
+.discovery-layout--swipe .product-info {
+  display: flex;
+  padding: 23px 12px 0;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 18px;
+}
+.discovery-layout--swipe .product-copy { width: 100%; text-align: center; }
+.discovery-layout--swipe .product-title {
+  display: block;
+  margin: 0;
+  overflow: visible;
+  color: #050505;
+  font-size: clamp(22px, 3vw, 31px);
+  font-weight: 850;
+  letter-spacing: -.035em;
+  line-height: 1.12;
+  text-align: left;
+  text-overflow: clip;
+  text-transform: uppercase;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+.discovery-layout--swipe .product-brand-price {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 19px;
+  margin: 35px 0 30px;
+  color: #090909;
+  font-size: clamp(18px, 2.6vw, 25px);
+  line-height: 1.2;
+}
+.discovery-layout--swipe .product-brand-price > span { font-weight: 450; }
+.discovery-layout--swipe .product-brand-price > i { color: #050505; font-size: 25px; font-style: normal; }
+.discovery-layout--swipe .product-brand-price > strong { font-weight: 500; white-space: nowrap; }
+.discovery-layout--swipe .product-attributes {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px 24px;
+  color: #151515;
+  font-size: 12px;
+}
+.discovery-layout--swipe .product-attribute-group {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.discovery-layout--swipe .product-attribute-group > strong { font-size: 12px; font-weight: 800; }
+.discovery-layout--swipe .product-attribute-values { display: inline-flex; align-items: center; flex-wrap: wrap; gap: 7px; }
+.discovery-layout--swipe .product-color-value { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
+.discovery-layout--swipe .product-color-value i {
+  display: inline-block;
+  width: 19px;
+  height: 19px;
+  border: 1px solid rgba(0,0,0,.08);
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,.025);
+}
+.discovery-layout--swipe .product-attribute-missing { color: #777; }
+.discovery-layout--swipe .attribute-separator { color: #777; }
+.discovery-layout--swipe .product-original-link {
+  display: flex;
+  width: min(100%, 490px);
+  min-height: 62px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  align-self: center;
+  padding: 5px 8px 5px 22px;
+  border: 0;
+  border-radius: 999px;
+  color: #090909;
+  background: #eeeeee;
+  font-size: clamp(15px, 2.4vw, 22px);
+  font-weight: 450;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+}
+.discovery-layout--swipe .product-original-link:hover { background: #e5e5e5; }
+.discovery-layout--swipe .product-original-link > i {
+  display: grid;
+  width: 48px;
+  height: 48px;
+  flex: 0 0 48px;
+  place-items: center;
+  border-radius: 50%;
+  color: #fff;
+  background: #777;
+  font-size: 32px;
+  font-style: normal;
+  line-height: 1;
+}
+.discovery-layout--swipe .deck-actions {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(12px, 3vw, 33px);
+  padding: 0;
+  margin: 28px auto 0;
+}
+.deck-action {
+  display: grid;
+  width: 64px;
+  height: 64px;
+  flex: 0 0 64px;
+  place-items: center;
+  padding: 0;
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 50%;
+  color: #fff;
+  background: linear-gradient(145deg,#202020,#090909);
+  box-shadow: 0 8px 24px rgba(0,0,0,.48), inset 0 1px 0 rgba(255,255,255,.055);
+  cursor: pointer;
+  transition: transform .18s ease, border-color .18s ease, opacity .18s ease, box-shadow .18s ease;
+}
+.deck-action:hover:not(:disabled) {
+  transform: translateY(-3px) scale(1.045);
+  border-color: rgba(255,255,255,.3);
+  box-shadow: 0 12px 28px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.08);
+}
+.deck-action:active:not(:disabled) { transform: scale(.96); }
+.deck-action:disabled { opacity: .32; cursor: not-allowed; }
+.deck-action span { display: block; line-height: 1; }
+.deck-action-undo { width: 60px; height: 60px; flex-basis: 60px; color: #eee; font-size: 35px; }
+.deck-action-no { width: 78px; height: 78px; flex-basis: 78px; font-size: 70px; font-weight: 300; }
+.deck-action-save { width: 62px; height: 62px; flex-basis: 62px; color: #f4c64b; font-size: 31px; }
+.deck-action-save.is-selected { border-color: rgba(244,198,75,.55); background: linear-gradient(145deg,#292318,#0d0b08); }
+.deck-action-yes { width: 78px; height: 78px; flex-basis: 78px; color: #ff0000; font-size: 48px; }
+.deck-action-share { width: 60px; height: 60px; flex-basis: 60px; color: #ff0000; }
+.deck-action-share svg { width: 29px; height: 29px; }
+.discovery-layout--swipe .deck-hint { margin: 14px 0 0; color: #777; font-size: 10px; }
+
+@media (max-width: 850px) {
+  .discovery-layout--swipe { width: 100%; }
+  .discovery-layout--swipe .deck-card-wrap { width: min(100%, 600px); }
+  .discovery-layout--swipe .product-card { padding: 17px 17px 19px; border-radius: 25px; }
+  .discovery-layout--swipe .product-info { padding: 20px 8px 0; gap: 15px; }
+  .discovery-layout--swipe .product-brand-price { margin: 25px 0 23px; }
+  .discovery-layout--swipe .product-original-link { min-height: 56px; }
+  .discovery-layout--swipe .product-original-link > i { width: 42px; height: 42px; flex-basis: 42px; font-size: 28px; }
+  .discovery-layout--swipe .deck-actions { margin-top: 23px; }
+}
+@media (max-width: 600px) {
+  .discovery-layout--swipe .deck-topline { margin-bottom: 10px; }
+  .discovery-layout--swipe .deck-card-wrap { width: 100%; }
+  .discovery-layout--swipe .product-card { padding: 11px 11px 15px; border-radius: 21px; }
+  .discovery-layout--swipe .product-visual { aspect-ratio: 3 / 3.7; border-radius: 13px; }
+  .discovery-layout--swipe .product-info { padding: 16px 4px 0; gap: 13px; }
+  .discovery-layout--swipe .product-title { font-size: clamp(18px, 5.2vw, 23px); line-height: 1.12; }
+  .discovery-layout--swipe .product-brand-price { gap: 12px; margin: 20px 0 18px; font-size: 19px; }
+  .discovery-layout--swipe .product-brand-price > i { font-size: 20px; }
+  .discovery-layout--swipe .product-attributes { gap: 9px 14px; font-size: 10px; }
+  .discovery-layout--swipe .product-attribute-group { gap: 5px; }
+  .discovery-layout--swipe .product-attribute-group > strong { font-size: 10px; }
+  .discovery-layout--swipe .product-color-value { gap: 4px; font-size: 10px; }
+  .discovery-layout--swipe .product-color-value i { width: 16px; height: 16px; }
+  .discovery-layout--swipe .product-original-link { min-height: 49px; padding-left: 16px; font-size: 14px; }
+  .discovery-layout--swipe .product-original-link > i { width: 37px; height: 37px; flex-basis: 37px; font-size: 25px; }
+  .discovery-layout--swipe .deck-actions { gap: clamp(8px, 2.8vw, 15px); margin-top: 19px; }
+  .deck-action-undo, .deck-action-share { width: 49px; height: 49px; flex-basis: 49px; font-size: 27px; }
+  .deck-action-no, .deck-action-yes { width: 63px; height: 63px; flex-basis: 63px; }
+  .deck-action-no { font-size: 56px; }
+  .deck-action-yes { font-size: 39px; }
+  .deck-action-save { width: 53px; height: 53px; flex-basis: 53px; font-size: 27px; }
+  .deck-action-share svg { width: 23px; height: 23px; }
+  .discovery-layout--swipe .deck-hint { font-size: 9px; }
+}
+@media (max-width: 360px) {
+  .discovery-layout--swipe .deck-card-wrap { width: 100%; }
+  .deck-action-undo, .deck-action-share { width: 43px; height: 43px; flex-basis: 43px; }
+  .deck-action-no, .deck-action-yes { width: 56px; height: 56px; flex-basis: 56px; }
+  .deck-action-save { width: 47px; height: 47px; flex-basis: 47px; }
+}

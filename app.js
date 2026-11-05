@@ -130,23 +130,59 @@ function renderEmptyProducts(training) {
     '<button class="button-primary" type="button" data-action="add-product">Ajouter un article</button>' +
     '<button class="button-secondary" type="button" data-action="import-catalog">Importer un catalogue JSON</button></div></div>';
 }
+function productColorSwatch(value) {
+  const key = String(value || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
+  const palette = {
+    "noir":"#171717","black":"#171717","blanc":"#ffffff","white":"#ffffff",
+    "ecru":"#eee9db","creme":"#eee9db","cream":"#eee9db","beige":"#d9c6a5",
+    "gris":"#929292","grey":"#929292","gray":"#929292","anthracite":"#454545",
+    "marron":"#76513b","brown":"#76513b","chocolat":"#563a2b","camel":"#b58a5b",
+    "bordeaux":"#6b1832","burgundy":"#6b1832","rouge":"#c51d32","red":"#c51d32",
+    "rose":"#d99ba9","pink":"#d99ba9","vert":"#55704d","green":"#55704d",
+    "olive":"#77764a","kaki":"#77764a","bleu":"#526f91","blue":"#526f91",
+    "marine":"#243a58","navy":"#243a58","bleu ciel":"#a8c9df","jaune":"#e4c75b",
+    "orange":"#d9863e","violet":"#80628f","prune":"#67405f"
+  };
+  return palette[key] || "#a5a5a5";
+}
+function renderProductAttributes(product) {
+  const colors = Array.isArray(product.colors) ? product.colors.filter(Boolean).slice(0, 4) : [];
+  const materials = Array.isArray(product.materials) ? product.materials.filter(Boolean).slice(0, 4) : [];
+  const colorValues = colors.length
+    ? colors.map(function(color) {
+        return '<span class="product-color-value"><i aria-hidden="true" style="background:' + productColorSwatch(color) + '"></i>' + esc(color) + '</span>';
+      }).join("")
+    : '<span class="product-attribute-missing">Non renseignée</span>';
+  const materialValues = materials.length
+    ? materials.map(function(material) { return esc(material); }).join('<span class="attribute-separator">·</span>')
+    : '<span class="product-attribute-missing">Non renseignée</span>';
+  return '<div class="product-attributes">' +
+    '<div class="product-attribute-group"><strong>Couleurs (' + colors.length + ') :</strong><span class="product-attribute-values">' + colorValues + '</span></div>' +
+    '<div class="product-attribute-group"><strong>Matière (' + materials.length + ') :</strong><span class="product-attribute-values">' + materialValues + '</span></div>' +
+    '</div>';
+}
 function renderDeckCard(product, training) {
-  const sourceName = product.merchant || product.source || "Marchand non renseigné";
+  const brand = product.brand || product.merchant || product.source || "Marque non renseignée";
   const price = formatPrice(product.price);
+  const articleUrl = safeExternalUrl(product.url);
+  const saved = isLiked(product.id);
+  const originalLink = articleUrl
+    ? '<a class="product-original-link" href="' + esc(articleUrl) + '" target="_blank" rel="noopener noreferrer"><span>Voir l’article original</span><i aria-hidden="true">↗</i></a>'
+    : '<button class="product-original-link" type="button" data-action="details" data-id="' + esc(product.id) + '"><span>Voir la fiche produit</span><i aria-hidden="true">↗</i></button>';
   return '<div class="deck-card-wrap"><article class="product-card" id="active-product-card" data-product-id="' + esc(product.id) + '">' +
-    '<div class="product-visual">' + imageMarkup(product.imageUrl, product.name) +
-      '<div class="photo-gradient"></div><span class="photo-label">' + (training ? "Mode entraînement" : "Sélection personnalisée") + '</span>' +
-      '<span class="photo-price">' + esc(price) + '</span></div>' +
-    '<div class="product-info"><div class="product-copy"><span class="product-brand">' + esc(product.brand || "Marque non renseignée") + '</span>' +
-      '<h2 class="product-title">' + esc(product.name) + '</h2><div class="product-meta"><span>' + esc(product.objective || product.category) + '</span><i class="meta-dot"></i><span>' + esc(sourceName) + '</span></div></div>' +
-      '<button class="button-quiet button-small" type="button" data-action="details" data-id="' + esc(product.id) + '">Détails ↗</button></div>' +
-    '</article><div class="deck-actions">' +
-    '<button class="vote-button vote-no" type="button" data-action="vote" data-vote="no" data-id="' + esc(product.id) + '" aria-label="Non">Non</button>' +
-    '<button class="vote-button save-list" type="button" data-action="save-list" data-id="' + esc(product.id) + '" aria-label="Ajouter à ma liste">' +
-      (isLiked(product.id) ? "✓" : "＋") + '<small>' + (isLiked(product.id) ? "Dans ma liste" : "Ajouter à ma liste") + '</small></button>' +
-    '<button class="vote-button vote-yes" type="button" data-action="vote" data-vote="yes" data-id="' + esc(product.id) + '" aria-label="Oui">Oui</button>' +
-    '</div><div class="deck-undo"><button class="button-quiet button-small" type="button" data-action="undo" ' + (state.interactions.lastAction ? "" : "disabled") + '>↶ Annuler la dernière action</button></div>' +
-    '<p class="deck-hint">Glisse à gauche pour dire Non · à droite pour dire Oui</p></div>';
+    '<div class="product-visual">' + imageMarkup(product.imageUrl, product.name) + '</div>' +
+    '<div class="product-info"><div class="product-copy">' +
+      '<h2 class="product-title">' + esc(product.name) + '</h2>' +
+      '<div class="product-brand-price"><span>' + esc(brand) + '</span><i aria-hidden="true">•</i><strong>' + esc(price) + '</strong></div>' +
+      renderProductAttributes(product) +
+    '</div>' + originalLink + '</div>' +
+    '</article><div class="deck-actions" aria-label="Actions sur cet article">' +
+    '<button class="deck-action deck-action-undo" type="button" data-action="undo" ' + (state.interactions.lastAction ? "" : "disabled") + ' aria-label="Annuler la dernière action" title="Annuler la dernière action"><span aria-hidden="true">↶</span></button>' +
+    '<button class="deck-action deck-action-no" type="button" data-action="vote" data-vote="no" data-id="' + esc(product.id) + '" aria-label="Non" title="Non"><span aria-hidden="true">×</span></button>' +
+    '<button class="deck-action deck-action-save' + (saved ? ' is-selected' : '') + '" type="button" data-action="save-list" data-id="' + esc(product.id) + '" aria-label="' + (saved ? 'Déjà dans ma liste' : 'Ajouter à ma liste') + '" aria-pressed="' + String(saved) + '" title="' + (saved ? 'Dans ma liste' : 'Ajouter à ma liste') + '"><span aria-hidden="true">★</span></button>' +
+    '<button class="deck-action deck-action-yes" type="button" data-action="vote" data-vote="yes" data-id="' + esc(product.id) + '" aria-label="Oui" title="Oui"><span aria-hidden="true">♥</span></button>' +
+    '<button class="deck-action deck-action-share" type="button" data-action="share-product" data-id="' + esc(product.id) + '" aria-label="Partager cet article" title="Partager"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 3 10.8 13.2M21 3l-6.5 18-3.7-7.5L3 9.5 21 3Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>' +
+    '</div><p class="deck-hint">Glisse à gauche pour dire Non · à droite pour dire Oui</p></div>';
 }
 function renderGridCards(products, options) {
   const opts = options || {};
@@ -166,7 +202,7 @@ function renderGridCards(products, options) {
 function renderDiscover(training) {
   const heading = training
     ? renderPageHeading("Élargis ton univers", "Entraînement", "Explore volontairement de nouvelles coupes, matières et associations. Tes réponses Oui et Non affinent le profil, sans ajout automatique à ta liste.", '<button class="button-secondary" type="button" data-view="discover">Retour à Découvrir</button>')
-    : renderPageHeading("Ton œil, tes règles", "Découvrir", "Des pièces sélectionnées selon tes préférences. Réponds Oui, Non ou ajoute directement une pièce à ta liste.", '<button class="button-secondary" type="button" data-action="toggle-discovery-view">' + (state.settings.discoveryView === "grid" ? "Vue cartes" : "Explorer la grille") + '</button>');
+    : renderPageHeading("Ton œil, tes règles", "Découvrir", "Des pièces sélectionnées selon tes préférences. Glisse à gauche pour dire Non, à droite pour dire Oui, ou utilise les cinq actions sous la carte.", '<button class="button-secondary" type="button" data-action="toggle-discovery-view">' + (state.settings.discoveryView === "grid" ? "Vue cartes" : "Explorer la grille") + '</button>');
   const products = rankProducts(state.products, state, { training: training });
   const yesCount = state.interactions.likes.length;
   const savedCount = state.likedProducts.length;
@@ -174,7 +210,7 @@ function renderDiscover(training) {
   const isGrid = state.settings.discoveryView === "grid" && !training;
   const body = isGrid ? renderGridCards(products) : (products.length ? renderDeckCard(products[0], training) : renderEmptyProducts(training));
   const searchToolbar = isGrid ? '<div class="toolbar"><div class="toolbar-left"><input class="search-input" type="search" data-search="discover" placeholder="Rechercher un vêtement, une marque, une couleur…" aria-label="Rechercher dans le catalogue"></div><span class="result-count">' + products.length + ' article(s)</span></div>' : "";
-  return heading + renderFilterBar(training) + searchToolbar + '<div class="discovery-layout"><section class="deck-column">' +
+  return heading + renderFilterBar(training) + searchToolbar + '<div class="discovery-layout' + (isGrid ? '' : ' discovery-layout--swipe') + '"><section class="deck-column">' +
     '<div class="deck-topline"><span><strong>' + (training ? "Exploration active" : "Ta sélection") + '</strong> <span>· ' + products.length + ' article(s) à découvrir</span></span>' +
     '<span>' + (training ? "Nouveauté prioritaire" : "Personnalisation active") + '</span></div>' + body +
     '</section><aside class="deck-aside"><section class="panel aside-card"><h2 class="aside-title">Ton évolution <span>en direct</span></h2>' +
@@ -443,6 +479,46 @@ function saveToList(productId) {
   persist();
   render();
   showToast("Article ajouté à ta liste", true);
+}
+async function shareProduct(productId) {
+  const product = productById(productId);
+  if (!product) return;
+  const url = safeExternalUrl(product.url);
+  const description = [product.brand || product.merchant, formatPrice(product.price)].filter(Boolean).join(" · ");
+  const shareData = {
+    title: product.name,
+    text: [product.name, description].filter(Boolean).join(" — "),
+    url: url || window.location.href
+  };
+  if (navigator.share) {
+    try {
+      await navigator.share(shareData);
+      showToast("Article partagé", false);
+      return;
+    } catch (error) {
+      if (error && error.name === "AbortError") return;
+    }
+  }
+  try {
+    const copyValue = url || shareData.text;
+    if (navigator.clipboard && window.isSecureContext) {
+      await navigator.clipboard.writeText(copyValue);
+    } else {
+      const field = document.createElement("textarea");
+      field.value = copyValue;
+      field.setAttribute("readonly", "");
+      field.style.position = "fixed";
+      field.style.opacity = "0";
+      document.body.appendChild(field);
+      field.select();
+      const copied = document.execCommand("copy");
+      field.remove();
+      if (!copied) throw new Error("Copie indisponible");
+    }
+    showToast(url ? "Lien de l’article copié" : "Informations de l’article copiées", false);
+  } catch (error) {
+    showToast("Le partage n’est pas disponible sur ce navigateur.", false);
+  }
 }
 function rateOutfit(pinId, vote) {
   const id = String(pinId || "");
@@ -790,6 +866,7 @@ function handleClick(event) {
   else if (action === "close-modal") closeModal(); else if (action === "details") openProductDetails(actionButton.dataset.id);
   else if (action === "vote") vote(actionButton.dataset.id, actionButton.dataset.vote || "no");
   else if (action === "save-list") saveToList(actionButton.dataset.id);
+  else if (action === "share-product") shareProduct(actionButton.dataset.id);
   else if (action === "undo") undoLast();
   else if (action === "rate-outfit") rateOutfit(actionButton.dataset.id, actionButton.dataset.vote);
   else if (action === "remove-favorite") removeFavorite(actionButton.dataset.id);
@@ -885,7 +962,7 @@ function attachSwipe() {
   let deltaX = 0;
   let dragging = false;
   card.addEventListener("pointerdown", function(event) {
-    if (event.target.closest("button")) return;
+    if (event.target.closest("button, a")) return;
     startX = event.clientX;
     startY = event.clientY;
     deltaX = 0;
