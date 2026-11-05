@@ -99,3 +99,26 @@ test("validating and rejecting an outfit changes learned style preferences", fun
   assert.ok(rejected["colors:beige"] < baseline["colors:beige"]);
   assert.ok(rejected["materials:lin"] < baseline["materials:lin"]);
 });
+
+
+test("rankProducts filters to the profile size when merchant sizes are known", function() {
+  const fitting = normalizeProduct({ id:"fit", name:"Chemise Oxford", objective:"Vêtements", sizes:["S","M","L"], price:45 });
+  const unavailable = normalizeProduct({ id:"no-fit", name:"Chemise Oxford slim", objective:"Vêtements", sizes:["XS","S"], price:45 });
+  const state = createInitialState([fitting, unavailable]);
+  state.profile.sizes.tops = "M";
+  const result = rankProducts([fitting, unavailable], state, {
+    filters:{ objective:"Vêtements", style:"Tous", season:"Toute saison", maxPrice:null }
+  });
+  assert.deepEqual(result.map(item => item.id), ["fit"]);
+});
+
+test("rankProducts never puts withdrawn or expired feed products back in discovery", function() {
+  const withdrawn = normalizeProduct({ id:"withdrawn", name:"Pull", price:40, catalogStatus:"stale", sourceType:"awin" });
+  const expired = normalizeProduct({ id:"expired", name:"Jean", price:50, expiresAt:"2020-01-01T00:00:00.000Z" });
+  const active = normalizeProduct({ id:"active", name:"Pantalon", price:55 });
+  const state = createInitialState([withdrawn, expired, active]);
+  const result = rankProducts([withdrawn, expired, active], state, {
+    filters:{ objective:"Tout", style:"Tous", season:"Toute saison", maxPrice:null }
+  });
+  assert.deepEqual(result.map(item => item.id), ["active"]);
+});

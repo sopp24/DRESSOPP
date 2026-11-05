@@ -41,7 +41,7 @@ export function createInitialState(products) {
       preferredStyles: [], comfort: "Sans préférence", fit: "Sans préférence", notes: ""
     },
     settings: {
-      objective: "Vêtements", style: "Classique", season: seasonFor(new Date()), maxPrice: 20,
+      objective: "Vêtements", style: "Tous", season: seasonFor(new Date()), maxPrice: null,
       discoveryLevel: 30, trainingDiscoveryLevel: 75, discoveryView: "cards", savedFilters: [], wardrobeFilters: { objective: "Tout", style: "Tous", season: "Toute saison", maxPrice: null }, wardrobeSort: "recent"
     },
     products: Array.isArray(products) ? products : [],
@@ -88,7 +88,21 @@ export function normalizeProduct(raw) {
     addedAt: text(source.addedAt) || new Date().toISOString(),
     verifiedAt: text(source.verifiedAt),
     productRating: source.productRating == null ? null : Number(source.productRating),
-    merchantRating: source.merchantRating == null ? null : Number(source.merchantRating)
+    productRatingCount: source.productRatingCount == null ? null : Number(source.productRatingCount),
+    productRatingSource: text(source.productRatingSource),
+    merchantRating: source.merchantRating == null ? null : Number(source.merchantRating),
+    merchantRatingCount: source.merchantRatingCount == null ? null : Number(source.merchantRatingCount),
+    merchantRatingSource: text(source.merchantRatingSource),
+    sourceType: text(source.sourceType),
+    feedId: text(source.feedId),
+    advertiserId: text(source.advertiserId),
+    feedLastImported: text(source.feedLastImported),
+    syncedAt: text(source.syncedAt),
+    priceUpdatedAt: text(source.priceUpdatedAt),
+    stockVerifiedAt: text(source.stockVerifiedAt),
+    availabilityStatus: text(source.availabilityStatus),
+    catalogStatus: text(source.catalogStatus) || "active",
+    expiresAt: text(source.expiresAt)
   };
 }
 
@@ -224,12 +238,53 @@ export function rankProducts(products, state, options) {
     (state.interactions.saves || []).forEach(function(item) { seen.add(item.productId); });
     (state.likedProducts || []).forEach(function(item) { seen.add(item.productId); });
   }
+  const profile = state.profile || {};
+  function sizeMatches(product) {
+    const suppliedSizes = (product.sizes || []).map(normalizeText);
+    if (!suppliedSizes.length) return true;
+    const categoryText = normalizeText([product.name, product.category, product.objective].join(" "));
+    let preferredSize = "";
+    if (normalizeText(product.objective || product.category).includes("chauss")) preferredSize = profile.sizes && profile.sizes.shoes;
+    else if (/pantalon|jean|short|jupe|bas/.test(categoryText)) preferredSize = profile.sizes && profile.sizes.bottoms;
+    else if (/veste|manteau|blouson|outerwear/.test(categoryText)) preferredSize = profile.sizes && profile.sizes.outerwear;
+    else if (/sous|boxer|slip|chaussette|underwear/.test(categoryText)) preferredSize = profile.sizes && profile.sizes.underwear;
+    else preferredSize = profile.sizes && profile.sizes.tops;
+    if (!text(preferredSize)) return true;
+    const wanted = normalizeText(preferredSize).replace(/^(eu|fr|uk|us)\s*/, "");
+    return suppliedSizes.some(function(size) {
+      return size === normalizeText(preferredSize) ||
+        size.replace(/^(eu|fr|uk|us)\s*/, "") === wanted ||
+        (wanted.length >= 2 && size.includes(wanted));
+    });
+  }
+  function freshnessBoost(product) {
+    const verified = Date.parse(product.verifiedAt || product.syncedAt || product.stockVerifiedAt || "");
+    if (!Number.isFinite(verified)) return 0;
+    const ageHours = Math.max(0, (Date.now() - verified) / 3600000);
+    if (ageHours <= 6) return 8;
+    if (ageHours <= 24) return 6;
+    if (ageHours <= 72) return 3;
+    if (ageHours <= 168) return 0;
+    return -Math.min(12, Math.floor(ageHours / 168) * 2);
+  }
+  function reviewBoost(product) {
+    const rating = Number(product.productRating);
+    if (!Number.isFinite(rating) || rating <= 0 || rating > 5) return 0;
+    const count = Number(product.productRatingCount) || 0;
+    return (rating - 3) * 1.5 + (count >= 100 ? 3 : count >= 20 ? 1.5 : 0);
+  }
   const scored = (products || []).filter(function(product) {
-    return matchesFilters(product, opts.filters || config) && !seen.has(product.id);
+    const expired = product.catalogStatus === "expired" ||
+      (product.expiresAt && Date.parse(product.expiresAt) <= Date.now());
+    const stale = product.catalogStatus === "stale";
+    const unavailable = product.availabilityStatus === "out_of_stock";
+    return !expired && !stale && !unavailable && sizeMatches(product) &&
+      matchesFilters(product, opts.filters || config) && !seen.has(product.id);
   }).map(function(product) {
-    const familiarity = preferenceScore(product, learned) + explicitProfileScore(product, state.profile);
+    const familiarity = preferenceScore(product, learned) + explicitProfileScore(product, profile);
     const novelty = noveltyScore(product, learned);
-    const score = familiarity * (1 - discovery / 100) + novelty * (discovery / 100) * (training ? 1.25 : 1);
+    const baseScore = familiarity * (1 - discovery / 100) + novelty * (discovery / 100) * (training ? 1.25 : 1);
+    const score = baseScore + freshnessBoost(product) + reviewBoost(product);
     return { product: product, score: score };
   });
   scored.sort(function(a, b) { return b.score - a.score; });

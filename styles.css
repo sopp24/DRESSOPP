@@ -882,3 +882,71 @@ a { color: inherit; }
   .deck-action-no, .deck-action-yes { width: 56px; height: 56px; flex-basis: 56px; }
   .deck-action-save { width: 47px; height: 47px; flex-basis: 47px; }
 }
+
+
+/* Catalogue multi-boutiques : état des flux, sources officielles et avis produit. */
+.catalog-status {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:18px;
+  margin:16px 0 20px;
+  padding:18px 20px;
+  border:1px solid rgba(255,255,255,.10);
+  border-radius:18px;
+  background:linear-gradient(135deg,rgba(255,255,255,.065),rgba(255,255,255,.025));
+}
+.catalog-status.is-connected { border-color:rgba(58,190,119,.35); }
+.catalog-status-main { min-width:0; }
+.catalog-status-main > strong { display:block; margin:5px 0 3px; color:#fff; font-size:15px; }
+.catalog-status-main > p { margin:0 0 4px; color:var(--muted,#aaa); font-size:12px; }
+.catalog-status-main > small { display:block; color:#898989; font-size:10px; overflow-wrap:anywhere; }
+.catalog-status .eyebrow { color:#aaa; font-size:9px; font-weight:800; letter-spacing:.13em; text-transform:uppercase; }
+.catalog-status-side { display:flex; align-items:flex-end; flex-direction:column; gap:7px; flex:0 0 auto; }
+.catalog-status-side > span { color:#aaa; font-size:10px; text-align:right; }
+.retailer-directory { margin:22px 0 10px; padding:22px; }
+.retailer-directory-heading { display:flex; align-items:flex-start; justify-content:space-between; gap:18px; margin-bottom:18px; }
+.retailer-directory-heading h2 { margin:5px 0 6px; font-size:19px; }
+.retailer-directory-heading p { max-width:680px; margin:0; color:var(--muted,#aaa); font-size:12px; line-height:1.55; }
+.retailer-directory .eyebrow { color:#aaa; font-size:9px; font-weight:800; letter-spacing:.13em; text-transform:uppercase; }
+.retailer-groups { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:18px 22px; }
+.retailer-group h3 { margin:0 0 10px; color:#aaa; font-size:11px; font-weight:800; letter-spacing:.07em; text-transform:uppercase; }
+.retailer-links { display:flex; flex-wrap:wrap; gap:8px; }
+.retailer-link {
+  display:inline-flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  min-width:118px;
+  padding:9px 12px;
+  border:1px solid var(--line,rgba(255,255,255,.12));
+  border-radius:999px;
+  color:var(--text,#fff);
+  background:rgba(255,255,255,.035);
+  font-size:12px;
+  text-decoration:none;
+  transition:background .18s ease,border-color .18s ease,transform .18s ease;
+}
+.retailer-link:hover { transform:translateY(-1px); border-color:rgba(255,0,0,.48); background:rgba(255,255,255,.075); }
+.retailer-link i { color:#ff3030; font-size:15px; font-style:normal; }
+.retailer-disclaimer { margin:16px 0 0; color:#777; font-size:10px; line-height:1.5; }
+.product-review-note { margin:10px 0 0; color:#242424; font-size:11px; line-height:1.4; text-align:center; }
+.product-review-note strong { color:#121212; }
+.product-review-note span { color:#777; }
+.product-freshness { margin:7px 0 0; color:#777; font-size:10px; line-height:1.45; text-align:center; }
+.product-freshness.is-stale { color:#a33; }
+
+@media (max-width:850px) {
+  .catalog-status { padding:15px 16px; }
+  .retailer-directory { padding:18px; }
+}
+@media (max-width:600px) {
+  .catalog-status { align-items:flex-start; flex-direction:column; gap:12px; margin:12px 0 16px; padding:14px; }
+  .catalog-status-side { align-items:flex-start; }
+  .catalog-status-side > span { text-align:left; }
+  .retailer-directory { padding:15px; }
+  .retailer-directory-heading { flex-direction:column; gap:10px; }
+  .retailer-groups { grid-template-columns:minmax(0,1fr); gap:15px; }
+  .retailer-link { min-width:calc(50% - 4px); flex:1 1 auto; }
+  .product-review-note { font-size:10px; }
+}

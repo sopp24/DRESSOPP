@@ -84,3 +84,10 @@ Le dépôt ne contient plus de favicon SVG de remplacement.
 - `tests/` — tests unitaires.
 - `.github/workflows/deploy-pages.yml` — déploiement du site.
 - `.github/workflows/pinterest-daily.yml` — synchronisation Pinterest quotidienne.
+
+
+## Catalogue multi-boutiques
+
+DRESSOPP peut alimenter le swipe depuis les flux produits Awin accessibles au compte éditeur. Le connecteur met à jour les fiches six fois par jour, ne télécharge que les flux modifiés et écarte les articles sans prix EUR, lien, photo ou stock positif. Les notes d'articles, lorsqu'elles existent, sont séparées de la réputation de la boutique.
+
+Pour activer les flux, ajouter le secret GitHub Actions `AWIN_PRODUCT_FEED_LIST_URL` avec le lien complet de liste obtenu dans Awin → Boîte à outils → Créer un flux. Voir [le guide Awin](docs/AWIN.md). Sans ce secret, les trois références de départ expirent le 12 novembre 2026 et les autres boutiques restent accessibles depuis Découvrir par liens officiels.

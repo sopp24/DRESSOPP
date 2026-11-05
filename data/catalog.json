@@ -1,5 +1,184 @@
 {
   "schemaVersion": 1,
-  "description": "Catalogue initial volontairement vide : aucun produit marchand n'est inventé. Ajoute des fiches vérifiables ou importe un catalogue JSON.",
-  "products": []
+  "description": "Catalogue DRESSOPP : références marchandes vérifiées à durée limitée et produits des flux Awin autorisés.",
+  "syncedAt": "2026-11-05T15:29:00.000Z",
+  "products": [
+    {
+      "id": "seed-nike-cw2288-111",
+      "name": "Air Force 1 ’07",
+      "brand": "Nike",
+      "merchant": "Nike",
+      "url": "https://www.nike.com/fr/t/chaussure-air-force-1-07-pour-n8juM1H2/CW2288-111",
+      "imageUrl": "https://static.nike.com/a/images/t_web_pdp_936_v2/f_auto%2Cu_9ddf04c7-2a9a-4d76-add1-d15af8f0263d%2Cc_scale%2Cfl_relative%2Cw_1.0%2Ch_1.0%2Cfl_layer_apply/b7d9211c-26e7-431a-ac24-b0540fb3c00f/AIR%2BFORCE%2B1%2B%2707.png",
+      "price": 119.99,
+      "originalPrice": null,
+      "objective": "Chaussures",
+      "category": "Sneakers",
+      "styleTags": [
+        "Classique",
+        "Smart Casual",
+        "Preppy",
+        "Streetwear"
+      ],
+      "seasonTags": [
+        "Toute saison"
+      ],
+      "colors": [
+        "Blanc"
+      ],
+      "materials": [
+        "Cuir"
+      ],
+      "cuts": [
+        "Classique"
+      ],
+      "patterns": [],
+      "description": "Empeigne en cuir blanc/blanc, pointe perforée, amorti Nike Air et semelle extérieure en caoutchouc.",
+      "sizes": [
+        "35.5",
+        "36",
+        "36.5",
+        "37.5",
+        "38",
+        "38.5",
+        "39",
+        "40",
+        "40.5",
+        "41",
+        "42",
+        "42.5",
+        "43",
+        "44",
+        "44.5",
+        "45",
+        "45.5",
+        "46",
+        "47",
+        "47.5",
+        "48.5",
+        "49.5",
+        "50",
+        "50.5",
+        "51.5",
+        "52.5"
+      ],
+      "availability": "Tailles affichées sur Nike FR · vérifier la pointure au moment de l’achat",
+      "availabilityStatus": "available",
+      "source": "Nike",
+      "sourceType": "curated",
+      "catalogStatus": "active",
+      "verifiedAt": "2026-11-05T15:29:00.000Z",
+      "expiresAt": "2026-11-12T15:29:00.000Z",
+      "priceUpdatedAt": "2026-11-05T15:29:00.000Z"
+    },
+    {
+      "id": "seed-uniqlo-e484093-000",
+      "name": "Pantalon large plissé",
+      "brand": "Uniqlo",
+      "merchant": "UNIQLO",
+      "url": "https://www.uniqlo.com/fr/fr/products/E484093-000/00",
+      "imageUrl": "https://image.uniqlo.com/UQ/ST3/eu/imagesgoods/484093/item/eugoods_37_484093_3x4.jpg?width=600",
+      "price": 49.9,
+      "originalPrice": null,
+      "objective": "Vêtements",
+      "category": "Pantalon",
+      "styleTags": [
+        "Smart Casual",
+        "Preppy",
+        "Heritage",
+        "Classique"
+      ],
+      "seasonTags": [
+        "Automne",
+        "Hiver",
+        "Printemps"
+      ],
+      "colors": [
+        "Brun"
+      ],
+      "materials": [
+        "Coton",
+        "Polyamide"
+      ],
+      "cuts": [
+        "Ample",
+        "Wide Leg"
+      ],
+      "patterns": [],
+      "description": "Pantalon homme à pinces, coupe large. Composition indiquée : 53 % coton et 47 % polyamide.",
+      "sizes": [
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "XXL",
+        "3XL"
+      ],
+      "availability": "Tailles XS–3XL listées au catalogue UNIQLO FR · stock par taille à confirmer",
+      "availabilityStatus": "listed",
+      "source": "UNIQLO",
+      "sourceType": "curated",
+      "catalogStatus": "active",
+      "productRating": 4.8,
+      "productRatingCount": null,
+      "productRatingSource": "Avis produit UNIQLO",
+      "verifiedAt": "2026-11-05T15:29:00.000Z",
+      "expiresAt": "2026-11-12T15:29:00.000Z",
+      "priceUpdatedAt": "2026-11-05T15:29:00.000Z"
+    },
+    {
+      "id": "seed-charles-tyrwhitt-knm0017crm",
+      "name": "Pull à col rond en pure laine mérinos – Crème",
+      "brand": "Charles Tyrwhitt",
+      "merchant": "Charles Tyrwhitt",
+      "url": "https://www.charlestyrwhitt.com/fr/pull-%C3%A0-col-rond-en-pure-laine-m%C3%A9rinos---cr%C3%A8me/KNM0017CRM.html",
+      "imageUrl": "https://www.charlestyrwhitt.com/on/demandware.static/-/Sites-ctshirts-master/default/dw0997b900/KNM/KNM0017CRM/KNM0017CRM_MODEL_SEATED_01.jpg",
+      "price": 99.95,
+      "originalPrice": null,
+      "objective": "Vêtements",
+      "category": "Pull",
+      "styleTags": [
+        "Smart Casual",
+        "Preppy",
+        "Heritage",
+        "Classique"
+      ],
+      "seasonTags": [
+        "Automne",
+        "Hiver"
+      ],
+      "colors": [
+        "Crème"
+      ],
+      "materials": [
+        "Laine mérinos"
+      ],
+      "cuts": [
+        "Classique"
+      ],
+      "patterns": [],
+      "description": "Pull en 100 % laine mérinos certifiée Woolmark, col rond, finition côtelée. Taille XS à XXXL affichée.",
+      "sizes": [
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "XXL",
+        "XXXL"
+      ],
+      "availability": "Disponible en ligne selon la fiche produit · tailles à vérifier au panier",
+      "availabilityStatus": "available",
+      "source": "Charles Tyrwhitt",
+      "sourceType": "curated",
+      "catalogStatus": "active",
+      "productRating": 4.9,
+      "productRatingCount": 163,
+      "productRatingSource": "Avis produit Charles Tyrwhitt",
+      "verifiedAt": "2026-11-05T15:29:00.000Z",
+      "expiresAt": "2026-11-12T15:29:00.000Z",
+      "priceUpdatedAt": "2026-11-05T15:29:00.000Z"
+    }
+  ]
 }

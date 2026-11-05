@@ -16,6 +16,39 @@ let persistRevision = 0;
 let persistPromise = Promise.resolve();
 let pinterestFeed = { privacy: "UNKNOWN", pins: [], lastSync: null, newPinIds: [] };
 let lookbookFeed = { source: "lookbook", season: "Automne / Hiver", pins: [] };
+let catalogMeta = {
+  status: "needs-configuration", productCount: 0, liveProductCount: 0,
+  curatedProductCount: 0, sources: [], syncedAt: null,
+  message: "La connexion au flux marchand reste à activer."
+};
+
+const RETAILER_GROUPS = [
+  { title: "Multimarques & essentiels", items: [
+    ["Zalando", "https://www.zalando.fr/catalogue/"],
+    ["ASOS", "https://www.asos.com/fr/"],
+    ["UNIQLO", "https://www.uniqlo.com/fr/fr/search"],
+    ["Zara", "https://www.zara.com/fr/"]
+  ]},
+  { title: "Accessible & casual", items: [
+    ["BZB", "https://www.b-z-b.com/vetement-homme/"],
+    ["Pull & Bear", "https://www.pullandbear.com/fr/"]
+  ]},
+  { title: "Premium & luxe", items: [
+    ["Louis Vuitton", "https://fr.louisvuitton.com/"],
+    ["Dior", "https://www.dior.com/fr_fr/"],
+    ["Lothaire", "https://www.lothaire.fr/"],
+    ["Charles Tyrwhitt", "https://www.charlestyrwhitt.com/fr/"]
+  ]},
+  { title: "Sneakers & sport", items: [
+    ["Nike", "https://www.nike.com/fr/"],
+    ["adidas", "https://www.adidas.fr/"],
+    ["Courir", "https://www.courir.com/fr/"]
+  ]},
+  { title: "Sous-vêtements", items: [
+    ["Undiz", "https://www.undiz.com/"],
+    ["Calvin Klein", "https://www.calvinklein.fr/"]
+  ]}
+];
 
 const OBJECTIVES = ["Vêtements", "Chaussures", "Sous-vêtements", "Accessoires"];
 const STYLES = ["Classique", "Créatif", "Classe", "Sport", "Été", "Preppy", "Smart Casual", "Casual", "Streetwear", "Vintage", "Workwear", "Heritage"];
@@ -161,6 +194,57 @@ function renderProductAttributes(product) {
     '<div class="product-attribute-group"><strong>Matière (' + materials.length + ') :</strong><span class="product-attribute-values">' + materialValues + '</span></div>' +
     '</div>';
 }
+function renderProductReview(product) {
+  const rating = Number(product.productRating);
+  const hasRating = Number.isFinite(rating) && rating > 0 && rating <= 5;
+  const count = Number(product.productRatingCount);
+  const ratingSource = product.productRatingSource || "Source marchand";
+  const ratingText = hasRating
+    ? '<p class="product-review-note"><strong>★ ' + rating.toFixed(1).replace(".", ",") + '/5</strong>' +
+      (Number.isFinite(count) && count > 0 ? ' · ' + count.toLocaleString("fr-FR") + ' avis' : '') +
+      ' <span>· ' + esc(ratingSource) + '</span></p>'
+    : '';
+  const verified = product.verifiedAt ? new Date(product.verifiedAt).toLocaleDateString("fr-FR") : "";
+  let freshness = "";
+  if (product.catalogStatus === "stale") {
+    freshness = '<p class="product-freshness is-stale">Flux marchand non actualisé · fiche conservée dans ta liste</p>';
+  } else if (product.sourceType === "curated") {
+    freshness = '<p class="product-freshness">Prix relevé le ' + esc(verified || "5 novembre 2026") + ' · disponibilité à confirmer sur la boutique</p>';
+  } else if (product.sourceType === "awin") {
+    freshness = '<p class="product-freshness">Disponibilité confirmée par le flux marchand · ' + esc(verified) + '</p>';
+  }
+  return ratingText + freshness;
+}
+function renderCatalogStatus() {
+  const liveCount = Number(catalogMeta.liveProductCount) ||
+    state.products.filter(function(product) { return product.sourceType === "awin" && product.catalogStatus === "active"; }).length;
+  const curatedCount = Number(catalogMeta.curatedProductCount) ||
+    state.products.filter(function(product) { return product.sourceType === "curated"; }).length;
+  const syncedAt = catalogMeta.syncedAt ? new Date(catalogMeta.syncedAt).toLocaleString("fr-FR") : "Pas encore synchronisé";
+  const connected = catalogMeta.status === "connected" || catalogMeta.status === "partial";
+  const stateLabel = connected ? (catalogMeta.status === "partial" ? "Synchronisation partielle" : "Flux Awin connecté") : "Flux Awin à connecter";
+  const sourceLabel = Array.isArray(catalogMeta.sources) && catalogMeta.sources.length
+    ? catalogMeta.sources.slice(0, 6).join(" · ") + (catalogMeta.sources.length > 6 ? " · +" + (catalogMeta.sources.length - 6) : "")
+    : "Aucune enseigne Awin connectée";
+  return '<section class="catalog-status panel ' + (connected ? 'is-connected' : 'is-pending') + '" aria-label="État du catalogue marchand">' +
+    '<div class="catalog-status-main"><span class="eyebrow">Catalogue multi-boutiques</span><strong>' + liveCount + ' article(s) issus des flux marchands</strong>' +
+    '<p>' + (connected ? 'Mise à jour : ' + esc(syncedAt) : 'Connexion Awin à activer pour recevoir automatiquement les produits, prix et stocks des enseignes autorisées.') + '</p>' +
+    '<small>' + esc(sourceLabel) + '</small></div><div class="catalog-status-side"><span>' + curatedCount + ' fiche(s) de départ</span>' +
+    '<a class="button-quiet button-small" href="https://github.com/sopp24/DRESSOPP/blob/main/docs/AWIN.md" target="_blank" rel="noopener noreferrer">Configurer les flux ↗</a></div></section>';
+}
+function renderRetailerDirectory() {
+  const groups = RETAILER_GROUPS.map(function(group) {
+    return '<div class="retailer-group"><h3>' + esc(group.title) + '</h3><div class="retailer-links">' +
+      group.items.map(function(item) {
+        return '<a class="retailer-link" href="' + esc(item[1]) + '" target="_blank" rel="noopener noreferrer"><span>' + esc(item[0]) + '</span><i aria-hidden="true">↗</i></a>';
+      }).join("") + '</div></div>';
+  }).join("");
+  return '<section class="panel retailer-directory"><div class="retailer-directory-heading"><div><span class="eyebrow">Tes sources</span><h2>Explorer les boutiques</h2>' +
+    '<p>Les flux autorisés alimentent le swipe. Ces raccourcis te laissent aussi consulter les boutiques qui ne proposent pas de flux accessible.</p></div>' +
+    '<a class="button-quiet button-small" href="https://www.facebook.com/ads/library/?active_status=active&ad_type=ALL&country=FR" target="_blank" rel="noopener noreferrer">Meta Ad Library ↗</a></div>' +
+    '<div class="retailer-groups">' + groups + '</div>' +
+    '<p class="retailer-disclaimer">La Meta Ad Library donne accès à des publicités publiques, pas à ton fil publicitaire Instagram personnalisé. Les avis d’article ne sont pas assimilés à une note de fiabilité de la boutique.</p></section>';
+}
 function renderDeckCard(product, training) {
   const brand = product.brand || product.merchant || product.source || "Marque non renseignée";
   const price = formatPrice(product.price);
@@ -174,7 +258,7 @@ function renderDeckCard(product, training) {
     '<div class="product-info"><div class="product-copy">' +
       '<h2 class="product-title">' + esc(product.name) + '</h2>' +
       '<div class="product-brand-price"><span>' + esc(brand) + '</span><i aria-hidden="true">•</i><strong>' + esc(price) + '</strong></div>' +
-      renderProductAttributes(product) +
+      renderProductAttributes(product) + renderProductReview(product) +
     '</div>' + originalLink + '</div>' +
     '</article><div class="deck-actions" aria-label="Actions sur cet article">' +
     '<button class="deck-action deck-action-undo" type="button" data-action="undo" ' + (state.interactions.lastAction ? "" : "disabled") + ' aria-label="Annuler la dernière action" title="Annuler la dernière action"><span aria-hidden="true">↶</span></button>' +
@@ -210,7 +294,7 @@ function renderDiscover(training) {
   const isGrid = state.settings.discoveryView === "grid" && !training;
   const body = isGrid ? renderGridCards(products) : (products.length ? renderDeckCard(products[0], training) : renderEmptyProducts(training));
   const searchToolbar = isGrid ? '<div class="toolbar"><div class="toolbar-left"><input class="search-input" type="search" data-search="discover" placeholder="Rechercher un vêtement, une marque, une couleur…" aria-label="Rechercher dans le catalogue"></div><span class="result-count">' + products.length + ' article(s)</span></div>' : "";
-  return heading + renderFilterBar(training) + searchToolbar + '<div class="discovery-layout' + (isGrid ? '' : ' discovery-layout--swipe') + '"><section class="deck-column">' +
+  return heading + renderCatalogStatus() + renderFilterBar(training) + searchToolbar + '<div class="discovery-layout' + (isGrid ? '' : ' discovery-layout--swipe') + '"><section class="deck-column">' +
     '<div class="deck-topline"><span><strong>' + (training ? "Exploration active" : "Ta sélection") + '</strong> <span>· ' + products.length + ' article(s) à découvrir</span></span>' +
     '<span>' + (training ? "Nouveauté prioritaire" : "Personnalisation active") + '</span></div>' + body +
     '</section><aside class="deck-aside"><section class="panel aside-card"><h2 class="aside-title">Ton évolution <span>en direct</span></h2>' +
@@ -218,8 +302,8 @@ function renderDiscover(training) {
     '<div class="aside-stat"><div class="stat-box"><strong>' + yesCount + '</strong><small>Oui</small></div><div class="stat-box"><strong>' + rejected + '</strong><small>Non</small></div><div class="stat-box"><strong>' + savedCount + '</strong><small>Dans ma liste</small></div></div></section>' +
     '<section class="panel aside-card"><h2 class="aside-title">Équilibre du moment <span>' + esc(training ? state.settings.trainingDiscoveryLevel : state.settings.discoveryLevel) + '% découverte</span></h2>' +
     '<p>' + (training ? "Le mode Entraînement donne plus de poids à la nouveauté pour élargir ton terrain de jeu." : "Le curseur mélange tes goûts déjà identifiés et des propositions plus inattendues. Ajuste-le à tout moment.") + '</p></section>' +
-    '<div class="source-note">Le catalogue initial est volontairement vide. Les articles ajoutés sont conservés avec leurs liens marchands ; les informations absentes restent signalées.</div>' +
-    '</aside></div>';
+    '<div class="source-note">Le classement combine les caractéristiques du lookbook, tes votes, la fraîcheur du flux et les avis d’article vérifiables. Les notes d’article ne représentent pas la fiabilité globale du marchand.</div>' +
+    '</aside></div>' + renderRetailerDirectory();
 }
 function renderWardrobe() {
   const heading = renderPageHeading("Tes pièces retenues", "Ma garde-robe", "Tous tes coups de cœur au même endroit. Retirer un favori ne crée pas de rejet dans ton profil de style.", '<button class="button-primary" type="button" data-action="add-product">＋ Ajouter un article</button>');
@@ -402,9 +486,12 @@ function renderSettings() {
   const updated = state.updatedAt ? new Date(state.updatedAt).toLocaleString("fr-FR") : "Pas encore enregistrée";
   const lastPinterestSync = pinterestFeed.lastSync ? new Date(pinterestFeed.lastSync).toLocaleString("fr-FR") : "Aucune synchronisation réussie";
   const status = pinterestFeed.privacy === "PUBLIC" ? "Tableau public détecté" : "Connexion à configurer";
-  return renderPageHeading("Contrôle & confidentialité", "Paramètres", "Pinterest est l’unique source d’inspiration. Les connexions et synchronisations ne sont annoncées comme actives qu’après une réponse API vérifiée.", "") +
+  return renderPageHeading("Contrôle & confidentialité", "Paramètres", "Gère les flux Pinterest et les catalogues marchands. Une source n’est annoncée comme connectée qu’après une synchronisation vérifiée.", "") +
     '<section class="panel section-panel"><h2 class="section-title">Pinterest · mon tableau mode</h2><div class="connector-item pinterest-connector"><div><strong>Pinterest</strong><small>' + esc(status) + '</small></div><p>Synchronisation quotidienne à 12 h (Europe/Paris) via le workflow GitHub. L’application Pinterest doit être créée depuis le compte sopppx24, puis son ID et son secret doivent être ajoutés aux secrets GitHub. Le jeton est généré automatiquement à chaque passage.</p><a class="button-secondary button-small" href="' + esc(PINTEREST_BOARD_URL) + '" target="_blank" rel="noopener noreferrer">Ouvrir le tableau ↗</a></div>' +
     '<p class="field-hint">Dernière synchronisation : ' + esc(lastPinterestSync) + '</p><div class="form-actions"><a class="button-primary button-small" href="https://github.com/sopp24/DRESSOPP/actions/workflows/pinterest-daily.yml" target="_blank" rel="noopener noreferrer">Voir / lancer le workflow ↗</a><a class="button-quiet button-small" href="https://github.com/sopp24/DRESSOPP/blob/main/docs/PINTEREST.md" target="_blank" rel="noopener noreferrer">Guide de configuration ↗</a></div></section>' +
+    '<section class="panel section-panel"><h2 class="section-title">Catalogue marchand · Awin</h2><div class="connector-item"><div><strong>' + (catalogMeta.status === "connected" ? "Flux marchand connecté" : catalogMeta.status === "partial" ? "Flux partiellement disponible" : "Configuration requise") + '</strong><small>' + Number(catalogMeta.liveProductCount || 0) + ' article(s) issu(s) des flux Awin</small></div><p>Awin fournit les fiches produit, prix, photos, tailles et stocks lorsque les marques les publient et autorisent ton compte éditeur à y accéder. Le dépôt vérifie les flux six fois par jour, sans télécharger une fiche dont la version n’a pas changé.</p><p class="field-hint">Dernière vérification : ' + esc(catalogMeta.syncedAt ? new Date(catalogMeta.syncedAt).toLocaleString("fr-FR") : "Connexion non configurée") + '</p><p class="field-hint">Enseignes détectées : ' + esc((catalogMeta.sources || []).join(" · ") || "Aucune pour le moment") + '</p><div class="form-actions"><a class="button-primary button-small" href="https://github.com/sopp24/DRESSOPP/actions/workflows/refresh-awin-catalog.yml" target="_blank" rel="noopener noreferrer">Lancer / consulter la synchronisation ↗</a><a class="button-quiet button-small" href="https://github.com/sopp24/DRESSOPP/blob/main/docs/AWIN.md" target="_blank" rel="noopener noreferrer">Guide de connexion ↗</a><a class="button-quiet button-small" href="https://github.com/sopp24/DRESSOPP/settings/secrets/actions" target="_blank" rel="noopener noreferrer">Ajouter le secret GitHub ↗</a><a class="button-quiet button-small" href="https://ui.awin.com/" target="_blank" rel="noopener noreferrer">Ouvrir Awin ↗</a></div></section>' +
+    '<section class="panel section-panel"><h2 class="section-title">Fiabilité et avis</h2><p class="field-hint">DRESSOPP distingue la note d’un article de la fiabilité générale d’une boutique. Les notes affichées viennent de la fiche produit lorsqu’elles sont disponibles ; aucun score Trustpilot, Google, Avis Vérifiés, Trusted Shops ou Custplace n’est inventé.</p><p class="field-hint">Les flux Awin ne donnent pas nécessairement accès aux avis marchands. Les enseignes sans flux accessible restent consultables via la rubrique Découvrir.</p></section>' +
+    '<section class="panel section-panel"><h2 class="section-title">Publicités Instagram</h2><p class="field-hint">L’application ne lit pas ton fil publicitaire personnalisé. Tu peux consulter les campagnes publiques et les annonces actives dans la Meta Ad Library, puis conserver manuellement les références qui te plaisent.</p><div class="form-actions"><a class="button-secondary button-small" href="https://www.facebook.com/ads/library/?active_status=active&ad_type=ALL&country=FR" target="_blank" rel="noopener noreferrer">Ouvrir Meta Ad Library ↗</a></div></section>' +
     '<section class="panel section-panel"><h2 class="section-title">Sauvegarde des données</h2><div class="source-note">' + esc(getPersistenceNotice()) + '</div>' +
     '<div class="form-grid" style="margin-top:16px"><div class="preference-block"><h3>État local</h3><p class="field-hint">Dernière modification : ' + esc(updated) + '</p><p class="field-hint">Produits : ' + state.products.length + ' · Articles dans ma liste : ' + state.likedProducts.length + ' · Décisions Oui : ' + state.interactions.likes.length + ' · Décisions Non : ' + state.interactions.dislikes.length + '</p></div>' +
     '<div class="preference-block"><h3>Copie de sécurité</h3><p class="field-hint">Exporte régulièrement ton fichier JSON. Il contient tes articles, préférences, votes, avis sur les tenues et Pins ajoutés manuellement.</p><div class="form-actions"><button class="button-primary button-small" type="button" data-action="export">Exporter mes données</button><button class="button-secondary button-small" type="button" data-action="import-backup">Importer une sauvegarde</button></div></div></div>' +
@@ -1014,6 +1101,7 @@ document.addEventListener("keydown", function(event) {
 });
 async function boot() {
   let catalog = [];
+  let catalogLoaded = false;
   try {
     const pinResponse = await fetch("./data/pinterest-pins.json", { cache: "no-store" });
     if (pinResponse.ok) {
@@ -1033,14 +1121,22 @@ async function boot() {
     if (response.ok) {
       const payload = await response.json();
       catalog = (payload.products || []).map(normalizeProduct);
+      catalogLoaded = true;
     }
   } catch (error) { console.warn("Catalogue distant non chargé.", error); }
+  try {
+    const response = await fetch("./data/catalog-meta.json", { cache: "no-store" });
+    if (response.ok) catalogMeta = await response.json();
+  } catch (error) { console.warn("État du catalogue marchand non chargé.", error); }
   const stored = await loadState();
   const base = createInitialState(catalog);
   state = stored ? Object.assign(base, stored) : base;
   state.profile = Object.assign(base.profile, state.profile || {});
   state.profile.sizes = Object.assign(base.profile.sizes, state.profile.sizes || {});
   state.settings = Object.assign(base.settings, state.settings || {});
+  const migrateLegacyPriceCeiling = state.settings.catalogBudgetMigration !== "multi-shop-v1";
+  if (migrateLegacyPriceCeiling && state.settings.maxPrice === 20) state.settings.maxPrice = null;
+  state.settings.catalogBudgetMigration = "multi-shop-v1";
   state.interactions = Object.assign(base.interactions, state.interactions || {});
   state.interactions.likes = Array.isArray(state.interactions.likes) ? state.interactions.likes : [];
   state.interactions.dislikes = Array.isArray(state.interactions.dislikes) ? state.interactions.dislikes : [];
@@ -1049,8 +1145,34 @@ async function boot() {
   state.interactions.undoEvents = Array.isArray(state.interactions.undoEvents) ? state.interactions.undoEvents : [];
   state.likedProducts = Array.isArray(state.likedProducts) ? state.likedProducts : [];
   state.outfitFeedback = state.outfitFeedback && typeof state.outfitFeedback === "object" && !Array.isArray(state.outfitFeedback) ? state.outfitFeedback : {};
-  state.products = Array.isArray(state.products) ? state.products.map(normalizeProduct) : catalog;
-  if (!state.products.length && catalog.length) state.products = catalog;
+  const localProducts = Array.isArray(state.products) ? state.products.map(normalizeProduct) : [];
+  if (!catalogLoaded) {
+    state.products = localProducts.length ? localProducts : catalog;
+  } else {
+    const currentIds = new Set(catalog.map(function(product) { return product.id; }));
+    const currentIdentities = new Set(catalog.map(productIdentity));
+    const savedIds = new Set((state.likedProducts || []).map(function(item) { return item.productId; }));
+    (state.interactions.likes || []).concat(state.interactions.dislikes || [], state.interactions.saves || []).forEach(function(item) { savedIds.add(item.productId); });
+    const localManual = localProducts.filter(function(product) {
+      const isFeedProduct = product.sourceType === "awin" || product.feedId || product.advertiserId;
+      return !isFeedProduct && !currentIdentities.has(productIdentity(product));
+    });
+    const savedWithdrawn = localProducts.filter(function(product) {
+      const isFeedProduct = product.sourceType === "awin" || product.feedId || product.advertiserId;
+      return isFeedProduct && !currentIds.has(product.id) && savedIds.has(product.id);
+    }).map(function(product) {
+      return Object.assign({}, product, {
+        catalogStatus: "stale",
+        availabilityStatus: "out_of_stock",
+        availability: "Fiche absente du dernier flux marchand · à revérifier"
+      });
+    });
+    const merged = new Map();
+    catalog.forEach(function(product) { merged.set(product.id, product); });
+    localManual.forEach(function(product) { merged.set(product.id, product); });
+    savedWithdrawn.forEach(function(product) { merged.set(product.id, product); });
+    state.products = Array.from(merged.values());
+  }
   state.inspirations = Array.isArray(state.inspirations) ? state.inspirations.filter(function(item) { return item.source === "Pinterest"; }) : [];
   state.seenPinterestPins = Array.isArray(state.seenPinterestPins) ? state.seenPinterestPins : [];
   state.pinterestPins = (pinterestFeed.pins || []).concat(lookbookFeed.pins || []);

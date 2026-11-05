@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "provider": "Awin Product Feeds",
+  "status": "needs-configuration",
+  "syncedAt": "2026-11-05T15:29:00.000Z",
+  "productCount": 3,
+  "liveProductCount": 0,
+  "curatedProductCount": 3,
+  "feedCount": 0,
+  "updatedFeeds": 0,
+  "errorFeeds": 0,
+  "sources": [
+    "Nike",
+    "UNIQLO",
+    "Charles Tyrwhitt"
+  ],
+  "refreshCadence": "6 synchronisations planifiées par jour ; la fraîcheur dépend de la mise à jour du flux par chaque marchand.",
+  "feeds": {},
+  "message": "Le connecteur Awin est prêt, mais la clé Data Feed doit encore être ajoutée aux secrets GitHub. Les trois fiches de départ sont temporaires et leurs prix/tailles doivent être revérifiés sur les boutiques."
+}
