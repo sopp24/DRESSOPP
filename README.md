@@ -39,6 +39,14 @@ Cette fonction est **désactivée par défaut** et nécessite de créer un proje
 
 Les profils communautaires ne représentent que les membres DRESSOPP volontaires ; ils ne donnent pas accès aux recherches privées effectuées sur Google, Instagram ou d'autres applications.
 
+## Personal shopper IA facultatif
+
+DRESSOPP peut utiliser un agent IA distinct du moteur local. Il analyse les filtres sélectionnés, les préférences générales, les 15 derniers produits aimés/refusés/enregistrés, les tags d'inspiration et jusqu'à 50 fiches candidates. Il explique les articles proposés et les classe au-dessus des autres fiches déjà présentes dans le catalogue.
+
+Le Worker utilise Cloudflare Workers AI et le modèle `@cf/google/gemma-4-26b-a4b-it`. Le binding reste côté serveur : aucune clé secrète n'est intégrée au navigateur. Le service est **désactivé par défaut** et nécessite un compte Cloudflare ainsi qu'un déploiement manuel décrit dans [docs/AI-AGENT.md](docs/AI-AGENT.md). Même après déploiement, l'utilisateur doit cocher un consentement dans la rubrique Découvrir avant tout transfert.
+
+L'agent ne fait pas de recherche web autonome et n'invente pas de fiches : il classe uniquement les produits réels du catalogue quotidien. Il n'envoie pas les tailles, notes libres, e-mail, URL produits, images, URLs Pinterest ni l'historique complet. Si le Worker n'est pas configuré ou si le quota gratuit est atteint, le moteur local continue de fonctionner.
+
 ## Pinterest
 
 Le tableau `sopppx24/mode` demeure la référence stylistique prioritaire. Le workflow `.github/workflows/pinterest-daily.yml` est programmé chaque jour à 12 h (Europe/Paris), via Pinterest API v5. Son activation nécessite les identifiants de l'application Pinterest et les autorisations `boards:read` et `pins:read`. Le flux n'est publié dans le dépôt que si l'API confirme que le tableau est public.
@@ -53,7 +61,7 @@ Meta Ad Library peut servir à repérer des publicités publiques en France, mai
 
 ## Données et confidentialité
 
-Les profils, tailles, votes, préférences, garde-robe et Pins consultés restent dans IndexedDB sur l'appareil, avec un repli localStorage. Le dépôt public ne contient aucun profil personnel ni historique de votes. Le partage communautaire est facultatif et désactivé initialement.
+Les profils, tailles, votes, préférences, garde-robe et Pins consultés restent dans IndexedDB sur l'appareil, avec un repli localStorage. Le dépôt public ne contient aucun profil personnel ni historique de votes. Le partage communautaire et l'envoi de préférences à l'agent IA sont facultatifs et désactivés initialement.
 
 ## Déploiement et développement
 
