@@ -536,7 +536,7 @@ async function loadNextCatalogPage() {
   }
 }
 function maybePrefetchCatalog() {
-  if (!state || (currentView !== "discover" && currentView !== "training") || catalogPagePending || catalogNextPending || catalogNextPending) return;
+  if (!state || (currentView !== "discover" && currentView !== "training") || catalogPagePending || catalogNextPending) return;
   const available = rankProducts(state.products,state,{
     training:currentView === "training",communitySignals:communitySignals
   }).length;
