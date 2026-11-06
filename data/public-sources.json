@@ -1,0 +1,203 @@
+{
+  "schemaVersion": 1,
+  "market": "FR",
+  "note": "Boutiques à explorer. Les pages qui interdisent le crawl ou ne publient pas de données structurées sont ignorées.",
+  "sources": [
+    {
+      "name": "Zalando",
+      "domain": "zalando.fr"
+    },
+    {
+      "name": "ASOS",
+      "domain": "asos.com"
+    },
+    {
+      "name": "UNIQLO",
+      "domain": "uniqlo.com"
+    },
+    {
+      "name": "Zara",
+      "domain": "zara.com"
+    },
+    {
+      "name": "BZB",
+      "domain": "b-z-b.com"
+    },
+    {
+      "name": "Pull & Bear",
+      "domain": "pullandbear.com"
+    },
+    {
+      "name": "Bershka",
+      "domain": "bershka.com"
+    },
+    {
+      "name": "H&M",
+      "domain": "hm.com"
+    },
+    {
+      "name": "Mango",
+      "domain": "mango.com"
+    },
+    {
+      "name": "COS",
+      "domain": "cos.com"
+    },
+    {
+      "name": "ARKET",
+      "domain": "arket.com"
+    },
+    {
+      "name": "Massimo Dutti",
+      "domain": "massimodutti.com"
+    },
+    {
+      "name": "Levi's",
+      "domain": "levi.com"
+    },
+    {
+      "name": "Carhartt WIP",
+      "domain": "carhartt-wip.com"
+    },
+    {
+      "name": "Jack & Jones",
+      "domain": "jackjones.com"
+    },
+    {
+      "name": "Celio",
+      "domain": "celio.com"
+    },
+    {
+      "name": "Jules",
+      "domain": "jules.com"
+    },
+    {
+      "name": "Weekday",
+      "domain": "weekday.com"
+    },
+    {
+      "name": "Nike",
+      "domain": "nike.com"
+    },
+    {
+      "name": "adidas",
+      "domain": "adidas.fr"
+    },
+    {
+      "name": "New Balance",
+      "domain": "newbalance.fr"
+    },
+    {
+      "name": "Puma",
+      "domain": "puma.com"
+    },
+    {
+      "name": "ASICS",
+      "domain": "asics.com"
+    },
+    {
+      "name": "Converse",
+      "domain": "converse.com"
+    },
+    {
+      "name": "Courir",
+      "domain": "courir.com"
+    },
+    {
+      "name": "JD Sports",
+      "domain": "jdsports.fr"
+    },
+    {
+      "name": "Foot Locker",
+      "domain": "footlocker.fr"
+    },
+    {
+      "name": "Snipes",
+      "domain": "snipes.com"
+    },
+    {
+      "name": "Calvin Klein",
+      "domain": "calvinklein.fr"
+    },
+    {
+      "name": "Undiz",
+      "domain": "undiz.com"
+    },
+    {
+      "name": "Louis Vuitton",
+      "domain": "louisvuitton.com"
+    },
+    {
+      "name": "Dior",
+      "domain": "dior.com"
+    },
+    {
+      "name": "Lothaire",
+      "domain": "lothaire.fr"
+    },
+    {
+      "name": "Charles Tyrwhitt",
+      "domain": "charlestyrwhitt.com"
+    },
+    {
+      "name": "Lacoste",
+      "domain": "lacoste.com"
+    },
+    {
+      "name": "Fred Perry",
+      "domain": "fredperry.com"
+    },
+    {
+      "name": "Tommy Hilfiger",
+      "domain": "tommy.com"
+    },
+    {
+      "name": "Polo Ralph Lauren",
+      "domain": "ralphlauren.fr"
+    },
+    {
+      "name": "Sarenza",
+      "domain": "sarenza.com"
+    },
+    {
+      "name": "Spartoo",
+      "domain": "spartoo.com"
+    },
+    {
+      "name": "La Redoute",
+      "domain": "laredoute.fr"
+    },
+    {
+      "name": "Galeries Lafayette",
+      "domain": "galerieslafayette.com"
+    },
+    {
+      "name": "Printemps",
+      "domain": "printemps.com"
+    },
+    {
+      "name": "ABOUT YOU",
+      "domain": "aboutyou.fr"
+    },
+    {
+      "name": "Kiabi",
+      "domain": "kiabi.com"
+    },
+    {
+      "name": "C&A",
+      "domain": "c-and-a.com"
+    },
+    {
+      "name": "24S",
+      "domain": "24s.com"
+    },
+    {
+      "name": "Vestiaire Collective",
+      "domain": "vestiairecollective.com"
+    },
+    {
+      "name": "Decathlon",
+      "domain": "decathlon.fr"
+    }
+  ]
+}
