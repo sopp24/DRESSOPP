@@ -1,45 +1,48 @@
 # Pinterest dans DRESSOPP
 
-Le seul canal d'inspiration de DRESSOPP est le tableau :
+## Priorité stylistique
+
+Le tableau de référence est :
 
 https://fr.pinterest.com/sopppx24/mode/
 
-## Synchronisation quotidienne
+Pinterest est une source d'inspiration prioritaire, pas un catalogue commercial. Le tableau peut contenir des images d'autres sujets ; le moteur ne retient que les signaux interprétables (styles, couleurs, matières, coupes, motifs et tags) pour construire les préférences. Les Pins ne doivent jamais être convertis automatiquement en fiches marchandes, prix ou liens produit inventés.
 
-Le workflow `.github/workflows/pinterest-daily.yml` est prévu pour se lancer chaque jour à 12 h, fuseau `Europe/Paris`. Il peut également être déclenché manuellement depuis Actions.
+Le moteur accorde davantage de poids aux signaux stylistiques Pinterest. Les réponses Oui/Non sur les produits et le feedback sur les tenues peuvent ensuite corriger ou confirmer ces inspirations.
 
-Lorsqu'une synchronisation modifie `data/pinterest-pins.json`, le workflow déclenche explicitement `deploy-pages.yml` afin que les nouveaux Pins soient publiés sur le site. Ce déclenchement utilise l'événement `workflow_dispatch`, car une simple poussée réalisée avec le `GITHUB_TOKEN` ne relance pas automatiquement un workflow `push`.
+## Synchronisation
 
-Il utilise l'API Pinterest officielle v5 :
+Le workflow `.github/workflows/pinterest-daily.yml` est prévu chaque jour à 12 h (Europe/Paris) et peut être lancé depuis GitHub Actions.
+
+Il utilise Pinterest API v5 :
 - `GET /boards` pour retrouver le tableau `mode` ;
-- `GET /boards/{board_id}/pins` pour charger ses épingles ;
-- comparaison des identifiants avec le dernier flux pour repérer les nouveaux Pins.
+- `GET /boards/{board_id}/pins` pour lire les Pins ;
+- comparaison des identifiants pour repérer les nouvelles épingles.
 
-Le script s'arrête volontairement si Pinterest ne confirme pas que le tableau est **PUBLIC**. Le dépôt DRESSOPP étant public, le flux `data/pinterest-pins.json` est public lui aussi. Ne jamais utiliser ce mécanisme pour un tableau secret ou protégé.
+Le script actuel n'écrit dans `data/pinterest-pins.json` que si l'API confirme que le tableau est **PUBLIC**. Le dépôt DRESSOPP est public ; le fichier publié est donc public également. Aucun tableau secret ou contenu privé ne doit y être publié.
 
-## Activation
+## Activation avec l'application Pinterest
 
-1. Crée une application dans le portail développeur Pinterest : https://developers.pinterest.com/
-2. Crée l'application en étant connecté au compte Pinterest qui possède le tableau.
-3. Crée l'application en étant connecté au même compte Pinterest que celui qui possède le tableau `sopppx24/mode`. Le flux Client Credentials agit au nom du propriétaire de l'application : les deux comptes doivent donc correspondre.
-4. Active la double authentification Pinterest et configure l'accès API v5 avec les permissions minimales `boards:read` et `pins:read`.
-5. Dans GitHub, ouvre **Settings → Secrets and variables → Actions → New repository secret** et ajoute :
-   - `PINTEREST_APP_ID` : l'ID de ton application Pinterest ;
-   - `PINTEREST_APP_SECRET` : le secret de ton application.
-6. Le workflow génère un jeton OAuth court à chaque synchronisation avec le flux `client_credentials`. Aucun jeton d'accès réutilisable n'a besoin d'être enregistré.
-7. En alternative, tu peux fournir un secret `PINTEREST_ACCESS_TOKEN` déjà généré ; il sera prioritaire, mais il expirera et devra être renouvelé manuellement.
-8. Ouvre l'onglet **Actions**, puis le workflow **DRESSOPP — Synchronisation Pinterest quotidienne** et lance **Run workflow** pour le premier test.
+1. Créer une application dans le portail développeur : https://developers.pinterest.com/
+2. Utiliser le compte Pinterest qui possède le tableau `sopppx24/mode`.
+3. Configurer les autorisations minimales `boards:read` et `pins:read`.
+4. Dans GitHub, ouvrir **Settings → Secrets and variables → Actions → New repository secret** et ajouter :
+   - `PINTEREST_APP_ID` : identifiant de l'application ;
+   - `PINTEREST_APP_SECRET` : secret de l'application.
+5. Le workflow génère un jeton Client Credentials pour les endpoints autorisés. Ce mode agit au nom de l'application et non d'un utilisateur tiers ; il ne donne pas accès à toutes les ressources d'un compte.
+6. Un secret `PINTEREST_ACCESS_TOKEN` peut être utilisé à la place. Pour des ressources utilisateur qui nécessitent un consentement, il faut le flux OAuth Authorization Code et les scopes correspondants.
+7. Lancer [Actions → Synchronisation Pinterest](https://github.com/sopp24/DRESSOPP/actions/workflows/pinterest-daily.yml) pour vérifier le premier passage.
 
-Si le tableau est secret, l'API requiert les scopes adaptés (`boards:read_secret` et `pins:read_secret`) et les données doivent être stockées dans un dépôt privé ou un backend privé. Le script actuel refuse de publier ce tableau dans le dépôt public.
+Les scopes secrets `boards:read_secret` et `pins:read_secret` ne doivent être utilisés que dans un flux OAuth utilisateur qui a obtenu ce consentement. Le mécanisme public actuel refuse de publier les Pins secrets. Pour une utilisation future de tableaux privés, les données devront être stockées dans un backend privé et non dans ce dépôt public.
 
-## Données de synchronisation
+## Données et confidentialité
 
-`data/pinterest-pins.json` contient la liste courante des épingles récupérées, leurs identifiants, liens, descriptions, dates et images Pinterest, ainsi que les identifiants nouveaux au dernier passage.
-
-DRESSOPP peut alors distinguer les Pins déjà consultés dans l'application de ceux qui viennent d'arriver. Les interactions « Oui », « Non » et « Ajouter à ma liste » restent enregistrées localement dans IndexedDB.
+`data/pinterest-pins.json` contient les Pins publics synchronisés, leurs identifiants, liens, titres/descriptions et images. Les interactions et feedbacks personnels restent dans IndexedDB sur l'appareil. Les identifiants ou mots de passe Pinterest ne doivent jamais être committés dans le dépôt.
 
 ## Limites
 
-- Pinterest doit autoriser l'application développeur et le token doit rester valide.
-- La synchronisation programmée dépend de GitHub Actions ; un horaire cron est une heure cible, pas une garantie d'exécution à la seconde près.
-- Le premier lancement récupère les épingles du tableau ; les suivantes comparent les identifiants au flux précédent.
+- L'application Pinterest et les autorisations API doivent être valides.
+- Les pages du tableau doivent être publiques pour le workflow actuel.
+- Le client credentials ne remplace pas un consentement utilisateur pour des ressources privées.
+- Les horaires cron GitHub Actions sont des heures cibles et peuvent être retardés.
+- Le premier passage charge les Pins accessibles ; les suivants identifient les nouveaux Pins.
