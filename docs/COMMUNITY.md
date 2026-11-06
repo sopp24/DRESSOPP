@@ -40,7 +40,7 @@ Publier les règles avant de cocher le partage dans DRESSOPP.
 
 ## Données partagées et confidentialité
 
-DRESSOPP ne partage pas de nom, d'e-mail, de taille, de budget, d'historique de navigation, de lien Pinterest, ni de contenu libre. Le profil communautaire ne contient que des étiquettes générales de styles, catégories, marques, couleurs et matières appréciées ou évitées. Chaque navigateur reçoit un identifiant Firebase anonyme. La contribution est facultative et désactivable dans Paramètres ; la désactivation supprime le document communautaire associé.
+DRESSOPP ne partage pas de nom, d'e-mail, de taille, de budget, d'historique de navigation, de lien Pinterest, ni de contenu libre. Le profil communautaire ne contient que des étiquettes générales de styles, catégories, marques, couleurs et matières appréciées ou évitées. Chaque navigateur reçoit un identifiant Firebase aléatoire et pseudonyme ; les membres autorisés peuvent lire les étiquettes de goûts de la communauté. Ces données ne sont donc pas anonymes au sens strict. Certaines combinaisons de goûts peuvent également rester distinctives. La contribution est facultative et désactivable dans Paramètres ; la désactivation supprime le document communautaire associé.
 
 Les utilisateurs similaires sont calculés localement à partir des étiquettes communes. Le moteur utilise ensuite les tendances positives/négatives de ces profils pour ajuster le classement des articles déjà présents dans le catalogue. Cela ne signifie pas que DRESSOPP connaît les recherches privées des utilisateurs d'autres sites.
 
