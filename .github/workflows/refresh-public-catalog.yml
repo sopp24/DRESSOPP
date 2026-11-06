@@ -1,6 +1,13 @@
 name: DRESSOPP — Catalogue public multi-sources
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - "scripts/refresh-public-catalog.mjs"
+      - "data/public-sources.json"
+      - "tests/public-catalog.test.js"
+      - ".github/workflows/refresh-public-catalog.yml"
   schedule:
     - cron: "17 8 * * *"
       timezone: "Europe/Paris"
@@ -8,7 +15,6 @@ on:
 
 permissions:
   contents: write
-  actions: write
 
 concurrency:
   group: dressopp-public-catalog
@@ -28,7 +34,6 @@ jobs:
       - name: Explorer les boutiques publiques autorisées
         run: node scripts/refresh-public-catalog.mjs
       - name: Enregistrer les changements du catalogue
-        id: commit-catalog
         run: |
           if [[ -n "$(git status --porcelain data/catalog.json data/catalog-meta.json)" ]]; then
             git config user.name "github-actions[bot]"
@@ -36,13 +41,6 @@ jobs:
             git add data/catalog.json data/catalog-meta.json
             git commit -m "Actualiser le catalogue public multi-sources"
             git push
-            echo "changed=true" >> "$GITHUB_OUTPUT"
           else
             echo "Aucun changement dans le catalogue public."
-            echo "changed=false" >> "$GITHUB_OUTPUT"
           fi
-      - name: Publier le catalogue sur GitHub Pages
-        if: steps.commit-catalog.outputs.changed == 'true'
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: gh workflow run deploy-pages.yml --ref main
