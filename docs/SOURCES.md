@@ -20,6 +20,13 @@ DRESSOPP ne dépend plus d'un réseau d'affiliation ni d'une API Shopping payant
 
 La présence d'une enseigne dans cette liste ne garantit pas qu'elle accepte l'exploration automatique. La liste est un répertoire de départ, pas une promesse de disponibilité.
 
+## Coût et hébergement
+
+- Le collecteur n'utilise aucune API Shopping payante, aucun compte éditeur et aucun abonnement.
+- GitHub indique que l'utilisation des runners standard GitHub Actions est gratuite pour les dépôts publics : [tarifs GitHub](https://github.com/pricing).
+- GitHub Pages est disponible avec GitHub Free pour les dépôts publics : [documentation GitHub Pages](https://docs.github.com/en/pages/getting-started-with-github-pages).
+- **Limite importante :** GitHub précise que Pages n'est pas un hébergement gratuit destiné à une activité commerciale, un e-commerce ou un SaaS. DRESSOPP n'encaisse pas d'argent et ne traite aucune transaction. Si le projet devient commercial, il faudra reconsidérer son hébergement : [limites GitHub Pages](https://docs.github.com/en/pages/getting-started-with-github-pages/github-pages-limits).
+
 ## Ce que le collecteur fait
 
 1. Lit `robots.txt` et utilise les sitemaps annoncés par le site.
