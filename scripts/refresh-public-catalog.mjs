@@ -435,8 +435,17 @@ export async function main() {
   const sources = Array.isArray(config.sources) && config.sources.length
     ? config.sources : (Array.isArray(directory.entries) ? directory.entries : []);
   if (!sources.length) throw new Error("Aucune boutique configurée : vérifie data/merchant-directory.json.");
-  const previous = await readJson(CATALOG,{products:[]});
   const previousMeta = await readJson(META,{});
+  const previousCatalog = await readJson(CATALOG,{products:[]});
+  const previousManifest = await readJson(MANIFEST,{pages:[]});
+  const previousProducts = new Map();
+  for (const page of (previousManifest.pages || [])) {
+    const pageData = await readJson(resolve(ROOT,"data",page.file),{products:[]});
+    (pageData.products || []).forEach(product => previousProducts.set(product.id,product));
+  }
+  if (!previousProducts.size) {
+    (previousCatalog.products || []).forEach(product => previousProducts.set(product.id,product));
+  }
   const rotation = selectSourceBatch(
     sources, previousMeta,
     config.batchSize || DEFAULT_BATCH_SIZE,
@@ -460,7 +469,7 @@ export async function main() {
   }
   await Promise.all(Array.from({length:4},worker));
   const seeds = await readJson(SEEDS,{products:[]});
-  const merged = mergeCatalog(previous.products || [],seeds.products || [],results,new Date(),previousMeta);
+  const merged = mergeCatalog(Array.from(previousProducts.values()),seeds.products || [],results,new Date(),previousMeta);
   merged.meta.priorityCursor = rotation.nextCursors.priorityCursor;
   merged.meta.regularCursor = rotation.nextCursors.regularCursor;
   merged.meta.directoryCount = sources.length;
