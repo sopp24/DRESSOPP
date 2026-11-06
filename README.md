@@ -25,7 +25,9 @@ Le collecteur gratuit :
 
 **Limites importantes :** ce n'est pas un moteur de recherche universel ni un accès garanti à chaque référence d'une boutique. Certaines boutiques bloquent les robots, ne publient pas de sitemaps produits ou ne fournissent pas de données structurées exploitables. Ces sites restent accessibles par les liens officiels dans DRESSOPP et peuvent être ajoutés par import manuel. Les prix et stocks sont une photographie datée ; la vérification finale doit se faire sur la boutique. Aucun blocage technique n'est contourné.
 
-Aucun abonnement, compte éditeur ou clé API payante n'est nécessaire. Pour lancer le premier passage : [GitHub Actions – Catalogue public](https://github.com/sopp24/DRESSOPP/actions/workflows/refresh-public-catalog.yml) → **Run workflow**.
+Aucun abonnement, compte éditeur ou clé API payante n'est nécessaire. Le dépôt étant public, GitHub indique que l'utilisation des runners standard GitHub Actions est gratuite pour les dépôts publics. GitHub Pages est également disponible pour les dépôts publics avec GitHub Free. Attention : GitHub Pages n'est pas destiné à héberger gratuitement une activité commerciale, un site e-commerce ou un SaaS. DRESSOPP ne traite actuellement aucun paiement et ne vend aucun produit ; si le projet devient un service commercial, il faudra réévaluer l'hébergement au regard des conditions GitHub.
+
+Pour lancer le premier passage : [GitHub Actions – Catalogue public](https://github.com/sopp24/DRESSOPP/actions/workflows/refresh-public-catalog.yml) → **Run workflow**.
 
 Guide complet : [docs/SOURCES.md](docs/SOURCES.md).
 
