@@ -32,6 +32,7 @@ let aiAgentConfig = { enabled:false, endpoint:"" };
 let aiAgentState = { status:"unconfigured", recommendations:[], message:"", searchHints:[], candidateCount:0 };
 let aiAgentPending = false;
 let aiAgentLastActionCount = 0;
+let aiAgentController = null;
 
 
 const RETAILER_GROUPS = [
@@ -200,7 +201,9 @@ async function runAiAgent(showFeedback) {
   aiAgentLastActionCount = requestActionCount;
   render();
   try {
-    const result = await requestAgentRecommendations(aiAgentConfig.endpoint,state,candidates,aiAgentInspirations());
+    const controller = new AbortController();
+    aiAgentController = controller;
+    const result = await requestAgentRecommendations(aiAgentConfig.endpoint,state,candidates,aiAgentInspirations(),{signal:controller.signal});
     const contextChanged = !state.settings.aiAgentConsent || aiAgentActionCount() !== requestActionCount ||
       (currentView === "training") !== training || aiAgentContextSignature(training) !== requestContext;
     if (contextChanged) {
@@ -211,9 +214,14 @@ async function runAiAgent(showFeedback) {
       if (showFeedback) showToast(result.recommendations.length + " recommandations sélectionnées par ton personal shopper IA.",false);
     }
   } catch (error) {
-    aiAgentState = { status:"error", recommendations:[], message:error.message + " Le classement local reste actif.", searchHints:[], candidateCount:candidates.length };
-    if (showFeedback) showToast("Le personal shopper IA est indisponible : " + error.message,false);
+    if (!state.settings.aiAgentConsent || (error && error.name === "AbortError")) {
+      aiAgentState = { status:"unconfigured", recommendations:[], message:"Partage IA désactivé. Le classement local continue de fonctionner.", searchHints:[], candidateCount:0 };
+    } else {
+      aiAgentState = { status:"error", recommendations:[], message:error.message + " Le classement local reste actif.", searchHints:[], candidateCount:candidates.length };
+      if (showFeedback) showToast("Le personal shopper IA est indisponible : " + error.message,false);
+    }
   } finally {
+    aiAgentController = null;
     aiAgentPending = false;
     const actionDelta = aiAgentActionCount() - aiAgentLastActionCount;
     const autoEnabled = state && state.settings.aiAgentAutoRefresh && state.settings.aiAgentConsent && aiAgentConfig.enabled;
@@ -1199,6 +1207,7 @@ function handleChange(event) {
   if (target.id === "ai-agent-consent") {
     state.settings.aiAgentConsent = Boolean(target.checked);
     if (!target.checked) {
+      if (aiAgentController) aiAgentController.abort();
       state.settings.aiAgentAutoRefresh = false;
       aiAgentState = { status:"unconfigured", recommendations:[], message:"Partage IA désactivé. Le classement local continue de fonctionner.", searchHints:[], candidateCount:0 };
     }
