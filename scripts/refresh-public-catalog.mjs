@@ -470,6 +470,11 @@ export async function main() {
   await Promise.all(Array.from({length:4},worker));
   const seeds = await readJson(SEEDS,{products:[]});
   const merged = mergeCatalog(Array.from(previousProducts.values()),seeds.products || [],results,new Date(),previousMeta);
+  const directoryNames = new Set(sources.map(source => source.name));
+  merged.meta.sourceResults = merged.meta.sourceResults.filter(result => directoryNames.has(result.name));
+  merged.meta.sourceCount = merged.meta.sourceResults.filter(result => result.status === "ok").length;
+  merged.meta.attemptedSourceCount = merged.meta.sourceResults.length;
+  merged.meta.scannedSourceCount = results.length;
   merged.meta.priorityCursor = rotation.nextCursors.priorityCursor;
   merged.meta.regularCursor = rotation.nextCursors.regularCursor;
   merged.meta.directoryCount = sources.length;
