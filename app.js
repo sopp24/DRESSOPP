@@ -3,7 +3,7 @@ import { createInitialState, normalizeProduct, productIdentity, seasonFor, rankP
 import { INTEGRATIONS, getPersistenceNotice, PINTEREST_BOARD_URL } from "./modules/integrations.js";
 import { inferPinterestTags, buildOutfitIdeas } from "./modules/outfits.js";
 import { syncCommunityProfile, deleteCommunityProfile, buildCommunitySignals } from "./modules/community.js";
-import { requestAgentRecommendations, orderProductsByAgent } from "./modules/agent.js";
+import { requestAgentRecommendations, orderProductsByAgent, selectAgentCandidates } from "./modules/agent.js";
 
 const main = document.querySelector("#app-main");
 const modalRoot = document.querySelector("#modal-root");
@@ -163,7 +163,7 @@ function aiAgentInspirations() {
 }
 function aiAgentContextSignature(training) {
   const settings = state.settings || {}, profile = state.profile || {};
-  const products = rankProducts(state.products,state,{training:training,communitySignals:communitySignals}).slice(0,50);
+  const products = selectAgentCandidates(rankProducts(state.products,state,{training:training,communitySignals:communitySignals}),50);
   return JSON.stringify({
     objective:settings.objective, style:settings.style, season:settings.season, maxPrice:settings.maxPrice,
     discoveryLevel:training ? settings.trainingDiscoveryLevel : settings.discoveryLevel,
@@ -188,7 +188,7 @@ async function runAiAgent(showFeedback) {
   }
   if (aiAgentPending) return;
   const training = currentView === "training";
-  const candidates = rankProducts(state.products,state,{training:training,communitySignals:communitySignals}).slice(0,50);
+  const candidates = selectAgentCandidates(rankProducts(state.products,state,{training:training,communitySignals:communitySignals}),50);
   if (!candidates.length) {
     aiAgentState = { status:"empty", recommendations:[], message:"Aucun article disponible dans cette catégorie et avec ces filtres. Élargis la recherche ou attends la prochaine collecte.", searchHints:[], candidateCount:0 };
     render();
