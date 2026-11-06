@@ -1,0 +1,7 @@
+{
+  "name": "dressopp-agent",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": { "deploy": "wrangler deploy", "dev": "wrangler dev" }
+}
