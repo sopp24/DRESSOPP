@@ -23,13 +23,17 @@ service cloud.firestore {
       allow read: if request.auth != null;
       allow create, update: if request.auth != null
         && request.auth.uid == userId
-        && request.resource.data.keys().hasOnly(['schemaVersion', 'updatedAt', 'positive', 'negative'])
+        && request.resource.data.keys().hasOnly(['schemaVersion', 'updatedAt', 'positive', 'negative', 'positiveItems', 'negativeItems'])
         && request.resource.data.schemaVersion == 1
         && request.resource.data.updatedAt is timestamp
         && request.resource.data.positive is list
         && request.resource.data.positive.size() <= 60
         && request.resource.data.negative is list
-        && request.resource.data.negative.size() <= 40;
+        && request.resource.data.negative.size() <= 40
+        && request.resource.data.positiveItems is list
+        && request.resource.data.positiveItems.size() <= 40
+        && request.resource.data.negativeItems is list
+        && request.resource.data.negativeItems.size() <= 30;
       allow delete: if request.auth != null && request.auth.uid == userId;
     }
   }
@@ -40,9 +44,9 @@ Publier les règles avant de cocher le partage dans DRESSOPP.
 
 ## Données partagées et confidentialité
 
-DRESSOPP ne partage pas de nom, d'e-mail, de taille, de budget, d'historique de navigation, de lien Pinterest, ni de contenu libre. Le profil communautaire ne contient que des étiquettes générales de styles, catégories, marques, couleurs et matières appréciées ou évitées. Chaque navigateur reçoit un identifiant Firebase aléatoire et pseudonyme ; les membres autorisés peuvent lire les étiquettes de goûts de la communauté. Ces données ne sont donc pas anonymes au sens strict. Certaines combinaisons de goûts peuvent également rester distinctives. La contribution est facultative et désactivable dans Paramètres ; la désactivation supprime le document communautaire associé.
+DRESSOPP ne partage pas de nom, d'e-mail, de taille, de budget, d'historique de navigation, de lien Pinterest, ni de contenu libre. Le profil communautaire contient des étiquettes générales de styles, catégories, marques, couleurs et matières appréciées ou évitées, ainsi que des identifiants hachés de fiches publiques aimées, enregistrées ou refusées. Les URL, noms de produits et identifiants de fiches bruts ne sont pas transmis. Chaque navigateur reçoit un identifiant Firebase aléatoire et pseudonyme ; les membres autorisés peuvent lire les étiquettes de goûts de la communauté. Ces données ne sont donc pas anonymes au sens strict. Certaines combinaisons de goûts peuvent également rester distinctives. La contribution est facultative et désactivable dans Paramètres ; la désactivation supprime le document communautaire associé.
 
-Les utilisateurs similaires sont calculés localement à partir des étiquettes communes. Le moteur utilise ensuite les tendances positives/négatives de ces profils pour ajuster le classement des articles déjà présents dans le catalogue. Cela ne signifie pas que DRESSOPP connaît les recherches privées des utilisateurs d'autres sites.
+Les utilisateurs similaires sont calculés localement à partir des étiquettes communes. Le moteur utilise ensuite les tendances positives/négatives de ces profils pour ajuster le classement des articles déjà présents dans le catalogue. Les identifiants hachés permettent de reconnaître une même fiche publique appréciée par plusieurs personnes, sans transmettre son URL brute. Cela ne signifie pas que DRESSOPP connaît les recherches privées des utilisateurs d'autres sites.
 
 ## Quotas gratuits officiels
 
