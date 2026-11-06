@@ -242,10 +242,10 @@ async function robotsFor(source,base) {
     return null;
   }
 }
-function safeAllowed(value,base,source,robots) {
+function safeAllowed(value,base,source,robots,enforceLocale = true) {
   const url = safePage(value,base,source.domain);
   if (!url || !robotsAllows(url.pathname + url.search,robots)) return null;
-  if (source.localePathPrefix && !url.pathname.startsWith(source.localePathPrefix)) return null;
+  if (enforceLocale && source.localePathPrefix && !url.pathname.startsWith(source.localePathPrefix)) return null;
   return url;
 }
 async function scan(source) {
@@ -254,7 +254,7 @@ async function scan(source) {
   const sitemapQueue = (robots.sitemaps.length ? robots.sitemaps : [new URL("/sitemap.xml",base).href,new URL("/sitemap_index.xml",base).href]).slice(0,MAX_SITEMAPS);
   const seen = new Set(), urls = new Set();
   while (sitemapQueue.length && seen.size < MAX_SITEMAPS) {
-    const map = safeAllowed(sitemapQueue.shift(),base,source,robots); if (!map || seen.has(map.href)) continue;
+    const map = safeAllowed(sitemapQueue.shift(),base,source,robots,false); if (!map || seen.has(map.href)) continue;
     seen.add(map.href);
     try {
       const result = await request(map.href);
@@ -266,7 +266,7 @@ async function scan(source) {
     } catch { /* Continuer même si un sitemap est indisponible. */ }
   }
   let pages = 0; const categoryUrls = new Set();
-  const home = safeAllowed(base.href,base,source,robots);
+  const home = safeAllowed(base.href,base,source,robots,false);
   if (home) {
     try {
       const result = await request(home.href); pages++;
@@ -327,7 +327,9 @@ export function mergeCatalog(previous,seeds,results,now = new Date()) {
   for (const [id,p] of products.entries()) {
     if (p.sourceType !== "public-web") continue;
     const verified = Date.parse(p.verifiedAt || "");
-    products.set(id,{...p,catalogStatus:!Number.isFinite(verified) || now.getTime() - verified > TTL ? "stale" : "active"});
+    const withinTtl = Number.isFinite(verified) && now.getTime() - verified <= TTL;
+    const revalidated = refreshedUrls.has(id);
+    products.set(id,{...p,catalogStatus:withinTtl && (p.catalogStatus !== "stale" || revalidated) ? "active" : "stale"});
   }
   const items = Array.from(products.values()).slice(0,MAX_TOTAL);
   const fresh = items.filter(p => p.sourceType === "public-web" && p.catalogStatus === "active");
