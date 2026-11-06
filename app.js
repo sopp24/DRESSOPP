@@ -994,12 +994,21 @@ function resetProfile() {
 async function deleteAllData() {
   if (!window.confirm("Supprimer définitivement toutes les données DRESSOPP enregistrées sur cet appareil ? Exporte une sauvegarde avant de continuer.")) return;
   await persistPromise.catch(function() {});
+  let communityRemovalFailed = false;
+  if (communityConfig.enabled) {
+    try { await deleteCommunityProfile(communityConfig); }
+    catch (error) { communityRemovalFailed = true; }
+  }
   await clearState();
   state = createInitialState([]);
+  communitySignals = { positive:{}, negative:{}, neighbors:0 };
+  communityStatus = "Partage désactivé";
   currentView = "discover";
   render();
   updateSaveStatus("Données locales supprimées", "ok");
-  showToast("Les données locales ont été supprimées", false);
+  showToast(communityRemovalFailed
+    ? "Données locales supprimées. Le profil communautaire distant n'a pas pu être supprimé."
+    : "Les données locales ont été supprimées", false);
 }
 function setView(nextView) {
   currentView = nextView;
