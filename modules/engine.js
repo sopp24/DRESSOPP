@@ -168,12 +168,12 @@ export function deriveLearnedPreferences(state) {
     Object.entries(features).forEach(function(entry) {
       entry[1].forEach(function(value) {
         const token = entry[0] + ":" + normalizeText(value);
-        totals[token] = (totals[token] || 0) + 1.5;
+        totals[token] = (totals[token] || 0) + 2.5;
       });
     });
     (pin.tags || []).forEach(function(value) {
       const token = "styleTags:" + normalizeText(value);
-      totals[token] = (totals[token] || 0) + 1.5;
+      totals[token] = (totals[token] || 0) + 2.5;
     });
   });
 
