@@ -35,7 +35,7 @@ Guide complet : [docs/SOURCES.md](docs/SOURCES.md).
 
 Le mode communautaire permet de comparer les goûts avec ceux d'autres utilisateurs DRESSOPP qui ont expressément accepté de contribuer. Il utilise des étiquettes de goûts pseudonymisées (styles, catégories, marques, couleurs, matières) et des identifiants hachés de fiches publiques aimées ou refusées. Le moteur peut ainsi détecter des profils proches et faire remonter un même article lorsqu'il a été apprécié par plusieurs membres similaires.
 
-Cette fonction est **désactivée par défaut** et nécessite de créer un projet Firebase en plan Spark (gratuit), d'activer l'authentification anonyme et de publier les règles Firestore décrites dans [docs/COMMUNITY.md](docs/COMMUNITY.md). Aucun nom, e-mail, taille, budget, historique de navigation ni lien Pinterest n'est partagé. Sans Firebase, l'apprentissage individuel continue de fonctionner sur l'appareil.
+Cette fonction est **désactivée par défaut** et nécessite de créer un projet Firebase en plan Spark (gratuit), d'activer l'authentification anonyme et de publier les règles Firestore décrites dans [docs/COMMUNITY.md](docs/COMMUNITY.md). Aucun nom, e-mail, taille, budget, historique brut ni lien Pinterest n'est partagé. Les identifiants d'articles sont pseudonymisés, pas chiffrés ; un membre technique peut les rapprocher du catalogue public. Sans Firebase, l'apprentissage individuel continue de fonctionner sur l'appareil.
 
 Les profils communautaires ne représentent que les membres DRESSOPP volontaires ; ils ne donnent pas accès aux recherches privées effectuées sur Google, Instagram ou d'autres applications.
 
