@@ -950,3 +950,77 @@ a { color: inherit; }
   .retailer-link { min-width:calc(50% - 4px); flex:1 1 auto; }
   .product-review-note { font-size:10px; }
 }
+
+
+/* Personal shopper IA — activation facultative et explication du classement. */
+.ai-agent-panel {
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  margin:16px 0 20px;
+  padding:19px 20px;
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:18px;
+  background:linear-gradient(135deg,rgba(255,255,255,.055),rgba(255,255,255,.018));
+}
+.ai-agent-top {
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:16px;
+}
+.ai-agent-top h2 { margin:3px 0 5px; font-size:18px; letter-spacing:-.035em; }
+.ai-agent-top p,.ai-agent-help { margin:0; color:var(--muted,#aaa); font-size:12px; line-height:1.6; }
+.ai-agent-status {
+  flex:0 0 auto;
+  padding:6px 9px;
+  border:1px solid var(--line);
+  border-radius:999px;
+  color:#aaa;
+  font-size:10px;
+  font-weight:700;
+}
+.ai-agent-status.is-ready { color:#a9d9b4; border-color:rgba(141,202,157,.42); }
+.ai-agent-status.is-loading { color:#e5d3a0; border-color:rgba(229,211,160,.35); }
+.ai-agent-consent,.ai-agent-auto {
+  display:flex;
+  align-items:flex-start;
+  gap:10px;
+  color:#bbb;
+  font-size:11px;
+  line-height:1.65;
+}
+.ai-agent-consent input,.ai-agent-auto input {
+  flex:0 0 auto;
+  width:16px;
+  height:16px;
+  margin:2px 0 0;
+  accent-color:var(--accent);
+}
+.ai-agent-controls { display:flex; align-items:center; flex-wrap:wrap; gap:13px; }
+.ai-agent-message { margin:0; color:#ddd; font-size:12px; line-height:1.6; }
+.ai-agent-result-note { margin:0; color:#aaa; font-size:10px; }
+.ai-agent-hints { display:flex; align-items:center; flex-wrap:wrap; gap:7px; color:#888; font-size:10px; }
+.ai-agent-hints > span:not(:first-child) {
+  padding:5px 9px;
+  border:1px solid var(--line);
+  border-radius:999px;
+  color:#ccc;
+  background:rgba(255,255,255,.035);
+}
+.ai-agent-disclaimer { margin:0; color:#777; font-size:10px; line-height:1.55; }
+.ai-agent-guide { width:fit-content; color:#bbb; font-size:10px; text-decoration-color:rgba(255,0,0,.65); text-underline-offset:3px; }
+.ai-agent-guide:hover { color:#fff; }
+.ai-agent-product-reason {
+  margin:7px 0 0;
+  color:#969696;
+  font-size:10px;
+  line-height:1.5;
+}
+.ai-agent-product-reason strong { color:#c9c9c9; }
+@media(max-width:600px) {
+  .ai-agent-panel { padding:15px; }
+  .ai-agent-top { flex-direction:column; gap:8px; }
+  .ai-agent-status { align-self:flex-start; }
+  .ai-agent-controls { align-items:flex-start; flex-direction:column; }
+}
