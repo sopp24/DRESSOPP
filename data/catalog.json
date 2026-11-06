@@ -3590,6 +3590,100 @@
       "verifiedAt": "2026-11-06T16:18:22.816Z",
       "expiresAt": "2026-11-13T16:18:22.816Z",
       "priceUpdatedAt": "2026-11-06T16:18:22.816Z"
+    },
+    {
+      "id": "seed-lookbook-bangel-wide-denim",
+      "name": "JEANS, LOOSE FIT – Light Blue",
+      "brand": "B.ANGEL",
+      "merchant": "Zalando · OVS Group",
+      "url": "https://www.zalando.fr/bangel-jeans-loose-fit-jean-coupe-decontractee-light-blue-bwx22g00u-k11.html",
+      "imageUrl": "https://img01.ztat.net/article/spp-media-p1/9bf0177ff5f144dbbe65f165d1c899a8/6ae71ccfe8bf4c8daa01fafef2e9d7f8.jpg?imwidth=762",
+      "price": 44.95,
+      "originalPrice": null,
+      "objective": "Vêtements",
+      "category": "Jean",
+      "styleTags": [
+        "Casual",
+        "Vintage",
+        "Streetwear",
+        "Workwear"
+      ],
+      "seasonTags": [
+        "Toute saison"
+      ],
+      "colors": [
+        "Bleu clair",
+        "Denim délavé"
+      ],
+      "materials": [
+        "Coton"
+      ],
+      "cuts": [
+        "Loose",
+        "Ample",
+        "Jambe droite"
+      ],
+      "patterns": [
+        "Délavé"
+      ],
+      "description": "Jean homme B.ANGEL en denim bleu clair 100 % coton, coupe loose, taille regular et jambe droite ample. Équivalent visuel proche des looks #08 et #13 du lookbook : jean clair délavé avec volume ample. La fiche Zalando précise que les visuels sont générés par IA ; la coupe, composition et référence produit sont indiquées sur la fiche.",
+      "sizes": [],
+      "availability": "Fiche produit active avec taille sélectionnable ; stock de la taille à confirmer sur Zalando.",
+      "availabilityStatus": "listed",
+      "source": "Zalando",
+      "sourceType": "curated",
+      "catalogStatus": "active",
+      "verifiedAt": "2026-11-06T16:21:57.182Z",
+      "expiresAt": "2026-11-13T16:21:57.182Z",
+      "priceUpdatedAt": "2026-11-06T16:21:57.182Z"
+    },
+    {
+      "id": "seed-lookbook-bangel-grey-wide-jogger",
+      "name": "MELANGE OVER-FIT TROUSERS – Grey Marl",
+      "brand": "B.ANGEL",
+      "merchant": "Zalando · OVS Group",
+      "url": "https://www.zalando.fr/bangel-melange-over-fit-trousers-pantalon-de-survetement-grey-marl-bwx22e01z-c11.html",
+      "imageUrl": "https://img01.ztat.net/article/spp-media-p1/c0651324e9e944f48105d672f109a1b8/1e0a435b15714798b5af655f2be3f075.jpg?filter=packshot&imwidth=762",
+      "price": 44.95,
+      "originalPrice": null,
+      "objective": "Vêtements",
+      "category": "Pantalon de jogging",
+      "styleTags": [
+        "Casual",
+        "Streetwear",
+        "Minimaliste"
+      ],
+      "seasonTags": [
+        "Automne",
+        "Hiver",
+        "Printemps"
+      ],
+      "colors": [
+        "Gris chiné"
+      ],
+      "materials": [
+        "Polyester",
+        "Viscose",
+        "Élasthanne"
+      ],
+      "cuts": [
+        "Over-fit",
+        "Ample",
+        "Jambe droite"
+      ],
+      "patterns": [
+        "Chiné"
+      ],
+      "description": "Pantalon de survêtement homme B.ANGEL gris chiné, coupe over-fit et jambe ample droite, taille élastiquée. Correspondance directe de silhouette avec le pantalon du lookbook #17 (pull crème et jogging gris large).",
+      "sizes": [],
+      "availability": "Fiche produit active avec taille sélectionnable ; stock de la taille à confirmer sur Zalando.",
+      "availabilityStatus": "listed",
+      "source": "Zalando",
+      "sourceType": "curated",
+      "catalogStatus": "active",
+      "verifiedAt": "2026-11-06T16:21:57.182Z",
+      "expiresAt": "2026-11-13T16:21:57.182Z",
+      "priceUpdatedAt": "2026-11-06T16:21:57.182Z"
     }
   ]
 }
