@@ -1,0 +1,7 @@
+{
+  "enabled": false,
+  "endpoint": "",
+  "provider": "Cloudflare Workers AI",
+  "model": "@cf/google/gemma-4-26b-a4b-it",
+  "description": "Optionnel : nécessite de déployer workers/dressopp-agent. L'activation et le transfert de préférences nécessitent un accord explicite dans DRESSOPP."
+}
