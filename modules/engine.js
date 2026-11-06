@@ -113,6 +113,13 @@ export function productIdentity(product) {
   return normalized.url ? normalized.url.split("?")[0].replace(/\/+$/, "").toLowerCase() : normalized.id;
 }
 
+export function productCommunityToken(product) {
+  const normalized = normalizeProduct(product);
+  if (!normalized.url || !["public-web", "curated"].includes(normalized.sourceType)) return "";
+  const identity = productIdentity(normalized);
+  return "item:" + hash("dressopp-public-item-a:" + identity) + hash("dressopp-public-item-b:" + identity);
+}
+
 export function matchesFilters(product, filters) {
   const selected = filters || {};
   const category = text(selected.objective || "Tout");
@@ -296,7 +303,12 @@ export function rankProducts(products, state, options) {
       score += (signals.positive && signals.positive[token] || 0) * 1.8;
       score -= (signals.negative && signals.negative[token] || 0) * 2.2;
     });
-    return Math.max(-6, Math.min(6, score));
+    const itemToken = productCommunityToken(product);
+    if (itemToken) {
+      score += (signals.positiveItems && signals.positiveItems[itemToken] || 0) * 4;
+      score -= (signals.negativeItems && signals.negativeItems[itemToken] || 0) * 5;
+    }
+    return Math.max(-14, Math.min(14, score));
   }
   const scored = (products || []).filter(function(product) {
     const expired = product.catalogStatus === "expired" ||
