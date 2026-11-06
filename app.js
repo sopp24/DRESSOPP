@@ -37,6 +37,7 @@ let catalogManifest = null;
 let catalogDirectory = [];
 let catalogLoadedPages = new Set();
 let catalogPagePending = false;
+let catalogNextPending = false;
 let catalogLastManifestCheck = 0;
 let catalogRetryAfter = 0;
 
@@ -494,31 +495,48 @@ async function loadCatalogPage(pageIndex) {
   }
 }
 async function loadNextCatalogPage() {
-  if (!state || catalogPagePending || Date.now() < catalogRetryAfter) return false;
-  await refreshCatalogManifest(false);
-  if (!catalogManifest || !Array.isArray(catalogManifest.pages)) return false;
-  let index = catalogManifest.pages.findIndex(page => !catalogLoadedPages.has(page.file));
-  if (index < 0) {
+  if (!state || catalogPagePending || catalogNextPending || Date.now() < catalogRetryAfter) return false;
+  catalogNextPending = true;
+  let totalAdded = 0;
+  try {
     await refreshCatalogManifest(false);
     if (!catalogManifest || !Array.isArray(catalogManifest.pages)) return false;
-    index = catalogManifest.pages.findIndex(page => !catalogLoadedPages.has(page.file));
+    while (true) {
+      let index = catalogManifest.pages.findIndex(page => !catalogLoadedPages.has(page.file));
+      if (index < 0) {
+        await refreshCatalogManifest(false);
+        if (!catalogManifest || !Array.isArray(catalogManifest.pages)) break;
+        index = catalogManifest.pages.findIndex(page => !catalogLoadedPages.has(page.file));
+      }
+      if (index < 0) break;
+
+      const added = await loadCatalogPage(index);
+      totalAdded += added;
+      const isDiscovering = currentView === "discover" || currentView === "training";
+      if (isDiscovering && added) render();
+
+      // En grille, un lot suffit dès qu'il apporte des fiches nouvelles.
+      if (currentView === "discover" && state.settings.discoveryView === "grid" && added) break;
+
+      // En mode swipe, continuer au-delà des lots vides ou déjà vus jusqu'à
+      // ce qu'il reste un vrai tampon de propositions, ou que les pages soient épuisées.
+      if (isDiscovering) {
+        const available = rankProducts(state.products,state,{
+          training:currentView === "training",communitySignals:communitySignals
+        }).length;
+        if (available >= 8) break;
+      } else if (added) {
+        render();
+        break;
+      }
+    }
+    return totalAdded > 0;
+  } finally {
+    catalogNextPending = false;
   }
-  if (index < 0) return false;
-  const added = await loadCatalogPage(index);
-  if (currentView === "discover" || currentView === "training") {
-    if (added) render();
-    const available = rankProducts(state.products,state,{
-      training:currentView === "training",communitySignals:communitySignals
-    }).length;
-    const remainingPages = catalogManifest.pages.some(page => !catalogLoadedPages.has(page.file));
-    if (available < 8 && remainingPages) loadNextCatalogPage();
-  } else if (added) {
-    render();
-  }
-  return added > 0;
 }
 function maybePrefetchCatalog() {
-  if (!state || (currentView !== "discover" && currentView !== "training") || catalogPagePending) return;
+  if (!state || (currentView !== "discover" && currentView !== "training") || catalogPagePending || catalogNextPending || catalogNextPending) return;
   const available = rankProducts(state.products,state,{
     training:currentView === "training",communitySignals:communitySignals
   }).length;
