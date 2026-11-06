@@ -251,7 +251,7 @@ function renderAiAgentPanel() {
     consentControl +
     '<div class="ai-agent-controls">' + button + autoControl + '</div>' +
     (aiAgentState.message ? '<p class="ai-agent-message">' + esc(aiAgentState.message) + '</p>' : "") + note + hints +
-    '<p class="ai-agent-disclaimer">L’IA classe uniquement des fiches déjà présentes dans le catalogue ; elle ne crée pas de produits ni de prix. Sans configuration ou si le quota gratuit est atteint, le moteur local prend le relais.</p>' +
+    '<p class="ai-agent-disclaimer">L’IA classe uniquement des fiches déjà présentes dans le catalogue ; elle ne crée pas de produits ni de prix. Les inspirations visuelles sont exploitées via leurs titres et tags, pas par l’envoi de photos. Sans configuration ou si le quota gratuit est atteint, le moteur local prend le relais.</p>' +
     '<a class="ai-agent-guide" href="https://github.com/sopp24/DRESSOPP/blob/main/docs/AI-AGENT.md" target="_blank" rel="noopener noreferrer">Guide d’installation et confidentialité ↗</a></section>';
 }
 function aiAgentReason(productId) {
