@@ -135,12 +135,26 @@ function productRecord(item,source,pageUrl,checkedAt) {
   const brand = clean(item.brand && item.brand.name || item.brand || source.name);
   const description = clean(item.description || "").slice(0,900);
   const terms = name + " " + description + " " + brand;
-  const categoryTerms = String(item.category || "") + " " + terms;
-  const category = /sneaker|chauss|basket|boot|bottine|sandale|mocassin/i.test(categoryTerms) ? "Chaussures"
-    : /underwear|boxer|brief|slip|sous-vêtement|lingerie|chaussette/i.test(categoryTerms) ? "Sous-vêtements"
-    : /bag|wallet|belt|sac|portefeuille|ceinture|casquette|montre|accessoir/i.test(categoryTerms) ? "Accessoires"
-    : /pantalon|jean|trouser/i.test(categoryTerms) ? "Pantalon"
-    : /pull|sweater|cardigan|hoodie/i.test(categoryTerms) ? "Pull" : "Vêtements";
+  const productText = name + " " + description;
+  const merchantCategory = String(item.category || "");
+  // Le nom et la description du produit priment sur la taxonomie parfois erronée du marchand.
+  const apparelType =
+    /\b(pantalon|jean|trouser|cargo pants?|shorts?|jupe|skirt)\b/i.test(productText) ? "Pantalon"
+    : /\b(pull|sweater|cardigan|hoodie|sweat(?:shirt)?)\b/i.test(productText) ? "Pull"
+    : /\b(chemise|shirt|blouse)\b/i.test(productText) ? "Chemise"
+    : /\b(t[ -]?shirt|tee[ -]?shirt|débardeur|tank top)\b/i.test(productText) ? "T-shirt"
+    : /\b(veste|jacket|manteau|coat|blouson|doudoune|parka|gilet)\b/i.test(productText) ? "Veste"
+    : "";
+  const group = /\b(underwear|boxer|brief|slip|sous[ -]?vêtement|lingerie|chaussette|culotte|bra|soutien[ -]?gorge)\b/i.test(productText) ? "Sous-vêtements"
+    : /\b(sneaker|chauss|basket|boot|bottine|sandale|mocassin|loafer|derby|espadrille|ballerine|footwear|shoes?)\b/i.test(productText) ? "Chaussures"
+    : /\b(bag|wallet|belt|sac|portefeuille|ceinture|casquette|bonnet|cap|hat|montre|watch|accessoire|bijou|scarf|echarpe|écharpe|foulard|gloves|gants)\b/i.test(productText) ? "Accessoires"
+    : "Vêtements";
+  const metadataGroup = /underwear|boxer|brief|lingerie/i.test(merchantCategory) ? "Sous-vêtements"
+    : /shoe|footwear|sneaker|chauss/i.test(merchantCategory) ? "Chaussures"
+    : /accessor|bag|belt|wallet|accessoire/i.test(merchantCategory) ? "Accessoires"
+    : "";
+  const category = group !== "Vêtements" ? group : (apparelType || "Vêtements");
+  const objective = group !== "Vêtements" ? group : (metadataGroup && !apparelType ? metadataGroup : "Vêtements");
   const rules = [
     ["Preppy",/\b(oxford|rugby|polo|college|varsity|chino|torsad[eé])\b/i],
     ["Smart Casual",/\b(merino|m[eé]rinos|tailored|blazer|laine|chemise)\b/i],
@@ -157,7 +171,7 @@ function productRecord(item,source,pageUrl,checkedAt) {
   return {
     id:"web-" + hash(page.href.split("?")[0].toLowerCase()), name, brand, merchant:source.name,
     url:page.href, imageUrl:image, price, originalPrice:Number(offer.highPrice) || null,
-    objective:category, category:clean(item.category) || category,
+    objective, category,
     styleTags:rules.filter(([,pattern]) => pattern.test(terms)).map(([label]) => label),
     seasonTags:[], colors:list(item.color).map(clean).filter(Boolean), materials:list(item.material).map(clean).filter(Boolean),
     cuts:[], patterns:[], description, sizes:list(item.size).map(clean).filter(Boolean),
@@ -230,7 +244,9 @@ async function robotsFor(source,base) {
 }
 function safeAllowed(value,base,source,robots) {
   const url = safePage(value,base,source.domain);
-  return url && robotsAllows(url.pathname + url.search,robots) ? url : null;
+  if (!url || !robotsAllows(url.pathname + url.search,robots)) return null;
+  if (source.localePathPrefix && !url.pathname.startsWith(source.localePathPrefix)) return null;
+  return url;
 }
 async function scan(source) {
   const base = new URL("https://" + source.domain + "/"), robots = await robotsFor(source,base);
@@ -296,6 +312,18 @@ export function mergeCatalog(previous,seeds,results,now = new Date()) {
   (previous || []).filter(p => p && p.sourceType === "public-web" && p.url).forEach(p => products.set(identity(p),{...p}));
   (seeds || []).filter(p => p && p.url).forEach(p => { if (!products.has(identity(p))) products.set(identity(p),p); });
   (results || []).forEach(result => (result.products || []).forEach(p => products.set(identity(p),p)));
+  const refreshedMerchants = new Set((results || [])
+    .filter(result => result.status === "ok")
+    .map(result => String(result.name || "").toLowerCase()));
+  const refreshedUrls = new Set((results || [])
+    .filter(result => result.status === "ok")
+    .flatMap(result => (result.products || []).map(identity)));
+  for (const [id,p] of products.entries()) {
+    const merchantKey = String(p.merchant || p.source || "").toLowerCase();
+    if (p.sourceType === "public-web" && refreshedMerchants.has(merchantKey) && !refreshedUrls.has(id)) {
+      products.set(id,{...p,catalogStatus:"stale"});
+    }
+  }
   for (const [id,p] of products.entries()) {
     if (p.sourceType !== "public-web") continue;
     const verified = Date.parse(p.verifiedAt || "");
