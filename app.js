@@ -26,6 +26,7 @@ let communityConfig = { enabled:false, apiKey:"", projectId:"" };
 let communitySignals = { positive:{}, negative:{}, neighbors:0 };
 let communityStatus = "Partage désactivé";
 let lastCommunitySyncCount = 0;
+let communitySyncPending = false;
 
 const RETAILER_GROUPS = [
   { title: "Multimarques & essentiels", items: [
