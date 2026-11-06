@@ -60,7 +60,7 @@ async function authRequest(path, body, apiKey) {
   return payload;
 }
 async function getAuth(config) {
-  if (!config || !config.apiKey || !config.projectId) throw new Error("La communauté gratuite n'est pas encore configurée.");
+  if (!config || !config.enabled || !config.apiKey || !config.projectId) throw new Error("La communauté gratuite n'est pas encore configurée.");
   let token = readToken();
   if (token && token.expiresAt > Date.now() + 60000 && token.idToken && token.localId) return token;
   if (token && token.refreshToken) {
@@ -104,7 +104,7 @@ async function firestoreRequest(url, token, options = {}) {
 }
 export async function deleteCommunityProfile(config) {
   const token = readToken();
-  if (!token || !config || !config.projectId || !config.apiKey) return { ok: true, removed: false };
+  if (!token || !config || !config.enabled || !config.projectId || !config.apiKey) return { ok: true, removed: false };
   const auth = await getAuth(config);
   const url = firestoreUrl(config, "communityProfiles/" + encodeURIComponent(auth.localId));
   await firestoreRequest(url, auth.idToken, { method: "DELETE", allow404: true });
@@ -114,7 +114,7 @@ export async function syncCommunityProfile(state, config) {
   const features = buildCommunityFeatures(state);
   const amount = (state.interactions && state.interactions.likes || []).length +
     (state.interactions && state.interactions.dislikes || []).length + (state.likedProducts || []).length;
-  if (!config || !config.apiKey || !config.projectId) return { configured: false, profiles: [], count: amount };
+  if (!config || !config.enabled || !config.apiKey || !config.projectId) return { configured: false, profiles: [], count: amount };
   if (features.positive.length + features.negative.length < 4 || amount < 3) {
     return { configured: true, synced: false, profiles: [], count: amount, message: "Encore quelques décisions nécessaires avant de partager un profil utile." };
   }
