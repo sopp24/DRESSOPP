@@ -1,4 +1,3 @@
-import { deriveLearnedPreferences } from "./engine.js";
 const MAX_CANDIDATES = 50;
 const MAX_HISTORY = 15;
 function clean(value, limit = 140) { return String(value == null ? "" : value).replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim().slice(0, limit); }
@@ -24,7 +23,6 @@ export function createAgentPayload(state, candidates, inspirations) {
     filters:{ objective:settings.objective || "Tout", style:settings.style || "Tous", season:settings.season || "Toute saison", maxPrice:settings.maxPrice == null ? null : Number(settings.maxPrice) },
     profile:{ preferredStyles:list(profile.preferredStyles,12), excludedStyles:list(profile.excludedStyles,12), favoriteBrands:list(profile.favoriteBrands,12), excludedBrands:list(profile.excludedBrands,12), preferredColors:list(profile.preferredColors,12), excludedColors:list(profile.excludedColors,12), preferredMaterials:list(profile.preferredMaterials,12), excludedMaterials:list(profile.excludedMaterials,12), preferredCuts:list(profile.preferredCuts,12), excludedCuts:list(profile.excludedCuts,12), comfort:clean(profile.comfort,50), fit:clean(profile.fit,50) },
     feedback:{ liked:feedbackProducts(state,"likes"), saved:savedProducts(state), disliked:feedbackProducts(state,"dislikes") },
-    learnedPreferences:deriveLearnedPreferences(state),
     inspirations:(Array.isArray(inspirations) ? inspirations : []).slice(0,12).map(item => ({ title:clean(item.title,100), tags:list(item.tags,10) })),
     products:(Array.isArray(candidates) ? candidates : []).slice(0,MAX_CANDIDATES).map(productSummary)
   };
