@@ -33,7 +33,8 @@ function safePage(value, base, domain) {
   } catch { return null; }
 }
 function safeImage(value, base) {
-  try { const url = new URL(String(value || ""),base); return url.protocol === "https:" ? url.href : ""; }
+  if (!value) return "";
+  try { const url = new URL(String(value),base); return url.protocol === "https:" ? url.href : ""; }
   catch { return ""; }
 }
 function pathScore(path) {
