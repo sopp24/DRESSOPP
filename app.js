@@ -20,7 +20,7 @@ let lookbookFeed = { source: "lookbook", season: "Automne / Hiver", pins: [] };
 let catalogMeta = {
   status: "needs-configuration", productCount: 0, liveProductCount: 0,
   curatedProductCount: 0, sources: [], syncedAt: null,
-  message: "La connexion au flux marchand reste à activer."
+  message: "Catalogue multi-sources gratuit prêt à être actualisé."
 };
 let communityConfig = { enabled:false, apiKey:"", projectId:"" };
 let communitySignals = { positive:{}, negative:{}, neighbors:0 };
@@ -30,29 +30,41 @@ let communitySyncPending = false;
 
 const RETAILER_GROUPS = [
   { title: "Multimarques & essentiels", items: [
-    ["Zalando", "https://www.zalando.fr/catalogue/"],
-    ["ASOS", "https://www.asos.com/fr/"],
-    ["UNIQLO", "https://www.uniqlo.com/fr/fr/search"],
-    ["Zara", "https://www.zara.com/fr/"]
+    ["Zalando", "https://www.zalando.fr/catalogue/"], ["ASOS", "https://www.asos.com/fr/"],
+    ["ABOUT YOU", "https://www.aboutyou.fr/"], ["La Redoute", "https://www.laredoute.fr/"],
+    ["Galeries Lafayette", "https://www.galerieslafayette.com/"], ["Printemps", "https://www.printemps.com/"]
   ]},
   { title: "Accessible & casual", items: [
-    ["BZB", "https://www.b-z-b.com/vetement-homme/"],
-    ["Pull & Bear", "https://www.pullandbear.com/fr/"]
+    ["UNIQLO", "https://www.uniqlo.com/fr/fr/"], ["Zara", "https://www.zara.com/fr/"],
+    ["BZB", "https://www.b-z-b.com/"], ["Pull & Bear", "https://www.pullandbear.com/fr/"],
+    ["Bershka", "https://www.bershka.com/fr/"], ["H&M", "https://www2.hm.com/fr_fr/index.html"],
+    ["Mango", "https://shop.mango.com/fr/homme"], ["Celio", "https://www.celio.com/"],
+    ["Jules", "https://www.jules.com/"], ["Weekday", "https://www.weekday.com/"],
+    ["Kiabi", "https://www.kiabi.com/"], ["C&A", "https://www.c-and-a.com/fr/fr/shop"]
   ]},
-  { title: "Premium & luxe", items: [
-    ["Louis Vuitton", "https://fr.louisvuitton.com/"],
-    ["Dior", "https://www.dior.com/fr_fr/"],
-    ["Lothaire", "https://www.lothaire.fr/"],
-    ["Charles Tyrwhitt", "https://www.charlestyrwhitt.com/fr/"]
+  { title: "Premium, casual & heritage", items: [
+    ["COS", "https://www.cos.com/fr-fr/"], ["ARKET", "https://www.arket.com/fr-fr/"],
+    ["Massimo Dutti", "https://www.massimodutti.com/fr/"], ["Levi's", "https://www.levi.com/FR/fr_FR/"],
+    ["Carhartt WIP", "https://www.carhartt-wip.com/fr"], ["Jack & Jones", "https://www.jackjones.com/fr-fr/"],
+    ["Charles Tyrwhitt", "https://www.charlestyrwhitt.com/fr/"], ["Lacoste", "https://www.lacoste.com/fr/"],
+    ["Fred Perry", "https://www.fredperry.com/"], ["Tommy Hilfiger", "https://fr.tommy.com/"],
+    ["Polo Ralph Lauren", "https://www.ralphlauren.fr/"], ["Lothaire", "https://www.lothaire.fr/"]
+  ]},
+  { title: "Luxe & seconde main", items: [
+    ["Louis Vuitton", "https://fr.louisvuitton.com/"], ["Dior", "https://www.dior.com/fr_fr/"],
+    ["24S", "https://www.24s.com/"], ["Vestiaire Collective", "https://fr.vestiairecollective.com/"]
   ]},
   { title: "Sneakers & sport", items: [
-    ["Nike", "https://www.nike.com/fr/"],
-    ["adidas", "https://www.adidas.fr/"],
-    ["Courir", "https://www.courir.com/fr/"]
+    ["Nike", "https://www.nike.com/fr/"], ["adidas", "https://www.adidas.fr/"],
+    ["New Balance", "https://www.newbalance.fr/"], ["Puma", "https://eu.puma.com/fr/fr"],
+    ["ASICS", "https://www.asics.com/fr/fr-fr/"], ["Converse", "https://www.converse.com/fr/"],
+    ["Courir", "https://www.courir.com/fr/"], ["JD Sports", "https://www.jdsports.fr/"],
+    ["Foot Locker", "https://www.footlocker.fr/"], ["Snipes", "https://www.snipes.com/"],
+    ["Decathlon", "https://www.decathlon.fr/"]
   ]},
-  { title: "Sous-vêtements", items: [
-    ["Undiz", "https://www.undiz.com/"],
-    ["Calvin Klein", "https://www.calvinklein.fr/"]
+  { title: "Chaussures & sous-vêtements", items: [
+    ["Sarenza", "https://www.sarenza.com/"], ["Spartoo", "https://www.spartoo.com/"],
+    ["Calvin Klein", "https://www.calvinklein.fr/"], ["Undiz", "https://www.undiz.com/"]
   ]}
 ];
 
