@@ -52,3 +52,32 @@ test("a bot-specific robots group takes precedence over the wildcard group", () 
   assert.equal(robotsAllows("/private/shoes", robots), false);
   assert.equal(robotsAllows("/all/shoes", robots), true);
 });
+
+
+test("product title overrides a misleading merchant category breadcrumb", () => {
+  const html = '<script type="application/ld+json">' +
+    '{"@type":"Product","name":"Doudoune à capuche waterproof","category":"Chaussures > Bottes","image":"https://cdn.example.com/coat.jpg","offers":{"price":"99.99","priceCurrency":"EUR","availability":"https://schema.org/InStock"}}' +
+    '</script>';
+  const products = extractProductsFromHtml(html,source,"https://example.com/doudoune","2026-11-06T10:00:00.000Z");
+  assert.equal(products.length,1);
+  assert.equal(products[0].objective,"Vêtements");
+  assert.equal(products[0].category,"Veste");
+});
+
+test("products removed from a successfully refreshed merchant are marked stale", () => {
+  const previous = [{
+    id:"old", name:"Old product", merchant:"Shop", source:"Shop", sourceType:"public-web",
+    url:"https://example.com/old", verifiedAt:"2026-11-06T09:00:00.000Z", catalogStatus:"active"
+  }];
+  const fresh = {
+    name:"Shop", status:"ok", pages:3, reason:"",
+    products:[{
+      id:"new", name:"New product", merchant:"Shop", source:"Shop", sourceType:"public-web",
+      url:"https://example.com/new", verifiedAt:"2026-11-06T10:00:00.000Z", catalogStatus:"active"
+    }]
+  };
+  const result = mergeCatalog(previous,[],[fresh],new Date("2026-11-06T10:05:00.000Z"));
+  assert.equal(result.products.find(item=>item.id==="old").catalogStatus,"stale");
+  assert.equal(result.products.find(item=>item.id==="new").catalogStatus,"active");
+  assert.equal(result.meta.liveProductCount,1);
+});
