@@ -38,8 +38,17 @@ test("expires old public listings but preserves editorial seeds", () => {
   assert.ok(result.products.some(item=>item.id==="seed"));
 });
 
+
+test("robots.txt terminal dollar anchors a rule and wildcards match paths", () => {
+  const robots = parseRobots("User-agent: *\nDisallow: /exact$\nDisallow: /images/*.jpg$");
+  assert.equal(robotsAllows("/exact", robots), false);
+  assert.equal(robotsAllows("/exactly", robots), true);
+  assert.equal(robotsAllows("/images/look.jpg", robots), false);
+  assert.equal(robotsAllows("/images/look.jpg/extra", robots), true);
+});
+
 test("a bot-specific robots group takes precedence over the wildcard group", () => {
-  const robots = parseRobots("User-agent: *\\nDisallow: /all\\nUser-agent: DRESSOPPBot\\nDisallow: /private");
+  const robots = parseRobots("User-agent: *\nDisallow: /all\nUser-agent: DRESSOPPBot\nDisallow: /private");
   assert.equal(robotsAllows("/private/shoes", robots), false);
   assert.equal(robotsAllows("/all/shoes", robots), true);
 });
