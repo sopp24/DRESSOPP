@@ -42,7 +42,7 @@ La réponse doit contenir `"ok":true` et l'identifiant du modèle.
 
 Le navigateur transmet les filtres choisis (catégorie, style, saison, budget), les préférences générales (styles, marques, couleurs, matières, coupes), un résumé des 15 derniers articles aimés / enregistrés / refusés, les tags et titres d'inspirations, les caractéristiques d'au plus 50 produits candidats (nom, marque, marchand, prix, catégorie, style, couleurs, matières, coupe, description courte).
 
-Les tailles exactes, notes libres, e-mail, URL des produits, images, URL Pinterest et historique complet de navigation ne sont pas transmis. Le Worker ne journalise pas le corps des demandes. Les réponses sont filtrées : seul un identifiant déjà présent dans les candidats peut être renvoyé. Le consentement est facultatif et peut être retiré dans DRESSOPP ; sans consentement, seul le moteur local est utilisé.
+Les tailles exactes, notes libres, e-mail, URL des produits, images, URL Pinterest et historique complet de navigation ne sont pas transmis. Les inspirations visuelles sont décrites au modèle uniquement par leurs titres et tags, pas par analyse des pixels ; le Worker ne télécharge pas d'images Pinterest ou marchandes. Le Worker ne journalise pas le corps des demandes. Les réponses sont filtrées : seul un identifiant déjà présent dans les candidats peut être renvoyé. Le consentement est facultatif et peut être retiré dans DRESSOPP ; sans consentement, seul le moteur local est utilisé.
 
 ## Pourquoi un service séparé ?
 
