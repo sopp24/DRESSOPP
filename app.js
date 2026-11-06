@@ -1467,6 +1467,13 @@ document.addEventListener("click", handleClick);
 document.addEventListener("change", handleChange);
 document.addEventListener("input", handleInput);
 document.addEventListener("submit", handleSubmit);
+window.setInterval(async function() {
+  if (!state || (currentView !== "discover" && currentView !== "training") || catalogPagePending ||
+      !catalogManifest || catalogLoadedPages.size < catalogManifest.pages.length) return;
+  const previousGeneratedAt = catalogManifest.generatedAt;
+  await refreshCatalogManifest(true);
+  if (catalogManifest && catalogManifest.generatedAt !== previousGeneratedAt) loadNextCatalogPage();
+}, 90000);
 window.addEventListener("scroll", function() {
   if (currentView === "discover" && state && state.settings.discoveryView === "grid" &&
       window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 900) {
