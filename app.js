@@ -2,6 +2,7 @@ import { loadState, saveState, clearState } from "./modules/store.js";
 import { createInitialState, normalizeProduct, productIdentity, seasonFor, rankProducts, deriveLearnedPreferences, matchesFilters } from "./modules/engine.js";
 import { INTEGRATIONS, getPersistenceNotice, PINTEREST_BOARD_URL } from "./modules/integrations.js";
 import { inferPinterestTags, buildOutfitIdeas } from "./modules/outfits.js";
+import { syncCommunityProfile, deleteCommunityProfile, buildCommunitySignals } from "./modules/community.js";
 
 const main = document.querySelector("#app-main");
 const modalRoot = document.querySelector("#modal-root");
@@ -21,6 +22,10 @@ let catalogMeta = {
   curatedProductCount: 0, sources: [], syncedAt: null,
   message: "La connexion au flux marchand reste à activer."
 };
+let communityConfig = { enabled:false, apiKey:"", projectId:"" };
+let communitySignals = { positive:{}, negative:{}, neighbors:0 };
+let communityStatus = "Partage désactivé";
+let lastCommunitySyncCount = 0;
 
 const RETAILER_GROUPS = [
   { title: "Multimarques & essentiels", items: [
@@ -88,6 +93,41 @@ function updateSaveStatus(message, status) {
   const label = saveStatus.querySelector("span");
   if (label) label.textContent = message;
 }
+function communityActionCount() {
+  return (state && state.interactions ? state.interactions.likes.length + state.interactions.dislikes.length : 0) +
+    (state && state.likedProducts ? state.likedProducts.length : 0);
+}
+async function refreshCommunity(showFeedback) {
+  if (!state || !state.settings.communitySharing) return;
+  if (!communityConfig.enabled || !communityConfig.apiKey || !communityConfig.projectId) {
+    communityStatus = "À configurer · voir le guide communautaire gratuit";
+    if (showFeedback) showToast("Configure d'abord Firebase gratuit en suivant le guide communautaire.", false);
+    return;
+  }
+  if (communitySyncPending) return;
+  communitySyncPending = true;
+  try {
+    const result = await syncCommunityProfile(state, communityConfig);
+    if (!result.configured) {
+      communityStatus = "Configuration Firebase manquante";
+      return;
+    }
+    if (!result.synced) {
+      communityStatus = result.message || "Quelques décisions supplémentaires sont nécessaires.";
+      return;
+    }
+    communitySignals = buildCommunitySignals(result.profiles, state);
+    lastCommunitySyncCount = communityActionCount();
+    communityStatus = "Profil de goûts anonymisé actualisé · " + communitySignals.neighbors + " profil(s) similaire(s)";
+    if (showFeedback) showToast("Recommandations communautaires activées.", false);
+    if (currentView === "settings") render();
+  } catch (error) {
+    communityStatus = "Synchronisation indisponible · " + error.message;
+    if (showFeedback) showToast("La communauté n'a pas pu être synchronisée : " + error.message, false);
+  } finally {
+    communitySyncPending = false;
+  }
+}
 function persist() {
   persistRevision += 1;
   if (persistPending) return persistPromise;
@@ -107,6 +147,12 @@ function persist() {
           return result;
         }
         state.updatedAt = result.updatedAt;
+        const communityCount = communityActionCount();
+        if (state.settings.communitySharing && communityConfig.enabled &&
+            communityCount >= 3 && communityCount - lastCommunitySyncCount >= 3) {
+          lastCommunitySyncCount = communityCount;
+          refreshCommunity(false);
+        }
       } while (savedRevision !== persistRevision);
 
       updateSaveStatus(result.warning ? "Sauvegarde locale de secours" : "Données enregistrées sur cet appareil", "ok");
@@ -219,27 +265,28 @@ function renderProductReview(product) {
     freshness = '<p class="product-freshness is-stale">Flux marchand non actualisé · fiche conservée dans ta liste</p>';
   } else if (product.sourceType === "curated") {
     freshness = '<p class="product-freshness">Prix relevé le ' + esc(verified || "5 novembre 2026") + ' · disponibilité à confirmer sur la boutique</p>';
-  } else if (product.sourceType === "awin") {
-    freshness = '<p class="product-freshness">Disponibilité confirmée par le flux marchand · ' + esc(verified) + '</p>';
+  } else if (product.sourceType === "public-web") {
+    freshness = '<p class="product-freshness">Fiche publique vérifiée le ' + esc(verified) + ' · prix et stock à confirmer sur la boutique</p>';
   }
   return ratingText + merchantRatingText + freshness;
 }
 function renderCatalogStatus() {
   const liveCount = Number(catalogMeta.liveProductCount) ||
-    state.products.filter(function(product) { return product.sourceType === "awin" && product.catalogStatus === "active"; }).length;
+    state.products.filter(product => product.sourceType === "public-web" && product.catalogStatus === "active").length;
   const curatedCount = Number(catalogMeta.curatedProductCount) ||
-    state.products.filter(function(product) { return product.sourceType === "curated"; }).length;
-  const syncedAt = catalogMeta.syncedAt ? new Date(catalogMeta.syncedAt).toLocaleString("fr-FR") : "Pas encore synchronisé";
+    state.products.filter(product => product.sourceType === "curated").length;
+  const syncedAt = catalogMeta.syncedAt ? new Date(catalogMeta.syncedAt).toLocaleString("fr-FR") : "Pas encore actualisé";
   const connected = catalogMeta.status === "connected" || catalogMeta.status === "partial";
-  const stateLabel = connected ? (catalogMeta.status === "partial" ? "Synchronisation partielle" : "Flux Awin connecté") : "Flux Awin à connecter";
   const sourceLabel = Array.isArray(catalogMeta.sources) && catalogMeta.sources.length
-    ? catalogMeta.sources.slice(0, 6).join(" · ") + (catalogMeta.sources.length > 6 ? " · +" + (catalogMeta.sources.length - 6) : "")
-    : "Aucune enseigne Awin connectée";
-  return '<section class="catalog-status panel ' + (connected ? 'is-connected' : 'is-pending') + '" aria-label="État du catalogue marchand">' +
-    '<div class="catalog-status-main"><span class="eyebrow">Catalogue multi-boutiques</span><strong>' + liveCount + ' article(s) issus des flux marchands</strong>' +
-    '<p>' + (connected ? 'Mise à jour : ' + esc(syncedAt) : 'Connexion Awin à activer pour recevoir automatiquement les produits, prix et stocks des enseignes autorisées.') + '</p>' +
-    '<small>' + esc(sourceLabel) + '</small></div><div class="catalog-status-side"><span>' + curatedCount + ' fiche(s) de départ</span>' +
-    '<a class="button-quiet button-small" href="https://github.com/sopp24/DRESSOPP/blob/main/docs/AWIN.md" target="_blank" rel="noopener noreferrer">Configurer les flux ↗</a></div></section>';
+    ? catalogMeta.sources.slice(0, 8).join(" · ") + (catalogMeta.sources.length > 8 ? " · +" + (catalogMeta.sources.length - 8) : "")
+    : "Les boutiques accessibles seront détectées automatiquement";
+  const message = connected
+    ? "Dernière exploration : " + syncedAt + " · " + Number(catalogMeta.sourceCount || 0) + " boutique(s) ayant fourni des produits"
+    : "Catalogue gratuit sans compte marchand. La première exploration automatique est à lancer depuis GitHub Actions.";
+  return '<section class="catalog-status panel ' + (connected ? "is-connected" : "is-pending") + '" aria-label="État du catalogue public">' +
+    '<div class="catalog-status-main"><span class="eyebrow">Catalogue public multi-boutiques</span><strong>' + liveCount + ' article(s) publics exploitables</strong>' +
+    '<p>' + esc(message) + '</p><small>' + esc(sourceLabel) + '</small></div><div class="catalog-status-side"><span>' +
+    curatedCount + ' référence(s) éditoriale(s)</span><a class="button-quiet button-small" href="https://github.com/sopp24/DRESSOPP/blob/main/docs/SOURCES.md" target="_blank" rel="noopener noreferrer">Sources & fonctionnement ↗</a></div></section>';
 }
 function renderRetailerDirectory() {
   const groups = RETAILER_GROUPS.map(function(group) {
@@ -296,7 +343,7 @@ function renderDiscover(training) {
   const heading = training
     ? renderPageHeading("Élargis ton univers", "Entraînement", "Explore volontairement de nouvelles coupes, matières et associations. Tes réponses Oui et Non affinent le profil, sans ajout automatique à ta liste.", '<button class="button-secondary" type="button" data-view="discover">Retour à Découvrir</button>')
     : renderPageHeading("Ton œil, tes règles", "Découvrir", "Des pièces sélectionnées selon tes préférences. Glisse à gauche pour dire Non, à droite pour dire Oui, ou utilise les cinq actions sous la carte.", '<button class="button-secondary" type="button" data-action="toggle-discovery-view">' + (state.settings.discoveryView === "grid" ? "Vue cartes" : "Explorer la grille") + '</button>');
-  const products = rankProducts(state.products, state, { training: training });
+  const products = rankProducts(state.products, state, { training: training, communitySignals: communitySignals });
   const yesCount = state.interactions.likes.length;
   const savedCount = state.likedProducts.length;
   const rejected = state.interactions.dislikes.length;
@@ -494,19 +541,25 @@ function preferenceField(label, name, values) {
 function renderSettings() {
   const updated = state.updatedAt ? new Date(state.updatedAt).toLocaleString("fr-FR") : "Pas encore enregistrée";
   const lastPinterestSync = pinterestFeed.lastSync ? new Date(pinterestFeed.lastSync).toLocaleString("fr-FR") : "Aucune synchronisation réussie";
-  const status = pinterestFeed.privacy === "PUBLIC" ? "Tableau public détecté" : "Connexion à configurer";
-  return renderPageHeading("Contrôle & confidentialité", "Paramètres", "Gère les flux Pinterest et les catalogues marchands. Une source n’est annoncée comme connectée qu’après une synchronisation vérifiée.", "") +
-    '<section class="panel section-panel"><h2 class="section-title">Pinterest · mon tableau mode</h2><div class="connector-item pinterest-connector"><div><strong>Pinterest</strong><small>' + esc(status) + '</small></div><p>Synchronisation quotidienne à 12 h (Europe/Paris) via le workflow GitHub. L’application Pinterest doit être créée depuis le compte sopppx24, puis son ID et son secret doivent être ajoutés aux secrets GitHub. Le jeton est généré automatiquement à chaque passage.</p><a class="button-secondary button-small" href="' + esc(PINTEREST_BOARD_URL) + '" target="_blank" rel="noopener noreferrer">Ouvrir le tableau ↗</a></div>' +
-    '<p class="field-hint">Dernière synchronisation : ' + esc(lastPinterestSync) + '</p><div class="form-actions"><a class="button-primary button-small" href="https://github.com/sopp24/DRESSOPP/actions/workflows/pinterest-daily.yml" target="_blank" rel="noopener noreferrer">Voir / lancer le workflow ↗</a><a class="button-quiet button-small" href="https://github.com/sopp24/DRESSOPP/blob/main/docs/PINTEREST.md" target="_blank" rel="noopener noreferrer">Guide de configuration ↗</a></div></section>' +
-    '<section class="panel section-panel"><h2 class="section-title">Catalogue marchand · Awin</h2><div class="connector-item"><div><strong>' + (catalogMeta.status === "connected" ? "Flux marchand connecté" : catalogMeta.status === "partial" ? "Flux partiellement disponible" : "Configuration requise") + '</strong><small>' + Number(catalogMeta.liveProductCount || 0) + ' article(s) issu(s) des flux Awin</small></div><p>Awin fournit les fiches produit, prix, photos, tailles et stocks lorsque les marques les publient et autorisent ton compte éditeur à y accéder. Le dépôt vérifie les flux six fois par jour, sans télécharger une fiche dont la version n’a pas changé.</p><p class="field-hint">Dernière vérification : ' + esc(catalogMeta.syncedAt ? new Date(catalogMeta.syncedAt).toLocaleString("fr-FR") : "Connexion non configurée") + '</p><p class="field-hint">Enseignes détectées : ' + esc((catalogMeta.sources || []).join(" · ") || "Aucune pour le moment") + '</p><div class="form-actions"><a class="button-primary button-small" href="https://github.com/sopp24/DRESSOPP/actions/workflows/refresh-awin-catalog.yml" target="_blank" rel="noopener noreferrer">Lancer / consulter la synchronisation ↗</a><a class="button-quiet button-small" href="https://github.com/sopp24/DRESSOPP/blob/main/docs/AWIN.md" target="_blank" rel="noopener noreferrer">Guide de connexion ↗</a><a class="button-quiet button-small" href="https://github.com/sopp24/DRESSOPP/settings/secrets/actions" target="_blank" rel="noopener noreferrer">Ajouter le secret GitHub ↗</a><a class="button-quiet button-small" href="https://ui.awin.com/" target="_blank" rel="noopener noreferrer">Ouvrir Awin ↗</a></div></section>' +
-    '<section class="panel section-panel"><h2 class="section-title">Fiabilité et avis</h2><p class="field-hint">DRESSOPP distingue la note d’un article de la fiabilité générale d’une boutique. Les notes affichées viennent de la fiche produit lorsqu’elles sont disponibles ; aucun score Trustpilot, Google, Avis Vérifiés, Trusted Shops ou Custplace n’est inventé.</p><p class="field-hint">Les flux Awin ne donnent pas nécessairement accès aux avis marchands. Les enseignes sans flux accessible restent consultables via la rubrique Découvrir.</p></section>' +
-    '<section class="panel section-panel"><h2 class="section-title">Publicités Instagram</h2><p class="field-hint">L’application ne lit pas ton fil publicitaire personnalisé. Tu peux consulter les campagnes publiques et les annonces actives dans la Meta Ad Library, puis conserver manuellement les références qui te plaisent.</p><div class="form-actions"><a class="button-secondary button-small" href="https://www.facebook.com/ads/library/?active_status=active&ad_type=ALL&country=FR" target="_blank" rel="noopener noreferrer">Ouvrir Meta Ad Library ↗</a></div></section>' +
+  const pinterestStatus = pinterestFeed.privacy === "PUBLIC" ? "Tableau public détecté" : "Connexion à configurer";
+  const publicCount = Number(catalogMeta.liveProductCount) ||
+    state.products.filter(product => product.sourceType === "public-web" && product.catalogStatus === "active").length;
+  const storeCount = Number(catalogMeta.sourceCount) || 0;
+  const syncText = catalogMeta.syncedAt ? new Date(catalogMeta.syncedAt).toLocaleString("fr-FR") : "Pas encore lancée";
+  const communityConfigured = communityConfig.enabled && communityConfig.apiKey && communityConfig.projectId;
+  const communityLabel = state.settings.communitySharing ? communityStatus : "Partage désactivé";
+  return renderPageHeading("Contrôle & confidentialité", "Paramètres", "Gère tes inspirations, le catalogue multi-boutiques et les données utilisées par ton algorithme.", "") +
+    '<section class="panel section-panel"><h2 class="section-title">Pinterest · mon tableau mode</h2><div class="connector-item pinterest-connector"><div><strong>Pinterest</strong><small>' + esc(pinterestStatus) + '</small></div><p>Le tableau sopppx24/mode reste la référence stylistique principale. La synchronisation quotidienne utilise l’API officielle Pinterest v5 lorsque l’application est autorisée et ses secrets sont configurés sur GitHub.</p><a class="button-secondary button-small" href="' + esc(PINTEREST_BOARD_URL) + '" target="_blank" rel="noopener noreferrer">Ouvrir le tableau ↗</a></div>' +
+    '<p class="field-hint">Dernière synchronisation : ' + esc(lastPinterestSync) + '</p><div class="form-actions"><a class="button-primary button-small" href="https://github.com/sopp24/DRESSOPP/actions/workflows/pinterest-daily.yml" target="_blank" rel="noopener noreferrer">Voir / lancer le workflow ↗</a><a class="button-quiet button-small" href="https://github.com/sopp24/DRESSOPP/blob/main/docs/PINTEREST.md" target="_blank" rel="noopener noreferrer">Guide Pinterest ↗</a></div></section>' +
+    '<section class="panel section-panel"><h2 class="section-title">Catalogue gratuit multi-boutiques</h2><div class="connector-item"><div><strong>' + (catalogMeta.status === "connected" ? "Exploration terminée" : catalogMeta.status === "partial" ? "Certaines boutiques accessibles" : "Prêt à explorer les sources publiques") + '</strong><small>' + publicCount + ' fiche(s) produit publique(s) · ' + storeCount + ' boutique(s) productive(s)</small></div><p>DRESSOPP explore un répertoire de boutiques françaises et internationales, sans compte éditeur, affiliation, abonnement ni clé API payante. Le robot respecte robots.txt et importe uniquement les pages publiques qui exposent un prix en euros, une photo HTTPS et un lien produit exploitable. Les boutiques qui bloquent l’accès restent consultables par leurs liens officiels.</p><p class="field-hint">Dernière exploration : ' + esc(syncText) + '</p><p class="field-hint">Boutiques ayant fourni des produits : ' + esc((catalogMeta.sources || []).join(" · ") || "En attente du premier passage") + '</p><div class="form-actions"><a class="button-primary button-small" href="https://github.com/sopp24/DRESSOPP/actions/workflows/refresh-public-catalog.yml" target="_blank" rel="noopener noreferrer">Lancer / consulter l’exploration ↗</a><a class="button-quiet button-small" href="https://github.com/sopp24/DRESSOPP/blob/main/docs/SOURCES.md" target="_blank" rel="noopener noreferrer">Liste des sources & limites ↗</a></div></section>' +
+    '<section class="panel section-panel"><h2 class="section-title">Recommandations communautaires</h2><div class="connector-item"><div><strong>' + (communityConfigured ? "Firebase gratuit configuré" : "Configuration gratuite facultative") + '</strong><small>' + esc(communityLabel) + '</small></div><p>Avec ton accord, DRESSOPP peut comparer des étiquettes générales de goûts avec celles d’autres membres volontaires et utiliser leurs préférences pour affiner le classement. Aucun nom, e-mail, taille, budget, historique de navigation ou lien Pinterest n’est partagé. Sans configuration Firebase, ton algorithme personnel continue de fonctionner localement.</p><label class="field-hint" style="display:flex;align-items:center;gap:10px;margin-top:12px"><input id="community-sharing" type="checkbox" ' + (state.settings.communitySharing ? "checked" : "") + '> Autoriser le partage de mes préférences anonymisées</label><div class="form-actions"><a class="button-quiet button-small" href="https://github.com/sopp24/DRESSOPP/blob/main/docs/COMMUNITY.md" target="_blank" rel="noopener noreferrer">Guide Firebase gratuit & confidentialité ↗</a></div></div></section>' +
+    '<section class="panel section-panel"><h2 class="section-title">Fiabilité et avis</h2><p class="field-hint">DRESSOPP conserve séparément les notes d’un produit et les avis concernant une boutique. Les notes sont affichées uniquement lorsqu’elles sont publiées dans une source produit autorisée. Les scores Trustpilot, Google, Avis Vérifiés, Trusted Shops et Custplace ne sont jamais inventés ni extraits par contournement.</p></section>' +
+    '<section class="panel section-panel"><h2 class="section-title">Publicités Instagram</h2><p class="field-hint">L’application ne peut pas lire ton fil publicitaire personnalisé. La Meta Ad Library permet uniquement de consulter des campagnes publiques. Les produits repérés manuellement peuvent être ajoutés à tes inspirations ou à ton catalogue.</p><div class="form-actions"><a class="button-secondary button-small" href="https://www.facebook.com/ads/library/?active_status=active&ad_type=ALL&country=FR" target="_blank" rel="noopener noreferrer">Ouvrir Meta Ad Library ↗</a></div></section>' +
     '<section class="panel section-panel"><h2 class="section-title">Sauvegarde des données</h2><div class="source-note">' + esc(getPersistenceNotice()) + '</div>' +
     '<div class="form-grid" style="margin-top:16px"><div class="preference-block"><h3>État local</h3><p class="field-hint">Dernière modification : ' + esc(updated) + '</p><p class="field-hint">Produits : ' + state.products.length + ' · Articles dans ma liste : ' + state.likedProducts.length + ' · Décisions Oui : ' + state.interactions.likes.length + ' · Décisions Non : ' + state.interactions.dislikes.length + '</p></div>' +
     '<div class="preference-block"><h3>Copie de sécurité</h3><p class="field-hint">Exporte régulièrement ton fichier JSON. Il contient tes articles, préférences, votes, avis sur les tenues et Pins ajoutés manuellement.</p><div class="form-actions"><button class="button-primary button-small" type="button" data-action="export">Exporter mes données</button><button class="button-secondary button-small" type="button" data-action="import-backup">Importer une sauvegarde</button></div></div></div>' +
     '<input id="backup-file" type="file" accept=".json,application/json" hidden></section>' +
-    '<section class="panel section-panel"><h2 class="section-title">Catalogue marchand</h2><p class="field-hint">Les compléments de tenues viennent uniquement des articles déjà importés et dotés d’un lien marchand. DRESSOPP ne crée pas de fausses fiches produits.</p>' +
-    '<div class="form-actions"><button class="button-secondary" type="button" data-action="import-catalog">Importer un catalogue JSON</button></div><input id="catalog-file" type="file" accept=".json,application/json" hidden></section>' +
+    '<section class="panel section-panel"><h2 class="section-title">Catalogue personnel</h2><p class="field-hint">Les compléments de tenues proviennent uniquement de fiches produit vérifiables ou de tes importations manuelles.</p><div class="form-actions"><button class="button-secondary" type="button" data-action="import-catalog">Importer un catalogue JSON</button></div><input id="catalog-file" type="file" accept=".json,application/json" hidden></section>' +
     '<section class="panel section-panel"><h2 class="section-title">Zone sensible</h2><p class="field-hint">La réinitialisation supprime les données enregistrées sur cet appareil. Exporte d’abord une copie de sécurité.</p><div class="form-actions"><button class="button-danger button-small" type="button" data-action="delete-data">Supprimer toutes mes données locales</button></div></section>';
 }
 function render() {
@@ -987,6 +1040,22 @@ function handleClick(event) {
 }
 function handleChange(event) {
   const target = event.target;
+  if (target.id === "community-sharing") {
+    state.settings.communitySharing = Boolean(target.checked);
+    persist();
+    if (target.checked) {
+      communityStatus = "Activation en cours";
+      refreshCommunity(true);
+    } else {
+      communitySignals = { positive:{}, negative:{}, neighbors:0 };
+      communityStatus = "Partage désactivé";
+      if (communityConfig.enabled) deleteCommunityProfile(communityConfig)
+        .then(() => { communityStatus = "Profil communautaire supprimé"; })
+        .catch(error => { communityStatus = "Suppression impossible · " + error.message; });
+    }
+    render();
+    return;
+  }
   if (target.matches("[data-filter]")) {
     const key = target.dataset.filter;
     if (key === "preset") {
@@ -1137,6 +1206,10 @@ async function boot() {
     const response = await fetch("./data/catalog-meta.json", { cache: "no-store" });
     if (response.ok) catalogMeta = await response.json();
   } catch (error) { console.warn("État du catalogue marchand non chargé.", error); }
+  try {
+    const response = await fetch("./data/community-config.json", { cache: "no-store" });
+    if (response.ok) communityConfig = await response.json();
+  } catch (error) { console.warn("Configuration communautaire non chargée.", error); }
   const stored = await loadState();
   const base = createInitialState(catalog);
   state = stored ? Object.assign(base, stored) : base;
@@ -1163,11 +1236,11 @@ async function boot() {
     const savedIds = new Set((state.likedProducts || []).map(function(item) { return item.productId; }));
     (state.interactions.likes || []).concat(state.interactions.dislikes || [], state.interactions.saves || []).forEach(function(item) { savedIds.add(item.productId); });
     const localManual = localProducts.filter(function(product) {
-      const isFeedProduct = product.sourceType === "awin" || product.feedId || product.advertiserId;
+      const isFeedProduct = product.sourceType === "public-web" || product.sourceType === "awin" || product.feedId || product.advertiserId;
       return !isFeedProduct && !currentIdentities.has(productIdentity(product));
     });
     const savedWithdrawn = localProducts.filter(function(product) {
-      const isFeedProduct = product.sourceType === "awin" || product.feedId || product.advertiserId;
+      const isFeedProduct = product.sourceType === "public-web" || product.sourceType === "awin" || product.feedId || product.advertiserId;
       return isFeedProduct && !currentIds.has(product.id) && savedIds.has(product.id);
     }).map(function(product) {
       return Object.assign({}, product, {
@@ -1188,6 +1261,7 @@ async function boot() {
   state.learnedPreferences = deriveLearnedPreferences(state);
   render();
   updateSaveStatus("Stockage local prêt", "ok");
+  if (state.settings.communitySharing) refreshCommunity(false);
   if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
     navigator.serviceWorker.register("./sw.js").catch(function(error) { console.warn("Service worker non activé.", error); });
   }
