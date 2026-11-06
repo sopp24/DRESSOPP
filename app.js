@@ -32,6 +32,7 @@ let aiAgentConfig = { enabled:false, endpoint:"" };
 let aiAgentState = { status:"unconfigured", recommendations:[], message:"", searchHints:[], candidateCount:0 };
 let aiAgentPending = false;
 let aiAgentLastActionCount = 0;
+let aiAgentRefreshQueued = false;
 
 
 const RETAILER_GROUPS = [
@@ -160,6 +161,20 @@ function aiAgentInspirations() {
     return { title:pin.title || "", tags:Array.isArray(pin.tags) ? pin.tags : [] };
   });
 }
+function aiAgentContextSignature(training) {
+  const settings = state.settings || {}, profile = state.profile || {};
+  const products = rankProducts(state.products,state,{training:training,communitySignals:communitySignals}).slice(0,50);
+  return JSON.stringify({
+    objective:settings.objective, style:settings.style, season:settings.season, maxPrice:settings.maxPrice,
+    discoveryLevel:training ? settings.trainingDiscoveryLevel : settings.discoveryLevel,
+    sizes:profile.sizes || {}, preferredStyles:profile.preferredStyles || [], excludedStyles:profile.excludedStyles || [],
+    favoriteBrands:profile.favoriteBrands || [], excludedBrands:profile.excludedBrands || [],
+    preferredColors:profile.preferredColors || [], excludedColors:profile.excludedColors || [],
+    preferredMaterials:profile.preferredMaterials || [], excludedMaterials:profile.excludedMaterials || [],
+    preferredCuts:profile.preferredCuts || [], excludedCuts:profile.excludedCuts || [], comfort:profile.comfort, fit:profile.fit,
+    candidateIds:products.map(product => product.id), inspirations:aiAgentInspirations()
+  });
+}
 async function runAiAgent(showFeedback) {
   if (!state || !state.settings.aiAgentConsent) {
     if (showFeedback) showToast("Lis les informations et accepte le partage facultatif pour activer le personal shopper IA.",false);
@@ -179,20 +194,36 @@ async function runAiAgent(showFeedback) {
     render();
     return;
   }
+  const requestActionCount = aiAgentActionCount();
+  const requestContext = aiAgentContextSignature(training);
   aiAgentPending = true;
   aiAgentState = { status:"loading", recommendations:[], message:"L’agent compare tes références, tes dernières décisions et les articles disponibles…", searchHints:[], candidateCount:candidates.length };
-  aiAgentLastActionCount = aiAgentActionCount();
+  aiAgentLastActionCount = requestActionCount;
   render();
   try {
     const result = await requestAgentRecommendations(aiAgentConfig.endpoint,state,candidates,aiAgentInspirations());
-    aiAgentState = { status:"ready", recommendations:result.recommendations, message:result.message, searchHints:result.searchHints, candidateCount:result.candidateCount };
-    if (showFeedback) showToast(result.recommendations.length + " recommandations sélectionnées par ton personal shopper IA.",false);
+    const contextChanged = aiAgentActionCount() !== requestActionCount ||
+      (currentView === "training") !== training || aiAgentContextSignature(training) !== requestContext;
+    if (contextChanged) {
+      aiAgentState = { status:"stale", recommendations:[], message:"Tes filtres ou tes derniers retours ont changé pendant l’analyse. Relance l’agent pour obtenir un classement à jour.", searchHints:[], candidateCount:result.candidateCount };
+      if (showFeedback) showToast("Tes choix ont changé pendant l’analyse. Relance le personal shopper.",false);
+    } else {
+      aiAgentState = { status:"ready", recommendations:result.recommendations, message:result.message, searchHints:result.searchHints, candidateCount:result.candidateCount };
+      if (showFeedback) showToast(result.recommendations.length + " recommandations sélectionnées par ton personal shopper IA.",false);
+    }
   } catch (error) {
     aiAgentState = { status:"error", recommendations:[], message:error.message + " Le classement local reste actif.", searchHints:[], candidateCount:candidates.length };
     if (showFeedback) showToast("Le personal shopper IA est indisponible : " + error.message,false);
   } finally {
     aiAgentPending = false;
-    if (currentView === "discover" || currentView === "training") render();
+    const actionDelta = aiAgentActionCount() - aiAgentLastActionCount;
+    const autoEnabled = state && state.settings.aiAgentAutoRefresh && state.settings.aiAgentConsent && aiAgentConfig.enabled;
+    const shouldRefresh = Boolean(autoEnabled && actionDelta >= 3);
+    aiAgentRefreshQueued = false;
+    if (shouldRefresh && (currentView === "discover" || currentView === "training")) {
+      aiAgentLastActionCount = aiAgentActionCount();
+      runAiAgent(false);
+    } else if (currentView === "discover" || currentView === "training") render();
   }
 }
 function renderAiAgentPanel() {
@@ -223,7 +254,7 @@ function aiAgentReason(productId) {
   return item && item.reason ? '<p class="ai-agent-product-reason"><strong>Pourquoi l’IA le propose :</strong> ' + esc(item.reason) + '</p>' : "";
 }
 function invalidateAiAgentResults() {
-  if (aiAgentState.status !== "ready") return;
+  if (aiAgentState.status !== "ready" && !aiAgentPending) return;
   aiAgentState = {
     status:"stale", recommendations:[],
     message:"Ton dernier choix a été pris en compte. Relance l’agent pour obtenir une sélection actualisée.",
@@ -257,10 +288,13 @@ function persist() {
         }
         const agentCount = aiAgentActionCount();
         if (state.settings.aiAgentAutoRefresh && state.settings.aiAgentConsent &&
-            aiAgentConfig.enabled && !aiAgentPending && agentCount >= 3 &&
+            aiAgentConfig.enabled && agentCount >= 3 &&
             agentCount - aiAgentLastActionCount >= 3) {
-          aiAgentLastActionCount = agentCount;
-          runAiAgent(false);
+          if (aiAgentPending) aiAgentRefreshQueued = true;
+          else {
+            aiAgentLastActionCount = agentCount;
+            runAiAgent(false);
+          }
         }
       } while (savedRevision !== persistRevision);
 
@@ -1176,6 +1210,7 @@ function handleChange(event) {
   }
   if (target.id === "ai-agent-auto") {
     state.settings.aiAgentAutoRefresh = Boolean(target.checked);
+    if (!target.checked) aiAgentRefreshQueued = false;
     persist();
     render();
     return;
