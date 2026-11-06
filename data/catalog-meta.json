@@ -1,22 +1,374 @@
 {
   "schemaVersion": 2,
   "provider": "Pages produits publiques autorisées (Schema.org / Open Graph)",
-  "status": "needs-configuration",
-  "syncedAt": null,
-  "productCount": 8,
-  "liveProductCount": 0,
-  "publicProductCount": 0,
+  "status": "partial",
+  "syncedAt": "2026-11-06T14:08:52.281Z",
+  "productCount": 61,
+  "liveProductCount": 53,
+  "publicProductCount": 53,
   "curatedProductCount": 8,
   "staleProductCount": 0,
-  "sourceCount": 0,
-  "attemptedSourceCount": 0,
-  "pagesChecked": 0,
-  "sources": [],
-  "sourceResults": [],
+  "sourceCount": 5,
+  "attemptedSourceCount": 49,
+  "pagesChecked": 216,
+  "sources": [
+    "BZB",
+    "Carhartt WIP",
+    "Courir",
+    "Foot Locker",
+    "Jules"
+  ],
+  "sourceResults": [
+    {
+      "name": "Zara",
+      "status": "blocked",
+      "products": 0,
+      "pages": 0,
+      "reason": "robots.txt inaccessible ou accès refusé"
+    },
+    {
+      "name": "Zalando",
+      "status": "blocked",
+      "products": 0,
+      "pages": 0,
+      "reason": "robots.txt inaccessible ou accès refusé"
+    },
+    {
+      "name": "Pull & Bear",
+      "status": "blocked",
+      "products": 0,
+      "pages": 0,
+      "reason": "robots.txt inaccessible ou accès refusé"
+    },
+    {
+      "name": "Bershka",
+      "status": "blocked",
+      "products": 0,
+      "pages": 0,
+      "reason": "robots.txt inaccessible ou accès refusé"
+    },
+    {
+      "name": "H&M",
+      "status": "blocked",
+      "products": 0,
+      "pages": 0,
+      "reason": "robots.txt inaccessible ou accès refusé"
+    },
+    {
+      "name": "Mango",
+      "status": "blocked",
+      "products": 0,
+      "pages": 0,
+      "reason": "robots.txt inaccessible ou accès refusé"
+    },
+    {
+      "name": "ASOS",
+      "status": "blocked",
+      "products": 0,
+      "pages": 0,
+      "reason": "robots.txt inaccessible ou accès refusé"
+    },
+    {
+      "name": "UNIQLO",
+      "status": "blocked",
+      "products": 0,
+      "pages": 0,
+      "reason": "robots.txt inaccessible ou accès refusé"
+    },
+    {
+      "name": "Massimo Dutti",
+      "status": "blocked",
+      "products": 0,
+      "pages": 0,
+      "reason": "robots.txt inaccessible ou accès refusé"
+    },
+    {
+      "name": "Levi's",
+      "status": "unavailable",
+      "products": 0,
+      "pages": 0,
+      "reason": "Aucune fiche produit publique exploitable."
+    },
+    {
+      "name": "BZB",
+      "status": "ok",
+      "products": 12,
+      "pages": 13,
+      "reason": ""
+    },
+    {
+      "name": "Jack & Jones",
+      "status": "no-structured-products",
+      "products": 0,
+      "pages": 1,
+      "reason": "Aucune fiche produit publique exploitable."
+    },
+    {
+      "name": "Celio",
+      "status": "blocked",
+      "products": 0,
+      "pages": 0,
+      "reason": "robots.txt inaccessible ou accès refusé"
+    },
+    {
+      "name": "Jules",
+      "status": "ok",
+      "products": 12,
+      "pages": 15,
+      "reason": ""
+    },
+    {
+      "name": "Carhartt WIP",
+      "status": "ok",
+      "products": 12,
+      "pages": 13,
+      "reason": ""
+    },
+    {
+      "name": "ARKET",
+      "status": "no-structured-products",
+      "products": 0,
+      "pages": 18,
+      "reason": "Aucune fiche produit publique exploitable."
+    },
+    {
+      "name": "COS",
+      "status": "no-structured-products",
+      "products": 0,
+      "pages": 17,
+      "reason": "Aucune fiche produit publique exploitable."
+    },
+    {
+      "name": "adidas",
+      "status": "blocked",
+      "products": 0,
+      "pages": 0,
+      "reason": "robots.txt inaccessible ou accès refusé"
+    },
+    {
+      "name": "New Balance",
+      "status": "blocked",
+      "products": 0,
+      "pages": 0,
+      "reason": "robots.txt inaccessible ou accès refusé"
+    },
+    {
+      "name": "Weekday",
+      "status": "unavailable",
+      "products": 0,
+      "pages": 0,
+      "reason": "Aucune fiche produit publique exploitable."
+    },
+    {
+      "name": "Converse",
+      "status": "blocked",
+      "products": 0,
+      "pages": 0,
+      "reason": "robots.txt inaccessible ou accès refusé"
+    },
+    {
+      "name": "Puma",
+      "status": "no-structured-products",
+      "products": 0,
+      "pages": 3,
+      "reason": "Aucune fiche produit publique exploitable."
+    },
+    {
+      "name": "ASICS",
+      "status": "blocked",
+      "products": 0,
+      "pages": 0,
+      "reason": "robots.txt inaccessible ou accès refusé"
+    },
+    {
+      "name": "JD Sports",
+      "status": "blocked",
+      "products": 0,
+      "pages": 0,
+      "reason": "robots.txt inaccessible ou accès refusé"
+    },
+    {
+      "name": "Snipes",
+      "status": "unavailable",
+      "products": 0,
+      "pages": 0,
+      "reason": "Aucune fiche produit publique exploitable."
+    },
+    {
+      "name": "Nike",
+      "status": "no-structured-products",
+      "products": 0,
+      "pages": 19,
+      "reason": "Aucune fiche produit publique exploitable."
+    },
+    {
+      "name": "Undiz",
+      "status": "blocked",
+      "products": 0,
+      "pages": 0,
+      "reason": "robots.txt inaccessible ou accès refusé"
+    },
+    {
+      "name": "Louis Vuitton",
+      "status": "blocked",
+      "products": 0,
+      "pages": 0,
+      "reason": "robots.txt inaccessible ou accès refusé"
+    },
+    {
+      "name": "Courir",
+      "status": "ok",
+      "products": 12,
+      "pages": 13,
+      "reason": ""
+    },
+    {
+      "name": "Calvin Klein",
+      "status": "blocked",
+      "products": 0,
+      "pages": 0,
+      "reason": "robots.txt inaccessible ou accès refusé"
+    },
+    {
+      "name": "Foot Locker",
+      "status": "ok",
+      "products": 5,
+      "pages": 18,
+      "reason": ""
+    },
+    {
+      "name": "Lacoste",
+      "status": "blocked",
+      "products": 0,
+      "pages": 0,
+      "reason": "robots.txt inaccessible ou accès refusé"
+    },
+    {
+      "name": "Charles Tyrwhitt",
+      "status": "no-structured-products",
+      "products": 0,
+      "pages": 3,
+      "reason": "Aucune fiche produit publique exploitable."
+    },
+    {
+      "name": "Tommy Hilfiger",
+      "status": "blocked",
+      "products": 0,
+      "pages": 0,
+      "reason": "robots.txt inaccessible ou accès refusé"
+    },
+    {
+      "name": "Polo Ralph Lauren",
+      "status": "blocked",
+      "products": 0,
+      "pages": 0,
+      "reason": "robots.txt inaccessible ou accès refusé"
+    },
+    {
+      "name": "Sarenza",
+      "status": "blocked",
+      "products": 0,
+      "pages": 0,
+      "reason": "robots.txt inaccessible ou accès refusé"
+    },
+    {
+      "name": "Spartoo",
+      "status": "no-structured-products",
+      "products": 0,
+      "pages": 1,
+      "reason": "Aucune fiche produit publique exploitable."
+    },
+    {
+      "name": "La Redoute",
+      "status": "blocked",
+      "products": 0,
+      "pages": 0,
+      "reason": "robots.txt inaccessible ou accès refusé"
+    },
+    {
+      "name": "Galeries Lafayette",
+      "status": "blocked",
+      "products": 0,
+      "pages": 0,
+      "reason": "robots.txt inaccessible ou accès refusé"
+    },
+    {
+      "name": "Printemps",
+      "status": "blocked",
+      "products": 0,
+      "pages": 0,
+      "reason": "robots.txt inaccessible ou accès refusé"
+    },
+    {
+      "name": "Dior",
+      "status": "no-structured-products",
+      "products": 0,
+      "pages": 19,
+      "reason": "Aucune fiche produit publique exploitable."
+    },
+    {
+      "name": "Lothaire",
+      "status": "no-structured-products",
+      "products": 0,
+      "pages": 19,
+      "reason": "Aucune fiche produit publique exploitable."
+    },
+    {
+      "name": "C&A",
+      "status": "no-structured-products",
+      "products": 0,
+      "pages": 3,
+      "reason": "Aucune fiche produit publique exploitable."
+    },
+    {
+      "name": "Fred Perry",
+      "status": "unavailable",
+      "products": 0,
+      "pages": 0,
+      "reason": "Aucune fiche produit publique exploitable."
+    },
+    {
+      "name": "Vestiaire Collective",
+      "status": "blocked",
+      "products": 0,
+      "pages": 0,
+      "reason": "robots.txt inaccessible ou accès refusé"
+    },
+    {
+      "name": "24S",
+      "status": "blocked",
+      "products": 0,
+      "pages": 0,
+      "reason": "robots.txt inaccessible ou accès refusé"
+    },
+    {
+      "name": "ABOUT YOU",
+      "status": "no-structured-products",
+      "products": 0,
+      "pages": 19,
+      "reason": "Aucune fiche produit publique exploitable."
+    },
+    {
+      "name": "Kiabi",
+      "status": "no-structured-products",
+      "products": 0,
+      "pages": 18,
+      "reason": "Aucune fiche produit publique exploitable."
+    },
+    {
+      "name": "Decathlon",
+      "status": "no-structured-products",
+      "products": 0,
+      "pages": 4,
+      "reason": "Aucune fiche produit publique exploitable."
+    }
+  ],
   "refreshCadence": "Actualisation quotidienne gratuite via GitHub Actions.",
-  "message": "Catalogue gratuit multi-sources prêt. Lancer le workflow refresh-public-catalog.yml pour explorer les boutiques autorisées. Aucune donnée Awin n'est requise.",
   "notes": [
-    "Le collecteur respecte robots.txt et n'importe que les pages publiques autorisées.",
-    "Le prix et le stock doivent être vérifiés sur la boutique avant achat."
+    "Aucun compte éditeur, réseau d'affiliation, API payante ou abonnement requis.",
+    "Le robot respecte robots.txt et n'accède qu'aux pages publiques autorisées.",
+    "Prix EUR, lien produit HTTPS et image HTTPS obligatoires.",
+    "Prix et stock datés : vérification finale sur la boutique avant achat.",
+    "Les notes produit ne sont jamais présentées comme une note de fiabilité du marchand."
   ]
 }
