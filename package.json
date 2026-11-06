@@ -5,6 +5,6 @@
   "type": "module",
   "description": "DRESSOPP — assistant personnel de découverte vestimentaire",
   "scripts": {
-    "test": "node --check app.js && node --check modules/community.js && node --check scripts/sync-pinterest.mjs && node --check scripts/refresh-public-catalog.mjs && node --test"
+    "test": "node --check app.js && node --check modules/agent.js && node --check modules/community.js && node --check workers/dressopp-agent/src/index.js && node --check scripts/sync-pinterest.mjs && node --check scripts/refresh-public-catalog.mjs && node --test"
   }
 }
