@@ -1,3 +1,5 @@
+import { productCommunityToken } from "./engine.js";
+
 const TOKEN_KEY = "dressopp-community-auth-v1";
 const API_ROOT = "https://identitytoolkit.googleapis.com/v1";
 const FIRESTORE_ROOT = "https://firestore.googleapis.com/v1";
@@ -30,14 +32,18 @@ function productFeatures(product) {
 }
 export function buildCommunityFeatures(state) {
   const positive = new Set(), negative = new Set();
+  const positiveItems = new Set(), negativeItems = new Set();
   const byId = new Map((state.products || []).map(product => [product.id, product]));
-  const add = (target, productId) => {
+  const add = (target, itemTarget, productId) => {
     const product = byId.get(productId);
-    if (product) productFeatures(product).forEach(feature => target.add(feature));
+    if (!product) return;
+    productFeatures(product).forEach(feature => target.add(feature));
+    const itemToken = productCommunityToken(product);
+    if (itemToken) itemTarget.add(itemToken);
   };
-  (state.interactions && state.interactions.likes || []).forEach(item => add(positive, item.productId));
-  (state.likedProducts || []).forEach(item => add(positive, item.productId));
-  (state.interactions && state.interactions.dislikes || []).forEach(item => add(negative, item.productId));
+  (state.interactions && state.interactions.likes || []).forEach(item => add(positive, positiveItems, item.productId));
+  (state.likedProducts || []).forEach(item => add(positive, positiveItems, item.productId));
+  (state.interactions && state.interactions.dislikes || []).forEach(item => add(negative, negativeItems, item.productId));
   const profile = state.profile || {};
   (profile.preferredStyles || []).forEach(value => positive.add("style:" + normalize(value)));
   (profile.preferredColors || []).forEach(value => positive.add("color:" + normalize(value)));
@@ -48,7 +54,9 @@ export function buildCommunityFeatures(state) {
   (profile.excludedBrands || []).forEach(value => negative.add("brand:" + normalize(value)));
   return {
     positive: Array.from(positive).filter(value => value.length <= 70).slice(0, 60),
-    negative: Array.from(negative).filter(value => value.length <= 70).slice(0, 40)
+    negative: Array.from(negative).filter(value => value.length <= 70).slice(0, 40),
+    positiveItems: Array.from(positiveItems).slice(0, 40),
+    negativeItems: Array.from(negativeItems).slice(0, 30)
   };
 }
 
@@ -132,7 +140,9 @@ export async function syncCommunityProfile(state, config) {
       schemaVersion: { integerValue: "1" },
       updatedAt: { timestampValue: new Date().toISOString() },
       positive: { arrayValue: { values: features.positive.map(value => ({ stringValue: value })) } },
-      negative: { arrayValue: { values: features.negative.map(value => ({ stringValue: value })) } }
+      negative: { arrayValue: { values: features.negative.map(value => ({ stringValue: value })) } },
+      positiveItems: { arrayValue: { values: features.positiveItems.map(value => ({ stringValue: value })) } },
+      negativeItems: { arrayValue: { values: features.negativeItems.map(value => ({ stringValue: value })) } }
     }
   };
   await firestoreRequest(firestoreUrl(config, path), auth.idToken, { method: "PATCH", body: document });
@@ -141,25 +151,37 @@ export async function syncCommunityProfile(state, config) {
     const fields = item.fields || {};
     return {
       positive: ((fields.positive && fields.positive.arrayValue && fields.positive.arrayValue.values) || []).map(value => value.stringValue).filter(Boolean),
-      negative: ((fields.negative && fields.negative.arrayValue && fields.negative.arrayValue.values) || []).map(value => value.stringValue).filter(Boolean)
+      negative: ((fields.negative && fields.negative.arrayValue && fields.negative.arrayValue.values) || []).map(value => value.stringValue).filter(Boolean),
+      positiveItems: ((fields.positiveItems && fields.positiveItems.arrayValue && fields.positiveItems.arrayValue.values) || []).map(value => value.stringValue).filter(Boolean),
+      negativeItems: ((fields.negativeItems && fields.negativeItems.arrayValue && fields.negativeItems.arrayValue.values) || []).map(value => value.stringValue).filter(Boolean)
     };
   });
   return { configured: true, synced: true, profiles, count: amount, neighbors: profiles.length };
 }
 export function buildCommunitySignals(profiles, state) {
-  const own = new Set(buildCommunityFeatures(state).positive);
+  const own = buildCommunityFeatures(state);
+  const ownFeatures = new Set(own.positive);
+  const ownItems = new Set(own.positiveItems);
   const positive = Object.create(null), negative = Object.create(null);
+  const positiveItems = Object.create(null), negativeItems = Object.create(null);
   let neighbors = 0;
   for (const profile of profiles || []) {
-    const other = new Set(profile.positive || []);
-    const shared = Array.from(own).filter(value => other.has(value)).length;
-    const union = new Set([...own, ...other]).size || 1;
-    const similarity = shared / union;
-    if (shared < 1 || similarity < 0.035) continue;
+    const otherFeatures = new Set(profile.positive || []);
+    const otherItems = new Set(profile.positiveItems || []);
+    const sharedFeatures = Array.from(ownFeatures).filter(value => otherFeatures.has(value)).length;
+    const sharedItems = Array.from(ownItems).filter(value => otherItems.has(value)).length;
+    const unionFeatures = new Set([...ownFeatures, ...otherFeatures]).size;
+    const unionItems = new Set([...ownItems, ...otherItems]).size;
+    const sharedWeight = sharedFeatures + sharedItems * 2;
+    const unionWeight = unionFeatures + unionItems * 2 || 1;
+    const similarity = sharedWeight / unionWeight;
+    if (!sharedWeight || similarity < 0.035) continue;
     neighbors++;
     const weight = Math.min(1.8, similarity * 8);
     (profile.positive || []).forEach(feature => { positive[feature] = (positive[feature] || 0) + weight; });
     (profile.negative || []).forEach(feature => { negative[feature] = (negative[feature] || 0) + weight; });
+    (profile.positiveItems || []).forEach(item => { positiveItems[item] = (positiveItems[item] || 0) + weight; });
+    (profile.negativeItems || []).forEach(item => { negativeItems[item] = (negativeItems[item] || 0) + weight; });
   }
-  return { positive, negative, neighbors };
+  return { positive, negative, positiveItems, negativeItems, neighbors };
 }
