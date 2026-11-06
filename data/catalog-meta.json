@@ -1,16 +1,17 @@
 {
-  "schemaVersion": 2,
+  "schemaVersion": 3,
   "provider": "Pages produits publiques autorisées (Schema.org / Open Graph)",
   "status": "partial",
-  "syncedAt": "2026-11-06T14:17:39.600Z",
-  "productCount": 83,
-  "liveProductCount": 67,
-  "publicProductCount": 67,
+  "syncedAt": "2026-11-06T18:01:00.186Z",
+  "productCount": 89,
+  "liveProductCount": 73,
+  "publicProductCount": 73,
   "curatedProductCount": 16,
   "staleProductCount": 0,
   "sourceCount": 5,
-  "attemptedSourceCount": 49,
-  "pagesChecked": 202,
+  "attemptedSourceCount": 70,
+  "scannedSourceCount": 36,
+  "pagesChecked": 233,
   "sources": [
     "BZB",
     "Carhartt WIP",
@@ -24,35 +25,40 @@
       "status": "blocked",
       "products": 0,
       "pages": 0,
-      "reason": "robots.txt inaccessible ou accès refusé"
+      "reason": "robots.txt inaccessible ou accès refusé",
+      "checkedAt": "2026-11-06T18:01:00.186Z"
     },
     {
       "name": "Zalando",
       "status": "blocked",
       "products": 0,
       "pages": 0,
-      "reason": "robots.txt inaccessible ou accès refusé"
+      "reason": "robots.txt inaccessible ou accès refusé",
+      "checkedAt": "2026-11-06T18:01:00.186Z"
     },
     {
       "name": "Pull & Bear",
       "status": "blocked",
       "products": 0,
       "pages": 0,
-      "reason": "robots.txt inaccessible ou accès refusé"
+      "reason": "robots.txt inaccessible ou accès refusé",
+      "checkedAt": "2026-11-06T18:01:00.186Z"
     },
     {
       "name": "Bershka",
       "status": "blocked",
       "products": 0,
       "pages": 0,
-      "reason": "robots.txt inaccessible ou accès refusé"
+      "reason": "robots.txt inaccessible ou accès refusé",
+      "checkedAt": "2026-11-06T18:01:00.186Z"
     },
     {
       "name": "H&M",
       "status": "blocked",
       "products": 0,
       "pages": 0,
-      "reason": "robots.txt inaccessible ou accès refusé"
+      "reason": "robots.txt inaccessible ou accès refusé",
+      "checkedAt": "2026-11-06T18:01:00.186Z"
     },
     {
       "name": "Mango",
@@ -66,14 +72,16 @@
       "status": "blocked",
       "products": 0,
       "pages": 0,
-      "reason": "robots.txt inaccessible ou accès refusé"
+      "reason": "robots.txt inaccessible ou accès refusé",
+      "checkedAt": "2026-11-06T18:01:00.186Z"
     },
     {
       "name": "UNIQLO",
       "status": "blocked",
       "products": 0,
       "pages": 0,
-      "reason": "robots.txt inaccessible ou accès refusé"
+      "reason": "robots.txt inaccessible ou accès refusé",
+      "checkedAt": "2026-11-06T18:01:00.186Z"
     },
     {
       "name": "Massimo Dutti",
@@ -85,9 +93,10 @@
     {
       "name": "BZB",
       "status": "ok",
-      "products": 12,
-      "pages": 13,
-      "reason": ""
+      "products": 18,
+      "pages": 19,
+      "reason": "",
+      "checkedAt": "2026-11-06T18:01:00.186Z"
     },
     {
       "name": "Levi's",
@@ -283,7 +292,8 @@
       "status": "blocked",
       "products": 0,
       "pages": 0,
-      "reason": "robots.txt inaccessible ou accès refusé"
+      "reason": "robots.txt inaccessible ou accès refusé",
+      "checkedAt": "2026-11-06T18:01:00.186Z"
     },
     {
       "name": "Spartoo",
@@ -297,14 +307,16 @@
       "status": "blocked",
       "products": 0,
       "pages": 0,
-      "reason": "robots.txt inaccessible ou accès refusé"
+      "reason": "robots.txt inaccessible ou accès refusé",
+      "checkedAt": "2026-11-06T18:01:00.186Z"
     },
     {
       "name": "Printemps",
       "status": "blocked",
       "products": 0,
       "pages": 0,
-      "reason": "robots.txt inaccessible ou accès refusé"
+      "reason": "robots.txt inaccessible ou accès refusé",
+      "checkedAt": "2026-11-06T18:01:00.186Z"
     },
     {
       "name": "Fred Perry",
@@ -318,14 +330,16 @@
       "status": "no-structured-products",
       "products": 0,
       "pages": 3,
-      "reason": "Aucune fiche produit publique exploitable."
+      "reason": "Aucune fiche produit publique exploitable.",
+      "checkedAt": "2026-11-06T18:01:00.186Z"
     },
     {
       "name": "24S",
       "status": "blocked",
       "products": 0,
       "pages": 0,
-      "reason": "robots.txt inaccessible ou accès refusé"
+      "reason": "robots.txt inaccessible ou accès refusé",
+      "checkedAt": "2026-11-06T18:01:00.186Z"
     },
     {
       "name": "Vestiaire Collective",
@@ -339,14 +353,16 @@
       "status": "no-structured-products",
       "products": 0,
       "pages": 19,
-      "reason": "Aucune fiche produit publique exploitable."
+      "reason": "Aucune fiche produit publique exploitable.",
+      "checkedAt": "2026-11-06T18:01:00.186Z"
     },
     {
       "name": "Kiabi",
       "status": "no-structured-products",
       "products": 0,
       "pages": 18,
-      "reason": "Aucune fiche produit publique exploitable."
+      "reason": "Aucune fiche produit publique exploitable.",
+      "checkedAt": "2026-11-06T18:01:00.186Z"
     },
     {
       "name": "Decathlon",
@@ -361,15 +377,188 @@
       "products": 0,
       "pages": 7,
       "reason": "Aucune fiche produit publique exploitable."
+    },
+    {
+      "name": "Mango Man",
+      "status": "blocked",
+      "products": 0,
+      "pages": 0,
+      "reason": "robots.txt inaccessible ou accès refusé",
+      "checkedAt": "2026-11-06T18:01:00.186Z"
+    },
+    {
+      "name": "END.",
+      "status": "no-structured-products",
+      "products": 0,
+      "pages": 19,
+      "reason": "Aucune fiche produit publique exploitable.",
+      "checkedAt": "2026-11-06T18:01:00.186Z"
+    },
+    {
+      "name": "MR PORTER",
+      "status": "blocked",
+      "products": 0,
+      "pages": 0,
+      "reason": "robots.txt inaccessible ou accès refusé",
+      "checkedAt": "2026-11-06T18:01:00.186Z"
+    },
+    {
+      "name": "Mytheresa",
+      "status": "no-structured-products",
+      "products": 0,
+      "pages": 1,
+      "reason": "Aucune fiche produit publique exploitable.",
+      "checkedAt": "2026-11-06T18:01:00.186Z"
+    },
+    {
+      "name": "Farfetch",
+      "status": "blocked",
+      "products": 0,
+      "pages": 0,
+      "reason": "robots.txt inaccessible ou accès refusé",
+      "checkedAt": "2026-11-06T18:01:00.186Z"
+    },
+    {
+      "name": "YOOX",
+      "status": "blocked",
+      "products": 0,
+      "pages": 0,
+      "reason": "robots.txt inaccessible ou accès refusé",
+      "checkedAt": "2026-11-06T18:01:00.186Z"
+    },
+    {
+      "name": "LUISAVIAROMA",
+      "status": "unavailable",
+      "products": 0,
+      "pages": 0,
+      "reason": "Aucune fiche produit publique exploitable.",
+      "checkedAt": "2026-11-06T18:01:00.186Z"
+    },
+    {
+      "name": "Selfridges",
+      "status": "blocked",
+      "products": 0,
+      "pages": 0,
+      "reason": "robots.txt inaccessible ou accès refusé",
+      "checkedAt": "2026-11-06T18:01:00.186Z"
+    },
+    {
+      "name": "Harrods",
+      "status": "blocked",
+      "products": 0,
+      "pages": 0,
+      "reason": "robots.txt inaccessible ou accès refusé",
+      "checkedAt": "2026-11-06T18:01:00.186Z"
+    },
+    {
+      "name": "SSENSE",
+      "status": "no-structured-products",
+      "products": 0,
+      "pages": 19,
+      "reason": "Aucune fiche produit publique exploitable.",
+      "checkedAt": "2026-11-06T18:01:00.186Z"
+    },
+    {
+      "name": "Macy's",
+      "status": "blocked",
+      "products": 0,
+      "pages": 0,
+      "reason": "robots.txt inaccessible ou accès refusé",
+      "checkedAt": "2026-11-06T18:01:00.186Z"
+    },
+    {
+      "name": "Urban Outfitters",
+      "status": "blocked",
+      "products": 0,
+      "pages": 0,
+      "reason": "robots.txt inaccessible ou accès refusé",
+      "checkedAt": "2026-11-06T18:01:00.186Z"
+    },
+    {
+      "name": "NEXT",
+      "status": "blocked",
+      "products": 0,
+      "pages": 0,
+      "reason": "robots.txt inaccessible ou accès refusé",
+      "checkedAt": "2026-11-06T18:01:00.186Z"
+    },
+    {
+      "name": "Flannels",
+      "status": "no-structured-products",
+      "products": 0,
+      "pages": 19,
+      "reason": "Aucune fiche produit publique exploitable.",
+      "checkedAt": "2026-11-06T18:01:00.186Z"
+    },
+    {
+      "name": "Boozt",
+      "status": "blocked",
+      "products": 0,
+      "pages": 0,
+      "reason": "robots.txt inaccessible ou accès refusé",
+      "checkedAt": "2026-11-06T18:01:00.186Z"
+    },
+    {
+      "name": "Browns",
+      "status": "no-structured-products",
+      "products": 0,
+      "pages": 19,
+      "reason": "Aucune fiche produit publique exploitable.",
+      "checkedAt": "2026-11-06T18:01:00.186Z"
+    },
+    {
+      "name": "Nordstrom",
+      "status": "no-structured-products",
+      "products": 0,
+      "pages": 19,
+      "reason": "Aucune fiche produit publique exploitable.",
+      "checkedAt": "2026-11-06T18:01:00.186Z"
+    },
+    {
+      "name": "Marks & Spencer",
+      "status": "no-structured-products",
+      "products": 0,
+      "pages": 19,
+      "reason": "Aucune fiche produit publique exploitable.",
+      "checkedAt": "2026-11-06T18:01:00.186Z"
+    },
+    {
+      "name": "GAP",
+      "status": "no-structured-products",
+      "products": 0,
+      "pages": 19,
+      "reason": "Aucune fiche produit publique exploitable.",
+      "checkedAt": "2026-11-06T18:01:00.186Z"
+    },
+    {
+      "name": "Primark",
+      "status": "no-structured-products",
+      "products": 0,
+      "pages": 21,
+      "reason": "Aucune fiche produit publique exploitable.",
+      "checkedAt": "2026-11-06T18:01:00.186Z"
+    },
+    {
+      "name": "Care of Carl",
+      "status": "no-structured-products",
+      "products": 0,
+      "pages": 19,
+      "reason": "Aucune fiche produit publique exploitable.",
+      "checkedAt": "2026-11-06T18:01:00.186Z"
     }
   ],
-  "refreshCadence": "Actualisation quotidienne gratuite via GitHub Actions.",
+  "refreshCadence": "Rotation quotidienne de 36 enseignes parmi 200 ; chaque enseigne est revisitée à tour de rôle.",
   "notes": [
-    "Aucun compte éditeur, réseau d'affiliation, API payante ou abonnement requis.",
+    "Répertoire de 200 enseignes dans data/merchant-directory.json ; l'accès produit dépend des flux et autorisations de chaque boutique.",
     "Le robot respecte robots.txt et n'accède qu'aux pages publiques autorisées.",
-    "Prix EUR, lien produit HTTPS et image HTTPS obligatoires.",
-    "Prix et stock datés : vérification finale sur la boutique avant achat.",
-    "Les notes produit ne sont jamais présentées comme une note de fiabilité du marchand.",
-    "La base éditoriale comprend aussi des articles repérés manuellement à partir du lookbook ; leur correspondance est indiquée comme visuelle et non comme identification certaine du vêtement d'origine."
-  ]
+    "Les fiches nécessitent un nom, un prix EUR, un lien produit HTTPS et une image HTTPS.",
+    "Les prix et stocks sont datés ; vérification finale sur la boutique avant achat.",
+    "Les notes produit ne sont jamais présentées comme une note de fiabilité du marchand."
+  ],
+  "priorityCursor": 12,
+  "regularCursor": 24,
+  "directoryCount": 200,
+  "nextBatchSize": 36,
+  "pageSize": 120,
+  "pageCount": 1
 }
