@@ -2,92 +2,75 @@
 
 **Find your style. Build your identity.**
 
-DRESSOPP associe la découverte de vêtements par décisions rapides, une garde-robe personnelle, un moteur d'apprentissage et un espace de tenues inspirées d'un tableau Pinterest unique.
+DRESSOPP est une plateforme personnelle de découverte de vêtements, chaussures, sous-vêtements et accessoires. Elle associe les inspirations Pinterest, un catalogue multi-boutiques, les décisions Oui/Non, une garde-robe et un moteur de recommandations qui apprend au fil des utilisations.
 
-## Expérience
+## Découverte et apprentissage
 
-- **Découvrir** : une pièce à la fois, gestes tactiles/souris et navigation clavier.
-- **Non** à gauche : signal négatif pour le moteur.
-- **Oui** à droite : signal positif pour le moteur, sans sauvegarde automatique dans la liste.
-- **Ajouter à ma liste** au centre : sauvegarde dans la garde-robe sans le confondre avec un vote.
-- **Annulation** de la dernière décision (Oui, Non ou ajout à la liste).
-- **Entraînement** : découverte prioritaire avec le même système de votes.
-- **Ma garde-robe** : recherche, filtres, tri et retrait d'un article sans créer de Non.
-- **Pinterest** : le tableau `sopppx24/mode` est l'unique source d'inspiration.
-- **Tenues** : rapproche les Pins des pièces enregistrées et propose des compléments uniquement lorsqu'une fiche produit vérifiable existe dans le catalogue.
-- **Profil** : tailles et préférences facultatives.
-- Import de produits, export/import JSON et stockage local IndexedDB avec repli localStorage.
+- Une pièce à la fois, en cartes ou en grille.
+- **Non** : signal négatif ; **Oui** : intérêt ; **Ajouter à ma liste** : sauvegarde sans vote.
+- Le moteur apprend des votes, des articles enregistrés, du profil, des tailles, des couleurs, matières, coupes, styles, du budget et de la saison.
+- Les fiches sont classées selon la proximité avec les goûts et la fraîcheur de leurs données.
+- Les tenues rapprochent les inspirations des pièces enregistrées ; aucun complément produit n'est inventé.
 
-Le moteur apprend des réponses Oui/Non, de tes préférences déclarées et des mots-clés détectables dans les métadonnées des Pins. Cette version ne fait pas d'analyse visuelle IA des photographies : les rapprochements de tenues se basent sur les titres, descriptions, textes alternatifs, tags et attributs des fiches produits.
+## Catalogue multi-sources gratuit
 
-## Pinterest : synchronisation quotidienne
+DRESSOPP n'utilise plus Awin. Le workflow `.github/workflows/refresh-public-catalog.yml` explore quotidiennement un répertoire de boutiques défini dans `data/public-sources.json` (Zalando, ASOS, UNIQLO, Zara, BZB, Pull & Bear, H&M, Mango, COS, ARKET, Nike, adidas, Courir, JD Sports, Calvin Klein, Undiz, Louis Vuitton, Dior, Lacoste, Levi's, Carhartt WIP, Sarenza, La Redoute, ABOUT YOU, Kiabi, Decathlon et d'autres).
 
-Le workflow `.github/workflows/pinterest-daily.yml` est prévu pour s'exécuter chaque jour à **12 h, fuseau Europe/Paris**, via l'API Pinterest v5.
+Le collecteur gratuit :
+- lit les sitemaps et les pages catégories publiques ;
+- respecte les règles de `robots.txt`, limite le nombre de pages et espace les requêtes ;
+- n'importe que les fiches avec nom, prix EUR, lien produit HTTPS et image HTTPS ;
+- récupère les données structurées Schema.org Product et, en secours, les métadonnées Open Graph produit ;
+- conserve les références manuelles, déduplique les URL et rend les fiches publiques périmées après sept jours sans nouvelle vérification.
 
-La synchronisation n'est pas encore active tant que le secret n'a pas été ajouté. Procédure complète dans [docs/PINTEREST.md](docs/PINTEREST.md).
+**Limites importantes :** ce n'est pas un moteur de recherche universel ni un accès garanti à chaque référence d'une boutique. Certaines boutiques bloquent les robots, ne publient pas de sitemaps produits ou ne fournissent pas de données structurées exploitables. Ces sites restent accessibles par les liens officiels dans DRESSOPP et peuvent être ajoutés par import manuel. Les prix et stocks sont une photographie datée ; la vérification finale doit se faire sur la boutique. Aucun blocage technique n'est contourné.
 
-- Secrets recommandés : `PINTEREST_APP_ID` et `PINTEREST_APP_SECRET` (jeton renouvelé à chaque exécution).
-- Permissions minimales : `boards:read` et `pins:read` pour un tableau public.
-- Le script retrouve le tableau nommé `mode`, récupère ses Pins, compare leurs identifiants avec le dernier passage et met à jour `data/pinterest-pins.json`.
-- Le script refuse de copier un tableau qui n'est pas explicitement public dans ce dépôt public.
-- Lorsqu'un flux change, le workflow déclenche aussi `deploy-pages.yml` pour publier les nouvelles épingles sur le site. Aucun déploiement redondant n'est lancé si le JSON est inchangé.
-- Le flux est visible publiquement dans le repository. Ne configure pas le secret pour un tableau secret/protégé ; une destination privée est nécessaire dans ce cas.
+Aucun abonnement, compte éditeur ou clé API payante n'est nécessaire. Pour lancer le premier passage : [GitHub Actions – Catalogue public](https://github.com/sopp24/DRESSOPP/actions/workflows/refresh-public-catalog.yml) → **Run workflow**.
 
-L'horaire est une cible planifiée GitHub Actions ; l'exécution peut être retardée par la disponibilité de la plateforme.
+Guide complet : [docs/SOURCES.md](docs/SOURCES.md).
 
-## Déploiement Pages
+## Recommandations communautaires facultatives
 
-Le workflow `.github/workflows/deploy-pages.yml` lance les tests puis publie GitHub Pages sur chaque push. Le workflow Pinterest le déclenche également après une mise à jour effective du flux. La source Pages doit être **GitHub Actions** dans **Settings → Pages → Build and deployment**.
+Le mode communautaire permet de comparer les goûts avec ceux d'autres utilisateurs DRESSOPP qui ont expressément accepté de contribuer. Il utilise les étiquettes anonymisées de styles, catégories, marques, couleurs et matières pour détecter des profils proches et ajuster le classement.
 
-Adresse du site : https://sopp24.github.io/DRESSOPP/
+Cette fonction est **désactivée par défaut** et nécessite de créer un projet Firebase en plan Spark (gratuit), d'activer l'authentification anonyme et de publier les règles Firestore décrites dans [docs/COMMUNITY.md](docs/COMMUNITY.md). Aucun nom, e-mail, taille, budget, historique de navigation ni lien Pinterest n'est partagé. Sans Firebase, l'apprentissage individuel continue de fonctionner sur l'appareil.
 
-## Lancer en local
+Les profils communautaires ne représentent que les membres DRESSOPP volontaires ; ils ne donnent pas accès aux recherches privées effectuées sur Google, Instagram ou d'autres applications.
 
-Aucune dépendance externe n'est nécessaire pour l'application.
+## Pinterest
 
-~~~bash
-python3 -m http.server 8000
-~~~
+Le tableau `sopppx24/mode` demeure la référence stylistique prioritaire. Le workflow `.github/workflows/pinterest-daily.yml` est programmé chaque jour à 12 h (Europe/Paris), via Pinterest API v5. Son activation nécessite les identifiants de l'application Pinterest et les autorisations `boards:read` et `pins:read`. Le flux n'est publié dans le dépôt que si l'API confirme que le tableau est public.
 
-Puis ouvrir http://localhost:8000.
+Guide : [docs/PINTEREST.md](docs/PINTEREST.md).
 
-Tests :
+## Fiabilité, avis et publicités
 
-~~~bash
-npm test
-~~~
+La note d'un article est séparée de la réputation générale de son marchand. DRESSOPP n'invente aucun score Trustpilot, Google, Avis Vérifiés, Trusted Shops ou Custplace et n'extrait pas les avis via des méthodes de contournement. Les données ne sont affichées que lorsqu'une source autorisée les fournit.
+
+Meta Ad Library peut servir à repérer des publicités publiques en France, mais ne donne pas accès au fil publicitaire personnalisé d'un compte Instagram.
 
 ## Données et confidentialité
 
-Les préférences, votes Oui/Non, articles enregistrés et Pins parcourus sont conservés dans IndexedDB sur cet appareil. L'export JSON permet de sauvegarder et transférer ces données manuellement.
+Les profils, tailles, votes, préférences, garde-robe et Pins consultés restent dans IndexedDB sur l'appareil, avec un repli localStorage. Le dépôt public ne contient aucun profil personnel ni historique de votes. Le partage communautaire est facultatif et désactivé initialement.
 
-Le dépôt est public : aucun token, historique personnel, liste de favoris ou profil n'y est écrit. Le flux `data/pinterest-pins.json` est le seul contenu Pinterest publié, et uniquement si l'API confirme que le tableau est public.
+## Déploiement et développement
 
-## Logo
+- Site : https://sopp24.github.io/DRESSOPP/
+- Pages : GitHub Actions, configuré dans Settings → Pages → Build and deployment.
+- Lancer localement : `python3 -m http.server 8000`, puis ouvrir http://localhost:8000.
+- Tests : `npm test`.
 
-- `assets/logo-square.png` est utilisé dans l'en-tête, comme favicon du navigateur, dans le manifeste PWA et comme icône de raccourci mobile (Apple Touch Icon).
-- Le même PNG est inclus dans le cache hors ligne de l'application.
+## Structure principale
 
-Le dépôt ne contient plus de favicon SVG de remplacement.
-
-## Structure
-
-- `index.html` — shell de l'application et navigation.
-- `styles.css` — direction artistique et responsive.
-- `app.js` — navigation, décisions, sauvegarde et vues.
-- `modules/engine.js` — normalisation, filtres et classement.
-- `modules/outfits.js` — analyse textuelle légère des Pins et génération des compositions.
-- `modules/store.js` — stockage local.
-- `modules/integrations.js` — configuration Pinterest.
-- `scripts/sync-pinterest.mjs` — synchronisation API Pinterest v5.
-- `data/pinterest-pins.json` — flux Pinterest public.
-- `tests/` — tests unitaires.
-- `.github/workflows/deploy-pages.yml` — déploiement du site.
-- `.github/workflows/pinterest-daily.yml` — synchronisation Pinterest quotidienne.
-
-
-## Catalogue multi-boutiques
-
-DRESSOPP peut alimenter le swipe depuis les flux produits Awin accessibles au compte éditeur. Le connecteur met à jour les fiches six fois par jour, ne télécharge que les flux modifiés et écarte les articles expirés, sans prix EUR, lien, photo ou stock positif. Le moteur classe les articles en temps réel selon les votes, le lookbook, les préférences, les tailles et le budget ; la fraîcheur du stock et des prix dépend de la dernière mise à jour du flux. Les notes d'articles restent distinctes de la réputation du marchand, qui n'est prise en compte que si la source la fournit explicitement.
-
-Pour activer les flux, ajouter le secret GitHub Actions `AWIN_PRODUCT_FEED_LIST_URL` avec le lien complet de liste obtenu dans Awin → Boîte à outils → Créer un flux. Voir [le guide Awin](docs/AWIN.md). Sans ce secret, les trois références de départ expirent le 12 novembre 2026 et les autres boutiques restent accessibles depuis Découvrir par liens officiels.
+- `app.js` : navigation, découverte, profils, votes et garde-robe.
+- `modules/engine.js` : normalisation, filtrage, apprentissage et classement.
+- `modules/community.js` : partage facultatif de signaux anonymisés Firebase.
+- `modules/outfits.js` : rapprochement des inspirations Pinterest et des articles.
+- `modules/store.js` : stockage local.
+- `modules/integrations.js` : intégrations de l'application.
+- `scripts/refresh-public-catalog.mjs` : exploration des boutiques publiques autorisées.
+- `scripts/sync-pinterest.mjs` : synchronisation Pinterest officielle.
+- `data/public-sources.json` : liste des boutiques explorées.
+- `data/catalog.json` et `data/catalog-meta.json` : catalogue et compte-rendu de synchronisation.
+- `.github/workflows/refresh-public-catalog.yml` : actualisation quotidienne du catalogue.
+- `.github/workflows/pinterest-daily.yml` : synchronisation Pinterest.
