@@ -149,10 +149,11 @@ async function refreshCommunity(showFeedback) {
 }
 function aiAgentActionCount() {
   if (!state) return 0;
-  return (state.interactions && state.interactions.likes ? state.interactions.likes.length : 0) +
-    (state.interactions && state.interactions.dislikes ? state.interactions.dislikes.length : 0) +
-    (state.interactions && state.interactions.saves ? state.interactions.saves.length : 0) +
-    (state.likedProducts ? state.likedProducts.length : 0);
+  const interactions = state.interactions || {};
+  const saveCount = Array.isArray(interactions.saves) && interactions.saves.length
+    ? interactions.saves.length : (state.likedProducts ? state.likedProducts.length : 0);
+  return (Array.isArray(interactions.likes) ? interactions.likes.length : 0) +
+    (Array.isArray(interactions.dislikes) ? interactions.dislikes.length : 0) + saveCount;
 }
 function aiAgentInspirations() {
   return pinterestPinCards().slice(0,12).map(function(pin) {
@@ -208,7 +209,7 @@ function renderAiAgentPanel() {
     ? '<button class="button-primary button-small" type="button" data-action="run-ai-agent" ' + (aiAgentPending ? "disabled" : "") + '>' + (aiAgentPending ? "Analyse…" : ready ? "Actualiser mes recommandations" : "Faire analyser ma sélection") + '</button>' : "";
   const hints = ready && aiAgentState.searchHints.length
     ? '<div class="ai-agent-hints"><span>Prochaines pistes :</span>' + aiAgentState.searchHints.map(function(item) { return "<span>" + esc(item) + "</span>"; }).join("") + "</div>" : "";
-  const note = ready ? "<p class=\\"ai-agent-result-note\\">" + aiAgentState.recommendations.length + " articles classés parmi " + aiAgentState.candidateCount + " candidats réels du catalogue.</p>" : "";
+  const note = ready ? '<p class="ai-agent-result-note">' + aiAgentState.recommendations.length + " articles classés parmi " + aiAgentState.candidateCount + " candidats réels du catalogue.</p>" : "";
   return '<section class="panel ai-agent-panel" aria-label="Personal shopper IA"><div class="ai-agent-top"><div><span class="eyebrow">Ton personal shopper</span><h2>Agent IA DRESSOPP</h2><p>Il interprète tes références et tes décisions pour choisir les prochains articles à découvrir.</p></div><span class="ai-agent-status ' + (ready ? "is-ready" : aiAgentPending ? "is-loading" : "") + '">' + esc(status) + '</span></div>' +
     consentControl +
     '<div class="ai-agent-controls">' + button + autoControl + '</div>' +
@@ -220,6 +221,14 @@ function aiAgentReason(productId) {
   if (aiAgentState.status !== "ready") return "";
   const item = aiAgentState.recommendations.find(function(entry) { return entry.productId === productId; });
   return item && item.reason ? '<p class="ai-agent-product-reason"><strong>Pourquoi l’IA le propose :</strong> ' + esc(item.reason) + '</p>' : "";
+}
+function invalidateAiAgentResults() {
+  if (aiAgentState.status !== "ready") return;
+  aiAgentState = {
+    status:"stale", recommendations:[],
+    message:"Ton dernier choix a été pris en compte. Relance l’agent pour obtenir une sélection actualisée.",
+    searchHints:[], candidateCount:aiAgentState.candidateCount
+  };
 }
 function persist() {
   persistRevision += 1;
@@ -705,6 +714,7 @@ function showToast(message, undoAvailable) {
   toastTimer = setTimeout(function() { toastRoot.innerHTML = ""; }, 5000);
 }
 function vote(productId, value) {
+  invalidateAiAgentResults();
   const product = productById(productId);
   if (!product || hasRated(productId)) return;
   const event = { productId: productId, createdAt: new Date().toISOString(), view: currentView };
@@ -721,6 +731,7 @@ function vote(productId, value) {
   render();
 }
 function saveToList(productId) {
+  invalidateAiAgentResults();
   const product = productById(productId);
   if (!product || isLiked(productId)) return;
   const createdAt = new Date().toISOString();
