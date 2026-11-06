@@ -1,8 +1,8 @@
-const CACHE_NAME = "dressopp-static-v9";
+const CACHE_NAME = "dressopp-static-v10";
 const CORE_FILES = [
   "./", "./index.html", "./privacy.html", "./styles.css", "./app.js",
-  "./modules/store.js", "./modules/engine.js", "./modules/integrations.js", "./modules/outfits.js",
-  "./data/catalog.json", "./data/catalog-meta.json", "./data/catalog-seeds.json", "./data/pinterest-pins.json", "./data/lookbook-pins.json",
+  "./modules/store.js", "./modules/engine.js", "./modules/integrations.js", "./modules/outfits.js", "./modules/community.js",
+  "./data/catalog.json", "./data/catalog-meta.json", "./data/catalog-seeds.json", "./data/public-sources.json", "./data/community-config.json", "./data/pinterest-pins.json", "./data/lookbook-pins.json",
   "./assets/lookbook/look-01.webp",
   "./assets/lookbook/look-02.webp",
   "./assets/lookbook/look-03.webp",
