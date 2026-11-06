@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { createInitialState, normalizeProduct } from "../modules/engine.js";
-import { createAgentPayload, orderProductsByAgent } from "../modules/agent.js";
+import { createAgentPayload, orderProductsByAgent, selectAgentCandidates } from "../modules/agent.js";
 
 test("AI agent is disabled and has no data-sharing consent by default", () => {
   const state = createInitialState([]);
@@ -50,4 +50,14 @@ test("AI response ordering prioritizes known recommended ids and keeps local fal
   const products = [{id:"a"},{id:"b"},{id:"c"},{id:"d"}];
   const result = orderProductsByAgent(products,[{productId:"c"},{productId:"a"},{productId:"missing"}]);
   assert.deepEqual(result.map(item=>item.id),["c","a","b","d"]);
+});
+
+test("AI candidate selection reserves space for curated lookbook references", () => {
+  const ranked = Array.from({length:55},(_,index)=>({id:"public-"+index,sourceType:"public-web"}));
+  ranked.push({id:"lookbook-a",sourceType:"curated"},{id:"lookbook-b",sourceType:"curated"});
+  const selected = selectAgentCandidates(ranked,50);
+  assert.equal(selected.length,50);
+  assert.deepEqual(selected.slice(0,2).map(item=>item.id),["lookbook-a","lookbook-b"]);
+  assert.equal(selected.some(item=>item.id==="public-0"),true);
+  assert.equal(selected.some(item=>item.id==="public-48"),false);
 });
