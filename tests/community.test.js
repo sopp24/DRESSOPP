@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { buildCommunityFeatures, buildCommunitySignals } from "../modules/community.js";
-import { createInitialState, productCommunityToken, rankProducts } from "../modules/engine.js";
+import { createInitialState, normalizeProduct, productCommunityToken, rankProducts } from "../modules/engine.js";
 
 test("community sharing is disabled by default", () => {
   const state = createInitialState([]);
@@ -64,7 +64,7 @@ test("the community ranker boosts a product appreciated by similar users", () =>
   const state = createInitialState([
     { id:"same", name:"Sneaker populaire", objective:"Chaussures", brand:"Nike", sourceType:"public-web", url:"https://www.nike.com/fr/air-force", price:100 },
     { id:"other", name:"Sneaker différente", objective:"Chaussures", brand:"Nike", sourceType:"public-web", url:"https://www.nike.com/fr/other-shoe", price:100 }
-  ]);
+  ].map(normalizeProduct));
   state.settings.objective = "Tout";
   const token = productCommunityToken(state.products[0]);
   const ranked = rankProducts(state.products, state, {
