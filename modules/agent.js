@@ -1,5 +1,14 @@
 const MAX_CANDIDATES = 50;
 const MAX_HISTORY = 15;
+
+export function selectAgentCandidates(rankedProducts, limit = MAX_CANDIDATES) {
+  const products = Array.isArray(rankedProducts) ? rankedProducts : [];
+  const cap = Math.max(0, Math.min(MAX_CANDIDATES, Math.floor(Number(limit) || MAX_CANDIDATES)));
+  if (products.length <= cap) return products.slice();
+  const curated = products.filter(product => product && product.sourceType === "curated");
+  const curatedIds = new Set(curated.map(product => product.id));
+  return curated.slice(0, cap).concat(products.filter(product => product && !curatedIds.has(product.id)).slice(0, Math.max(0, cap - Math.min(curated.length, cap))));
+}
 function clean(value, limit = 140) { return String(value == null ? "" : value).replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim().slice(0, limit); }
 function list(value, max = 10) { return (Array.isArray(value) ? value : []).map(item => clean(item, 48)).filter(Boolean).slice(0, max); }
 function productSummary(product) {
