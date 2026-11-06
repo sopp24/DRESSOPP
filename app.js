@@ -33,6 +33,12 @@ let aiAgentState = { status:"unconfigured", recommendations:[], message:"", sear
 let aiAgentPending = false;
 let aiAgentLastActionCount = 0;
 let aiAgentController = null;
+let catalogManifest = null;
+let catalogDirectory = [];
+let catalogLoadedPages = new Set();
+let catalogPagePending = false;
+let catalogLastManifestCheck = 0;
+let catalogRetryAfter = 0;
 
 
 const RETAILER_GROUPS = [
@@ -419,23 +425,121 @@ function renderProductReview(product) {
   }
   return ratingText + merchantRatingText + freshness;
 }
+
+async function refreshCatalogManifest(force) {
+  if (!force && Date.now() - catalogLastManifestCheck < 90000) return catalogManifest;
+  catalogLastManifestCheck = Date.now();
+  try {
+    const response = await fetch("./data/catalog-manifest.json", { cache:"no-store" });
+    if (!response.ok) return catalogManifest;
+    const incoming = await response.json();
+    if (!incoming || !Array.isArray(incoming.pages)) return catalogManifest;
+    if (!catalogManifest || incoming.generatedAt !== catalogManifest.generatedAt) {
+      catalogManifest = incoming;
+      // Les produits des nouvelles collectes sont append-only : recharger les pages
+      // permet de récupérer les fiches récentes sans effacer l'historique local.
+      catalogLoadedPages = new Set();
+    } else {
+      catalogManifest = incoming;
+    }
+  } catch (error) {
+    console.warn("Manifeste du catalogue non actualisé.", error);
+  }
+  try {
+    const response = await fetch("./data/catalog-meta.json", { cache:"no-store" });
+    if (response.ok) catalogMeta = await response.json();
+  } catch (error) { console.warn("Métadonnées du catalogue non actualisées.", error); }
+  return catalogManifest;
+}
+function mergeCatalogPageProducts(items) {
+  const byIdentity = new Map();
+  (state.products || []).forEach(function(product) {
+    byIdentity.set(productIdentity(product), product);
+  });
+  let added = 0;
+  (items || []).forEach(function(raw) {
+    const product = normalizeProduct(raw);
+    if (!product.id || !product.name || !product.url) return;
+    const identity = productIdentity(product);
+    const existing = byIdentity.get(identity);
+    if (existing && existing.sourceType !== "public-web") return;
+    if (!existing) added += 1;
+    byIdentity.set(identity, product);
+  });
+  state.products = Array.from(byIdentity.values());
+  return added;
+}
+async function loadCatalogPage(pageIndex) {
+  if (!catalogManifest || !Array.isArray(catalogManifest.pages) || catalogPagePending) return 0;
+  const page = catalogManifest.pages[pageIndex];
+  if (!page || catalogLoadedPages.has(page.file)) return 0;
+  catalogPagePending = true;
+  try {
+    const response = await fetch("./data/" + page.file.replace(/^data\//, ""), { cache:"no-store" });
+    if (!response.ok) throw new Error("Page catalogue HTTP " + response.status);
+    const payload = await response.json();
+    const added = mergeCatalogPageProducts(payload.products || []);
+    catalogLoadedPages.add(page.file);
+    catalogRetryAfter = 0;
+    if (added) await persist();
+    return added;
+  } catch (error) {
+    console.warn("Chargement d'une page catalogue impossible.", error);
+    catalogRetryAfter = Date.now() + 30000;
+    return 0;
+  } finally {
+    catalogPagePending = false;
+  }
+}
+async function loadNextCatalogPage() {
+  if (!state || catalogPagePending || Date.now() < catalogRetryAfter) return false;
+  await refreshCatalogManifest(false);
+  if (!catalogManifest || !Array.isArray(catalogManifest.pages)) return false;
+  let index = catalogManifest.pages.findIndex(page => !catalogLoadedPages.has(page.file));
+  if (index < 0) {
+    await refreshCatalogManifest(true);
+    if (!catalogManifest || !Array.isArray(catalogManifest.pages)) return false;
+    index = catalogManifest.pages.findIndex(page => !catalogLoadedPages.has(page.file));
+  }
+  if (index < 0) return false;
+  const previousCount = state.products.length;
+  const added = await loadCatalogPage(index);
+  if (added && (currentView === "discover" || currentView === "training")) {
+    render();
+    const available = rankProducts(state.products,state,{training:currentView === "training",communitySignals:communitySignals}).length;
+    if (available < 8) loadNextCatalogPage();
+  } else if (!added && state.products.length > previousCount && (currentView === "discover" || currentView === "training")) {
+    render();
+  }
+  return added > 0;
+}
+function maybePrefetchCatalog() {
+  if (!state || (currentView !== "discover" && currentView !== "training") || catalogPagePending) return;
+  const available = rankProducts(state.products,state,{
+    training:currentView === "training",communitySignals:communitySignals
+  }).length;
+  if (available <= 8) loadNextCatalogPage();
+}
+
 function renderCatalogStatus() {
   const liveCount = Number(catalogMeta.liveProductCount) ||
     state.products.filter(product => product.sourceType === "public-web" && product.catalogStatus === "active").length;
   const curatedCount = Number(catalogMeta.curatedProductCount) ||
     state.products.filter(product => product.sourceType === "curated").length;
   const syncedAt = catalogMeta.syncedAt ? new Date(catalogMeta.syncedAt).toLocaleString("fr-FR") : "Pas encore actualisé";
+  const directoryCount = Number(catalogMeta.directoryCount) || 200;
+  const pageCount = Number(catalogMeta.pageCount) || (catalogManifest && catalogManifest.pageCount) || 0;
   const connected = catalogMeta.status === "connected" || catalogMeta.status === "partial";
   const sourceLabel = Array.isArray(catalogMeta.sources) && catalogMeta.sources.length
     ? catalogMeta.sources.slice(0, 8).join(" · ") + (catalogMeta.sources.length > 8 ? " · +" + (catalogMeta.sources.length - 8) : "")
     : "Les boutiques accessibles seront détectées automatiquement";
   const message = connected
-    ? "Dernière exploration : " + syncedAt + " · " + Number(catalogMeta.sourceCount || 0) + " boutique(s) ayant fourni des produits"
-    : "Catalogue gratuit sans compte marchand. La première exploration automatique est à lancer depuis GitHub Actions.";
+    ? "Dernière rotation : " + syncedAt + " · " + Number(catalogMeta.scannedSourceCount || catalogMeta.attemptedSourceCount || 0) + " boutique(s) explorée(s) sur " + directoryCount
+    : "Catalogue de 200 enseignes en rotation ; les premières collectes sont publiées progressivement.";
   return '<section class="catalog-status panel ' + (connected ? "is-connected" : "is-pending") + '" aria-label="État du catalogue public">' +
     '<div class="catalog-status-main"><span class="eyebrow">Catalogue public multi-boutiques</span><strong>' + liveCount + ' article(s) publics exploitables</strong>' +
     '<p>' + esc(message) + '</p><small>' + esc(sourceLabel) + '</small></div><div class="catalog-status-side"><span>' +
-    curatedCount + ' référence(s) éditoriale(s)</span><a class="button-quiet button-small" href="https://github.com/sopp24/DRESSOPP/blob/main/docs/SOURCES.md" target="_blank" rel="noopener noreferrer">Sources & fonctionnement ↗</a></div></section>';
+    curatedCount + ' référence(s) éditoriale(s) · ' + pageCount + ' page(s) de catalogue</span><a class="button-quiet button-small" href="https://github.com/sopp24/DRESSOPP/blob/main/data/merchant-directory.json" target="_blank" rel="noopener noreferrer">Répertoire des 200 enseignes ↗</a></div></section>';
 }
 function renderRetailerDirectory() {
   const groups = RETAILER_GROUPS.map(function(group) {
@@ -728,6 +832,7 @@ function render() {
   else if (currentView === "settings") main.innerHTML = renderSettings();
   else main.innerHTML = renderDiscover(false);
   attachSwipe();
+  maybePrefetchCatalog();
   main.querySelectorAll("[data-mark-seen-on-open]").forEach(function(link) {
     link.addEventListener("click", function() {
       const pinId = String(link.dataset.markSeenOnOpen || "");
@@ -1382,13 +1487,35 @@ async function boot() {
     }
   } catch (error) { console.warn("Lookbook local non chargé.", error); }
   try {
-    const response = await fetch("./data/catalog.json", { cache: "no-store" });
-    if (response.ok) {
-      const payload = await response.json();
-      catalog = (payload.products || []).map(normalizeProduct);
-      catalogLoaded = true;
+    await refreshCatalogManifest(true);
+    if (catalogManifest && Array.isArray(catalogManifest.pages) && catalogManifest.pages.length) {
+      const first = catalogManifest.pages.findIndex(page => !catalogLoadedPages.has(page.file));
+      if (first >= 0) {
+        const response = await fetch("./data/" + catalogManifest.pages[first].file.replace(/^data\//, ""), { cache:"no-store" });
+        if (response.ok) {
+          const payload = await response.json();
+          catalog = (payload.products || []).map(normalizeProduct);
+          catalogLoadedPages.add(catalogManifest.pages[first].file);
+          catalogLoaded = true;
+        }
+      }
+    }
+    if (!catalogLoaded) {
+      const response = await fetch("./data/catalog.json", { cache:"no-store" });
+      if (response.ok) {
+        const payload = await response.json();
+        catalog = (payload.products || []).map(normalizeProduct);
+        catalogLoaded = true;
+      }
     }
   } catch (error) { console.warn("Catalogue distant non chargé.", error); }
+  try {
+    const directoryResponse = await fetch("./data/merchant-directory.json", { cache:"no-store" });
+    if (directoryResponse.ok) {
+      const directoryPayload = await directoryResponse.json();
+      catalogDirectory = Array.isArray(directoryPayload.entries) ? directoryPayload.entries : [];
+    }
+  } catch (error) { console.warn("Répertoire des enseignes non chargé.", error); }
   try {
     const response = await fetch("./data/catalog-meta.json", { cache: "no-store" });
     if (response.ok) catalogMeta = await response.json();
@@ -1430,9 +1557,16 @@ async function boot() {
       const isFeedProduct = product.sourceType === "public-web" || product.sourceType === "awin" || product.feedId || product.advertiserId;
       return !isFeedProduct && !currentIdentities.has(productIdentity(product));
     });
+    const cachedFeed = localProducts.filter(function(product) {
+      const isFeedProduct = product.sourceType === "public-web" || product.sourceType === "awin" || product.feedId || product.advertiserId;
+      const expiry = Date.parse(product.expiresAt || "");
+      return isFeedProduct && !currentIds.has(product.id) && product.catalogStatus !== "stale" &&
+        (!Number.isFinite(expiry) || expiry > Date.now());
+    });
     const savedWithdrawn = localProducts.filter(function(product) {
       const isFeedProduct = product.sourceType === "public-web" || product.sourceType === "awin" || product.feedId || product.advertiserId;
-      return isFeedProduct && !currentIds.has(product.id) && savedIds.has(product.id);
+      return isFeedProduct && !currentIds.has(product.id) && savedIds.has(product.id) &&
+        !cachedFeed.some(cached => cached.id === product.id);
     }).map(function(product) {
       return Object.assign({}, product, {
         catalogStatus: "stale",
@@ -1441,9 +1575,10 @@ async function boot() {
       });
     });
     const merged = new Map();
-    catalog.forEach(function(product) { merged.set(product.id, product); });
-    localManual.forEach(function(product) { merged.set(product.id, product); });
-    savedWithdrawn.forEach(function(product) { merged.set(product.id, product); });
+    catalog.forEach(function(product) { merged.set(productIdentity(product), product); });
+    cachedFeed.forEach(function(product) { if (!merged.has(productIdentity(product))) merged.set(productIdentity(product), product); });
+    localManual.forEach(function(product) { if (!merged.has(productIdentity(product))) merged.set(productIdentity(product), product); });
+    savedWithdrawn.forEach(function(product) { if (!merged.has(productIdentity(product))) merged.set(productIdentity(product), product); });
     state.products = Array.from(merged.values());
   }
   state.inspirations = Array.isArray(state.inspirations) ? state.inspirations.filter(function(item) { return item.source === "Pinterest"; }) : [];
