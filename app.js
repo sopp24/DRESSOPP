@@ -356,10 +356,12 @@ function renderFilterBar(training) {
     '<div class="filter-tools"><button class="button-quiet button-small" type="button" data-action="save-filters">＋ Enregistrer ces filtres</button></div></div>';
 }
 function renderEmptyProducts(training) {
-  const title = state.products.length ? "Aucun article ne correspond à ces filtres" : "Ton dressing commence ici";
-  const body = state.products.length
-    ? "Élargis ton budget, change de style ou sélectionne une autre saison pour relancer la découverte."
-    : "Ajoute des fiches produits vérifiables ou importe un catalogue JSON. DRESSOPP ne remplit pas ton dressing avec des articles ou des prix inventés.";
+  const title = catalogPagePending ? "On prépare la suite" : (state.products.length ? "Aucun article ne correspond à ces filtres" : "Ton dressing commence ici");
+  const body = catalogPagePending
+    ? "DRESSOPP charge le prochain lot de produits vérifiés."
+    : (state.products.length
+      ? "Élargis ton budget, change de style ou sélectionne une autre saison pour relancer la découverte."
+      : "Le catalogue se remplit par rotations de boutiques et se charge par pages. Tu peux aussi ajouter une fiche vérifiable manuellement.");
   return '<div class="empty-state"><div class="empty-mark">＋</div><h2>' + title + '</h2><p>' + body + '</p><div class="empty-actions">' +
     '<button class="button-primary" type="button" data-action="add-product">Ajouter un article</button>' +
     '<button class="button-secondary" type="button" data-action="import-catalog">Importer un catalogue JSON</button></div></div>';
@@ -497,7 +499,7 @@ async function loadNextCatalogPage() {
   if (!catalogManifest || !Array.isArray(catalogManifest.pages)) return false;
   let index = catalogManifest.pages.findIndex(page => !catalogLoadedPages.has(page.file));
   if (index < 0) {
-    await refreshCatalogManifest(true);
+    await refreshCatalogManifest(false);
     if (!catalogManifest || !Array.isArray(catalogManifest.pages)) return false;
     index = catalogManifest.pages.findIndex(page => !catalogLoadedPages.has(page.file));
   }
@@ -548,11 +550,21 @@ function renderRetailerDirectory() {
         return '<a class="retailer-link" href="' + esc(item[1]) + '" target="_blank" rel="noopener noreferrer"><span>' + esc(item[0]) + '</span><i aria-hidden="true">↗</i></a>';
       }).join("") + '</div></div>';
   }).join("");
+  const allDirectory = Array.isArray(catalogDirectory) && catalogDirectory.length
+    ? Array.from(new Set(catalogDirectory.map(item => item.segment))).map(function(segment) {
+        const items = catalogDirectory.filter(item => item.segment === segment);
+        return '<div class="retailer-group"><h3>' + esc(segment) + '</h3><div class="retailer-links">' +
+          items.map(function(item) {
+            return '<a class="retailer-link" href="' + esc(item.url) + '" target="_blank" rel="noopener noreferrer"><span>' + esc(item.name) + '</span><i aria-hidden="true">↗</i></a>';
+          }).join("") + '</div></div>';
+      }).join("")
+    : '<p class="retailer-disclaimer">Le répertoire complet de 200 enseignes est disponible dans data/merchant-directory.json.</p>';
   return '<section class="panel retailer-directory"><div class="retailer-directory-heading"><div><span class="eyebrow">Tes sources</span><h2>Explorer les boutiques</h2>' +
-    '<p>Les flux autorisés alimentent le swipe. Ces raccourcis te laissent aussi consulter les boutiques qui ne proposent pas de flux accessible.</p></div>' +
+    '<p>Les flux autorisés alimentent le swipe. Les 200 enseignes du répertoire sont classées par univers et par gamme de prix.</p></div>' +
     '<a class="button-quiet button-small" href="https://www.facebook.com/ads/library/?active_status=active&ad_type=ALL&country=FR" target="_blank" rel="noopener noreferrer">Meta Ad Library ↗</a></div>' +
     '<div class="retailer-groups">' + groups + '</div>' +
-    '<p class="retailer-disclaimer">La Meta Ad Library donne accès à des publicités publiques, pas à ton fil publicitaire Instagram personnalisé. Les avis d’article ne sont pas assimilés à une note de fiabilité de la boutique.</p></section>';
+    '<details class="retailer-directory-expanded"><summary>Voir les 200 enseignes du répertoire</summary><div class="retailer-groups">' + allDirectory + '</div></details>' +
+    '<p class="retailer-disclaimer">La Meta Ad Library donne accès à des publicités publiques, pas à ton fil publicitaire Instagram personnalisé. Les avis d’article ne sont pas assimilés à une note de fiabilité du marchand.</p></section>';
 }
 function renderDeckCard(product, training) {
   const brand = product.brand || product.merchant || product.source || "Marque non renseignée";
@@ -1455,6 +1467,12 @@ document.addEventListener("click", handleClick);
 document.addEventListener("change", handleChange);
 document.addEventListener("input", handleInput);
 document.addEventListener("submit", handleSubmit);
+window.addEventListener("scroll", function() {
+  if (currentView === "discover" && state && state.settings.discoveryView === "grid" &&
+      window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 900) {
+    loadNextCatalogPage();
+  }
+}, { passive:true });
 document.addEventListener("keydown", function(event) {
   if (modalRoot.innerHTML) {
     if (event.key === "Escape") closeModal();
