@@ -31,7 +31,7 @@ Guide complet : [docs/SOURCES.md](docs/SOURCES.md).
 
 ## Recommandations communautaires facultatives
 
-Le mode communautaire permet de comparer les goûts avec ceux d'autres utilisateurs DRESSOPP qui ont expressément accepté de contribuer. Il utilise les étiquettes anonymisées de styles, catégories, marques, couleurs et matières pour détecter des profils proches et ajuster le classement.
+Le mode communautaire permet de comparer les goûts avec ceux d'autres utilisateurs DRESSOPP qui ont expressément accepté de contribuer. Il utilise les étiquettes de goûts pseudonymisées (styles, catégories, marques, couleurs et matières) pour détecter des profils proches et ajuster le classement.
 
 Cette fonction est **désactivée par défaut** et nécessite de créer un projet Firebase en plan Spark (gratuit), d'activer l'authentification anonyme et de publier les règles Firestore décrites dans [docs/COMMUNITY.md](docs/COMMUNITY.md). Aucun nom, e-mail, taille, budget, historique de navigation ni lien Pinterest n'est partagé. Sans Firebase, l'apprentissage individuel continue de fonctionner sur l'appareil.
 
@@ -64,7 +64,7 @@ Les profils, tailles, votes, préférences, garde-robe et Pins consultés resten
 
 - `app.js` : navigation, découverte, profils, votes et garde-robe.
 - `modules/engine.js` : normalisation, filtrage, apprentissage et classement.
-- `modules/community.js` : partage facultatif de signaux anonymisés Firebase.
+- `modules/community.js` : partage facultatif de signaux pseudonymisés Firebase.
 - `modules/outfits.js` : rapprochement des inspirations Pinterest et des articles.
 - `modules/store.js` : stockage local.
 - `modules/integrations.js` : intégrations de l'application.
