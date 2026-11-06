@@ -3,7 +3,7 @@ import { createInitialState, normalizeProduct, productIdentity, seasonFor, rankP
 import { INTEGRATIONS, getPersistenceNotice, PINTEREST_BOARD_URL } from "./modules/integrations.js";
 import { inferPinterestTags, buildOutfitIdeas } from "./modules/outfits.js";
 import { syncCommunityProfile, deleteCommunityProfile, buildCommunitySignals } from "./modules/community.js";
-import { requestAgentRecommendations, orderProductsByAgent, selectAgentCandidates } from "./modules/agent.js";
+import { requestAgentRecommendations, orderProductsByAgent, selectAgentCandidates, recommendLocally } from "./modules/agent.js";
 
 const main = document.querySelector("#app-main");
 const modalRoot = document.querySelector("#modal-root");
@@ -183,55 +183,65 @@ function aiAgentContextSignature(training) {
   });
 }
 async function runAiAgent(showFeedback) {
-  if (!state || !state.settings.aiAgentConsent) {
-    if (showFeedback) showToast("Lis les informations et accepte le partage facultatif pour activer le personal shopper IA.",false);
-    return;
-  }
-  if (!aiAgentConfig.enabled || !aiAgentConfig.endpoint) {
-    aiAgentState = { status:"unconfigured", recommendations:[], message:"Le Worker IA gratuit doit d’abord être déployé et son URL renseignée.", searchHints:[], candidateCount:0 };
-    if (showFeedback) showToast("Configure le Worker Cloudflare en suivant le guide IA.",false);
-    render();
-    return;
-  }
-  if (aiAgentPending) return;
+  if (!state || aiAgentPending) return;
   const training = currentView === "training";
-  const candidates = selectAgentCandidates(rankProducts(state.products,state,{training:training,communitySignals:communitySignals}),50);
+  const ranked = rankProducts(state.products,state,{training:training,communitySignals:communitySignals});
+  const candidates = selectAgentCandidates(ranked,50);
   if (!candidates.length) {
-    aiAgentState = { status:"empty", recommendations:[], message:"Aucun article disponible dans cette catégorie et avec ces filtres. Élargis la recherche ou attends la prochaine collecte.", searchHints:[], candidateCount:0 };
+    aiAgentState = { status:"empty", recommendations:[], message:"Aucun article n'est disponible avec ces filtres. Élargis la catégorie, le style ou le budget, ou attends la prochaine collecte.", searchHints:[], candidateCount:0, provider:"local" };
     render();
     return;
   }
+
   const requestActionCount = aiAgentActionCount();
   const requestContext = aiAgentContextSignature(training);
+  const inspirations = aiAgentInspirations();
+  const localResult = recommendLocally(state,candidates,inspirations,14);
   aiAgentPending = true;
-  aiAgentState = { status:"loading", recommendations:[], message:"L’agent compare tes références, tes dernières décisions et les articles disponibles…", searchHints:[], candidateCount:candidates.length };
+  aiAgentState = { status:"loading", recommendations:[], message:"Analyse locale de tes goûts, votes et inspirations…", searchHints:[], candidateCount:candidates.length, provider:"local" };
   aiAgentLastActionCount = requestActionCount;
   render();
+
   try {
-    const controller = new AbortController();
-    aiAgentController = controller;
-    const result = await requestAgentRecommendations(aiAgentConfig.endpoint,state,candidates,aiAgentInspirations(),{signal:controller.signal});
-    const contextChanged = !state.settings.aiAgentConsent || aiAgentActionCount() !== requestActionCount ||
+    let result = localResult;
+    let provider = "local";
+    let remoteNotice = "";
+    const remoteConfigured = Boolean(aiAgentConfig.enabled && aiAgentConfig.endpoint);
+    if (state.settings.aiAgentConsent && remoteConfigured) {
+      try {
+        const controller = new AbortController();
+        aiAgentController = controller;
+        result = await requestAgentRecommendations(aiAgentConfig.endpoint,state,candidates,inspirations,{signal:controller.signal});
+        provider = "cloudflare";
+      } catch (error) {
+        if (error && error.name === "AbortError") throw error;
+        remoteNotice = " Le service Cloudflare n’a pas répondu (" + error.message + ") ; la sélection locale prend le relais.";
+        result = localResult;
+        provider = "local";
+      } finally {
+        aiAgentController = null;
+      }
+    }
+    const contextChanged = aiAgentActionCount() !== requestActionCount ||
       (currentView === "training") !== training || aiAgentContextSignature(training) !== requestContext;
     if (contextChanged) {
-      aiAgentState = { status:"stale", recommendations:[], message:"Tes filtres ou tes derniers retours ont changé pendant l’analyse. Relance l’agent pour obtenir un classement à jour.", searchHints:[], candidateCount:result.candidateCount };
+      aiAgentState = { status:"stale", recommendations:[], message:"Tes filtres ou tes derniers retours ont changé pendant l’analyse. Relance le personal shopper.", searchHints:[], candidateCount:result.candidateCount, provider:provider };
       if (showFeedback) showToast("Tes choix ont changé pendant l’analyse. Relance le personal shopper.",false);
     } else {
-      aiAgentState = { status:"ready", recommendations:result.recommendations, message:result.message, searchHints:result.searchHints, candidateCount:result.candidateCount };
-      if (showFeedback) showToast(result.recommendations.length + " recommandations sélectionnées par ton personal shopper IA.",false);
+      aiAgentState = {
+        status:"ready", recommendations:result.recommendations, message:(result.message || "") + remoteNotice,
+        searchHints:result.searchHints || [], candidateCount:result.candidateCount || candidates.length, provider:provider
+      };
+      if (showFeedback) showToast(result.recommendations.length + " recommandations préparées par " + (provider === "cloudflare" ? "l’IA Cloudflare" : "l’agent local") + ".",false);
     }
   } catch (error) {
-    if (!state.settings.aiAgentConsent || (error && error.name === "AbortError")) {
-      aiAgentState = { status:"unconfigured", recommendations:[], message:"Partage IA désactivé. Le classement local continue de fonctionner.", searchHints:[], candidateCount:0 };
-    } else {
-      aiAgentState = { status:"error", recommendations:[], message:error.message + " Le classement local reste actif.", searchHints:[], candidateCount:candidates.length };
-      if (showFeedback) showToast("Le personal shopper IA est indisponible : " + error.message,false);
-    }
+    aiAgentState = { status:"error", recommendations:[], message:"L’analyse locale a rencontré un problème : " + error.message + ". Le classement normal reste actif.", searchHints:[], candidateCount:candidates.length, provider:"local" };
+    if (showFeedback) showToast("L’agent n’a pas pu terminer l’analyse : " + error.message,false);
   } finally {
     aiAgentController = null;
     aiAgentPending = false;
     const actionDelta = aiAgentActionCount() - aiAgentLastActionCount;
-    const autoEnabled = state && state.settings.aiAgentAutoRefresh && state.settings.aiAgentConsent && aiAgentConfig.enabled;
+    const autoEnabled = state && state.settings.aiAgentAutoRefresh;
     const shouldRefresh = Boolean(autoEnabled && actionDelta >= 3);
     if (shouldRefresh && (currentView === "discover" || currentView === "training")) {
       aiAgentLastActionCount = aiAgentActionCount();
@@ -243,23 +253,24 @@ function renderAiAgentPanel() {
   const configured = Boolean(aiAgentConfig.enabled && aiAgentConfig.endpoint);
   const consent = Boolean(state.settings.aiAgentConsent);
   const ready = aiAgentState.status === "ready";
-  const status = aiAgentPending ? "Analyse en cours" : ready ? "Sélection personnalisée prête" : aiAgentState.status === "error" ? "Service indisponible" : configured ? (consent ? "Prêt à analyser" : "En attente de ton accord") : "À déployer";
+  const status = aiAgentPending ? "Analyse en cours" :
+    ready ? (aiAgentState.provider === "cloudflare" ? "IA Cloudflare prête" : "Agent local prêt") :
+    aiAgentState.status === "error" ? "Erreur d’analyse" :
+    configured ? (consent ? "Cloudflare autorisé · mode hybride" : "Mode local privé") : "Mode local privé";
   const consentControl = configured
-    ? '<label class="ai-agent-consent"><input id="ai-agent-consent" type="checkbox" ' + (consent ? "checked" : "") + '><span>J’accepte d’envoyer temporairement mes préférences générales, mes derniers retours et les résumés des articles candidats à Cloudflare pour générer des recommandations. Les tailles, notes personnelles, e-mail, URL et images ne sont pas transmis.</span></label>'
-    : '<p class="ai-agent-help">Le service IA n’est pas encore déployé. Le moteur local fonctionne déjà. Le guide explique comment activer gratuitement le Worker sans clé secrète dans le navigateur.</p>';
-  const autoControl = configured && consent
-    ? '<label class="ai-agent-auto"><input id="ai-agent-auto" type="checkbox" ' + (state.settings.aiAgentAutoRefresh ? "checked" : "") + '> Actualiser l’analyse après trois nouvelles décisions</label>' : "";
-  const button = configured && consent
-    ? '<button class="button-primary button-small" type="button" data-action="run-ai-agent" ' + (aiAgentPending ? "disabled" : "") + '>' + (aiAgentPending ? "Analyse…" : ready ? "Actualiser mes recommandations" : "Faire analyser ma sélection") + '</button>' : "";
+    ? '<label class="ai-agent-consent"><input id="ai-agent-consent" type="checkbox" ' + (consent ? "checked" : "") + '><span>Autoriser aussi l’envoi temporaire de mes préférences générales, de mes derniers retours et des résumés des articles candidats à Cloudflare pour utiliser le modèle génératif. Sans cette case, l’analyse reste entièrement sur cet appareil.</span></label>'
+    : '<p class="ai-agent-help">Le personal shopper local est actif sans compte, clé API ni transfert de données. Le modèle génératif distant n’est pas configuré ; tu peux déjà utiliser l’agent local.</p>';
+  const autoControl = '<label class="ai-agent-auto"><input id="ai-agent-auto" type="checkbox" ' + (state.settings.aiAgentAutoRefresh ? "checked" : "") + '> Actualiser l’analyse après trois nouvelles décisions (localement, ou avec Cloudflare si autorisé)</label>';
+  const button = '<button class="button-primary button-small" type="button" data-action="run-ai-agent" ' + (aiAgentPending ? "disabled" : "") + '>' + (aiAgentPending ? "Analyse…" : ready ? "Actualiser mes recommandations" : "Lancer mon personal shopper") + '</button>';
   const hints = ready && aiAgentState.searchHints.length
-    ? '<div class="ai-agent-hints"><span>Prochaines pistes :</span>' + aiAgentState.searchHints.map(function(item) { return "<span>" + esc(item) + "</span>"; }).join("") + "</div>" : "";
-  const note = ready ? '<p class="ai-agent-result-note">' + aiAgentState.recommendations.length + " articles classés parmi " + aiAgentState.candidateCount + " candidats réels du catalogue.</p>" : "";
-  return '<section class="panel ai-agent-panel" aria-label="Personal shopper IA"><div class="ai-agent-top"><div><span class="eyebrow">Ton personal shopper</span><h2>Agent IA DRESSOPP</h2><p>Il interprète tes références et tes décisions pour choisir les prochains articles à découvrir.</p></div><span class="ai-agent-status ' + (ready ? "is-ready" : aiAgentPending ? "is-loading" : "") + '">' + esc(status) + '</span></div>' +
+    ? '<div class="ai-agent-hints"><span>Signaux retenus :</span>' + aiAgentState.searchHints.map(function(item) { return "<span>" + esc(item) + "</span>"; }).join("") + "</div>" : "";
+  const note = ready ? '<p class="ai-agent-result-note">' + aiAgentState.recommendations.length + " articles classés parmi " + aiAgentState.candidateCount + " candidats · " + (aiAgentState.provider === "cloudflare" ? "modèle génératif Cloudflare" : "analyse locale privée") + ".</p>" : "";
+  return '<section class="panel ai-agent-panel" aria-label="Personal shopper IA"><div class="ai-agent-top"><div><span class="eyebrow">Ton personal shopper</span><h2>Agent IA DRESSOPP</h2><p>Il croise tes inspirations, ton profil, ta garde-robe et tes décisions pour sélectionner les prochaines pièces.</p></div><span class="ai-agent-status ' + (ready ? "is-ready" : aiAgentPending ? "is-loading" : "") + '">' + esc(status) + '</span></div>' +
     consentControl +
     '<div class="ai-agent-controls">' + button + autoControl + '</div>' +
     (aiAgentState.message ? '<p class="ai-agent-message">' + esc(aiAgentState.message) + '</p>' : "") + note + hints +
-    '<p class="ai-agent-disclaimer">L’IA classe uniquement des fiches déjà présentes dans le catalogue ; elle ne crée pas de produits ni de prix. Les inspirations visuelles sont exploitées via leurs titres et tags, pas par l’envoi de photos. Sans configuration ou si le quota gratuit est atteint, le moteur local prend le relais.</p>' +
-    '<a class="ai-agent-guide" href="https://github.com/sopp24/DRESSOPP/blob/main/docs/AI-AGENT.md" target="_blank" rel="noopener noreferrer">Guide d’installation et confidentialité ↗</a></section>';
+    '<p class="ai-agent-disclaimer">Le mode local ne transmet aucune donnée. Le mode Cloudflare est facultatif et n’est utilisé qu’après ton accord. L’agent classe uniquement des produits réels déjà présents dans DRESSOPP : il ne fabrique ni article, ni prix, ni disponibilité.</p>' +
+    '<a class="ai-agent-guide" href="https://github.com/sopp24/DRESSOPP/blob/main/docs/AI-AGENT.md" target="_blank" rel="noopener noreferrer">Détails de l’agent et confidentialité ↗</a></section>';
 }
 function aiAgentReason(productId) {
   if (aiAgentState.status !== "ready") return "";

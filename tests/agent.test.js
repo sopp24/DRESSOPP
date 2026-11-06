@@ -61,3 +61,33 @@ test("AI candidate selection reserves space for curated lookbook references", ()
   assert.equal(selected.some(item=>item.id==="public-0"),true);
   assert.equal(selected.some(item=>item.id==="public-48"),false);
 });
+
+
+test("the local personal shopper is usable without a remote endpoint or data sharing", () => {
+  const products = [
+    normalizeProduct({id:"plain",name:"T-shirt coton",brand:"Basics",merchant:"Shop A",price:25,objective:"Vêtements",styleTags:["Casual"],colors:["Blanc"],materials:["Coton"]}),
+    normalizeProduct({id:"match",name:"Pull beige en lin",brand:"Atelier",merchant:"Shop B",price:65,objective:"Vêtements",styleTags:["Minimaliste"],colors:["Beige"],materials:["Lin"],cuts:["Oversize"]})
+  ];
+  const state = createInitialState(products);
+  state.profile.preferredStyles = ["Minimaliste"];
+  state.profile.preferredColors = ["Beige"];
+  state.interactions.likes = [{productId:"match"}];
+  const result = recommendLocally(state,products,[{title:"Beige linen minimalist outfit",tags:["Minimaliste","Beige","Lin"]}]);
+  assert.equal(result.provider,"local");
+  assert.equal(result.candidateCount,2);
+  assert.equal(result.recommendations[0].productId,"match");
+  assert.match(result.recommendations[0].reason,/Beige|Minimaliste|Lin/);
+  assert.deepEqual(result.recommendations.map(item=>item.productId).sort(),["match","plain"]);
+});
+
+test("the local personal shopper penalizes a product that repeats disliked features", () => {
+  const products = [
+    normalizeProduct({id:"disliked",name:"Sweat orange",objective:"Vêtements",colors:["Orange"],styleTags:["Logotypé"]}),
+    normalizeProduct({id:"preferred",name:"Surchemise marine",objective:"Vêtements",colors:["Marine"],styleTags:["Minimaliste"]})
+  ];
+  const state = createInitialState(products);
+  state.profile.preferredColors = ["Marine"];
+  state.interactions.dislikes = [{productId:"disliked"}];
+  const result = recommendLocally(state,products,[]);
+  assert.equal(result.recommendations[0].productId,"preferred");
+});

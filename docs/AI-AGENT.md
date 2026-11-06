@@ -1,13 +1,25 @@
 # Agent IA DRESSOPP — Personal shopper
 
-L'agent IA est un classement conversationnel au-dessus du moteur de recommandation local. Il choisit et explique des fiches présentes dans le catalogue ; il n'invente pas d'articles et ne lance pas de crawl web libre. Le collecteur multi-boutiques continue de mettre à jour les produits.
+DRESSOPP possède désormais un agent utilisable dès l'ouverture, sans déployer de service et sans accepter de transfert de données.
 
-## Déployer le service (optionnel, forfait gratuit)
+## Mode local — activé par défaut
 
-1. Créer ou ouvrir un compte Cloudflare : https://dash.cloudflare.com/sign-up.
-2. Garder le forfait **Workers Free**. Ne pas activer Workers Paid ni ajouter de moyen de paiement pour rester à 0 €.
-3. Sur ton ordinateur, installer Node.js LTS puis ouvrir un terminal à la racine du dépôt cloné.
-4. Exécuter :
+Le personal shopper local fonctionne directement dans le navigateur :
+- croise les filtres, le profil, les favoris, les réponses Oui/Non et les titres/tags Pinterest disponibles ;
+- repère les correspondances de style, couleurs, matières, coupes et marques ;
+- classe les produits déjà présents dans le catalogue, avec une pénalité de répétition des mêmes marchands et catégories ;
+- explique brièvement chaque recommandation à partir des attributs réellement présents sur la fiche ;
+- ne crée jamais de produits ou de prix fictifs.
+
+Aucune donnée n'est envoyée au réseau dans ce mode. Aucun compte, secret, endpoint ou consentement n'est nécessaire. Le classement local normal continue de fonctionner si le personal shopper ne peut pas analyser les candidats.
+
+## Mode génératif Cloudflare — facultatif
+
+DRESSOPP peut aussi utiliser le modèle Cloudflare Workers AI configuré par `data/ai-agent-config.json`. Le modèle actuel est `@cf/google/gemma-4-26b-a4b-it`, fourni via le binding serveur `env.AI`. Le navigateur ne contient aucune clé privée.
+
+Pour utiliser ce mode, l'utilisateur doit activer explicitement la case d'autorisation dans le panneau du personal shopper. Sans cette case, aucune requête `/recommend` n'est envoyée. Si le Worker ou le modèle est indisponible, l'agent bascule sur le mode local au lieu de masquer le bouton ou de désactiver le personal shopper.
+
+Le service Worker est déjà présent dans `workers/dressopp-agent/`. Il peut être déployé sur un compte Cloudflare avec :
 
 ```bash
 cd workers/dressopp-agent
@@ -15,35 +27,18 @@ npx wrangler@latest login
 npx wrangler@latest deploy
 ```
 
-5. Autoriser Wrangler dans le navigateur. Le fichier `wrangler.jsonc` configure le binding Workers AI `AI` côté serveur.
-6. À la fin, Wrangler affiche une URL du type `https://dressopp-agent.<ton-sous-domaine>.workers.dev`.
-7. Dans `data/ai-agent-config.json`, renseigner cette URL dans `endpoint` et mettre `enabled` à `true`. Enregistrer le fichier sur `main`.
-8. Après publication GitHub Pages, recharger DRESSOPP, ouvrir Découvrir, lire l'information sur les données transmises, cocher le consentement et lancer l'agent.
+L'URL publique du Worker est conservée dans `data/ai-agent-config.json`. Le déploiement ou la modification des secrets Cloudflare nécessite l'autorisation du propriétaire du compte ; aucune clé n'est stockée dans ce dépôt.
 
-## Tester le service
+## Données transférées en mode Cloudflare
 
-Remplacer l'URL par celle de ton Worker :
+Après consentement uniquement, le navigateur peut transmettre les filtres choisis, les préférences générales, un résumé limité des derniers retours et les attributs de 50 fiches maximum. Les tailles exactes, notes privées, e-mail, URL produits et images ne sont pas transmis. Les recommandations renvoyées sont validées contre les identifiants exacts des produits envoyés.
 
-```bash
-curl -i -H 'Origin: https://sopp24.github.io' https://dressopp-agent.<ton-sous-domaine>.workers.dev/health
-```
+Le consentement peut être retiré à tout moment. Après retrait, le mode local reste entièrement fonctionnel.
 
-La réponse doit contenir `"ok":true` et l'identifiant du modèle.
+## Tests
 
-## Coût et limites
-
-- Workers AI fournit actuellement une allocation gratuite de **10 000 Neurons par jour** sur Workers Free. Elle se réinitialise chaque jour à 00:00 UTC. Si le quota quotidien est épuisé, les inférences gratuites échouent jusqu'au prochain cycle ; elles ne basculent pas automatiquement sur une facturation. Ne pas passer au forfait Workers Paid si tu veux garder un coût nul.
-- Workers Free a également des plafonds de requêtes. Le Worker limite les requêtes rapprochées et chaque demande à 50 fiches / 48 Ko.
-- Le modèle configuré est `@cf/google/gemma-4-26b-a4b-it`. Cloudflare le référence comme modèle d'inférence avec Zero Data Retention ; les données sont toutefois envoyées à Cloudflare pour traitement.
-- L'agent travaille sur les fiches déjà disponibles dans DRESSOPP. Il classe au maximum 50 candidats et ne fait pas de recherche Internet autonome. Les `searchHints` sont des idées de recherche stylistique, pas des produits trouvés.
-- Si le service n'est pas configuré, si le quota est dépassé ou si Cloudflare est indisponible, le moteur local continue de recommander les produits sans IA.
-
-## Données envoyées (uniquement après consentement)
-
-Le navigateur transmet les filtres choisis (catégorie, style, saison, budget), les préférences générales (styles, marques, couleurs, matières, coupes), un résumé des 15 derniers articles aimés / enregistrés / refusés, les tags et titres d'inspirations, les caractéristiques d'au plus 50 produits candidats (nom, marque, marchand, prix, catégorie, style, couleurs, matières, coupe, description courte).
-
-Les tailles exactes, notes libres, e-mail, URL des produits, images, URL Pinterest et historique complet de navigation ne sont pas transmis. Les inspirations visuelles sont décrites au modèle uniquement par leurs titres et tags, pas par analyse des pixels ; le Worker ne télécharge pas d'images Pinterest ou marchandes. Le Worker ne journalise pas le corps des demandes. Les réponses sont filtrées : seul un identifiant déjà présent dans les candidats peut être renvoyé. Le consentement est facultatif et peut être retiré dans DRESSOPP ; sans consentement, seul le moteur local est utilisé.
-
-## Pourquoi un service séparé ?
-
-GitHub Pages distribue du JavaScript public : une clé privée placée dans `app.js` serait visible par tous. Le Worker conserve le binding IA côté serveur ; le dépôt ne contient ni clé de modèle ni secret Cloudflare.
+`npm test` vérifie notamment :
+- l'absence d'envoi de données personnelles dans le payload distant ;
+- les limites du Worker ;
+- la sélection locale sans endpoint ;
+- la prise en compte des votes positifs/négatifs et des préférences.

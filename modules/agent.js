@@ -53,3 +53,142 @@ export function orderProductsByAgent(products, recommendations) {
   const order = new Map((recommendations || []).map((item,index) => [item.productId,index]));
   return (products || []).slice().sort((a,b) => { const aOrder=order.has(a.id)?order.get(a.id):Number.MAX_SAFE_INTEGER; const bOrder=order.has(b.id)?order.get(b.id):Number.MAX_SAFE_INTEGER; return aOrder-bOrder; });
 }
+
+function localNormalize(value) {
+  return String(value == null ? "" : value).normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().trim();
+}
+function localValues(product, field) {
+  const value = product && product[field];
+  return (Array.isArray(value) ? value : value ? [value] : []).map(item => String(item).trim()).filter(Boolean);
+}
+function addLocalSignal(weights, field, value, amount) {
+  const normalized = localNormalize(value);
+  if (!normalized) return;
+  const key = field + ":" + normalized;
+  weights.set(key,(weights.get(key) || 0) + amount);
+}
+function localProductSignals(weights, product, amount) {
+  if (!product) return;
+  ["styleTags","colors","materials","cuts","patterns"].forEach(field => {
+    localValues(product,field).forEach(value => addLocalSignal(weights,field,value,amount));
+  });
+  if (product.brand) addLocalSignal(weights,"brand",product.brand,amount);
+}
+function localFeatureNames(product) {
+  const result = [];
+  [["styleTags","style"],["colors","couleur"],["materials","matière"],["cuts","coupe"],["patterns","motif"]].forEach(([field,label]) => {
+    localValues(product,field).forEach(value => result.push({field,label,value}));
+  });
+  if (product.brand) result.push({field:"brand",label:"marque",value:String(product.brand)});
+  return result;
+}
+
+/**
+ * On-device personal shopper. It uses only the current catalogue, profile,
+ * Pinterest titles/tags and votes already stored in the browser. Nothing is
+ * sent over the network by this function.
+ */
+export function recommendLocally(state, rankedCandidates, inspirations = [], limit = 14) {
+  const source = state || {};
+  const candidates = Array.isArray(rankedCandidates) ? rankedCandidates.filter(Boolean) : [];
+  if (!candidates.length) return { recommendations:[], message:"Aucun article candidat à classer.", searchHints:[], candidateCount:0, provider:"local" };
+
+  const weights = new Map();
+  const byId = new Map((source.products || []).map(product => [product.id,product]));
+  const interactions = source.interactions || {};
+  const addHistory = (events,amount) => {
+    (Array.isArray(events) ? events : []).slice(-15).forEach(event => localProductSignals(weights,byId.get(event.productId),amount));
+  };
+  addHistory(interactions.likes,4);
+  addHistory(interactions.saves,5);
+  addHistory(source.likedProducts,5);
+  addHistory(interactions.dislikes,-7);
+
+  const profile = source.profile || {};
+  const profileFields = [
+    ["preferredStyles","styleTags",5],["excludedStyles","styleTags",-12],
+    ["favoriteBrands","brand",5],["excludedBrands","brand",-14],
+    ["preferredColors","colors",4],["excludedColors","colors",-10],
+    ["preferredMaterials","materials",4],["excludedMaterials","materials",-10],
+    ["preferredCuts","cuts",4],["excludedCuts","cuts",-10]
+  ];
+  profileFields.forEach(([profileKey,featureField,amount]) => {
+    (Array.isArray(profile[profileKey]) ? profile[profileKey] : []).forEach(value => addLocalSignal(weights,featureField,value,amount));
+  });
+
+  const pinTokens = new Set();
+  (Array.isArray(inspirations) ? inspirations : []).slice(0,40).forEach(pin => {
+    const text = [pin && pin.title,...(Array.isArray(pin && pin.tags) ? pin.tags : [])].join(" ");
+    localNormalize(text).split(/[^a-z0-9]+/).filter(token => token.length > 3).forEach(token => pinTokens.add(token));
+    ["styleTags","colors","materials","cuts","patterns"].forEach(field => {
+      (Array.isArray(pin && pin.tags) ? pin.tags : []).forEach(value => addLocalSignal(weights,field,value,2));
+    });
+  });
+
+  const scored = candidates.map((product,index) => {
+    let score = Math.max(0,8 - index * 0.12);
+    const matched = [];
+    localFeatureNames(product).forEach(feature => {
+      const weight = weights.get(feature.field + ":" + localNormalize(feature.value)) || 0;
+      score += weight;
+      if (weight >= 2) matched.push({value:feature.value,label:feature.label,weight});
+      const tokens = localNormalize(feature.value).split(/[^a-z0-9]+/).filter(token => token.length > 3);
+      if (tokens.some(token => pinTokens.has(token))) {
+        score += 2.5;
+        matched.push({value:feature.value,label:feature.label,weight:2.5});
+      }
+    });
+    const text = localNormalize([product.name,product.description,product.category].join(" "));
+    let pinMatches = 0;
+    pinTokens.forEach(token => { if (text.includes(token)) pinMatches += 1; });
+    score += Math.min(8,pinMatches * 1.2);
+    return {product,score,index,matched};
+  }).sort((a,b) => b.score-a.score || a.index-b.index);
+
+  const selected = [];
+  const merchantCounts = new Map();
+  const categoryCounts = new Map();
+  const cap = Math.max(1,Math.min(14,Math.floor(Number(limit) || 14)));
+  while (selected.length < cap && scored.length) {
+    let bestIndex = 0, bestAdjusted = -Infinity;
+    scored.forEach((item,index) => {
+      const merchant = localNormalize(item.product.merchant || item.product.source || "");
+      const category = localNormalize(item.product.objective || item.product.category || "");
+      const diversityPenalty = (merchantCounts.get(merchant) || 0) * 2.5 + (categoryCounts.get(category) || 0) * 0.8;
+      const adjusted = item.score - diversityPenalty;
+      if (adjusted > bestAdjusted) { bestAdjusted=adjusted; bestIndex=index; }
+    });
+    const chosen = scored.splice(bestIndex,1)[0];
+    selected.push(chosen);
+    const merchant = localNormalize(chosen.product.merchant || chosen.product.source || "");
+    const category = localNormalize(chosen.product.objective || chosen.product.category || "");
+    merchantCounts.set(merchant,(merchantCounts.get(merchant) || 0)+1);
+    categoryCounts.set(category,(categoryCounts.get(category) || 0)+1);
+  }
+
+  const recommendations = selected.map(item => {
+    const evidence = Array.from(new Map(item.matched.sort((a,b)=>b.weight-a.weight).map(match => [localNormalize(match.value),match])).values()).slice(0,2);
+    const reason = evidence.length
+      ? "Correspond à tes préférences de " + evidence.map(match => match.label + " " + match.value).join(" et ") + "."
+      : "Cette pièce respecte tes filtres et reste pertinente dans la sélection actuelle.";
+    return {productId:item.product.id,reason};
+  });
+  const hints = [];
+  profileFields.filter(([, ,amount]) => amount > 0).forEach(([profileKey]) => {
+    (Array.isArray(profile[profileKey]) ? profile[profileKey] : []).slice(0,2).forEach(value => {
+      if (value && !hints.includes(String(value))) hints.push(String(value));
+    });
+  });
+  (Array.isArray(inspirations) ? inspirations : []).slice(0,3).forEach(pin => {
+    (Array.isArray(pin && pin.tags) ? pin.tags : []).slice(0,2).forEach(value => {
+      if (value && !hints.includes(String(value))) hints.push(String(value));
+    });
+  });
+  return {
+    recommendations,
+    message:"J’ai analysé localement tes votes, ta garde-robe, ton profil et tes inspirations. Aucune donnée personnelle n’a quitté ton appareil.",
+    searchHints:hints.slice(0,3),
+    candidateCount:candidates.length,
+    provider:"local"
+  };
+}
