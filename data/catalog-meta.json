@@ -2,15 +2,15 @@
   "schemaVersion": 2,
   "provider": "Pages produits publiques autorisées (Schema.org / Open Graph)",
   "status": "partial",
-  "syncedAt": "2026-11-06T14:08:52.281Z",
-  "productCount": 61,
-  "liveProductCount": 53,
-  "publicProductCount": 53,
+  "syncedAt": "2026-11-06T14:17:39.600Z",
+  "productCount": 75,
+  "liveProductCount": 67,
+  "publicProductCount": 67,
   "curatedProductCount": 8,
   "staleProductCount": 0,
   "sourceCount": 5,
   "attemptedSourceCount": 49,
-  "pagesChecked": 216,
+  "pagesChecked": 202,
   "sources": [
     "BZB",
     "Carhartt WIP",
@@ -83,18 +83,18 @@
       "reason": "robots.txt inaccessible ou accès refusé"
     },
     {
-      "name": "Levi's",
-      "status": "unavailable",
-      "products": 0,
-      "pages": 0,
-      "reason": "Aucune fiche produit publique exploitable."
-    },
-    {
       "name": "BZB",
       "status": "ok",
       "products": 12,
       "pages": 13,
       "reason": ""
+    },
+    {
+      "name": "Levi's",
+      "status": "unavailable",
+      "products": 0,
+      "pages": 0,
+      "reason": "Aucune fiche produit publique exploitable."
     },
     {
       "name": "Jack & Jones",
@@ -111,11 +111,11 @@
       "reason": "robots.txt inaccessible ou accès refusé"
     },
     {
-      "name": "Jules",
-      "status": "ok",
-      "products": 12,
-      "pages": 15,
-      "reason": ""
+      "name": "COS",
+      "status": "no-structured-products",
+      "products": 0,
+      "pages": 17,
+      "reason": "Aucune fiche produit publique exploitable."
     },
     {
       "name": "Carhartt WIP",
@@ -125,34 +125,6 @@
       "reason": ""
     },
     {
-      "name": "ARKET",
-      "status": "no-structured-products",
-      "products": 0,
-      "pages": 18,
-      "reason": "Aucune fiche produit publique exploitable."
-    },
-    {
-      "name": "COS",
-      "status": "no-structured-products",
-      "products": 0,
-      "pages": 17,
-      "reason": "Aucune fiche produit publique exploitable."
-    },
-    {
-      "name": "adidas",
-      "status": "blocked",
-      "products": 0,
-      "pages": 0,
-      "reason": "robots.txt inaccessible ou accès refusé"
-    },
-    {
-      "name": "New Balance",
-      "status": "blocked",
-      "products": 0,
-      "pages": 0,
-      "reason": "robots.txt inaccessible ou accès refusé"
-    },
-    {
       "name": "Weekday",
       "status": "unavailable",
       "products": 0,
@@ -160,7 +132,14 @@
       "reason": "Aucune fiche produit publique exploitable."
     },
     {
-      "name": "Converse",
+      "name": "Jules",
+      "status": "ok",
+      "products": 12,
+      "pages": 13,
+      "reason": ""
+    },
+    {
+      "name": "New Balance",
       "status": "blocked",
       "products": 0,
       "pages": 0,
@@ -171,6 +150,27 @@
       "status": "no-structured-products",
       "products": 0,
       "pages": 3,
+      "reason": "Aucune fiche produit publique exploitable."
+    },
+    {
+      "name": "adidas",
+      "status": "blocked",
+      "products": 0,
+      "pages": 0,
+      "reason": "robots.txt inaccessible ou accès refusé"
+    },
+    {
+      "name": "Converse",
+      "status": "blocked",
+      "products": 0,
+      "pages": 0,
+      "reason": "robots.txt inaccessible ou accès refusé"
+    },
+    {
+      "name": "ARKET",
+      "status": "no-structured-products",
+      "products": 0,
+      "pages": 18,
       "reason": "Aucune fiche produit publique exploitable."
     },
     {
@@ -230,11 +230,11 @@
       "reason": "robots.txt inaccessible ou accès refusé"
     },
     {
-      "name": "Foot Locker",
-      "status": "ok",
-      "products": 5,
-      "pages": 18,
-      "reason": ""
+      "name": "Charles Tyrwhitt",
+      "status": "no-structured-products",
+      "products": 0,
+      "pages": 3,
+      "reason": "Aucune fiche produit publique exploitable."
     },
     {
       "name": "Lacoste",
@@ -244,11 +244,11 @@
       "reason": "robots.txt inaccessible ou accès refusé"
     },
     {
-      "name": "Charles Tyrwhitt",
-      "status": "no-structured-products",
-      "products": 0,
-      "pages": 3,
-      "reason": "Aucune fiche produit publique exploitable."
+      "name": "Foot Locker",
+      "status": "ok",
+      "products": 5,
+      "pages": 18,
+      "reason": ""
     },
     {
       "name": "Tommy Hilfiger",
@@ -272,10 +272,10 @@
       "reason": "robots.txt inaccessible ou accès refusé"
     },
     {
-      "name": "Spartoo",
+      "name": "Lothaire",
       "status": "no-structured-products",
       "products": 0,
-      "pages": 1,
+      "pages": 19,
       "reason": "Aucune fiche produit publique exploitable."
     },
     {
@@ -284,6 +284,13 @@
       "products": 0,
       "pages": 0,
       "reason": "robots.txt inaccessible ou accès refusé"
+    },
+    {
+      "name": "Spartoo",
+      "status": "no-structured-products",
+      "products": 0,
+      "pages": 1,
+      "reason": "Aucune fiche produit publique exploitable."
     },
     {
       "name": "Galeries Lafayette",
@@ -300,17 +307,10 @@
       "reason": "robots.txt inaccessible ou accès refusé"
     },
     {
-      "name": "Dior",
-      "status": "no-structured-products",
+      "name": "Fred Perry",
+      "status": "unavailable",
       "products": 0,
-      "pages": 19,
-      "reason": "Aucune fiche produit publique exploitable."
-    },
-    {
-      "name": "Lothaire",
-      "status": "no-structured-products",
-      "products": 0,
-      "pages": 19,
+      "pages": 0,
       "reason": "Aucune fiche produit publique exploitable."
     },
     {
@@ -321,21 +321,14 @@
       "reason": "Aucune fiche produit publique exploitable."
     },
     {
-      "name": "Fred Perry",
-      "status": "unavailable",
-      "products": 0,
-      "pages": 0,
-      "reason": "Aucune fiche produit publique exploitable."
-    },
-    {
-      "name": "Vestiaire Collective",
+      "name": "24S",
       "status": "blocked",
       "products": 0,
       "pages": 0,
       "reason": "robots.txt inaccessible ou accès refusé"
     },
     {
-      "name": "24S",
+      "name": "Vestiaire Collective",
       "status": "blocked",
       "products": 0,
       "pages": 0,
@@ -360,6 +353,13 @@
       "status": "no-structured-products",
       "products": 0,
       "pages": 4,
+      "reason": "Aucune fiche produit publique exploitable."
+    },
+    {
+      "name": "Dior",
+      "status": "no-structured-products",
+      "products": 0,
+      "pages": 7,
       "reason": "Aucune fiche produit publique exploitable."
     }
   ],
