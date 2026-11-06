@@ -504,13 +504,15 @@ async function loadNextCatalogPage() {
     index = catalogManifest.pages.findIndex(page => !catalogLoadedPages.has(page.file));
   }
   if (index < 0) return false;
-  const previousCount = state.products.length;
   const added = await loadCatalogPage(index);
-  if (added && (currentView === "discover" || currentView === "training")) {
-    render();
-    const available = rankProducts(state.products,state,{training:currentView === "training",communitySignals:communitySignals}).length;
-    if (available < 8) loadNextCatalogPage();
-  } else if (!added && state.products.length > previousCount && (currentView === "discover" || currentView === "training")) {
+  if (currentView === "discover" || currentView === "training") {
+    if (added) render();
+    const available = rankProducts(state.products,state,{
+      training:currentView === "training",communitySignals:communitySignals
+    }).length;
+    const remainingPages = catalogManifest.pages.some(page => !catalogLoadedPages.has(page.file));
+    if (available < 8 && remainingPages) loadNextCatalogPage();
+  } else if (added) {
     render();
   }
   return added > 0;
