@@ -42,7 +42,7 @@ export function createInitialState(products) {
     },
     settings: {
       objective: "Vêtements", style: "Tous", season: seasonFor(new Date()), maxPrice: null,
-      discoveryLevel: 30, trainingDiscoveryLevel: 75, discoveryView: "cards", savedFilters: [], wardrobeFilters: { objective: "Tout", style: "Tous", season: "Toute saison", maxPrice: null }, wardrobeSort: "recent"
+      communitySharing: false, discoveryLevel: 30, trainingDiscoveryLevel: 75, discoveryView: "cards", savedFilters: [], wardrobeFilters: { objective: "Tout", style: "Tous", season: "Toute saison", maxPrice: null }, wardrobeSort: "recent"
     },
     products: Array.isArray(products) ? products : [],
     likedProducts: [], removedFavorites: [],
@@ -288,6 +288,16 @@ export function rankProducts(products, state, options) {
     const measured = Number.isFinite(raw) ? Math.max(0, Math.min(100, raw)) / 40 : 0;
     return Math.min(2.5, measured) + (product.isBestSeller ? 1.25 : 0);
   }
+  function communityBoost(product) {
+    const signals = opts.communitySignals || {};
+    const features = featureTokens(product);
+    let score = 0;
+    features.forEach(function(token) {
+      score += (signals.positive && signals.positive[token] || 0) * 1.8;
+      score -= (signals.negative && signals.negative[token] || 0) * 2.2;
+    });
+    return Math.max(-6, Math.min(6, score));
+  }
   const scored = (products || []).filter(function(product) {
     const expired = product.catalogStatus === "expired" ||
       (product.expiresAt && Date.parse(product.expiresAt) <= Date.now());
@@ -300,7 +310,7 @@ export function rankProducts(products, state, options) {
     const novelty = noveltyScore(product, learned);
     const baseScore = familiarity * (1 - discovery / 100) + novelty * (discovery / 100) * (training ? 1.25 : 1);
     const score = baseScore + freshnessBoost(product) + reviewBoost(product) +
-      merchantTrustBoost(product) + popularityBoost(product);
+      merchantTrustBoost(product) + popularityBoost(product) + communityBoost(product);
     return { product: product, score: score };
   });
   scored.sort(function(a, b) { return b.score - a.score; });
