@@ -28,7 +28,7 @@ function normalizeProduct(item) {
     price:Number.isFinite(Number(item && item.price)) && item.price !== null ? Number(item.price) : null,
     objective:clean(item && item.objective,40), category:clean(item && item.category,60),
     styleTags:stringList(item && item.styleTags,6), colors:stringList(item && item.colors,5), materials:stringList(item && item.materials,5),
-    cuts:stringList(item && item.cuts,4), patterns:stringList(item && item.patterns,4), description:clean(item && item.description,240)
+    cuts:stringList(item && item.cuts,4), patterns:stringList(item && item.patterns,4), seasonTags:stringList(item && item.seasonTags,4), description:clean(item && item.description,240)
   };
 }
 function normalizeFeedback(value) {
@@ -52,6 +52,7 @@ function validatePayload(body) {
     if (objective !== "Tout" && product.objective !== objective) return false;
     if (maxPrice !== null && (product.price === null || product.price > maxPrice)) return false;
     if (style !== "Tous" && product.styleTags.length && !product.styleTags.some(tag => tag.toLowerCase() === style.toLowerCase())) return false;
+    if (season !== "Toute saison" && product.seasonTags.length && !product.seasonTags.some(tag => tag.toLowerCase() === season.toLowerCase() || tag.toLowerCase() === "toute saison")) return false;
     return true;
   });
   if (!filtered.length) throw new Error("Aucun article ne correspond aux filtres actuels.");
@@ -74,6 +75,7 @@ function buildPrompt(input) {
     "RÈGLES IMPÉRATIVES :",
     "- Tu ne peux recommander QUE des productId présents dans products. N’invente jamais une fiche, marque, prix, disponibilité ou caractéristique.",
     "- Respecte en priorité la catégorie, le style, la saison et le budget maximum choisis.",
+    "- Réponds uniquement avec un JSON valide contenant recommendations (productId et reason), message et searchHints. Aucun texte hors du JSON.",
     "- Les éléments liked et saved sont positifs. Les éléments disliked sont négatifs : évite les mêmes caractéristiques, sans généraliser abusivement à toute la catégorie.",
     "- Croise le profil, les inspirations, les retours récents et les attributs produits. Cherche une vraie diversité de pièces et de marchands.",
     "- Ne recommande pas deux variantes presque identiques si d’autres choix pertinents existent.",
