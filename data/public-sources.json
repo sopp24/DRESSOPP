@@ -101,7 +101,8 @@
     },
     {
       "name": "Courir",
-      "domain": "courir.com"
+      "domain": "courir.com",
+      "localePathPrefix": "/fr/"
     },
     {
       "name": "JD Sports",
