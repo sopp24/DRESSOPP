@@ -3,6 +3,7 @@ import { createInitialState, normalizeProduct, productIdentity, seasonFor, rankP
 import { INTEGRATIONS, getPersistenceNotice, PINTEREST_BOARD_URL } from "./modules/integrations.js";
 import { inferPinterestTags, buildOutfitIdeas } from "./modules/outfits.js";
 import { syncCommunityProfile, deleteCommunityProfile, buildCommunitySignals } from "./modules/community.js";
+import { requestAgentRecommendations, orderProductsByAgent } from "./modules/agent.js";
 
 const main = document.querySelector("#app-main");
 const modalRoot = document.querySelector("#modal-root");
@@ -27,6 +28,11 @@ let communitySignals = { positive:{}, negative:{}, neighbors:0 };
 let communityStatus = "Partage désactivé";
 let lastCommunitySyncCount = 0;
 let communitySyncPending = false;
+let aiAgentConfig = { enabled:false, endpoint:"" };
+let aiAgentState = { status:"unconfigured", recommendations:[], message:"", searchHints:[], candidateCount:0 };
+let aiAgentPending = false;
+let aiAgentLastActionCount = 0;
+
 
 const RETAILER_GROUPS = [
   { title: "Multimarques & essentiels", items: [
@@ -141,6 +147,80 @@ async function refreshCommunity(showFeedback) {
     communitySyncPending = false;
   }
 }
+function aiAgentActionCount() {
+  if (!state) return 0;
+  return (state.interactions && state.interactions.likes ? state.interactions.likes.length : 0) +
+    (state.interactions && state.interactions.dislikes ? state.interactions.dislikes.length : 0) +
+    (state.interactions && state.interactions.saves ? state.interactions.saves.length : 0) +
+    (state.likedProducts ? state.likedProducts.length : 0);
+}
+function aiAgentInspirations() {
+  return pinterestPinCards().slice(0,12).map(function(pin) {
+    return { title:pin.title || "", tags:Array.isArray(pin.tags) ? pin.tags : [] };
+  });
+}
+async function runAiAgent(showFeedback) {
+  if (!state || !state.settings.aiAgentConsent) {
+    if (showFeedback) showToast("Lis les informations et accepte le partage facultatif pour activer le personal shopper IA.",false);
+    return;
+  }
+  if (!aiAgentConfig.enabled || !aiAgentConfig.endpoint) {
+    aiAgentState = { status:"unconfigured", recommendations:[], message:"Le Worker IA gratuit doit d’abord être déployé et son URL renseignée.", searchHints:[], candidateCount:0 };
+    if (showFeedback) showToast("Configure le Worker Cloudflare en suivant le guide IA.",false);
+    render();
+    return;
+  }
+  if (aiAgentPending) return;
+  const training = currentView === "training";
+  const candidates = rankProducts(state.products,state,{training:training,communitySignals:communitySignals}).slice(0,50);
+  if (!candidates.length) {
+    aiAgentState = { status:"empty", recommendations:[], message:"Aucun article disponible dans cette catégorie et avec ces filtres. Élargis la recherche ou attends la prochaine collecte.", searchHints:[], candidateCount:0 };
+    render();
+    return;
+  }
+  aiAgentPending = true;
+  aiAgentState = { status:"loading", recommendations:[], message:"L’agent compare tes références, tes dernières décisions et les articles disponibles…", searchHints:[], candidateCount:candidates.length };
+  aiAgentLastActionCount = aiAgentActionCount();
+  render();
+  try {
+    const result = await requestAgentRecommendations(aiAgentConfig.endpoint,state,candidates,aiAgentInspirations());
+    aiAgentState = { status:"ready", recommendations:result.recommendations, message:result.message, searchHints:result.searchHints, candidateCount:result.candidateCount };
+    if (showFeedback) showToast(result.recommendations.length + " recommandations sélectionnées par ton personal shopper IA.",false);
+  } catch (error) {
+    aiAgentState = { status:"error", recommendations:[], message:error.message + " Le classement local reste actif.", searchHints:[], candidateCount:candidates.length };
+    if (showFeedback) showToast("Le personal shopper IA est indisponible : " + error.message,false);
+  } finally {
+    aiAgentPending = false;
+    if (currentView === "discover" || currentView === "training") render();
+  }
+}
+function renderAiAgentPanel() {
+  const configured = Boolean(aiAgentConfig.enabled && aiAgentConfig.endpoint);
+  const consent = Boolean(state.settings.aiAgentConsent);
+  const ready = aiAgentState.status === "ready";
+  const status = aiAgentPending ? "Analyse en cours" : ready ? "Sélection personnalisée prête" : aiAgentState.status === "error" ? "Service indisponible" : configured ? (consent ? "Prêt à analyser" : "En attente de ton accord") : "À déployer";
+  const consentControl = configured
+    ? '<label class="ai-agent-consent"><input id="ai-agent-consent" type="checkbox" ' + (consent ? "checked" : "") + '><span>J’accepte d’envoyer temporairement mes préférences générales, mes derniers retours et les résumés des articles candidats à Cloudflare pour générer des recommandations. Les tailles, notes personnelles, e-mail, URL et images ne sont pas transmis.</span></label>'
+    : '<p class="ai-agent-help">Le service IA n’est pas encore déployé. Le moteur local fonctionne déjà. Le guide explique comment activer gratuitement le Worker sans clé secrète dans le navigateur.</p>';
+  const autoControl = configured && consent
+    ? '<label class="ai-agent-auto"><input id="ai-agent-auto" type="checkbox" ' + (state.settings.aiAgentAutoRefresh ? "checked" : "") + '> Actualiser l’analyse après trois nouvelles décisions</label>' : "";
+  const button = configured && consent
+    ? '<button class="button-primary button-small" type="button" data-action="run-ai-agent" ' + (aiAgentPending ? "disabled" : "") + '>' + (aiAgentPending ? "Analyse…" : ready ? "Actualiser mes recommandations" : "Faire analyser ma sélection") + '</button>' : "";
+  const hints = ready && aiAgentState.searchHints.length
+    ? '<div class="ai-agent-hints"><span>Prochaines pistes :</span>' + aiAgentState.searchHints.map(function(item) { return "<span>" + esc(item) + "</span>"; }).join("") + "</div>" : "";
+  const note = ready ? "<p class=\\"ai-agent-result-note\\">" + aiAgentState.recommendations.length + " articles classés parmi " + aiAgentState.candidateCount + " candidats réels du catalogue.</p>" : "";
+  return '<section class="panel ai-agent-panel" aria-label="Personal shopper IA"><div class="ai-agent-top"><div><span class="eyebrow">Ton personal shopper</span><h2>Agent IA DRESSOPP</h2><p>Il interprète tes références et tes décisions pour choisir les prochains articles à découvrir.</p></div><span class="ai-agent-status ' + (ready ? "is-ready" : aiAgentPending ? "is-loading" : "") + '">' + esc(status) + '</span></div>' +
+    consentControl +
+    '<div class="ai-agent-controls">' + button + autoControl + '</div>' +
+    (aiAgentState.message ? '<p class="ai-agent-message">' + esc(aiAgentState.message) + '</p>' : "") + note + hints +
+    '<p class="ai-agent-disclaimer">L’IA classe uniquement des fiches déjà présentes dans le catalogue ; elle ne crée pas de produits ni de prix. Sans configuration ou si le quota gratuit est atteint, le moteur local prend le relais.</p>' +
+    '<a class="ai-agent-guide" href="https://github.com/sopp24/DRESSOPP/blob/main/docs/AI-AGENT.md" target="_blank" rel="noopener noreferrer">Guide d’installation et confidentialité ↗</a></section>';
+}
+function aiAgentReason(productId) {
+  if (aiAgentState.status !== "ready") return "";
+  const item = aiAgentState.recommendations.find(function(entry) { return entry.productId === productId; });
+  return item && item.reason ? '<p class="ai-agent-product-reason"><strong>Pourquoi l’IA le propose :</strong> ' + esc(item.reason) + '</p>' : "";
+}
 function persist() {
   persistRevision += 1;
   if (persistPending) return persistPromise;
@@ -165,6 +245,13 @@ function persist() {
             communityCount >= 3 && communityCount - lastCommunitySyncCount >= 3) {
           lastCommunitySyncCount = communityCount;
           refreshCommunity(false);
+        }
+        const agentCount = aiAgentActionCount();
+        if (state.settings.aiAgentAutoRefresh && state.settings.aiAgentConsent &&
+            aiAgentConfig.enabled && !aiAgentPending && agentCount >= 3 &&
+            agentCount - aiAgentLastActionCount >= 3) {
+          aiAgentLastActionCount = agentCount;
+          runAiAgent(false);
         }
       } while (savedRevision !== persistRevision);
 
@@ -327,7 +414,7 @@ function renderDeckCard(product, training) {
     '<div class="product-info"><div class="product-copy">' +
       '<h2 class="product-title">' + esc(product.name) + '</h2>' +
       '<div class="product-brand-price"><span>' + esc(brand) + '</span><i aria-hidden="true">•</i><strong>' + esc(price) + '</strong></div>' +
-      renderProductAttributes(product) + renderProductReview(product) +
+      aiAgentReason(product.id) + renderProductAttributes(product) + renderProductReview(product) +
     '</div>' + originalLink + '</div>' +
     '</article><div class="deck-actions" aria-label="Actions sur cet article">' +
     '<button class="deck-action deck-action-undo" type="button" data-action="undo" ' + (state.interactions.lastAction ? "" : "disabled") + ' aria-label="Annuler la dernière action" title="Annuler la dernière action"><span aria-hidden="true">↶</span></button>' +
@@ -344,7 +431,7 @@ function renderGridCards(products, options) {
     const liked = isLiked(product.id);
     return '<article class="grid-card"><div class="grid-image" role="button" tabindex="0" data-action="details" data-id="' + esc(product.id) + '">' +
       imageMarkup(product.imageUrl, product.name) + '</div><div class="grid-content"><span class="product-brand">' + esc(product.brand || "Marque non renseignée") + '</span>' +
-      '<h3 class="product-title">' + esc(product.name) + '</h3><div class="product-meta"><span>' + esc(product.merchant || product.source) + '</span><i class="meta-dot"></i><span>' + esc(product.objective) + '</span></div>' +
+      '<h3 class="product-title">' + esc(product.name) + '</h3>' + aiAgentReason(product.id) + '<div class="product-meta"><span>' + esc(product.merchant || product.source) + '</span><i class="meta-dot"></i><span>' + esc(product.objective) + '</span></div>' +
       '<div class="grid-bottom"><span class="grid-price">' + esc(formatPrice(product.price)) + '</span><div class="grid-actions">' +
       '<button class="mini-icon-button" type="button" data-action="details" data-id="' + esc(product.id) + '" aria-label="Voir les détails">↗</button>' +
       (opts.wardrobe ? '<button class="mini-icon-button" type="button" data-action="remove-favorite" data-id="' + esc(product.id) + '" aria-label="Retirer de ma liste">−</button>' :
@@ -356,14 +443,17 @@ function renderDiscover(training) {
   const heading = training
     ? renderPageHeading("Élargis ton univers", "Entraînement", "Explore volontairement de nouvelles coupes, matières et associations. Tes réponses Oui et Non affinent le profil, sans ajout automatique à ta liste.", '<button class="button-secondary" type="button" data-view="discover">Retour à Découvrir</button>')
     : renderPageHeading("Ton œil, tes règles", "Découvrir", "Des pièces sélectionnées selon tes préférences. Glisse à gauche pour dire Non, à droite pour dire Oui, ou utilise les cinq actions sous la carte.", '<button class="button-secondary" type="button" data-action="toggle-discovery-view">' + (state.settings.discoveryView === "grid" ? "Vue cartes" : "Explorer la grille") + '</button>');
-  const products = rankProducts(state.products, state, { training: training, communitySignals: communitySignals });
+  const locallyRanked = rankProducts(state.products, state, { training: training, communitySignals: communitySignals });
+  const products = aiAgentState.status === "ready"
+    ? orderProductsByAgent(locallyRanked, aiAgentState.recommendations)
+    : locallyRanked;
   const yesCount = state.interactions.likes.length;
   const savedCount = state.likedProducts.length;
   const rejected = state.interactions.dislikes.length;
   const isGrid = state.settings.discoveryView === "grid" && !training;
   const body = isGrid ? renderGridCards(products) : (products.length ? renderDeckCard(products[0], training) : renderEmptyProducts(training));
   const searchToolbar = isGrid ? '<div class="toolbar"><div class="toolbar-left"><input class="search-input" type="search" data-search="discover" placeholder="Rechercher un vêtement, une marque, une couleur…" aria-label="Rechercher dans le catalogue"></div><span class="result-count">' + products.length + ' article(s)</span></div>' : "";
-  return heading + renderCatalogStatus() + renderFilterBar(training) + searchToolbar + '<div class="discovery-layout' + (isGrid ? '' : ' discovery-layout--swipe') + '"><section class="deck-column">' +
+  return heading + renderCatalogStatus() + renderFilterBar(training) + renderAiAgentPanel() + searchToolbar + '<div class="discovery-layout' + (isGrid ? '' : ' discovery-layout--swipe') + '"><section class="deck-column">' +
     '<div class="deck-topline"><span><strong>' + (training ? "Exploration active" : "Ta sélection") + '</strong> <span>· ' + products.length + ' article(s) à découvrir</span></span>' +
     '<span>' + (training ? "Nouveauté prioritaire" : "Personnalisation active") + '</span></div>' + body +
     '</section><aside class="deck-aside"><section class="panel aside-card"><h2 class="aside-title">Ton évolution <span>en direct</span></h2>' +
@@ -1032,7 +1122,8 @@ function handleClick(event) {
   const actionButton = event.target.closest("[data-action]");
   if (!actionButton) return;
   const action = actionButton.dataset.action;
-  if (action === "add-product") openProductForm();
+  if (action === "run-ai-agent") runAiAgent(true);
+  else if (action === "add-product") openProductForm();
   else if (action === "add-inspiration") openInspirationForm();
   else if (action === "close-modal") closeModal(); else if (action === "details") openProductDetails(actionButton.dataset.id);
   else if (action === "vote") vote(actionButton.dataset.id, actionButton.dataset.vote || "no");
@@ -1062,6 +1153,22 @@ function handleClick(event) {
 }
 function handleChange(event) {
   const target = event.target;
+  if (target.id === "ai-agent-consent") {
+    state.settings.aiAgentConsent = Boolean(target.checked);
+    if (!target.checked) {
+      state.settings.aiAgentAutoRefresh = false;
+      aiAgentState = { status:"unconfigured", recommendations:[], message:"Partage IA désactivé. Le classement local continue de fonctionner.", searchHints:[], candidateCount:0 };
+    }
+    persist();
+    render();
+    return;
+  }
+  if (target.id === "ai-agent-auto") {
+    state.settings.aiAgentAutoRefresh = Boolean(target.checked);
+    persist();
+    render();
+    return;
+  }
   if (target.id === "community-sharing") {
     state.settings.communitySharing = Boolean(target.checked);
     persist();
@@ -1089,6 +1196,11 @@ function handleChange(event) {
     } else if (key === "maxPrice") {
       state.settings.maxPrice = target.value.trim() === "" ? null : Math.max(0, Number(target.value));
     } else state.settings[key] = key.toLowerCase().includes("level") ? Number(target.value) : target.value;
+    if (aiAgentState.status === "ready") {
+      aiAgentState.status = "stale";
+      aiAgentState.message = "Tes filtres ont changé. Relance l’agent pour actualiser la sélection.";
+      aiAgentState.recommendations = [];
+    }
     persist();
     render();
   }
@@ -1232,6 +1344,10 @@ async function boot() {
     const response = await fetch("./data/community-config.json", { cache: "no-store" });
     if (response.ok) communityConfig = await response.json();
   } catch (error) { console.warn("Configuration communautaire non chargée.", error); }
+  try {
+    const response = await fetch("./data/ai-agent-config.json", { cache: "no-store" });
+    if (response.ok) aiAgentConfig = await response.json();
+  } catch (error) { console.warn("Configuration du personal shopper IA non chargée.", error); }
   const stored = await loadState();
   const base = createInitialState(catalog);
   state = stored ? Object.assign(base, stored) : base;
