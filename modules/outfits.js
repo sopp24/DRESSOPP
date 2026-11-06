@@ -105,7 +105,7 @@ function matchScore(product, pin) {
   const pinId = String(pin && (pin.id || pin.pinId) || "");
   const lookbookRefs = Array.isArray(product.lookbookRefs) ? product.lookbookRefs : [];
   if (pinId && lookbookRefs.includes(pinId)) {
-    const confidenceBoost = { close: 12, stylistic: 7, partial: 3 };
+    const confidenceBoost = { close: 20, stylistic: 12, partial: 5 };
     score += confidenceBoost[product.matchLevel] || 2;
   }
   const terms = productTerms(product);
