@@ -37,3 +37,9 @@ test("expires old public listings but preserves editorial seeds", () => {
   assert.equal(result.products.find(item=>item.id==="old").catalogStatus,"stale");
   assert.ok(result.products.some(item=>item.id==="seed"));
 });
+
+test("a bot-specific robots group takes precedence over the wildcard group", () => {
+  const robots = parseRobots("User-agent: *\\nDisallow: /all\\nUser-agent: DRESSOPPBot\\nDisallow: /private");
+  assert.equal(robotsAllows("/private/shoes", robots), false);
+  assert.equal(robotsAllows("/all/shoes", robots), true);
+});
