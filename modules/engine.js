@@ -42,7 +42,7 @@ export function createInitialState(products) {
     },
     settings: {
       objective: "Vêtements", style: "Tous", season: seasonFor(new Date()), maxPrice: null,
-      communitySharing: false, discoveryLevel: 30, trainingDiscoveryLevel: 75, discoveryView: "cards", savedFilters: [], wardrobeFilters: { objective: "Tout", style: "Tous", season: "Toute saison", maxPrice: null }, wardrobeSort: "recent"
+      communitySharing: false, aiAgentConsent: false, aiAgentAutoRefresh: false, discoveryLevel: 30, trainingDiscoveryLevel: 75, discoveryView: "cards", savedFilters: [], wardrobeFilters: { objective: "Tout", style: "Tous", season: "Toute saison", maxPrice: null }, wardrobeSort: "recent"
     },
     products: Array.isArray(products) ? products : [],
     likedProducts: [], removedFavorites: [],
