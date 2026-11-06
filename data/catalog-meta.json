@@ -1,22 +1,22 @@
 {
-  "schemaVersion": 1,
-  "provider": "Awin Product Feeds",
+  "schemaVersion": 2,
+  "provider": "Pages produits publiques autorisées (Schema.org / Open Graph)",
   "status": "needs-configuration",
-  "syncedAt": "2026-11-05T16:36:56.203Z",
+  "syncedAt": null,
   "productCount": 8,
   "liveProductCount": 0,
+  "publicProductCount": 0,
   "curatedProductCount": 8,
-  "feedCount": 0,
-  "updatedFeeds": 0,
-  "errorFeeds": 0,
-  "sources": [
-    "adidas",
-    "ASOS",
-    "Charles Tyrwhitt",
-    "Nike",
-    "UNIQLO"
-  ],
-  "refreshCadence": "6 synchronisations planifiées par jour ; la fraîcheur dépend de la mise à jour du flux par chaque marchand.",
-  "feeds": {},
-  "message": "Le moteur de recommandation fonctionne à partir du profil, des votes, du lookbook, du budget et des tailles. Les références éditoriales sont temporaires ; la synchronisation des flux Awin exige le secret AWIN_PRODUCT_FEED_LIST_URL et reste conditionnée aux programmes marchands réellement accessibles au compte éditeur."
+  "staleProductCount": 0,
+  "sourceCount": 0,
+  "attemptedSourceCount": 0,
+  "pagesChecked": 0,
+  "sources": [],
+  "sourceResults": [],
+  "refreshCadence": "Actualisation quotidienne gratuite via GitHub Actions.",
+  "message": "Catalogue gratuit multi-sources prêt. Lancer le workflow refresh-public-catalog.yml pour explorer les boutiques autorisées. Aucune donnée Awin n'est requise.",
+  "notes": [
+    "Le collecteur respecte robots.txt et n'importe que les pages publiques autorisées.",
+    "Le prix et le stock doivent être vérifiés sur la boutique avant achat."
+  ]
 }
