@@ -32,7 +32,6 @@ let aiAgentConfig = { enabled:false, endpoint:"" };
 let aiAgentState = { status:"unconfigured", recommendations:[], message:"", searchHints:[], candidateCount:0 };
 let aiAgentPending = false;
 let aiAgentLastActionCount = 0;
-let aiAgentRefreshQueued = false;
 
 
 const RETAILER_GROUPS = [
@@ -202,7 +201,7 @@ async function runAiAgent(showFeedback) {
   render();
   try {
     const result = await requestAgentRecommendations(aiAgentConfig.endpoint,state,candidates,aiAgentInspirations());
-    const contextChanged = aiAgentActionCount() !== requestActionCount ||
+    const contextChanged = !state.settings.aiAgentConsent || aiAgentActionCount() !== requestActionCount ||
       (currentView === "training") !== training || aiAgentContextSignature(training) !== requestContext;
     if (contextChanged) {
       aiAgentState = { status:"stale", recommendations:[], message:"Tes filtres ou tes derniers retours ont changé pendant l’analyse. Relance l’agent pour obtenir un classement à jour.", searchHints:[], candidateCount:result.candidateCount };
@@ -219,7 +218,6 @@ async function runAiAgent(showFeedback) {
     const actionDelta = aiAgentActionCount() - aiAgentLastActionCount;
     const autoEnabled = state && state.settings.aiAgentAutoRefresh && state.settings.aiAgentConsent && aiAgentConfig.enabled;
     const shouldRefresh = Boolean(autoEnabled && actionDelta >= 3);
-    aiAgentRefreshQueued = false;
     if (shouldRefresh && (currentView === "discover" || currentView === "training")) {
       aiAgentLastActionCount = aiAgentActionCount();
       runAiAgent(false);
@@ -290,7 +288,7 @@ function persist() {
         if (state.settings.aiAgentAutoRefresh && state.settings.aiAgentConsent &&
             aiAgentConfig.enabled && agentCount >= 3 &&
             agentCount - aiAgentLastActionCount >= 3) {
-          if (aiAgentPending) aiAgentRefreshQueued = true;
+          if (aiAgentPending) { /* L'agent vérifiera le compteur à la fin de l'analyse. */ }
           else {
             aiAgentLastActionCount = agentCount;
             runAiAgent(false);
@@ -1210,7 +1208,6 @@ function handleChange(event) {
   }
   if (target.id === "ai-agent-auto") {
     state.settings.aiAgentAutoRefresh = Boolean(target.checked);
-    if (!target.checked) aiAgentRefreshQueued = false;
     persist();
     render();
     return;
