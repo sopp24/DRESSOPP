@@ -43,26 +43,57 @@ function pathScore(path) {
     (/-\d{5,}(?:\.html?)?(?:$|[/?])/.test(p) ? 3 : 0) + (/\.html?(?:$|[/?])/.test(p) ? 2 : 0);
 }
 export function parseRobots(text) {
-  const groups = []; let current = null;
+  const groups = [];
+  let current = null;
   for (const raw of String(text || "").split(/\r?\n/)) {
-    const line = raw.replace(/#.*$/,"").trim(); const match = line.match(/^([^:]+):\s*(.*)$/);
+    const line = raw.replace(/#.*$/, "").trim();
+    const match = line.match(/^([^:]+):\s*(.*)$/);
     if (!match) continue;
-    const key = match[1].trim().toLowerCase(), value = match[2].trim();
+    const key = match[1].trim().toLowerCase();
+    const value = match[2].trim();
     if (key === "user-agent") {
-      if (!current || current.rules.length) { current = { agents:[], rules:[], sitemaps:[] }; groups.push(current); }
+      if (!current || current.hasRules) {
+        current = { agents: [], rules: [], sitemaps: [], hasRules: false };
+        groups.push(current);
+      }
       current.agents.push(value.toLowerCase());
     } else if (key === "allow" || key === "disallow") {
-      if (current && value) current.rules.push({ allow:key === "allow", path:value });
+      if (current) {
+        current.hasRules = true;
+        if (value) current.rules.push({ allow: key === "allow", path: value });
+      }
     } else if (key === "sitemap" && value) {
-      if (current) current.sitemaps.push(value); else groups.push({ agents:[], rules:[], sitemaps:[value] });
+      if (current) current.sitemaps.push(value);
+      else groups.push({ agents: [], rules: [], sitemaps: [value], hasRules: false });
     }
   }
-  const selected = groups.filter(group => group.agents.some(agent => agent === "*" || agent === BOT.toLowerCase()));
-  return { rules:selected.flatMap(group => group.rules), sitemaps:Array.from(new Set(groups.flatMap(group => group.sitemaps))) };
+
+  const exact = groups.filter(group => group.agents.some(agent =>
+    agent !== "*" && BOT.toLowerCase().startsWith(agent)
+  ));
+  const selected = exact.length ? exact : groups.filter(group => group.agents.includes("*"));
+  return {
+    rules: selected.flatMap(group => group.rules),
+    sitemaps: Array.from(new Set(groups.flatMap(group => group.sitemaps)))
+  };
 }
-function ruleMatch(pattern,path) {
-  const escaped = pattern.replace(/[.*+?^$()|[\]\\]/g,"\\$&").replace(/\*/g,".*");
-  try { return new RegExp("^" + escaped).test(path); } catch { return false; }
+
+function ruleMatch(pattern, path) {
+  const value = String(pattern || "");
+  const anchored = value.endsWith("$");
+  const body = anchored ? value.slice(0, -1) : value;
+  let expression = "";
+  for (const character of body) {
+    if (character === "*") expression += ".*";
+    else if (character === "$") expression += "\\$";
+    else if (/[.+?^()|[\]\\]/.test(character)) expression += "\\" + character;
+    else expression += character;
+  }
+  try {
+    return new RegExp("^" + expression + (anchored ? "$" : "")).test(String(path || ""));
+  } catch {
+    return false;
+  }
 }
 export function robotsAllows(path, robots) {
   let best = null;
