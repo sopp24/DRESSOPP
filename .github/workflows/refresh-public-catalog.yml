@@ -6,6 +6,7 @@ on:
     paths:
       - "scripts/refresh-public-catalog.mjs"
       - "data/public-sources.json"
+      - "data/merchant-directory.json"
       - "tests/public-catalog.test.js"
       - ".github/workflows/refresh-public-catalog.yml"
   schedule:
@@ -15,6 +16,7 @@ on:
 
 permissions:
   contents: write
+  actions: write
 
 concurrency:
   group: dressopp-public-catalog
@@ -31,20 +33,22 @@ jobs:
           node-version: "22"
       - name: Vérifier le code et les tests
         run: npm test
-      - name: Explorer les boutiques publiques autorisées
+      - name: Explorer le prochain lot de boutiques autorisées
         run: node scripts/refresh-public-catalog.mjs
-      - name: Enregistrer les changements du catalogue
+      - name: Enregistrer les pages et le manifeste du catalogue
+        id: publish
         run: |
-          if [[ -n "$(git status --porcelain data/catalog.json data/catalog-meta.json)" ]]; then
+          if [[ -n "$(git status --porcelain data/catalog.json data/catalog-meta.json data/catalog-manifest.json data/catalog-pages)" ]]; then
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add data/catalog.json data/catalog-meta.json
-            git commit -m "Actualiser le catalogue public multi-sources"
+            git add data/catalog.json data/catalog-meta.json data/catalog-manifest.json data/catalog-pages
+            git commit -m "Actualiser le catalogue paginé DRESSOPP"
             for attempt in 1 2 3; do
               git fetch origin main
               git rebase origin/main
               if git push origin HEAD:main; then
                 echo "Catalogue publié sur main."
+                echo "changed=true" >> "$GITHUB_OUTPUT"
                 exit 0
               fi
               sleep $((attempt * 3))
@@ -53,4 +57,10 @@ jobs:
             exit 1
           else
             echo "Aucun changement dans le catalogue public."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
           fi
+      - name: Déclencher la publication GitHub Pages après la mise à jour du catalogue
+        if: steps.publish.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run deploy-pages.yml --ref main
