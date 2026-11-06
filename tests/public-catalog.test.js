@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { extractProductsFromHtml, mergeCatalog, parseRobots, robotsAllows } from "../scripts/refresh-public-catalog.mjs";
+import { extractProductsFromHtml, mergeCatalog, parseRobots, robotsAllows, selectSourceBatch } from "../scripts/refresh-public-catalog.mjs";
 
 const source = { name:"Boutique test", domain:"example.com" };
 
@@ -80,4 +80,18 @@ test("products removed from a successfully refreshed merchant are marked stale",
   assert.equal(result.products.find(item=>item.id==="old").catalogStatus,"stale");
   assert.equal(result.products.find(item=>item.id==="new").catalogStatus,"active");
   assert.equal(result.meta.liveProductCount,1);
+});
+
+
+test("the 200-store directory rotates across batches and keeps priority sources", () => {
+  const stores = Array.from({length:200},(_,index)=>({
+    name:"Store "+index,domain:"store"+index+".example",priority:index<24?1:2
+  }));
+  const first = selectSourceBatch(stores,{},36,12);
+  const second = selectSourceBatch(stores,first.nextCursors,36,12);
+  assert.equal(first.sources.length,36);
+  assert.equal(second.sources.length,36);
+  assert.equal(first.sources.filter(source=>source.priority===1).length,12);
+  assert.equal(second.sources.filter(source=>source.priority===1).length,12);
+  assert.equal(new Set(first.sources.concat(second.sources).map(source=>source.name)).size,72);
 });
