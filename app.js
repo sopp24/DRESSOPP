@@ -235,8 +235,16 @@ async function runAiAgent(showFeedback) {
       if (showFeedback) showToast(result.recommendations.length + " recommandations préparées par " + (provider === "cloudflare" ? "l’IA Cloudflare" : "l’agent local") + ".",false);
     }
   } catch (error) {
-    aiAgentState = { status:"error", recommendations:[], message:"L’analyse locale a rencontré un problème : " + error.message + ". Le classement normal reste actif.", searchHints:[], candidateCount:candidates.length, provider:"local" };
-    if (showFeedback) showToast("L’agent n’a pas pu terminer l’analyse : " + error.message,false);
+    if (!state.settings.aiAgentConsent || (error && error.name === "AbortError")) {
+      aiAgentState = {
+        status:"ready", recommendations:localResult.recommendations,
+        message:localResult.message, searchHints:localResult.searchHints,
+        candidateCount:localResult.candidateCount, provider:"local"
+      };
+    } else {
+      aiAgentState = { status:"error", recommendations:[], message:"L’analyse locale a rencontré un problème : " + error.message + ". Le classement normal reste actif.", searchHints:[], candidateCount:candidates.length, provider:"local" };
+      if (showFeedback) showToast("L’agent n’a pas pu terminer l’analyse : " + error.message,false);
+    }
   } finally {
     aiAgentController = null;
     aiAgentPending = false;

@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { createInitialState, normalizeProduct } from "../modules/engine.js";
-import { createAgentPayload, orderProductsByAgent, selectAgentCandidates } from "../modules/agent.js";
+import { createAgentPayload, orderProductsByAgent, selectAgentCandidates, recommendLocally } from "../modules/agent.js";
 
 test("AI agent is disabled and has no data-sharing consent by default", () => {
   const state = createInitialState([]);
