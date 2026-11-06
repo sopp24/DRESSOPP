@@ -1,8 +1,10 @@
 {
   "name": "dressopp",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "private": true,
   "type": "module",
   "description": "DRESSOPP — assistant personnel de découverte vestimentaire",
-  "scripts": { "test": "node --check app.js && node --check scripts/sync-pinterest.mjs && node --check scripts/refresh-awin-catalog.mjs && node --test" }
+  "scripts": {
+    "test": "node --check app.js && node --check modules/community.js && node --check scripts/sync-pinterest.mjs && node --check scripts/refresh-public-catalog.mjs && node --test"
+  }
 }
