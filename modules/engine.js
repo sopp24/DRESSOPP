@@ -82,7 +82,7 @@ export function normalizeProduct(raw) {
     materials: arrayOf(source.materials || source.material || source.composition),
     cuts: arrayOf(source.cuts || source.fit || source.silhouette),
     patterns: arrayOf(source.patterns || source.pattern),
-    description: text(source.description), sizes: arrayOf(source.sizes),
+    description: text(source.description), lookbookRefs: arrayOf(source.lookbookRefs).slice(0,20), matchLevel: text(source.matchLevel), matchReason: text(source.matchReason), sizes: arrayOf(source.sizes),
     availability: text(source.availability) || "Information non disponible",
     source: text(source.source) || merchant || "Import manuel",
     addedAt: text(source.addedAt) || new Date().toISOString(),

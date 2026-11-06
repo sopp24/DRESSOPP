@@ -1,0 +1,603 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-11-06T17:00:00.000Z",
+  "sourceBook": {
+    "file": "lookbook.pdf",
+    "season": "Automne / Hiver",
+    "visualCount": 20,
+    "outfitCount": 19,
+    "detailCount": 1
+  },
+  "matchingPolicy": {
+    "close": "Même type de pièce et plusieurs caractéristiques visuelles structurantes proches ; pas nécessairement la même matière ou le même SKU.",
+    "stylistic": "Alternative de style ou de silhouette ; plusieurs détails importants diffèrent.",
+    "partial": "Un ou deux attributs correspondent seulement (couleur, motif ou esprit).",
+    "exact": "Aucun article n'est déclaré exact à partir d'une photographie sans référence commerciale."
+  },
+  "note": "Prix, fiches produit et images relevés sur les pages marchandes indiquées. La disponibilité réelle doit être revérifiée au panier ; aucune taille n'est garantie par cette base.",
+  "looks": [
+    {
+      "id": "lookbook-01",
+      "title": "Cuir chocolat",
+      "kind": "outfit",
+      "visualDescription": "Blouson cuir marron, chemise blanche, cravate, pantalon à pinces, mocassins",
+      "tags": [
+        "Classe",
+        "Preppy",
+        "Smart Casual",
+        "chocolat",
+        "marron",
+        "blanc",
+        "cuir",
+        "cravate",
+        "pantalon à pinces",
+        "mocassins",
+        "tailoring"
+      ],
+      "productIds": [
+        "seed-uniqlo-e484093-000",
+        "seed-lookbook-cos-linen-wide-trouser"
+      ],
+      "referenceCount": 2,
+      "coverageStatus": "partial",
+      "piecesToFind": [
+        "blouson en cuir marron",
+        "chemise blanche et cravate",
+        "mocassins marron"
+      ]
+    },
+    {
+      "id": "lookbook-02",
+      "title": "Cuir vieilli",
+      "kind": "outfit",
+      "visualDescription": "Blouson cuir patiné, col roulé noir, pantalon à pinces marron, loafers",
+      "tags": [
+        "Heritage",
+        "Smart Casual",
+        "Vintage",
+        "noir",
+        "marron",
+        "cuir",
+        "laine",
+        "col roulé",
+        "pantalon à pinces",
+        "loafers",
+        "patiné"
+      ],
+      "productIds": [
+        "seed-uniqlo-e484093-000",
+        "seed-uniqlo-460938-07",
+        "seed-lookbook-cos-linen-wide-trouser"
+      ],
+      "referenceCount": 3,
+      "coverageStatus": "several_references",
+      "piecesToFind": [
+        "blouson en cuir patiné marron",
+        "mocassins marron"
+      ]
+    },
+    {
+      "id": "lookbook-03",
+      "title": "Monochrome bordeaux",
+      "kind": "outfit",
+      "visualDescription": "Chemise rose, pull noué sur les épaules, pantalon ample bordeaux",
+      "tags": [
+        "Preppy",
+        "Classe",
+        "bordeaux",
+        "rose",
+        "maille",
+        "coton",
+        "ample",
+        "monochrome",
+        "superposition"
+      ],
+      "productIds": [
+        "seed-asos-208080131"
+      ],
+      "referenceCount": 1,
+      "coverageStatus": "partial",
+      "piecesToFind": [
+        "pantalon large bordeaux",
+        "chemise rose",
+        "maille à nouer sur les épaules"
+      ]
+    },
+    {
+      "id": "lookbook-04",
+      "title": "Classique d’automne",
+      "kind": "outfit",
+      "visualDescription": "Pull vert forêt, col de chemise blanc, chino beige, derbies marron",
+      "tags": [
+        "Classique",
+        "Preppy",
+        "Smart Casual",
+        "vert forêt",
+        "vert",
+        "blanc",
+        "beige",
+        "marron",
+        "maille",
+        "coton",
+        "chino",
+        "derbies"
+      ],
+      "productIds": [
+        "seed-lookbook-piombo-wool-green",
+        "seed-lookbook-arket-dark-green-merino"
+      ],
+      "referenceCount": 2,
+      "coverageStatus": "partial",
+      "piecesToFind": [
+        "chino beige",
+        "chemise blanche",
+        "derbies marron"
+      ]
+    },
+    {
+      "id": "lookbook-05",
+      "title": "Bordeaux & rayures",
+      "kind": "outfit",
+      "visualDescription": "Blouson cuir bordeaux, henley rayé, pantalon large à rayures tennis",
+      "tags": [
+        "Smart Casual",
+        "Heritage",
+        "bordeaux",
+        "gris",
+        "cuir",
+        "maille",
+        "rayures",
+        "ample",
+        "large",
+        "tennis stripes"
+      ],
+      "productIds": [
+        "seed-asos-208080131"
+      ],
+      "referenceCount": 1,
+      "coverageStatus": "partial",
+      "piecesToFind": [
+        "blouson en cuir bordeaux",
+        "henley rayé",
+        "pantalon large à rayures tennis"
+      ]
+    },
+    {
+      "id": "lookbook-06",
+      "title": "Détail",
+      "kind": "detail",
+      "visualDescription": "Montre à cadran fondu, bracelet cuir",
+      "tags": [
+        "Créatif",
+        "accessoire",
+        "cuir",
+        "montre",
+        "bracelet",
+        "détail"
+      ],
+      "productIds": [],
+      "referenceCount": 0,
+      "coverageStatus": "not_yet_covered",
+      "piecesToFind": [
+        "montre à cadran fondu et bracelet en cuir"
+      ]
+    },
+    {
+      "id": "lookbook-07",
+      "title": "Galerie d’hiver",
+      "kind": "outfit",
+      "visualDescription": "Veste daim à col moumoute, pull noir côtelé, pantalon en laine, sneakers",
+      "tags": [
+        "Heritage",
+        "Casual",
+        "olive",
+        "vert",
+        "noir",
+        "gris",
+        "daim",
+        "suède",
+        "laine",
+        "maille",
+        "côtelé",
+        "sneakers",
+        "hiver"
+      ],
+      "productIds": [],
+      "referenceCount": 0,
+      "coverageStatus": "not_yet_covered",
+      "piecesToFind": [
+        "veste en daim olive à col lainé",
+        "pantalon en laine"
+      ]
+    },
+    {
+      "id": "lookbook-08",
+      "title": "Cuir prune",
+      "kind": "outfit",
+      "visualDescription": "Blouson cuir prune, chemise à carreaux, tee blanc, jean délavé",
+      "tags": [
+        "Vintage",
+        "Casual",
+        "prune",
+        "violet",
+        "blanc",
+        "bleu",
+        "cuir",
+        "coton",
+        "denim",
+        "jean",
+        "carreaux",
+        "checked"
+      ],
+      "productIds": [
+        "seed-lookbook-bangel-wide-denim",
+        "seed-lookbook-bershka-baggy-denim"
+      ],
+      "referenceCount": 2,
+      "coverageStatus": "partial",
+      "piecesToFind": [
+        "blouson en cuir prune",
+        "chemise à carreaux",
+        "tee-shirt blanc"
+      ]
+    },
+    {
+      "id": "lookbook-09",
+      "title": "Noir & bordeaux",
+      "kind": "outfit",
+      "visualDescription": "Pull zippé torsadé noir, chemise et cravate, jean noir large, loafers",
+      "tags": [
+        "Preppy",
+        "Streetwear",
+        "noir",
+        "bordeaux",
+        "maille",
+        "denim",
+        "jean",
+        "torsadé",
+        "ample",
+        "large",
+        "cravate",
+        "loafers"
+      ],
+      "productIds": [
+        "seed-uniqlo-450540-09",
+        "seed-lookbook-kleman-padror-bordeaux",
+        "seed-lookbook-hm-rugby-black-burgundy"
+      ],
+      "referenceCount": 3,
+      "coverageStatus": "several_references",
+      "piecesToFind": [
+        "pull noir torsadé à zip",
+        "chemise et cravate",
+        "jean noir large",
+        "mocassins bordeaux"
+      ]
+    },
+    {
+      "id": "lookbook-10",
+      "title": "Rugby rose & marron",
+      "kind": "outfit",
+      "visualDescription": "Polo rugby rayé, pantalon cargo marron, casquette",
+      "tags": [
+        "Preppy",
+        "Streetwear",
+        "Sport",
+        "rose",
+        "marron",
+        "coton",
+        "rayures",
+        "cargo",
+        "casquette",
+        "rugby"
+      ],
+      "productIds": [
+        "seed-lookbook-ralph-lauren-pink-knit-rugby",
+        "seed-lookbook-hm-rugby-pink-brown",
+        "seed-lookbook-hm-cargo-dark-brown"
+      ],
+      "referenceCount": 3,
+      "coverageStatus": "several_references",
+      "piecesToFind": [
+        "casquette",
+        "autres variantes de polo rugby et cargo"
+      ]
+    },
+    {
+      "id": "lookbook-11",
+      "title": "Écru & marron",
+      "kind": "outfit",
+      "visualDescription": "Pull col V écru sur chemise blanche, pantalon marron, ceinture western",
+      "tags": [
+        "Preppy",
+        "Classe",
+        "Smart Casual",
+        "écru",
+        "blanc",
+        "marron",
+        "maille",
+        "coton",
+        "col V",
+        "western"
+      ],
+      "productIds": [
+        "seed-charles-tyrwhitt-knm0017crm",
+        "seed-lookbook-samsoe-cream-vneck"
+      ],
+      "referenceCount": 2,
+      "coverageStatus": "partial",
+      "piecesToFind": [
+        "chemise blanche",
+        "ceinture western"
+      ]
+    },
+    {
+      "id": "lookbook-12",
+      "title": "Damier gris",
+      "kind": "outfit",
+      "visualDescription": "Pull à damier gris, jean noir ample, casquette, sneakers",
+      "tags": [
+        "Streetwear",
+        "Casual",
+        "gris",
+        "noir",
+        "maille",
+        "denim",
+        "jean",
+        "ample",
+        "large",
+        "damier",
+        "checker",
+        "casquette",
+        "sneakers"
+      ],
+      "productIds": [
+        "seed-lookbook-hm-grey-jacquard"
+      ],
+      "referenceCount": 1,
+      "coverageStatus": "partial",
+      "piecesToFind": [
+        "jean noir large",
+        "casquette"
+      ]
+    },
+    {
+      "id": "lookbook-13",
+      "title": "Vert & denim",
+      "kind": "outfit",
+      "visualDescription": "Pull vert moelleux, jean large délavé, sneakers blanches",
+      "tags": [
+        "Casual",
+        "Streetwear",
+        "vert",
+        "bleu",
+        "blanc",
+        "maille",
+        "denim",
+        "jean",
+        "large",
+        "ample",
+        "sneakers"
+      ],
+      "productIds": [
+        "seed-nike-cw2288-111",
+        "seed-adidas-samba-js3830",
+        "seed-lookbook-bangel-wide-denim",
+        "seed-lookbook-bershka-baggy-denim"
+      ],
+      "referenceCount": 4,
+      "coverageStatus": "several_references",
+      "piecesToFind": [
+        "pull vert moelleux"
+      ]
+    },
+    {
+      "id": "lookbook-14",
+      "title": "Motif zèbre",
+      "kind": "outfit",
+      "visualDescription": "Pull jacquard zèbre, jean marron délavé, mules en daim, bonnet",
+      "tags": [
+        "Créatif",
+        "Vintage",
+        "Casual",
+        "marron",
+        "écru",
+        "noir",
+        "maille",
+        "jacquard",
+        "zèbre",
+        "zebra",
+        "denim",
+        "jean",
+        "daim",
+        "suède",
+        "bonnet"
+      ],
+      "productIds": [],
+      "referenceCount": 0,
+      "coverageStatus": "not_yet_covered",
+      "piecesToFind": [
+        "pull jacquard zèbre",
+        "jean marron délavé",
+        "mules en daim",
+        "bonnet"
+      ]
+    },
+    {
+      "id": "lookbook-15",
+      "title": "Preppy destroy",
+      "kind": "outfit",
+      "visualDescription": "Pull gris graphique, chemise et cravate, jean destroy, casquette",
+      "tags": [
+        "Preppy",
+        "Streetwear",
+        "Créatif",
+        "gris",
+        "blanc",
+        "bleu",
+        "maille",
+        "denim",
+        "jean",
+        "graphique",
+        "destroy",
+        "cravate",
+        "casquette"
+      ],
+      "productIds": [
+        "seed-lookbook-hm-grey-jacquard"
+      ],
+      "referenceCount": 1,
+      "coverageStatus": "partial",
+      "piecesToFind": [
+        "pull gris graphique",
+        "chemise et cravate",
+        "jean destroy",
+        "casquette"
+      ]
+    },
+    {
+      "id": "lookbook-16",
+      "title": "Gris & chocolat",
+      "kind": "outfit",
+      "visualDescription": "Pull gris chiné, pantalon marron ample, derbies noirs",
+      "tags": [
+        "Smart Casual",
+        "Heritage",
+        "gris",
+        "marron",
+        "chocolat",
+        "noir",
+        "maille",
+        "laine",
+        "ample",
+        "large",
+        "derbies"
+      ],
+      "productIds": [
+        "seed-uniqlo-e484093-000",
+        "seed-lookbook-cos-linen-wide-trouser"
+      ],
+      "referenceCount": 2,
+      "coverageStatus": "partial",
+      "piecesToFind": [
+        "pull gris chiné",
+        "derbies noirs"
+      ]
+    },
+    {
+      "id": "lookbook-17",
+      "title": "Cosy",
+      "kind": "outfit",
+      "visualDescription": "Pull côtelé crème, jogging gris large, sneakers, bonnet",
+      "tags": [
+        "Casual",
+        "Sport",
+        "écru",
+        "crème",
+        "gris",
+        "maille",
+        "coton",
+        "côtelé",
+        "jogging",
+        "ample",
+        "large",
+        "sneakers",
+        "bonnet"
+      ],
+      "productIds": [
+        "seed-nike-cw2288-111",
+        "seed-charles-tyrwhitt-knm0017crm",
+        "seed-adidas-samba-js3830",
+        "seed-lookbook-bangel-grey-wide-jogger"
+      ],
+      "referenceCount": 4,
+      "coverageStatus": "several_references",
+      "piecesToFind": [
+        "bonnet"
+      ]
+    },
+    {
+      "id": "lookbook-18",
+      "title": "Cuir & hoodie",
+      "kind": "outfit",
+      "visualDescription": "Blouson cuir noir, hoodie gris, pantalon noir, derbies à semelle épaisse",
+      "tags": [
+        "Streetwear",
+        "Casual",
+        "noir",
+        "gris",
+        "cuir",
+        "coton",
+        "hoodie",
+        "ample",
+        "large",
+        "derbies"
+      ],
+      "productIds": [
+        "seed-lookbook-cos-black-shearling-leather",
+        "seed-lookbook-cos-black-leather-blouson"
+      ],
+      "referenceCount": 2,
+      "coverageStatus": "partial",
+      "piecesToFind": [
+        "hoodie gris",
+        "pantalon noir",
+        "derbies à semelle épaisse"
+      ]
+    },
+    {
+      "id": "lookbook-19",
+      "title": "Maille rayée",
+      "kind": "outfit",
+      "visualDescription": "Pull gris rayé noir à col polo, tee blanc, jean brut",
+      "tags": [
+        "Casual",
+        "Preppy",
+        "gris",
+        "noir",
+        "blanc",
+        "bleu",
+        "maille",
+        "denim",
+        "jean",
+        "rayures",
+        "polo"
+      ],
+      "productIds": [
+        "seed-asos-208036205"
+      ],
+      "referenceCount": 1,
+      "coverageStatus": "partial",
+      "piecesToFind": [
+        "pull gris rayé noir à col polo",
+        "tee-shirt blanc",
+        "jean brut"
+      ]
+    },
+    {
+      "id": "lookbook-20",
+      "title": "Bleu ciel & blanc",
+      "kind": "outfit",
+      "visualDescription": "Veste zippée bleu ciel, pantalon blanc large, casquette",
+      "tags": [
+        "Preppy",
+        "Casual",
+        "Sport",
+        "bleu ciel",
+        "bleu",
+        "blanc",
+        "large",
+        "ample",
+        "casquette"
+      ],
+      "productIds": [],
+      "referenceCount": 0,
+      "coverageStatus": "not_yet_covered",
+      "piecesToFind": [
+        "veste zippée bleu ciel",
+        "pantalon blanc large",
+        "casquette"
+      ]
+    }
+  ]
+}

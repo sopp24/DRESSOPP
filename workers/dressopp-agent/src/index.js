@@ -2,6 +2,7 @@ const MODEL = "@cf/google/gemma-4-26b-a4b-it";
 const MAX_BODY_BYTES = 48 * 1024;
 const MAX_PRODUCTS = 50;
 const MAX_FEEDBACK_ITEMS = 15;
+const MAX_INSPIRATIONS = 20;
 const recentRequests = new Map();
 
 function allowedOrigin(origin, env) {
@@ -28,7 +29,7 @@ function normalizeProduct(item) {
     price:Number.isFinite(Number(item && item.price)) && item.price !== null ? Number(item.price) : null,
     objective:clean(item && item.objective,40), category:clean(item && item.category,60),
     styleTags:stringList(item && item.styleTags,6), colors:stringList(item && item.colors,5), materials:stringList(item && item.materials,5),
-    cuts:stringList(item && item.cuts,4), patterns:stringList(item && item.patterns,4), seasonTags:stringList(item && item.seasonTags,4), description:clean(item && item.description,240)
+    cuts:stringList(item && item.cuts,4), patterns:stringList(item && item.patterns,4), seasonTags:stringList(item && item.seasonTags,4), description:clean(item && item.description,240), lookbookRefs:stringList(item && item.lookbookRefs,20,128), matchLevel:clean(item && item.matchLevel,24), matchReason:clean(item && item.matchReason,180)
   };
 }
 function normalizeFeedback(value) {
@@ -65,7 +66,7 @@ function validatePayload(body) {
       preferredCuts:stringList(profile.preferredCuts,12), excludedCuts:stringList(profile.excludedCuts,12), comfort:clean(profile.comfort,50), fit:clean(profile.fit,50)
     },
     feedback:normalizeFeedback(body.feedback),
-    inspirations:(Array.isArray(body.inspirations) ? body.inspirations : []).slice(0,12).map(item => ({ title:clean(item && item.title,100), tags:stringList(item && item.tags,10) })),
+    inspirations:(Array.isArray(body.inspirations) ? body.inspirations : []).slice(0,MAX_INSPIRATIONS).map(item => ({ id:clean(item && item.id,128), title:clean(item && item.title,100), tags:stringList(item && item.tags,10) })),
     products:filtered.slice(0,MAX_PRODUCTS)
   };
 }
@@ -78,6 +79,8 @@ function buildPrompt(input) {
     "- Réponds uniquement avec un JSON valide contenant recommendations (productId et reason), message et searchHints. Aucun texte hors du JSON.",
     "- Les éléments liked et saved sont positifs. Les éléments disliked sont négatifs : évite les mêmes caractéristiques, sans généraliser abusivement à toute la catégorie.",
     "- Croise le profil, les inspirations, les retours récents et les attributs produits. Cherche une vraie diversité de pièces et de marchands.",
+    "- Les inspirations issues du lookbook ont un id lookbook-XX. Quand un produit possède cet id dans lookbookRefs, utilise cette association comme signal fort pour le look concerné.",
+    "- Respecte matchLevel et matchReason : close est une alternative visuellement proche, stylistic une alternative d’esprit, partial une correspondance limitée. Ne présente jamais une alternative comme la pièce exacte du book.",
     "- Ne recommande pas deux variantes presque identiques si d’autres choix pertinents existent.",
     "- Les raisons doivent s’appuyer uniquement sur les attributs présents dans les fiches. Si les données sont pauvres, reste prudent.",
     "- Rédige en français naturel, de façon brève et concrète.",

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "description": "Références éditoriales DRESSOPP vérifiées manuellement et équivalents visuels issus du lookbook Automne/Hiver (20 looks). Les rapprochements sont indiqués dans les descriptions ; ils ne signifient pas que l'article est le SKU exact du book.",
+  "description": "Bibliothèque éditoriale DRESSOPP : références produits vérifiées sur les boutiques officielles, reliées aux 20 visuels du lookbook Automne/Hiver. Les niveaux de correspondance décrivent des alternatives visuelles et ne prétendent jamais identifier le SKU photographié.",
   "products": [
     {
       "id": "seed-nike-cw2288-111",
@@ -68,7 +68,13 @@
       "catalogStatus": "active",
       "verifiedAt": "2026-11-05T15:29:00.000Z",
       "expiresAt": "2026-11-12T15:29:00.000Z",
-      "priceUpdatedAt": "2026-11-05T15:29:00.000Z"
+      "priceUpdatedAt": "2026-11-05T15:29:00.000Z",
+      "lookbookRefs": [
+        "lookbook-13",
+        "lookbook-17"
+      ],
+      "matchLevel": "stylistic",
+      "matchReason": "Sneaker blanche en cuir : base neutre cohérente avec les looks denim et cosy, mais silhouette Air Force 1 différente des chaussures photographiées."
     },
     {
       "id": "seed-uniqlo-e484093-000",
@@ -127,7 +133,14 @@
       "productRatingSource": "Avis produit UNIQLO",
       "verifiedAt": "2026-11-05T15:29:00.000Z",
       "expiresAt": "2026-11-12T15:29:00.000Z",
-      "priceUpdatedAt": "2026-11-05T15:29:00.000Z"
+      "priceUpdatedAt": "2026-11-05T15:29:00.000Z",
+      "lookbookRefs": [
+        "lookbook-01",
+        "lookbook-02",
+        "lookbook-16"
+      ],
+      "matchLevel": "close",
+      "matchReason": "Pantalon brun à plis et volume ample, proche des silhouettes tailoring des looks #01, #02 et #16."
     },
     {
       "id": "seed-charles-tyrwhitt-knm0017crm",
@@ -180,7 +193,13 @@
       "productRatingSource": "Avis produit Charles Tyrwhitt",
       "verifiedAt": "2026-11-05T15:29:00.000Z",
       "expiresAt": "2026-11-12T15:29:00.000Z",
-      "priceUpdatedAt": "2026-11-05T15:29:00.000Z"
+      "priceUpdatedAt": "2026-11-05T15:29:00.000Z",
+      "lookbookRefs": [
+        "lookbook-11",
+        "lookbook-17"
+      ],
+      "matchLevel": "partial",
+      "matchReason": "Maille crème en laine mérinos ; la couleur et la matière conviennent, mais le col rond diffère du col V du look #11."
     },
     {
       "id": "seed-asos-208036205",
@@ -227,7 +246,12 @@
       "catalogStatus": "active",
       "verifiedAt": "2026-11-05T16:33:05.606Z",
       "expiresAt": "2026-11-12T16:33:05.610Z",
-      "priceUpdatedAt": "2026-11-05T16:33:05.606Z"
+      "priceUpdatedAt": "2026-11-05T16:33:05.606Z",
+      "lookbookRefs": [
+        "lookbook-19"
+      ],
+      "matchLevel": "partial",
+      "matchReason": "Maille brune à col polo et texture côtelée ; alternative de construction au look #19, sans ses rayures grises et noires."
     },
     {
       "id": "seed-uniqlo-460938-07",
@@ -283,7 +307,12 @@
       "catalogStatus": "active",
       "verifiedAt": "2026-11-05T16:33:05.606Z",
       "expiresAt": "2026-11-12T16:33:05.610Z",
-      "priceUpdatedAt": "2026-11-05T16:33:05.606Z"
+      "priceUpdatedAt": "2026-11-05T16:33:05.606Z",
+      "lookbookRefs": [
+        "lookbook-02"
+      ],
+      "matchLevel": "close",
+      "matchReason": "Col roulé gris en mérinos, adapté à la superposition sombre du look #02 ; la teinte est plus claire que le noir du book."
     },
     {
       "id": "seed-adidas-samba-js3830",
@@ -355,7 +384,13 @@
       "catalogStatus": "active",
       "verifiedAt": "2026-11-05T16:33:05.606Z",
       "expiresAt": "2026-11-12T16:33:05.610Z",
-      "priceUpdatedAt": "2026-11-05T16:33:05.606Z"
+      "priceUpdatedAt": "2026-11-05T16:33:05.606Z",
+      "lookbookRefs": [
+        "lookbook-13",
+        "lookbook-17"
+      ],
+      "matchLevel": "stylistic",
+      "matchReason": "Sneaker claire au caractère rétro, alternative de style aux baskets blanches des looks #13 et #17."
     },
     {
       "id": "seed-uniqlo-450540-09",
@@ -409,7 +444,12 @@
       "catalogStatus": "active",
       "verifiedAt": "2026-11-05T16:36:56.203Z",
       "expiresAt": "2026-11-12T16:36:56.203Z",
-      "priceUpdatedAt": "2026-11-05T16:36:56.203Z"
+      "priceUpdatedAt": "2026-11-05T16:36:56.203Z",
+      "lookbookRefs": [
+        "lookbook-09"
+      ],
+      "matchLevel": "partial",
+      "matchReason": "Maille noire à col V, mais cardigan sans zip ni torsades : correspondance de palette uniquement avec le haut du look #09."
     },
     {
       "id": "seed-asos-208080131",
@@ -456,7 +496,13 @@
       "catalogStatus": "active",
       "verifiedAt": "2026-11-05T16:36:56.203Z",
       "expiresAt": "2026-11-12T16:36:56.203Z",
-      "priceUpdatedAt": "2026-11-05T16:36:56.203Z"
+      "priceUpdatedAt": "2026-11-05T16:36:56.203Z",
+      "lookbookRefs": [
+        "lookbook-03",
+        "lookbook-05"
+      ],
+      "matchLevel": "partial",
+      "matchReason": "Maille bordeaux ample ; reprend la couleur de ces silhouettes, mais ne remplace ni le pantalon large du #03 ni le blouson cuir du #05."
     },
     {
       "id": "seed-lookbook-piombo-wool-green",
@@ -499,7 +545,12 @@
       "catalogStatus": "active",
       "verifiedAt": "2026-11-06T16:18:22.816Z",
       "expiresAt": "2026-11-13T16:18:22.816Z",
-      "priceUpdatedAt": "2026-11-06T16:18:22.816Z"
+      "priceUpdatedAt": "2026-11-06T16:18:22.816Z",
+      "lookbookRefs": [
+        "lookbook-04"
+      ],
+      "matchLevel": "close",
+      "matchReason": "Pull vert foncé à col rond, à porter sur une chemise claire comme dans le look #04."
     },
     {
       "id": "seed-lookbook-kleman-padror-bordeaux",
@@ -543,7 +594,12 @@
       "catalogStatus": "active",
       "verifiedAt": "2026-11-06T16:18:22.816Z",
       "expiresAt": "2026-11-13T16:18:22.816Z",
-      "priceUpdatedAt": "2026-11-06T16:18:22.816Z"
+      "priceUpdatedAt": "2026-11-06T16:18:22.816Z",
+      "lookbookRefs": [
+        "lookbook-09"
+      ],
+      "matchLevel": "partial",
+      "matchReason": "Chaussure en cuir bordeaux à semelle robuste, mais modèle à lacets et non mocassin comme dans le look #09."
     },
     {
       "id": "seed-lookbook-ralph-lauren-pink-knit-rugby",
@@ -595,7 +651,12 @@
       "catalogStatus": "active",
       "verifiedAt": "2026-11-06T16:18:22.816Z",
       "expiresAt": "2026-11-13T16:18:22.816Z",
-      "priceUpdatedAt": "2026-11-06T16:18:22.816Z"
+      "priceUpdatedAt": "2026-11-06T16:18:22.816Z",
+      "lookbookRefs": [
+        "lookbook-10"
+      ],
+      "matchLevel": "stylistic",
+      "matchReason": "Vrai haut de rugby rose et oversize, mais les bandes bleu marine remplacent le marron du look #10."
     },
     {
       "id": "seed-lookbook-samsoe-cream-vneck",
@@ -641,7 +702,12 @@
       "catalogStatus": "active",
       "verifiedAt": "2026-11-06T16:18:22.816Z",
       "expiresAt": "2026-11-13T16:18:22.816Z",
-      "priceUpdatedAt": "2026-11-06T16:18:22.816Z"
+      "priceUpdatedAt": "2026-11-06T16:18:22.816Z",
+      "lookbookRefs": [
+        "lookbook-11"
+      ],
+      "matchLevel": "close",
+      "matchReason": "Pull crème à col V, correspondance de forme et de couleur avec la pièce principale du look #11."
     },
     {
       "id": "seed-lookbook-cos-black-shearling-leather",
@@ -691,55 +757,12 @@
       "catalogStatus": "active",
       "verifiedAt": "2026-11-06T16:18:22.816Z",
       "expiresAt": "2026-11-13T16:18:22.816Z",
-      "priceUpdatedAt": "2026-11-06T16:18:22.816Z"
-    },
-    {
-      "id": "seed-lookbook-massimo-dutti-striped-knit-zip",
-      "name": "Striped Knit Polo Sweater",
-      "brand": "Massimo Dutti",
-      "merchant": "Zalando · Massimo Dutti",
-      "url": "https://www.zalando.fr/massimo-dutti-t-shirt-a-manches-longues-dark-brown-m3i22q0ve-o11.html",
-      "imageUrl": "https://img01.ztat.net/article/spp-media-p1/2c65fca24a2e4c3d9c5f9009f91c4eac/8aa3ec8884dd44679e2267be6832f56e.jpg?imwidth=762",
-      "price": 70,
-      "originalPrice": null,
-      "objective": "Vêtements",
-      "category": "Pull polo zippé",
-      "styleTags": [
-        "Heritage",
-        "Preppy",
-        "Smart Casual",
-        "Vintage"
+      "priceUpdatedAt": "2026-11-06T16:18:22.816Z",
+      "lookbookRefs": [
+        "lookbook-18"
       ],
-      "seasonTags": [
-        "Automne",
-        "Hiver"
-      ],
-      "colors": [
-        "Marron",
-        "Gris",
-        "Bleu marine"
-      ],
-      "materials": [
-        "Laine"
-      ],
-      "cuts": [
-        "Regular",
-        "Col polo",
-        "Demi-zip"
-      ],
-      "patterns": [
-        "Rayures"
-      ],
-      "description": "Pull homme à col polo zippé et rayures, indiqué 100 % laine sur la fiche Zalando, coupe regular. Correspondance visuelle forte avec le lookbook #19 (maille rayée à col polo) et partielle avec le #20 pour le col zippé ; la palette est plus sombre que le bleu ciel du book.",
-      "sizes": [],
-      "availability": "Fiche produit active avec sélection de taille ; vérifier le stock sur Zalando.",
-      "availabilityStatus": "listed",
-      "source": "Zalando",
-      "sourceType": "curated",
-      "catalogStatus": "active",
-      "verifiedAt": "2026-11-06T16:18:22.816Z",
-      "expiresAt": "2026-11-13T16:18:22.816Z",
-      "priceUpdatedAt": "2026-11-06T16:18:22.816Z"
+      "matchLevel": "close",
+      "matchReason": "Blouson en cuir noir à col lainé amovible ; très proche de l'esprit cuir du look #18, avec un col lainé absent de sa veste."
     },
     {
       "id": "seed-lookbook-bangel-wide-denim",
@@ -785,7 +808,13 @@
       "catalogStatus": "active",
       "verifiedAt": "2026-11-06T16:21:57.182Z",
       "expiresAt": "2026-11-13T16:21:57.182Z",
-      "priceUpdatedAt": "2026-11-06T16:21:57.182Z"
+      "priceUpdatedAt": "2026-11-06T16:21:57.182Z",
+      "lookbookRefs": [
+        "lookbook-08",
+        "lookbook-13"
+      ],
+      "matchLevel": "close",
+      "matchReason": "Jean bleu clair délavé à coupe loose, proche du volume denim des looks #08 et #13."
     },
     {
       "id": "seed-lookbook-bangel-grey-wide-jogger",
@@ -833,7 +862,455 @@
       "catalogStatus": "active",
       "verifiedAt": "2026-11-06T16:21:57.182Z",
       "expiresAt": "2026-11-13T16:21:57.182Z",
-      "priceUpdatedAt": "2026-11-06T16:21:57.182Z"
+      "priceUpdatedAt": "2026-11-06T16:21:57.182Z",
+      "lookbookRefs": [
+        "lookbook-17"
+      ],
+      "matchLevel": "close",
+      "matchReason": "Jogging gris chiné over-fit à jambe ample, correspondance de silhouette avec le bas du look #17."
+    },
+    {
+      "id": "seed-lookbook-hm-rugby-pink-brown",
+      "name": "Polo de rugby Loose Fit – Rose clair / marron rayé",
+      "brand": "H&M",
+      "merchant": "H&M FR",
+      "url": "https://www2.hm.com/fr_fr/productpage.1336289002.html",
+      "imageUrl": "https://image.hm.com/assets/hm/e1/7c/e17c79a0bb62c626b450ef2ae76a24c553df8fac.jpg",
+      "price": 29.99,
+      "objective": "Vêtements",
+      "category": "Polo rugby",
+      "styleTags": [
+        "Preppy",
+        "Vintage",
+        "Casual",
+        "Sport Heritage"
+      ],
+      "seasonTags": [
+        "Automne",
+        "Hiver",
+        "Toute saison"
+      ],
+      "colors": [
+        "Rose clair",
+        "Marron",
+        "Blanc"
+      ],
+      "materials": [
+        "Coton",
+        "Jersey"
+      ],
+      "cuts": [
+        "Loose fit",
+        "Boxy"
+      ],
+      "patterns": [
+        "Rayures"
+      ],
+      "description": "Polo de rugby homme H&M en jersey 100 % coton, rayures horizontales rose clair, marron et blanc, col blanc et coupe boxy/loose. Correspondance très proche du haut du lookbook #10 par le type de pièce, la palette et le motif ; il ne s'agit pas du SKU exact du book.",
+      "sizes": [],
+      "availability": "Fiche H&M France avec ajout au panier au contrôle du 06/11/2026 ; disponibilité de chaque taille à confirmer au panier.",
+      "availabilityStatus": "listed",
+      "source": "H&M FR",
+      "sourceType": "curated",
+      "catalogStatus": "active",
+      "verifiedAt": "2026-11-06T17:00:00.000Z",
+      "expiresAt": "2026-11-13T17:00:00.000Z",
+      "priceUpdatedAt": "2026-11-06T17:00:00.000Z",
+      "stockVerifiedAt": "2026-11-06T17:00:00.000Z",
+      "lookbookRefs": [
+        "lookbook-10"
+      ],
+      "matchLevel": "close",
+      "matchReason": "Polo rugby rose, marron et blanc à col blanc : correspondance très proche du haut du look #10, sans prétendre retrouver le SKU de la photo."
+    },
+    {
+      "id": "seed-lookbook-hm-cargo-dark-brown",
+      "name": "Pantalon cargo Relaxed Fit – Marron foncé",
+      "brand": "H&M",
+      "merchant": "H&M FR",
+      "url": "https://www2.hm.com/fr_fr/productpage.1356107006.html",
+      "imageUrl": "https://image.hm.com/assets/hm/ad/b2/adb2771a388ca17a403f2145668ea998ee77ada9.jpg?imwidth=2160",
+      "price": 34.99,
+      "objective": "Vêtements",
+      "category": "Pantalon cargo",
+      "styleTags": [
+        "Streetwear",
+        "Casual",
+        "Workwear"
+      ],
+      "seasonTags": [
+        "Automne",
+        "Hiver",
+        "Printemps"
+      ],
+      "colors": [
+        "Marron foncé"
+      ],
+      "materials": [
+        "Coton"
+      ],
+      "cuts": [
+        "Relaxed fit",
+        "Jambe large"
+      ],
+      "patterns": [],
+      "description": "Pantalon cargo homme H&M marron foncé, coton tissé, coupe relaxed et jambes larges, avec poches à rabat. Correspondance très proche du pantalon cargo du lookbook #10.",
+      "sizes": [],
+      "availability": "Fiche H&M France avec ajout au panier au contrôle du 06/11/2026 ; disponibilité de chaque taille à confirmer au panier.",
+      "availabilityStatus": "listed",
+      "source": "H&M FR",
+      "sourceType": "curated",
+      "catalogStatus": "active",
+      "verifiedAt": "2026-11-06T17:00:00.000Z",
+      "expiresAt": "2026-11-13T17:00:00.000Z",
+      "priceUpdatedAt": "2026-11-06T17:00:00.000Z",
+      "stockVerifiedAt": "2026-11-06T17:00:00.000Z",
+      "lookbookRefs": [
+        "lookbook-10"
+      ],
+      "matchLevel": "close",
+      "matchReason": "Cargo marron foncé à jambes larges et coupe relaxed, très proche du bas du look #10."
+    },
+    {
+      "id": "seed-lookbook-hm-grey-jacquard",
+      "name": "Pull en maille jacquard Relaxed Fit – Gris foncé",
+      "brand": "H&M",
+      "merchant": "H&M FR",
+      "url": "https://www2.hm.com/fr_fr/productpage.1108460002.html",
+      "imageUrl": "https://image.hm.com/assets/hm/f3/f1/f3f1c545a7840c590769f513fed78bf7893c4ae8.jpg?imwidth=2160",
+      "price": 39.99,
+      "objective": "Vêtements",
+      "category": "Pull jacquard",
+      "styleTags": [
+        "Streetwear",
+        "Casual",
+        "Vintage",
+        "Créatif"
+      ],
+      "seasonTags": [
+        "Automne",
+        "Hiver"
+      ],
+      "colors": [
+        "Gris foncé",
+        "Turquoise",
+        "Blanc"
+      ],
+      "materials": [
+        "Polyester",
+        "Polyamide",
+        "Laine"
+      ],
+      "cuts": [
+        "Relaxed fit",
+        "Col rond"
+      ],
+      "patterns": [
+        "Jacquard",
+        "Graphique"
+      ],
+      "description": "Pull homme H&M en maille jacquard gris foncé, motif géométrique turquoise et blanc sur le haut, coupe relaxed, col rond. Alternative partielle pour les looks #12 et #15 : il reprend l'idée d'une maille graphique grise mais pas le damier ni le graphisme exact du book.",
+      "sizes": [],
+      "availability": "Fiche H&M France avec ajout au panier au contrôle du 06/11/2026 ; disponibilité de chaque taille à confirmer au panier.",
+      "availabilityStatus": "listed",
+      "source": "H&M FR",
+      "sourceType": "curated",
+      "catalogStatus": "active",
+      "verifiedAt": "2026-11-06T17:00:00.000Z",
+      "expiresAt": "2026-11-13T17:00:00.000Z",
+      "priceUpdatedAt": "2026-11-06T17:00:00.000Z",
+      "stockVerifiedAt": "2026-11-06T17:00:00.000Z",
+      "lookbookRefs": [
+        "lookbook-12",
+        "lookbook-15"
+      ],
+      "matchLevel": "partial",
+      "matchReason": "Maille jacquard grise et graphique ; ne reproduit pas le damier du look #12 ni le motif du pull du look #15."
+    },
+    {
+      "id": "seed-lookbook-arket-dark-green-merino",
+      "name": "Pull en laine mérinos en maille fine – Vert foncé",
+      "brand": "ARKET",
+      "merchant": "ARKET FR",
+      "url": "https://www.arket.com/fr-fr/product/fine-knit-merino-jumper-dark-green-0490418057/",
+      "imageUrl": "https://arket.centracdn.net/client/dynamic/images/1008_5932966e4f_4b0238a59289f64aefdd101475f8f5fea95ba8c2_xxl-1.jpg",
+      "price": 41.3,
+      "originalPrice": 59,
+      "objective": "Vêtements",
+      "category": "Pull",
+      "styleTags": [
+        "Classique",
+        "Preppy",
+        "Smart Casual",
+        "Minimaliste"
+      ],
+      "seasonTags": [
+        "Automne",
+        "Hiver",
+        "Printemps"
+      ],
+      "colors": [
+        "Vert foncé"
+      ],
+      "materials": [
+        "Laine mérinos"
+      ],
+      "cuts": [
+        "Regular fit",
+        "Col rond"
+      ],
+      "patterns": [],
+      "description": "Pull homme ARKET vert foncé en maille fine de laine mérinos, col rond et coupe regular. Correspondance proche du pull vert du lookbook #04 ; maille plus fine et régulière que celle de la photo.",
+      "sizes": [
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "availability": "Prix réduit observé sur ARKET FR le 06/11/2026 ; ajout au panier affiché, stock par taille à confirmer.",
+      "availabilityStatus": "listed",
+      "source": "ARKET FR",
+      "sourceType": "curated",
+      "catalogStatus": "active",
+      "verifiedAt": "2026-11-06T17:00:00.000Z",
+      "expiresAt": "2026-11-13T17:00:00.000Z",
+      "priceUpdatedAt": "2026-11-06T17:00:00.000Z",
+      "stockVerifiedAt": "2026-11-06T17:00:00.000Z",
+      "lookbookRefs": [
+        "lookbook-04"
+      ],
+      "matchLevel": "close",
+      "matchReason": "Pull vert foncé à col rond, à superposer sur une chemise blanche comme dans le look #04 ; maille plus fine que la référence."
+    },
+    {
+      "id": "seed-lookbook-cos-linen-wide-trouser",
+      "name": "Pantalon large décontracté en mélange de lin – Brun foncé",
+      "brand": "COS",
+      "merchant": "COS FR",
+      "url": "https://www.cos.com/fr-fr/men/menswear/trousers/relaxed-fit/wideleg/product/linen-blend-relaxed-fit-wide-leg-trousers-dark-brown-1328998001",
+      "imageUrl": "https://media.cos.com/assets/001/49/42/4942113554c86f86814b55d49f5dcb73b5b6895d_xxl-1.jpg?imwidth=2160",
+      "price": 99,
+      "objective": "Vêtements",
+      "category": "Pantalon large à plis",
+      "styleTags": [
+        "Smart Casual",
+        "Heritage",
+        "Classique",
+        "Preppy"
+      ],
+      "seasonTags": [
+        "Printemps",
+        "Automne",
+        "Toute saison"
+      ],
+      "colors": [
+        "Brun foncé"
+      ],
+      "materials": [
+        "Lin",
+        "Coton"
+      ],
+      "cuts": [
+        "Relaxed fit",
+        "Jambe large"
+      ],
+      "patterns": [
+        "Plis"
+      ],
+      "description": "Pantalon homme COS brun foncé en mélange de lin et coton, coupe relaxed à jambes larges et détails de pinces. Bonne alternative de silhouette pour les pantalons bruns des looks #01, #02 et #16 ; la matière en lin est moins hivernale que celle suggérée par le book.",
+      "sizes": [
+        "44",
+        "46",
+        "48",
+        "50",
+        "52",
+        "54"
+      ],
+      "availability": "Fiche COS France avec tailles 44 à 54 sélectionnables au contrôle du 06/11/2026 ; disponibilité finale à confirmer au panier.",
+      "availabilityStatus": "listed",
+      "source": "COS FR",
+      "sourceType": "curated",
+      "catalogStatus": "active",
+      "verifiedAt": "2026-11-06T17:00:00.000Z",
+      "expiresAt": "2026-11-13T17:00:00.000Z",
+      "priceUpdatedAt": "2026-11-06T17:00:00.000Z",
+      "stockVerifiedAt": "2026-11-06T17:00:00.000Z",
+      "lookbookRefs": [
+        "lookbook-01",
+        "lookbook-02",
+        "lookbook-16"
+      ],
+      "matchLevel": "close",
+      "matchReason": "Pantalon brun foncé à plis et jambes larges, proche des volumes tailoring des looks #01, #02 et #16 ; le mélange lin/coton est plus léger que les matières d'hiver du book."
+    },
+    {
+      "id": "seed-lookbook-cos-black-leather-blouson",
+      "name": "Blouson en cuir – Noir",
+      "brand": "COS",
+      "merchant": "COS FR",
+      "url": "https://www.cos.com/fr-fr/men/menswear/coatsjackets/jackets/product/leather-blouson-jacket-black-1301223001",
+      "imageUrl": "https://media.cos.com/assets/001/cd/42/cd42e0c41005145f6cab6b49d50ae50512994681_xxl-1.jpg?imwidth=1536",
+      "price": 399,
+      "objective": "Vêtements",
+      "category": "Blouson en cuir",
+      "styleTags": [
+        "Heritage",
+        "Streetwear",
+        "Smart Casual",
+        "Vintage"
+      ],
+      "seasonTags": [
+        "Automne",
+        "Hiver"
+      ],
+      "colors": [
+        "Noir"
+      ],
+      "materials": [
+        "Cuir"
+      ],
+      "cuts": [
+        "Relaxed fit",
+        "Blouson"
+      ],
+      "patterns": [],
+      "description": "Blouson homme COS en cuir noir, coupe décontractée, fermeture zippée et poches à rabat. Alternative proche de la veste noire du lookbook #18 ; la construction et les détails de poches diffèrent de la photo.",
+      "sizes": [
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "availability": "Fiche COS France avec ajout au panier et tailles XS à XL affichés au contrôle du 06/11/2026 ; stock par taille à confirmer.",
+      "availabilityStatus": "listed",
+      "source": "COS FR",
+      "sourceType": "curated",
+      "catalogStatus": "active",
+      "verifiedAt": "2026-11-06T17:00:00.000Z",
+      "expiresAt": "2026-11-13T17:00:00.000Z",
+      "priceUpdatedAt": "2026-11-06T17:00:00.000Z",
+      "stockVerifiedAt": "2026-11-06T17:00:00.000Z",
+      "lookbookRefs": [
+        "lookbook-18"
+      ],
+      "matchLevel": "close",
+      "matchReason": "Blouson en cuir noir à coupe décontractée, proche de la pièce extérieure du look #18 ; détails de poches et silhouette différents."
+    },
+    {
+      "id": "seed-lookbook-bershka-baggy-denim",
+      "name": "Jeans baggy fit – Bleu lavé",
+      "brand": "Bershka",
+      "merchant": "Bershka FR",
+      "url": "https://www.bershka.com/fr/jeans-baggy-fit-c0p226929266.html",
+      "imageUrl": "https://static.bershka.net/assets/public/890e/57ae/98ca44f88aff/c75fda119946/02882352428-h1/poster/poster.jpg?ts=1785339526761&w=850",
+      "price": 35.99,
+      "objective": "Vêtements",
+      "category": "Jean",
+      "styleTags": [
+        "Streetwear",
+        "Casual",
+        "Vintage"
+      ],
+      "seasonTags": [
+        "Toute saison"
+      ],
+      "colors": [
+        "Bleu lavé",
+        "Denim délavé"
+      ],
+      "materials": [
+        "Denim",
+        "Coton"
+      ],
+      "cuts": [
+        "Baggy",
+        "Jambe large"
+      ],
+      "patterns": [
+        "Délavé"
+      ],
+      "description": "Jean homme Bershka bleu lavé, coupe baggy et jambes larges. Alternative de silhouette denim pour les looks #08 et #13 ; le niveau de délavage et la teinte peuvent varier selon le visuel et le stock.",
+      "sizes": [
+        "32",
+        "34",
+        "36",
+        "38",
+        "40",
+        "42",
+        "44",
+        "46"
+      ],
+      "availability": "Fiche Bershka France avec longueurs Regular/Tall et ajout au panier au contrôle du 06/11/2026 ; stock par taille à confirmer.",
+      "availabilityStatus": "listed",
+      "source": "Bershka FR",
+      "sourceType": "curated",
+      "catalogStatus": "active",
+      "verifiedAt": "2026-11-06T17:00:00.000Z",
+      "expiresAt": "2026-11-13T17:00:00.000Z",
+      "priceUpdatedAt": "2026-11-06T17:00:00.000Z",
+      "stockVerifiedAt": "2026-11-06T17:00:00.000Z",
+      "lookbookRefs": [
+        "lookbook-08",
+        "lookbook-13"
+      ],
+      "matchLevel": "close",
+      "matchReason": "Denim bleu lavé à coupe baggy, cohérent avec le volume des jeans des looks #08 et #13."
+    },
+    {
+      "id": "seed-lookbook-hm-rugby-black-burgundy",
+      "name": "Polo de rugby Loose Fit – Noir / bordeaux rayé",
+      "brand": "H&M",
+      "merchant": "H&M FR",
+      "url": "https://www2.hm.com/fr_fr/productpage.1336289001.html",
+      "imageUrl": "https://image.hm.com/assets/hm/3e/70/3e705a444c20bea57aaec6f799c41d87d5e68b08.jpg?imwidth=2160",
+      "price": 29.99,
+      "objective": "Vêtements",
+      "category": "Polo rugby",
+      "styleTags": [
+        "Preppy",
+        "Streetwear",
+        "Casual"
+      ],
+      "seasonTags": [
+        "Automne",
+        "Hiver",
+        "Toute saison"
+      ],
+      "colors": [
+        "Noir",
+        "Bordeaux",
+        "Blanc"
+      ],
+      "materials": [
+        "Coton",
+        "Jersey"
+      ],
+      "cuts": [
+        "Loose fit",
+        "Boxy"
+      ],
+      "patterns": [
+        "Rayures"
+      ],
+      "description": "Polo de rugby homme H&M en jersey 100 % coton, rayures noires, bordeaux, beige et blanches, col blanc et coupe loose. Alternative partielle pour le look #09 par la palette et l'esprit rugby ; ce n'est pas le pull zippé torsadé de la photo.",
+      "sizes": [],
+      "availability": "Fiche H&M France avec ajout au panier au contrôle du 06/11/2026 ; disponibilité de chaque taille à confirmer au panier.",
+      "availabilityStatus": "listed",
+      "source": "H&M FR",
+      "sourceType": "curated",
+      "catalogStatus": "active",
+      "verifiedAt": "2026-11-06T17:00:00.000Z",
+      "expiresAt": "2026-11-13T17:00:00.000Z",
+      "priceUpdatedAt": "2026-11-06T17:00:00.000Z",
+      "stockVerifiedAt": "2026-11-06T17:00:00.000Z",
+      "lookbookRefs": [
+        "lookbook-09"
+      ],
+      "matchLevel": "partial",
+      "matchReason": "Palette noire et bordeaux, rayures et col rugby ; ne remplace pas le pull noir zippé à torsades du look #09."
     }
-  ]
+  ],
+  "updatedAt": "2026-11-06T17:00:00.000Z"
 }

@@ -157,8 +157,8 @@ function aiAgentActionCount() {
     (Array.isArray(interactions.dislikes) ? interactions.dislikes.length : 0) + saveCount;
 }
 function aiAgentInspirations() {
-  return pinterestPinCards().slice(0,12).map(function(pin) {
-    return { title:pin.title || "", tags:Array.isArray(pin.tags) ? pin.tags : [] };
+  return pinterestPinCards().slice(0,20).map(function(pin) {
+    return { id:pin.id || pin.pinId || "", title:pin.title || "", tags:Array.isArray(pin.tags) ? pin.tags : [] };
   });
 }
 function aiAgentContextSignature(training) {

@@ -102,6 +102,12 @@ function matchScore(product, pin) {
   let score = fields.reduce(function(total, field) {
     return total + (tags.includes(field) ? 4 : 0);
   }, 0);
+  const pinId = String(pin && (pin.id || pin.pinId) || "");
+  const lookbookRefs = Array.isArray(product.lookbookRefs) ? product.lookbookRefs : [];
+  if (pinId && lookbookRefs.includes(pinId)) {
+    const confidenceBoost = { close: 20, stylistic: 12, partial: 5 };
+    score += confidenceBoost[product.matchLevel] || 2;
+  }
   const terms = productTerms(product);
   tags.forEach(function(tag) {
     if (tag.length > 2 && terms.includes(tag)) score += 2;
