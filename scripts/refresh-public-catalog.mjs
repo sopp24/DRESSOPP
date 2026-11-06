@@ -341,7 +341,7 @@ export function selectSourceBatch(sources, meta = {}, batchSize = DEFAULT_BATCH_
 
 export function mergeCatalog(previous,seeds,results,now = new Date(),previousMeta = {}) {
   const products = new Map();
-  const identity = item => { try { return new URL(item.url).href.split("?")[0].replace(/\\/+$/, "").toLowerCase(); } catch { return item.id; } };
+  const identity = item => { try { return new URL(item.url).href.split("?")[0].replace(/\/+$/, "").toLowerCase(); } catch { return item.id; } };
   (previous || []).filter(p => p && p.sourceType === "public-web" && p.url).forEach(p => products.set(identity(p),{...p}));
   (seeds || []).filter(p => p && p.url).forEach(p => { if (!products.has(identity(p))) products.set(identity(p),p); });
   (results || []).forEach(result => (result.products || []).forEach(p => products.set(identity(p),p)));
@@ -413,7 +413,7 @@ async function writeCatalogPages(items,generatedAt) {
   }
   const current = new Set(pageNames.map(page => page.file.split("/").pop()));
   for (const filename of await readdir(PAGE_DIR).catch(() => [])) {
-    if (/^page-\\d{4}\\.json$/.test(filename) && !current.has(filename)) {
+    if (/^page-\d{4}\.json$/.test(filename) && !current.has(filename)) {
       await unlink(resolve(PAGE_DIR,filename)).catch(() => {});
     }
   }
