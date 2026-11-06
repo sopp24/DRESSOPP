@@ -33,6 +33,8 @@ La présence d'une enseigne dans cette liste ne garantit pas qu'elle accepte l'e
 
 Le robot s'identifie comme DRESSOPPBot. Il respecte les règles robots et ne contourne ni CAPTCHA, ni authentification, ni blocage HTTP 401/403/429.
 
+**Respecter robots.txt ne vaut pas licence de réutilisation.** Les conditions des boutiques et les droits applicables aux descriptions, marques et images restent à respecter. Le collecteur ne télécharge pas les images ; il conserve leur URL publique pour afficher le lien vers la fiche marchande. Une boutique ou un titulaire de droits peut demander le retrait d'une source ou d'une fiche.
+
 ## Limites à connaître
 
 - Une page sans balisage produit exploitable ne sera pas importée, même si un humain peut la consulter.
