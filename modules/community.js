@@ -11,6 +11,9 @@ function readToken() {
 function saveToken(value) {
   try { localStorage.setItem(TOKEN_KEY, JSON.stringify(value)); } catch {}
 }
+function clearToken() {
+  try { localStorage.removeItem(TOKEN_KEY); } catch {}
+}
 function productFeatures(product) {
   const features = [];
   const add = (type, value) => {
@@ -104,10 +107,14 @@ async function firestoreRequest(url, token, options = {}) {
 }
 export async function deleteCommunityProfile(config) {
   const token = readToken();
-  if (!token || !config || !config.enabled || !config.projectId || !config.apiKey) return { ok: true, removed: false };
+  if (!token) return { ok: true, removed: false };
+  if (!config || !config.enabled || !config.projectId || !config.apiKey) {
+    return { ok: false, removed: false, error: "Firebase doit rester configuré pour supprimer le profil distant." };
+  }
   const auth = await getAuth(config);
   const url = firestoreUrl(config, "communityProfiles/" + encodeURIComponent(auth.localId));
   await firestoreRequest(url, auth.idToken, { method: "DELETE", allow404: true });
+  clearToken();
   return { ok: true, removed: true };
 }
 export async function syncCommunityProfile(state, config) {
