@@ -1135,6 +1135,7 @@ function resetProfile() {
 async function deleteAllData() {
   if (!window.confirm("Supprimer définitivement toutes les données DRESSOPP enregistrées sur cet appareil ? Exporte une sauvegarde avant de continuer.")) return;
   await persistPromise.catch(function() {});
+  if (aiAgentController) aiAgentController.abort();
   let communityRemovalFailed = false;
   if (communityConfig.enabled) {
     try { await deleteCommunityProfile(communityConfig); }
