@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "description": "Catalogue multi-boutiques DRESSOPP : pages officielles publiques autorisées et références éditoriales vérifiées.",
+  "description": "Catalogue multi-boutiques DRESSOPP : pages publiques autorisées et base éditoriale enrichie depuis le lookbook Automne/Hiver. Les rapprochements visuels sont explicités dans les fiches.",
   "syncedAt": "2026-11-06T14:17:39.600Z",
   "products": [
     {
@@ -2325,9 +2325,9 @@
       "category": "Sneakers",
       "styleTags": [
         "Classique",
-        "Smart Casual",
-        "Preppy",
-        "Streetwear"
+        "Streetwear",
+        "Minimaliste",
+        "Casual"
       ],
       "seasonTags": [
         "Toute saison"
@@ -2342,7 +2342,7 @@
         "Classique"
       ],
       "patterns": [],
-      "description": "Empeigne en cuir blanc/blanc, pointe perforée, amorti Nike Air et semelle extérieure en caoutchouc.",
+      "description": "Sneaker blanche en cuir, utilisable comme base neutre des looks #13 et #17 du book.",
       "sizes": [
         "35.5",
         "36",
@@ -2392,10 +2392,10 @@
       "objective": "Vêtements",
       "category": "Pantalon",
       "styleTags": [
+        "Classique",
         "Smart Casual",
         "Preppy",
-        "Heritage",
-        "Classique"
+        "Heritage"
       ],
       "seasonTags": [
         "Automne",
@@ -2403,7 +2403,7 @@
         "Printemps"
       ],
       "colors": [
-        "Brun"
+        "Marron"
       ],
       "materials": [
         "Coton",
@@ -2411,10 +2411,13 @@
       ],
       "cuts": [
         "Ample",
-        "Wide Leg"
+        "Wide Leg",
+        "À pinces"
       ],
-      "patterns": [],
-      "description": "Pantalon homme à pinces, coupe large. Composition indiquée : 53 % coton et 47 % polyamide.",
+      "patterns": [
+        "Plissé"
+      ],
+      "description": "Pantalon homme brun à plis et jambes larges. Équivalent visuel fort des looks du book #01, #02 et #16 : taille structurée, plis devant et volume ample.",
       "sizes": [
         "XS",
         "S",
@@ -2504,7 +2507,7 @@
         "Preppy",
         "Smart Casual",
         "Heritage",
-        "Casual"
+        "Vintage"
       ],
       "seasonTags": [
         "Automne",
@@ -2519,13 +2522,13 @@
         "Nylon"
       ],
       "cuts": [
-        "Oversized",
-        "Ample"
+        "Ample",
+        "Col polo"
       ],
       "patterns": [
         "Côtelé"
       ],
-      "description": "Maille côtelée épaisse, col polo, patte de boutonnage partielle et coupe oversize. Composition annoncée : 75 % acrylique, 15 % laine, 10 % nylon.",
+      "description": "Pull polo marron à maille côtelée épaisse. Équivalent partiel du lookbook #19 pour le col polo et la texture de maille ; il n'a pas les rayures du modèle de référence.",
       "sizes": [],
       "availability": "Fiche produit relevée sur ASOS FR ; tailles et disponibilité à confirmer au panier.",
       "availabilityStatus": "listed",
@@ -2548,10 +2551,10 @@
       "objective": "Vêtements",
       "category": "Pull",
       "styleTags": [
+        "Classique",
         "Smart Casual",
-        "Preppy",
         "Heritage",
-        "Classique"
+        "Minimaliste"
       ],
       "seasonTags": [
         "Automne",
@@ -2565,10 +2568,11 @@
         "Laine mérinos"
       ],
       "cuts": [
-        "Classique"
+        "Près du corps",
+        "Col roulé"
       ],
       "patterns": [],
-      "description": "Pull col roulé pour homme en 100 % laine mérinos. Lavable en machine selon les consignes d’entretien de la fiche UNIQLO.",
+      "description": "Col roulé en laine mérinos gris. Référence complémentaire au lookbook #02 : maille sombre portée sous une veste en cuir.",
       "sizes": [
         "XXS",
         "XS",
@@ -2603,7 +2607,7 @@
       "objective": "Chaussures",
       "category": "Sneakers",
       "styleTags": [
-        "Classique",
+        "Vintage",
         "Preppy",
         "Casual",
         "Streetwear"
@@ -2626,7 +2630,7 @@
         "Classique"
       ],
       "patterns": [],
-      "description": "Samba OG basse avec tige en cuir, empiècement avant en suède et semelle extérieure en caoutchouc. Coloris Wonder White / Shadow Red / Gum.",
+      "description": "Sneaker basse claire à détails contrastés. Alternative plus rétro aux baskets blanches des looks #13 et #17.",
       "sizes": [
         "35 1/2",
         "36",
@@ -3303,6 +3307,289 @@
       "merchantRatingSource": "",
       "popularityScore": null,
       "isBestSeller": false
+    },
+    {
+      "id": "seed-lookbook-piombo-wool-green",
+      "name": "Crew-Neck Jumper Regular Fit",
+      "brand": "PIOMBO",
+      "merchant": "Zalando · OVS Group",
+      "url": "https://www.zalando.fr/piombo-crew-neck-jumper-regular-fit-pullover-green-pjg22q08l-m11.html",
+      "imageUrl": "https://img01.ztat.net/article/spp-media-p1/e04c7d23e1584a2b9d413da2d70f5c9e/eaf4581d129c4301aef94d4557d3bff1.jpg?imwidth=762",
+      "price": 56.95,
+      "originalPrice": null,
+      "objective": "Vêtements",
+      "category": "Pull",
+      "styleTags": [
+        "Preppy",
+        "Classique",
+        "Smart Casual",
+        "Heritage"
+      ],
+      "seasonTags": [
+        "Automne",
+        "Hiver"
+      ],
+      "colors": [
+        "Vert foncé"
+      ],
+      "materials": [
+        "Laine"
+      ],
+      "cuts": [
+        "Regular",
+        "Col rond"
+      ],
+      "patterns": [],
+      "description": "Pull homme vert foncé en 100 % laine, col rond et coupe regular. Équivalent visuel très proche du lookbook #04 : pull vert porté sur une chemise claire. Produit listé chez Zalando, vendu et expédié par OVS Group.",
+      "sizes": [],
+      "availability": "Fiche produit active avec sélection de taille ; disponibilité de chaque taille à vérifier sur Zalando.",
+      "availabilityStatus": "listed",
+      "source": "Zalando",
+      "sourceType": "curated",
+      "catalogStatus": "active",
+      "verifiedAt": "2026-11-06T16:18:22.816Z",
+      "expiresAt": "2026-11-13T16:18:22.816Z",
+      "priceUpdatedAt": "2026-11-06T16:18:22.816Z"
+    },
+    {
+      "id": "seed-lookbook-kleman-padror-bordeaux",
+      "name": "PADROR Burgundy Leather Tyrolean Shoes",
+      "brand": "KLEMAN",
+      "merchant": "KLEMAN",
+      "url": "https://kleman-france.com/en/products/padror-bordeaux-1",
+      "imageUrl": "https://kleman-france.com/cdn/shop/files/PADROR_ZA72105_07.jpg?v=1771565995&width=1400",
+      "price": 170,
+      "originalPrice": null,
+      "objective": "Chaussures",
+      "category": "Derbies / chaussures à lacets",
+      "styleTags": [
+        "Heritage",
+        "Classique",
+        "Workwear",
+        "Smart Casual"
+      ],
+      "seasonTags": [
+        "Automne",
+        "Hiver",
+        "Toute saison"
+      ],
+      "colors": [
+        "Bordeaux"
+      ],
+      "materials": [
+        "Cuir de vachette"
+      ],
+      "cuts": [
+        "À lacets",
+        "Semelle épaisse"
+      ],
+      "patterns": [],
+      "description": "Chaussure KLEMAN en cuir bordeaux, semelle caoutchouc crantée et piqûres décoratives. Équivalent visuel partiel du lookbook #09 par le ton bordeaux et la semelle épaisse ; modèle à lacets, pas un mocassin. La marque indique un cuir de tannerie espagnole certifiée LWG.",
+      "sizes": [],
+      "availability": "Sélecteur de pointure présent sur la fiche officielle ; vérifier le stock de la pointure choisie.",
+      "availabilityStatus": "listed",
+      "source": "KLEMAN",
+      "sourceType": "curated",
+      "catalogStatus": "active",
+      "verifiedAt": "2026-11-06T16:18:22.816Z",
+      "expiresAt": "2026-11-13T16:18:22.816Z",
+      "priceUpdatedAt": "2026-11-06T16:18:22.816Z"
+    },
+    {
+      "id": "seed-lookbook-ralph-lauren-pink-knit-rugby",
+      "name": "Polo Sport Ralph Lauren Knit-Rugby-Pullover",
+      "brand": "Polo Sport Ralph Lauren",
+      "merchant": "SNIPES",
+      "url": "https://www.snipes.com/fr-fr/p/polo-sport-ralph-lauren-knit-rugby-pullover-pink-96344",
+      "imageUrl": "https://asset.snipes.com/images/f_auto%2Cq_auto%3Abest%2Cd_fallback-sni.png/b_rgb%3Af8f8f8%2Cc_pad%2Cg_south%2Cw_108%2Ch_108/if_md%3A%21is_ai_generated%21_eq_%21true%21/l_ai_icon/fl_layer_apply%2Cg_south_east%2Cw_16%2Cx_16%2Cy_16/if_end/dpr_1.0/02572151_1/polo-sport-ralph-lauren-knit-rugby-pullover-pink-96344-1",
+      "price": 120,
+      "originalPrice": 164.99,
+      "objective": "Vêtements",
+      "category": "Pull rugby",
+      "styleTags": [
+        "Preppy",
+        "Vintage",
+        "Sport Heritage",
+        "Casual"
+      ],
+      "seasonTags": [
+        "Automne",
+        "Hiver"
+      ],
+      "colors": [
+        "Rose",
+        "Bleu marine",
+        "Blanc"
+      ],
+      "materials": [
+        "Coton"
+      ],
+      "cuts": [
+        "Oversize"
+      ],
+      "patterns": [
+        "Rayures"
+      ],
+      "description": "Pull rugby homme Polo Sport Ralph Lauren rose et bleu marine, col blanc, encolure V et coupe oversize, 100 % coton. Équivalent visuel fort du lookbook #10 : esprit rugby et palette rose/brun, même si les bandes sont bleu marine sur cet article.",
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL",
+        "XXL"
+      ],
+      "availability": "Tailles affichées sur la fiche SNIPES : S, M, L, XL et XXL ; stock final à confirmer.",
+      "availabilityStatus": "listed",
+      "source": "SNIPES",
+      "sourceType": "curated",
+      "catalogStatus": "active",
+      "verifiedAt": "2026-11-06T16:18:22.816Z",
+      "expiresAt": "2026-11-13T16:18:22.816Z",
+      "priceUpdatedAt": "2026-11-06T16:18:22.816Z"
+    },
+    {
+      "id": "seed-lookbook-samsoe-cream-vneck",
+      "name": "V NECK Pullover · Clear Cream",
+      "brand": "Samsøe Samsøe",
+      "merchant": "Zalando",
+      "url": "https://www.zalando.fr/samsoee-samsoee-v-neck-pullover-clear-cream-sa322q06x-a11.html",
+      "imageUrl": "https://img01.ztat.net/article/spp-media-p1/ec01f7acd3314342a68965a91a414810/9e3b595dd26a41eaa8790af2e5170238.jpg?filter=packshot&imwidth=400",
+      "price": 111.95,
+      "originalPrice": 139.95,
+      "objective": "Vêtements",
+      "category": "Pull col V",
+      "styleTags": [
+        "Preppy",
+        "Smart Casual",
+        "Minimaliste",
+        "Classique"
+      ],
+      "seasonTags": [
+        "Automne",
+        "Hiver",
+        "Printemps"
+      ],
+      "colors": [
+        "Crème",
+        "Écru"
+      ],
+      "materials": [
+        "Coton",
+        "Polyamide"
+      ],
+      "cuts": [
+        "Regular",
+        "Col V"
+      ],
+      "patterns": [],
+      "description": "Pull homme crème à col V, maille 90 % coton et 10 % polyamide, coupe regular. Correspondance directe de forme et de couleur avec le haut du lookbook #11, à porter sur une chemise blanche.",
+      "sizes": [],
+      "availability": "Fiche produit active avec sélection de taille ; vérifier les tailles disponibles sur Zalando.",
+      "availabilityStatus": "listed",
+      "source": "Zalando",
+      "sourceType": "curated",
+      "catalogStatus": "active",
+      "verifiedAt": "2026-11-06T16:18:22.816Z",
+      "expiresAt": "2026-11-13T16:18:22.816Z",
+      "priceUpdatedAt": "2026-11-06T16:18:22.816Z"
+    },
+    {
+      "id": "seed-lookbook-cos-black-shearling-leather",
+      "name": "Blouson en cuir à col en peau lainée détachable",
+      "brand": "COS",
+      "merchant": "COS",
+      "url": "https://www.cos.com/fr-fr/men/menswear/coatsjackets/jackets/product/detachable-shearling-collar-leather-jacket-black-1362065001",
+      "imageUrl": "https://media.cos.com/assets/001/07/7f/077f16e0a19f896bff72bbe9a57aee8837e3714d_xxl-1.jpg?imwidth=2160",
+      "price": 449,
+      "originalPrice": null,
+      "objective": "Vêtements",
+      "category": "Veste en cuir",
+      "styleTags": [
+        "Heritage",
+        "Biker",
+        "Workwear",
+        "Minimaliste"
+      ],
+      "seasonTags": [
+        "Automne",
+        "Hiver"
+      ],
+      "colors": [
+        "Noir"
+      ],
+      "materials": [
+        "Cuir",
+        "Peau lainée"
+      ],
+      "cuts": [
+        "Décontractée",
+        "Ample"
+      ],
+      "patterns": [],
+      "description": "Blouson homme COS en cuir noir patiné, coupe décontractée et col en peau lainée amovible. Très proche de l'esprit du lookbook #18 ; correspondance partielle avec le look #07 pour le col lainé et la veste d'hiver, mais le book montre une veste en daim.",
+      "sizes": [
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "availability": "Tailles XS à XL affichées sur la fiche COS ; stock à vérifier au moment de l'achat.",
+      "availabilityStatus": "listed",
+      "source": "COS",
+      "sourceType": "curated",
+      "catalogStatus": "active",
+      "verifiedAt": "2026-11-06T16:18:22.816Z",
+      "expiresAt": "2026-11-13T16:18:22.816Z",
+      "priceUpdatedAt": "2026-11-06T16:18:22.816Z"
+    },
+    {
+      "id": "seed-lookbook-massimo-dutti-striped-knit-zip",
+      "name": "Striped Knit Polo Sweater",
+      "brand": "Massimo Dutti",
+      "merchant": "Zalando · Massimo Dutti",
+      "url": "https://www.zalando.fr/massimo-dutti-t-shirt-a-manches-longues-dark-brown-m3i22q0ve-o11.html",
+      "imageUrl": "https://img01.ztat.net/article/spp-media-p1/2c65fca24a2e4c3d9c5f9009f91c4eac/8aa3ec8884dd44679e2267be6832f56e.jpg?imwidth=762",
+      "price": 70,
+      "originalPrice": null,
+      "objective": "Vêtements",
+      "category": "Pull polo zippé",
+      "styleTags": [
+        "Heritage",
+        "Preppy",
+        "Smart Casual",
+        "Vintage"
+      ],
+      "seasonTags": [
+        "Automne",
+        "Hiver"
+      ],
+      "colors": [
+        "Marron",
+        "Gris",
+        "Bleu marine"
+      ],
+      "materials": [
+        "Laine"
+      ],
+      "cuts": [
+        "Regular",
+        "Col polo",
+        "Demi-zip"
+      ],
+      "patterns": [
+        "Rayures"
+      ],
+      "description": "Pull homme à col polo zippé et rayures, indiqué 100 % laine sur la fiche Zalando, coupe regular. Correspondance visuelle forte avec le lookbook #19 (maille rayée à col polo) et partielle avec le #20 pour le col zippé ; la palette est plus sombre que le bleu ciel du book.",
+      "sizes": [],
+      "availability": "Fiche produit active avec sélection de taille ; vérifier le stock sur Zalando.",
+      "availabilityStatus": "listed",
+      "source": "Zalando",
+      "sourceType": "curated",
+      "catalogStatus": "active",
+      "verifiedAt": "2026-11-06T16:18:22.816Z",
+      "expiresAt": "2026-11-13T16:18:22.816Z",
+      "priceUpdatedAt": "2026-11-06T16:18:22.816Z"
     }
   ]
 }
