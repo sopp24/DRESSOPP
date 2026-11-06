@@ -902,6 +902,14 @@ function render() {
       image.replaceWith(fallback);
     }, { once: true });
   });
+  if (state && state.settings.aiAgentAutoRefresh && !aiAgentPending &&
+      (currentView === "discover" || currentView === "training")) {
+    const actionCount = aiAgentActionCount();
+    if (actionCount - aiAgentLastActionCount >= 3) {
+      aiAgentLastActionCount = actionCount;
+      runAiAgent(false);
+    }
+  }
 }
 function showToast(message, undoAvailable) {
   toastRoot.innerHTML = '<div class="toast"><span>' + esc(message) + '</span>' +
@@ -1649,6 +1657,7 @@ async function boot() {
   state.seenPinterestPins = Array.isArray(state.seenPinterestPins) ? state.seenPinterestPins : [];
   state.pinterestPins = (pinterestFeed.pins || []).concat(lookbookFeed.pins || []);
   state.learnedPreferences = deriveLearnedPreferences(state);
+  aiAgentLastActionCount = aiAgentActionCount();
   render();
   updateSaveStatus("Stockage local prêt", "ok");
   if (state.settings.communitySharing) refreshCommunity(false);

@@ -87,16 +87,13 @@ La synchronisation publie :
 
 Le prix et le stock correspondent au dernier contrôle. Le marchand reste la référence avant achat. Les descriptions, images et autres contenus restent soumis aux conditions des boutiques et aux droits applicables ; respecter `robots.txt` ne constitue pas une licence générale de réutilisation. Les pages inaccessibles ou dépourvues de données structurées sont signalées et non contournées.
 
-## Un agent IA ne suffit pas — architecture retenue
+## Personal shopper IA intégré
 
-L'agent IA est le cerveau de recommandation, pas le collecteur de produits :
-- il comprend les goûts et les retours Oui/Non ;
-- il peut classer et expliquer jusqu'à 50 produits déjà présents dans le catalogue ;
-- il ne crée pas de fausses fiches et ne parcourt pas de lui-même les 200 boutiques ;
-- les collecteurs et connecteurs fournissent les produits réels, l'agent décide lesquels montrer en premier ;
-- si l'agent est indisponible ou si son quota est atteint, le classement local continue.
+Le personal shopper est **actif par défaut en mode local** : il croise les préférences, les votes Oui/Non, les favoris, les attributs des vêtements et les tags/titres Pinterest déjà disponibles. Il diversifie les boutiques et les catégories, et explique ses recommandations uniquement à partir des informations présentes dans les fiches. Ce mode fonctionne dans le navigateur, sans clé API ni transfert de données.
 
-Le Worker utilise Cloudflare Workers AI et le modèle `@cf/google/gemma-4-26b-a4b-it`. L'envoi de préférences à ce service est soumis au consentement dans DRESSOPP. Les tailles et données personnelles non nécessaires ne doivent pas être transmises.
+Un mode génératif Cloudflare Workers AI est disponible en complément, avec le modèle `@cf/google/gemma-4-26b-a4b-it`. Il n'est appelé qu'après accord explicite dans DRESSOPP. En cas d'erreur, d'indisponibilité ou de quota, le personal shopper local prend automatiquement le relais.
+
+L'agent classe au maximum 50 candidats déjà présents dans le catalogue. Il ne fabrique pas de produits et ne remplace pas le collecteur : les connecteurs et la collecte quotidienne trouvent les pièces réelles, l'agent choisit celles à afficher en premier. L'option d'actualisation automatique relance l'analyse locale après trois nouvelles décisions ; l'envoi à Cloudflare n'a lieu que si le consentement est actif.
 
 ## Pinterest — source stylistique prioritaire
 
