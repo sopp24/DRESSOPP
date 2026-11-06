@@ -4,16 +4,6 @@ const MAX_PRODUCTS = 50;
 const MAX_FEEDBACK_ITEMS = 15;
 const recentRequests = new Map();
 
-const RESPONSE_SCHEMA = {
-  type: "object", additionalProperties: false,
-  properties: {
-    recommendations: { type: "array", items: { type: "object", additionalProperties: false, properties: { productId: { type: "string" }, reason: { type: "string" } }, required: ["productId", "reason"] } },
-    message: { type: "string" },
-    searchHints: { type: "array", items: { type: "string" } }
-  },
-  required: ["recommendations", "message", "searchHints"]
-};
-
 function allowedOrigin(origin, env) {
   const origins = String(env.ALLOWED_ORIGINS || "https://sopp24.github.io").split(",").map(value => value.trim()).filter(Boolean);
   return Boolean(origin && origins.includes(origin));
