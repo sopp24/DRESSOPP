@@ -1,16 +1,20 @@
-import { readFile, writeFile, mkdir } from "node:fs/promises";
+import { readFile, writeFile, mkdir, readdir, unlink } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 
 const ROOT = resolve(new URL("..", import.meta.url).pathname);
 const CONFIG = resolve(ROOT, "data/public-sources.json");
+const DIRECTORY = resolve(ROOT, "data/merchant-directory.json");
 const CATALOG = resolve(ROOT, "data/catalog.json");
 const META = resolve(ROOT, "data/catalog-meta.json");
+const MANIFEST = resolve(ROOT, "data/catalog-manifest.json");
+const PAGE_DIR = resolve(ROOT, "data/catalog-pages");
 const SEEDS = resolve(ROOT, "data/catalog-seeds.json");
 const BOT = "DRESSOPPBot";
 const UA = "DRESSOPPBot/1.0 (+https://sopp24.github.io/DRESSOPP/)";
 const TTL = 7 * 86400000;
-const MAX_SITEMAPS = 6, MAX_PAGES = 18, MAX_STORE_PRODUCTS = 12, MAX_TOTAL = 2400;
+const MAX_SITEMAPS = 6, MAX_PAGES = 18, MAX_STORE_PRODUCTS = 20;
+const DEFAULT_BATCH_SIZE = 36, DEFAULT_PRIORITY_SLOTS = 12, PAGE_SIZE = 120;
 const GAP = 700, lastRequest = new Map();
 
 const clean = value => String(value == null ? "" : value).replace(/<[^>]*>/g," ")
@@ -306,9 +310,38 @@ async function writeJson(path,value) {
   if ((await readFile(path,"utf8").catch(() => "")) === output) return;
   await mkdir(dirname(path),{recursive:true}); await writeFile(path,output,"utf8");
 }
-export function mergeCatalog(previous,seeds,results,now = new Date()) {
+export function selectSourceBatch(sources, meta = {}, batchSize = DEFAULT_BATCH_SIZE, prioritySlots = DEFAULT_PRIORITY_SLOTS) {
+  const all = Array.isArray(sources) ? sources.filter(source => source && source.name && source.domain) : [];
+  const priority = all.filter(source => Number(source.priority) <= 1);
+  const regular = all.filter(source => Number(source.priority) > 1);
+  const size = Math.max(1, Math.min(all.length || 1, Math.floor(Number(batchSize) || DEFAULT_BATCH_SIZE)));
+  const priorityCount = Math.min(priority.length, size, Math.max(0, Math.floor(Number(prioritySlots) || 0)));
+  const regularCount = Math.min(regular.length, size - priorityCount);
+  function take(list, cursor, count) {
+    if (!list.length || !count) return { items: [], cursor: 0 };
+    const start = ((Math.floor(Number(cursor) || 0) % list.length) + list.length) % list.length;
+    const items = [];
+    for (let i = 0; i < Math.min(count, list.length); i += 1) items.push(list[(start + i) % list.length]);
+    return { items, cursor: (start + items.length) % list.length };
+  }
+  const primary = take(priority, meta.priorityCursor, priorityCount);
+  const secondary = take(regular, meta.regularCursor, regularCount);
+  const selected = primary.items.concat(secondary.items);
+  if (selected.length < size) {
+    const selectedNames = new Set(selected.map(source => source.name));
+    const remaining = all.filter(source => !selectedNames.has(source.name));
+    selected.push(...remaining.slice(0, size - selected.length));
+  }
+  return {
+    sources: selected,
+    nextCursors: { priorityCursor: primary.cursor, regularCursor: secondary.cursor },
+    totalSources: all.length
+  };
+}
+
+export function mergeCatalog(previous,seeds,results,now = new Date(),previousMeta = {}) {
   const products = new Map();
-  const identity = item => { try { return new URL(item.url).href.split("?")[0].replace(/\/+$/,"").toLowerCase(); } catch { return item.id; } };
+  const identity = item => { try { return new URL(item.url).href.split("?")[0].replace(/\\/+$/, "").toLowerCase(); } catch { return item.id; } };
   (previous || []).filter(p => p && p.sourceType === "public-web" && p.url).forEach(p => products.set(identity(p),{...p}));
   (seeds || []).filter(p => p && p.url).forEach(p => { if (!products.has(identity(p))) products.set(identity(p),p); });
   (results || []).forEach(result => (result.products || []).forEach(p => products.set(identity(p),p)));
@@ -331,41 +364,94 @@ export function mergeCatalog(previous,seeds,results,now = new Date()) {
     const revalidated = refreshedUrls.has(id);
     products.set(id,{...p,catalogStatus:withinTtl && (p.catalogStatus !== "stale" || revalidated) ? "active" : "stale"});
   }
-  const items = Array.from(products.values()).slice(0,MAX_TOTAL);
+  const items = Array.from(products.values());
   const fresh = items.filter(p => p.sourceType === "public-web" && p.catalogStatus === "active");
+  const sourceMap = new Map((previousMeta.sourceResults || []).map(item => [item.name, item]));
+  (results || []).forEach(result => sourceMap.set(result.name, {
+    name:result.name,status:result.status,products:(result.products || []).length,
+    pages:result.pages || 0,reason:result.reason || "",checkedAt:now.toISOString()
+  }));
+  const sourceResults = Array.from(sourceMap.values());
+  const successfulSources = sourceResults.filter(result => result.status === "ok");
+  const statuses = sourceResults.map(result => result.status);
+  const blockedOrFailed = statuses.some(status => ["blocked","error","unavailable"].includes(status));
   return {
     products:items,
     meta:{
-      schemaVersion:2,provider:"Pages produits publiques autorisées (Schema.org / Open Graph)",
-      status:fresh.length ? (results.some(r => ["blocked","error","unavailable"].includes(r.status)) ? "partial" : "connected") : "needs-configuration",
+      schemaVersion:3,provider:"Pages produits publiques autorisées (Schema.org / Open Graph)",
+      status:fresh.length ? (blockedOrFailed ? "partial" : "connected") : "needs-configuration",
       syncedAt:now.toISOString(),productCount:items.length,liveProductCount:fresh.length,publicProductCount:fresh.length,
       curatedProductCount:items.filter(p => p.sourceType !== "public-web").length,staleProductCount:items.filter(p => p.catalogStatus === "stale").length,
-      sourceCount:results.filter(r => r.status === "ok").length,attemptedSourceCount:results.length,
-      pagesChecked:results.reduce((n,r) => n + (r.pages || 0),0),
+      sourceCount:successfulSources.length,attemptedSourceCount:sourceResults.length,
+      scannedSourceCount:(results || []).length,pagesChecked:(results || []).reduce((n,r) => n + (r.pages || 0),0),
       sources:Array.from(new Set(fresh.map(p => p.merchant || p.source))).sort(),
-      sourceResults:results.map(r => ({name:r.name,status:r.status,products:r.products.length,pages:r.pages,reason:r.reason || ""})),
-      refreshCadence:"Actualisation quotidienne gratuite via GitHub Actions.",
+      sourceResults,
+      refreshCadence:"Rotation quotidienne de 36 enseignes parmi 200 ; chaque enseigne est revisitée à tour de rôle.",
       notes:[
-        "Aucun compte éditeur, réseau d'affiliation, API payante ou abonnement requis.",
+        "Répertoire de 200 enseignes dans data/merchant-directory.json ; l'accès produit dépend des flux et autorisations de chaque boutique.",
         "Le robot respecte robots.txt et n'accède qu'aux pages publiques autorisées.",
-        "Prix EUR, lien produit HTTPS et image HTTPS obligatoires.",
-        "Prix et stock datés : vérification finale sur la boutique avant achat.",
+        "Les fiches nécessitent un nom, un prix EUR, un lien produit HTTPS et une image HTTPS.",
+        "Les prix et stocks sont datés ; vérification finale sur la boutique avant achat.",
         "Les notes produit ne sont jamais présentées comme une note de fiabilité du marchand."
       ]
     }
   };
 }
+
+async function writeCatalogPages(items,generatedAt) {
+  await mkdir(PAGE_DIR,{recursive:true});
+  const pageNames = [];
+  for (let offset = 0; offset < items.length; offset += PAGE_SIZE) {
+    const pageNumber = Math.floor(offset / PAGE_SIZE) + 1;
+    const file = "catalog-pages/page-" + String(pageNumber).padStart(4,"0") + ".json";
+    const products = items.slice(offset, offset + PAGE_SIZE);
+    await writeJson(resolve(ROOT,"data",file),{
+      schemaVersion:1,page:pageNumber,pageSize:PAGE_SIZE,totalProducts:items.length,
+      generatedAt,products
+    });
+    pageNames.push({file,count:products.length});
+  }
+  const current = new Set(pageNames.map(page => page.file.split("/").pop()));
+  for (const filename of await readdir(PAGE_DIR).catch(() => [])) {
+    if (/^page-\\d{4}\\.json$/.test(filename) && !current.has(filename)) {
+      await unlink(resolve(PAGE_DIR,filename)).catch(() => {});
+    }
+  }
+  const manifest = {
+    schemaVersion:1,generatedAt,totalProducts:items.length,pageSize:PAGE_SIZE,
+    pageCount:pageNames.length,pages:pageNames
+  };
+  await writeJson(MANIFEST,manifest);
+  const firstPage = items.slice(0,PAGE_SIZE);
+  await writeJson(CATALOG,{
+    schemaVersion:2,description:"Aperçu de compatibilité du catalogue DRESSOPP ; le catalogue complet est découpé en pages.",
+    syncedAt:generatedAt,products:firstPage
+  });
+  return manifest;
+}
 export async function main() {
-  const config = await readJson(CONFIG,{sources:[]}), sources = Array.isArray(config.sources) ? config.sources : [];
-  if (!sources.length) throw new Error("Aucune boutique configurée dans data/public-sources.json.");
-  console.log("[DRESSOPP] " + sources.length + " boutiques configurées ; robots.txt respecté.");
+  const config = await readJson(CONFIG,{sources:[]});
+  const directory = await readJson(DIRECTORY,{entries:[]});
+  const sources = Array.isArray(config.sources) && config.sources.length
+    ? config.sources : (Array.isArray(directory.entries) ? directory.entries : []);
+  if (!sources.length) throw new Error("Aucune boutique configurée : vérifie data/merchant-directory.json.");
+  const previous = await readJson(CATALOG,{products:[]});
+  const previousMeta = await readJson(META,{});
+  const rotation = selectSourceBatch(
+    sources, previousMeta,
+    config.batchSize || DEFAULT_BATCH_SIZE,
+    config.prioritySlots || DEFAULT_PRIORITY_SLOTS
+  );
+  console.log("[DRESSOPP] " + sources.length + " enseignes au répertoire ; " +
+    rotation.sources.length + " enseignes dans ce lot ; robots.txt respecté.");
   const results = []; let cursor = 0;
   async function worker() {
-    while (cursor < sources.length) {
-      const source = sources[cursor++];
+    while (cursor < rotation.sources.length) {
+      const source = rotation.sources[cursor++];
       try {
         const result = await scan(source); results.push(result);
-        console.log("[DRESSOPP] " + result.name + " : " + result.status + ", " + result.products.length + " produit(s), " + result.pages + " page(s).");
+        console.log("[DRESSOPP] " + result.name + " : " + result.status + ", " +
+          result.products.length + " produit(s), " + result.pages + " page(s).");
       } catch (error) {
         results.push({name:source.name,status:"error",products:[],pages:0,reason:error.message || String(error)});
         console.log("[DRESSOPP] " + source.name + " : " + (error.message || String(error)));
@@ -373,11 +459,19 @@ export async function main() {
     }
   }
   await Promise.all(Array.from({length:4},worker));
-  const previous = await readJson(CATALOG,{products:[]}), seeds = await readJson(SEEDS,{products:[]});
-  const merged = mergeCatalog(previous.products || [],seeds.products || [],results);
-  await writeJson(CATALOG,{schemaVersion:2,description:"Catalogue multi-boutiques DRESSOPP : pages officielles publiques autorisées et références éditoriales vérifiées.",syncedAt:merged.meta.syncedAt,products:merged.products});
+  const seeds = await readJson(SEEDS,{products:[]});
+  const merged = mergeCatalog(previous.products || [],seeds.products || [],results,new Date(),previousMeta);
+  merged.meta.priorityCursor = rotation.nextCursors.priorityCursor;
+  merged.meta.regularCursor = rotation.nextCursors.regularCursor;
+  merged.meta.directoryCount = sources.length;
+  merged.meta.nextBatchSize = rotation.sources.length;
+  const manifest = await writeCatalogPages(merged.products,merged.meta.syncedAt);
+  merged.meta.pageSize = PAGE_SIZE;
+  merged.meta.pageCount = manifest.pageCount;
   await writeJson(META,merged.meta);
-  console.log("[DRESSOPP] " + merged.meta.liveProductCount + " fiche(s) publiques actives ; " + merged.meta.curatedProductCount + " référence(s) éditoriale(s).");
+  console.log("[DRESSOPP] " + merged.meta.liveProductCount + " fiche(s) publiques actives ; " +
+    merged.meta.curatedProductCount + " référence(s) éditoriale(s) ; " +
+    manifest.pageCount + " page(s) de catalogue publiées.");
 }
 if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1])).href) {
   main().catch(error => { console.error("::error::" + error.message); process.exitCode = 1; });
