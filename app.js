@@ -714,9 +714,9 @@ function showToast(message, undoAvailable) {
   toastTimer = setTimeout(function() { toastRoot.innerHTML = ""; }, 5000);
 }
 function vote(productId, value) {
-  invalidateAiAgentResults();
   const product = productById(productId);
   if (!product || hasRated(productId)) return;
+  invalidateAiAgentResults();
   const event = { productId: productId, createdAt: new Date().toISOString(), view: currentView };
   if (value === "yes" || value === "like") {
     state.interactions.likes.push(event);
@@ -731,9 +731,9 @@ function vote(productId, value) {
   render();
 }
 function saveToList(productId) {
-  invalidateAiAgentResults();
   const product = productById(productId);
   if (!product || isLiked(productId)) return;
+  invalidateAiAgentResults();
   const createdAt = new Date().toISOString();
   state.likedProducts.push({ productId: productId, addedAt: createdAt });
   state.interactions.saves = Array.isArray(state.interactions.saves) ? state.interactions.saves : [];
