@@ -2,16 +2,16 @@
   "schemaVersion": 3,
   "provider": "Pages produits publiques autorisées (Schema.org / Open Graph)",
   "status": "partial",
-  "syncedAt": "2026-11-06T18:04:18.581Z",
-  "productCount": 96,
-  "liveProductCount": 67,
-  "publicProductCount": 67,
+  "syncedAt": "2026-11-07T14:07:35.002Z",
+  "productCount": 100,
+  "liveProductCount": 70,
+  "publicProductCount": 70,
   "curatedProductCount": 16,
-  "staleProductCount": 13,
+  "staleProductCount": 14,
   "sourceCount": 5,
-  "attemptedSourceCount": 88,
+  "attemptedSourceCount": 114,
   "scannedSourceCount": 36,
-  "pagesChecked": 340,
+  "pagesChecked": 330,
   "sources": [
     "BZB",
     "Carhartt WIP",
@@ -153,28 +153,32 @@
       "status": "blocked",
       "products": 0,
       "pages": 0,
-      "reason": "robots.txt inaccessible ou accès refusé"
+      "reason": "robots.txt inaccessible ou accès refusé",
+      "checkedAt": "2026-11-07T14:07:35.002Z"
     },
     {
       "name": "Puma",
       "status": "no-structured-products",
       "products": 0,
       "pages": 3,
-      "reason": "Aucune fiche produit publique exploitable."
+      "reason": "Aucune fiche produit publique exploitable.",
+      "checkedAt": "2026-11-07T14:07:35.002Z"
     },
     {
       "name": "adidas",
       "status": "blocked",
       "products": 0,
       "pages": 0,
-      "reason": "robots.txt inaccessible ou accès refusé"
+      "reason": "robots.txt inaccessible ou accès refusé",
+      "checkedAt": "2026-11-07T14:07:35.002Z"
     },
     {
       "name": "Converse",
       "status": "blocked",
       "products": 0,
       "pages": 0,
-      "reason": "robots.txt inaccessible ou accès refusé"
+      "reason": "robots.txt inaccessible ou accès refusé",
+      "checkedAt": "2026-11-07T14:07:35.002Z"
     },
     {
       "name": "ARKET",
@@ -196,14 +200,16 @@
       "status": "blocked",
       "products": 0,
       "pages": 0,
-      "reason": "robots.txt inaccessible ou accès refusé"
+      "reason": "robots.txt inaccessible ou accès refusé",
+      "checkedAt": "2026-11-07T14:07:35.002Z"
     },
     {
       "name": "Nike",
       "status": "no-structured-products",
       "products": 0,
       "pages": 19,
-      "reason": "Aucune fiche produit publique exploitable."
+      "reason": "Aucune fiche produit publique exploitable.",
+      "checkedAt": "2026-11-07T14:07:35.002Z"
     },
     {
       "name": "Undiz",
@@ -217,14 +223,16 @@
       "status": "blocked",
       "products": 0,
       "pages": 0,
-      "reason": "robots.txt inaccessible ou accès refusé"
+      "reason": "robots.txt inaccessible ou accès refusé",
+      "checkedAt": "2026-11-07T14:07:35.002Z"
     },
     {
       "name": "Courir",
       "status": "ok",
-      "products": 12,
-      "pages": 13,
-      "reason": ""
+      "products": 17,
+      "pages": 18,
+      "reason": "",
+      "checkedAt": "2026-11-07T14:07:35.002Z"
     },
     {
       "name": "Calvin Klein",
@@ -277,7 +285,8 @@
       "status": "no-structured-products",
       "products": 0,
       "pages": 19,
-      "reason": "Aucune fiche produit publique exploitable."
+      "reason": "Aucune fiche produit publique exploitable.",
+      "checkedAt": "2026-11-07T14:07:35.002Z"
     },
     {
       "name": "La Redoute",
@@ -361,8 +370,9 @@
       "name": "Dior",
       "status": "no-structured-products",
       "products": 0,
-      "pages": 7,
-      "reason": "Aucune fiche produit publique exploitable."
+      "pages": 19,
+      "reason": "Aucune fiche produit publique exploitable.",
+      "checkedAt": "2026-11-07T14:07:35.002Z"
     },
     {
       "name": "Mango Man",
@@ -707,6 +717,214 @@
       "pages": 19,
       "reason": "Aucune fiche produit publique exploitable.",
       "checkedAt": "2026-11-06T18:04:18.581Z"
+    },
+    {
+      "name": "Stone Island",
+      "status": "blocked",
+      "products": 0,
+      "pages": 0,
+      "reason": "robots.txt inaccessible ou accès refusé",
+      "checkedAt": "2026-11-07T14:07:35.002Z"
+    },
+    {
+      "name": "AMI Paris",
+      "status": "no-structured-products",
+      "products": 0,
+      "pages": 19,
+      "reason": "Aucune fiche produit publique exploitable.",
+      "checkedAt": "2026-11-07T14:07:35.002Z"
+    },
+    {
+      "name": "Universal Works",
+      "status": "blocked",
+      "products": 0,
+      "pages": 0,
+      "reason": "robots.txt inaccessible ou accès refusé",
+      "checkedAt": "2026-11-07T14:07:35.002Z"
+    },
+    {
+      "name": "Folk",
+      "status": "no-structured-products",
+      "products": 0,
+      "pages": 19,
+      "reason": "Aucune fiche produit publique exploitable.",
+      "checkedAt": "2026-11-07T14:07:35.002Z"
+    },
+    {
+      "name": "Percival",
+      "status": "no-structured-products",
+      "products": 0,
+      "pages": 19,
+      "reason": "Aucune fiche produit publique exploitable.",
+      "checkedAt": "2026-11-07T14:07:35.002Z"
+    },
+    {
+      "name": "G-Star RAW",
+      "status": "no-structured-products",
+      "products": 0,
+      "pages": 3,
+      "reason": "Aucune fiche produit publique exploitable.",
+      "checkedAt": "2026-11-07T14:07:35.002Z"
+    },
+    {
+      "name": "Wrangler",
+      "status": "blocked",
+      "products": 0,
+      "pages": 0,
+      "reason": "robots.txt inaccessible ou accès refusé",
+      "checkedAt": "2026-11-07T14:07:35.002Z"
+    },
+    {
+      "name": "Lee",
+      "status": "blocked",
+      "products": 0,
+      "pages": 0,
+      "reason": "robots.txt inaccessible ou accès refusé",
+      "checkedAt": "2026-11-07T14:07:35.002Z"
+    },
+    {
+      "name": "Dickies",
+      "status": "blocked",
+      "products": 0,
+      "pages": 0,
+      "reason": "robots.txt inaccessible ou accès refusé",
+      "checkedAt": "2026-11-07T14:07:35.002Z"
+    },
+    {
+      "name": "Nudie Jeans",
+      "status": "no-structured-products",
+      "products": 0,
+      "pages": 18,
+      "reason": "Aucune fiche produit publique exploitable.",
+      "checkedAt": "2026-11-07T14:07:35.002Z"
+    },
+    {
+      "name": "Diesel",
+      "status": "no-structured-products",
+      "products": 0,
+      "pages": 19,
+      "reason": "Aucune fiche produit publique exploitable.",
+      "checkedAt": "2026-11-07T14:07:35.002Z"
+    },
+    {
+      "name": "Filson",
+      "status": "no-structured-products",
+      "products": 0,
+      "pages": 19,
+      "reason": "Aucune fiche produit publique exploitable.",
+      "checkedAt": "2026-11-07T14:07:35.002Z"
+    },
+    {
+      "name": "Gucci",
+      "status": "blocked",
+      "products": 0,
+      "pages": 0,
+      "reason": "robots.txt inaccessible ou accès refusé",
+      "checkedAt": "2026-11-07T14:07:35.002Z"
+    },
+    {
+      "name": "Rains",
+      "status": "no-structured-products",
+      "products": 0,
+      "pages": 19,
+      "reason": "Aucune fiche produit publique exploitable.",
+      "checkedAt": "2026-11-07T14:07:35.002Z"
+    },
+    {
+      "name": "Saint Laurent",
+      "status": "blocked",
+      "products": 0,
+      "pages": 0,
+      "reason": "robots.txt inaccessible ou accès refusé",
+      "checkedAt": "2026-11-07T14:07:35.002Z"
+    },
+    {
+      "name": "Balenciaga",
+      "status": "blocked",
+      "products": 0,
+      "pages": 0,
+      "reason": "robots.txt inaccessible ou accès refusé",
+      "checkedAt": "2026-11-07T14:07:35.002Z"
+    },
+    {
+      "name": "Bottega Veneta",
+      "status": "blocked",
+      "products": 0,
+      "pages": 0,
+      "reason": "robots.txt inaccessible ou accès refusé",
+      "checkedAt": "2026-11-07T14:07:35.002Z"
+    },
+    {
+      "name": "Celine",
+      "status": "unavailable",
+      "products": 0,
+      "pages": 0,
+      "reason": "Aucune fiche produit publique exploitable.",
+      "checkedAt": "2026-11-07T14:07:35.002Z"
+    },
+    {
+      "name": "K-Way",
+      "status": "no-structured-products",
+      "products": 0,
+      "pages": 19,
+      "reason": "Aucune fiche produit publique exploitable.",
+      "checkedAt": "2026-11-07T14:07:35.002Z"
+    },
+    {
+      "name": "Loewe",
+      "status": "no-structured-products",
+      "products": 0,
+      "pages": 3,
+      "reason": "Aucune fiche produit publique exploitable.",
+      "checkedAt": "2026-11-07T14:07:35.002Z"
+    },
+    {
+      "name": "Prada",
+      "status": "no-structured-products",
+      "products": 0,
+      "pages": 21,
+      "reason": "Aucune fiche produit publique exploitable.",
+      "checkedAt": "2026-11-07T14:07:35.002Z"
+    },
+    {
+      "name": "Moncler",
+      "status": "blocked",
+      "products": 0,
+      "pages": 0,
+      "reason": "robots.txt inaccessible ou accès refusé",
+      "checkedAt": "2026-11-07T14:07:35.002Z"
+    },
+    {
+      "name": "Edwin",
+      "status": "no-structured-products",
+      "products": 0,
+      "pages": 17,
+      "reason": "Aucune fiche produit publique exploitable.",
+      "checkedAt": "2026-11-07T14:07:35.002Z"
+    },
+    {
+      "name": "Canada Goose",
+      "status": "no-structured-products",
+      "products": 0,
+      "pages": 19,
+      "reason": "Aucune fiche produit publique exploitable.",
+      "checkedAt": "2026-11-07T14:07:35.002Z"
+    },
+    {
+      "name": "Burberry",
+      "status": "no-structured-products",
+      "products": 0,
+      "pages": 19,
+      "reason": "Aucune fiche produit publique exploitable.",
+      "checkedAt": "2026-11-07T14:07:35.002Z"
+    },
+    {
+      "name": "Givenchy",
+      "status": "no-structured-products",
+      "products": 0,
+      "pages": 19,
+      "reason": "Aucune fiche produit publique exploitable.",
+      "checkedAt": "2026-11-07T14:07:35.002Z"
     }
   ],
   "refreshCadence": "Rotation quotidienne de 36 enseignes parmi 200 ; chaque enseigne est revisitée à tour de rôle.",
@@ -717,8 +935,8 @@
     "Les prix et stocks sont datés ; vérification finale sur la boutique avant achat.",
     "Les notes produit ne sont jamais présentées comme une note de fiabilité du marchand."
   ],
-  "priorityCursor": 24,
-  "regularCursor": 48,
+  "priorityCursor": 36,
+  "regularCursor": 72,
   "directoryCount": 200,
   "nextBatchSize": 36,
   "pageSize": 120,
