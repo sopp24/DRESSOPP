@@ -2,18 +2,19 @@
   "schemaVersion": 3,
   "provider": "Pages produits publiques autorisées (Schema.org / Open Graph)",
   "status": "partial",
-  "syncedAt": "2026-11-07T14:07:35.002Z",
-  "productCount": 100,
-  "liveProductCount": 70,
-  "publicProductCount": 70,
+  "syncedAt": "2026-11-08T14:21:12.743Z",
+  "productCount": 108,
+  "liveProductCount": 78,
+  "publicProductCount": 78,
   "curatedProductCount": 16,
   "staleProductCount": 14,
   "sourceCount": 5,
-  "attemptedSourceCount": 114,
+  "attemptedSourceCount": 136,
   "scannedSourceCount": 36,
-  "pagesChecked": 330,
+  "pagesChecked": 200,
   "sources": [
     "BZB",
+    "C.P. Company",
     "Carhartt WIP",
     "Courir",
     "Foot Locker",
@@ -26,7 +27,7 @@
       "products": 0,
       "pages": 0,
       "reason": "robots.txt inaccessible ou accès refusé",
-      "checkedAt": "2026-11-06T18:01:00.186Z"
+      "checkedAt": "2026-11-08T14:21:12.743Z"
     },
     {
       "name": "Zalando",
@@ -34,7 +35,7 @@
       "products": 0,
       "pages": 0,
       "reason": "robots.txt inaccessible ou accès refusé",
-      "checkedAt": "2026-11-06T18:01:00.186Z"
+      "checkedAt": "2026-11-08T14:21:12.743Z"
     },
     {
       "name": "Pull & Bear",
@@ -42,7 +43,7 @@
       "products": 0,
       "pages": 0,
       "reason": "robots.txt inaccessible ou accès refusé",
-      "checkedAt": "2026-11-06T18:01:00.186Z"
+      "checkedAt": "2026-11-08T14:21:12.743Z"
     },
     {
       "name": "Bershka",
@@ -66,7 +67,7 @@
       "products": 0,
       "pages": 0,
       "reason": "robots.txt inaccessible ou accès refusé",
-      "checkedAt": "2026-11-06T18:01:00.186Z"
+      "checkedAt": "2026-11-08T14:21:12.743Z"
     },
     {
       "name": "UNIQLO",
@@ -74,7 +75,7 @@
       "products": 0,
       "pages": 0,
       "reason": "robots.txt inaccessible ou accès refusé",
-      "checkedAt": "2026-11-06T18:01:00.186Z"
+      "checkedAt": "2026-11-08T14:21:12.743Z"
     },
     {
       "name": "Massimo Dutti",
@@ -90,7 +91,7 @@
       "products": 18,
       "pages": 19,
       "reason": "",
-      "checkedAt": "2026-11-06T18:01:00.186Z"
+      "checkedAt": "2026-11-08T14:21:12.743Z"
     },
     {
       "name": "Levi's",
@@ -193,7 +194,8 @@
       "status": "blocked",
       "products": 0,
       "pages": 0,
-      "reason": "robots.txt inaccessible ou accès refusé"
+      "reason": "robots.txt inaccessible ou accès refusé",
+      "checkedAt": "2026-11-08T14:21:12.743Z"
     },
     {
       "name": "JD Sports",
@@ -216,7 +218,8 @@
       "status": "blocked",
       "products": 0,
       "pages": 0,
-      "reason": "robots.txt inaccessible ou accès refusé"
+      "reason": "robots.txt inaccessible ou accès refusé",
+      "checkedAt": "2026-11-08T14:21:12.743Z"
     },
     {
       "name": "Louis Vuitton",
@@ -239,7 +242,8 @@
       "status": "blocked",
       "products": 0,
       "pages": 0,
-      "reason": "robots.txt inaccessible ou accès refusé"
+      "reason": "robots.txt inaccessible ou accès refusé",
+      "checkedAt": "2026-11-08T14:21:12.743Z"
     },
     {
       "name": "Charles Tyrwhitt",
@@ -259,10 +263,11 @@
     },
     {
       "name": "Foot Locker",
-      "status": "ok",
-      "products": 5,
-      "pages": 18,
-      "reason": ""
+      "status": "no-structured-products",
+      "products": 0,
+      "pages": 15,
+      "reason": "Aucune fiche produit publique exploitable.",
+      "checkedAt": "2026-11-08T14:21:12.743Z"
     },
     {
       "name": "Tommy Hilfiger",
@@ -294,7 +299,7 @@
       "products": 0,
       "pages": 0,
       "reason": "robots.txt inaccessible ou accès refusé",
-      "checkedAt": "2026-11-06T18:01:00.186Z"
+      "checkedAt": "2026-11-08T14:21:12.743Z"
     },
     {
       "name": "Galeries Lafayette",
@@ -349,7 +354,7 @@
       "products": 0,
       "pages": 19,
       "reason": "Aucune fiche produit publique exploitable.",
-      "checkedAt": "2026-11-06T18:01:00.186Z"
+      "checkedAt": "2026-11-08T14:21:12.743Z"
     },
     {
       "name": "Kiabi",
@@ -363,8 +368,9 @@
       "name": "Decathlon",
       "status": "no-structured-products",
       "products": 0,
-      "pages": 4,
-      "reason": "Aucune fiche produit publique exploitable."
+      "pages": 19,
+      "reason": "Aucune fiche produit publique exploitable.",
+      "checkedAt": "2026-11-08T14:21:12.743Z"
     },
     {
       "name": "Dior",
@@ -388,7 +394,7 @@
       "products": 0,
       "pages": 19,
       "reason": "Aucune fiche produit publique exploitable.",
-      "checkedAt": "2026-11-06T18:01:00.186Z"
+      "checkedAt": "2026-11-08T14:21:12.743Z"
     },
     {
       "name": "MR PORTER",
@@ -925,6 +931,182 @@
       "pages": 19,
       "reason": "Aucune fiche produit publique exploitable.",
       "checkedAt": "2026-11-07T14:07:35.002Z"
+    },
+    {
+      "name": "Zegna",
+      "status": "blocked",
+      "products": 0,
+      "pages": 0,
+      "reason": "robots.txt inaccessible ou accès refusé",
+      "checkedAt": "2026-11-08T14:21:12.743Z"
+    },
+    {
+      "name": "Loro Piana",
+      "status": "blocked",
+      "products": 0,
+      "pages": 0,
+      "reason": "robots.txt inaccessible ou accès refusé",
+      "checkedAt": "2026-11-08T14:21:12.743Z"
+    },
+    {
+      "name": "Hermès",
+      "status": "unavailable",
+      "products": 0,
+      "pages": 0,
+      "reason": "Aucune fiche produit publique exploitable.",
+      "checkedAt": "2026-11-08T14:21:12.743Z"
+    },
+    {
+      "name": "Maison Margiela",
+      "status": "blocked",
+      "products": 0,
+      "pages": 0,
+      "reason": "robots.txt inaccessible ou accès refusé",
+      "checkedAt": "2026-11-08T14:21:12.743Z"
+    },
+    {
+      "name": "Jacquemus",
+      "status": "blocked",
+      "products": 0,
+      "pages": 0,
+      "reason": "robots.txt inaccessible ou accès refusé",
+      "checkedAt": "2026-11-08T14:21:12.743Z"
+    },
+    {
+      "name": "Off-White",
+      "status": "no-structured-products",
+      "products": 0,
+      "pages": 3,
+      "reason": "Aucune fiche produit publique exploitable.",
+      "checkedAt": "2026-11-08T14:21:12.743Z"
+    },
+    {
+      "name": "Alexander McQueen",
+      "status": "blocked",
+      "products": 0,
+      "pages": 0,
+      "reason": "robots.txt inaccessible ou accès refusé",
+      "checkedAt": "2026-11-08T14:21:12.743Z"
+    },
+    {
+      "name": "C.P. Company",
+      "status": "ok",
+      "products": 8,
+      "pages": 19,
+      "reason": "",
+      "checkedAt": "2026-11-08T14:21:12.743Z"
+    },
+    {
+      "name": "Brunello Cucinelli",
+      "status": "blocked",
+      "products": 0,
+      "pages": 0,
+      "reason": "robots.txt inaccessible ou accès refusé",
+      "checkedAt": "2026-11-08T14:21:12.743Z"
+    },
+    {
+      "name": "SNIPES",
+      "status": "unavailable",
+      "products": 0,
+      "pages": 0,
+      "reason": "Aucune fiche produit publique exploitable.",
+      "checkedAt": "2026-11-08T14:21:12.743Z"
+    },
+    {
+      "name": "Kenzo",
+      "status": "no-structured-products",
+      "products": 0,
+      "pages": 3,
+      "reason": "Aucune fiche produit publique exploitable.",
+      "checkedAt": "2026-11-08T14:21:12.743Z"
+    },
+    {
+      "name": "Footpatrol",
+      "status": "no-structured-products",
+      "products": 0,
+      "pages": 1,
+      "reason": "Aucune fiche produit publique exploitable.",
+      "checkedAt": "2026-11-08T14:21:12.743Z"
+    },
+    {
+      "name": "Size?",
+      "status": "no-structured-products",
+      "products": 0,
+      "pages": 1,
+      "reason": "Aucune fiche produit publique exploitable.",
+      "checkedAt": "2026-11-08T14:21:12.743Z"
+    },
+    {
+      "name": "Vans",
+      "status": "blocked",
+      "products": 0,
+      "pages": 0,
+      "reason": "robots.txt inaccessible ou accès refusé",
+      "checkedAt": "2026-11-08T14:21:12.743Z"
+    },
+    {
+      "name": "BSTN",
+      "status": "no-structured-products",
+      "products": 0,
+      "pages": 3,
+      "reason": "Aucune fiche produit publique exploitable.",
+      "checkedAt": "2026-11-08T14:21:12.743Z"
+    },
+    {
+      "name": "Valentino",
+      "status": "no-structured-products",
+      "products": 0,
+      "pages": 19,
+      "reason": "Aucune fiche produit publique exploitable.",
+      "checkedAt": "2026-11-08T14:21:12.743Z"
+    },
+    {
+      "name": "Asphaltgold",
+      "status": "no-structured-products",
+      "products": 0,
+      "pages": 19,
+      "reason": "Aucune fiche produit publique exploitable.",
+      "checkedAt": "2026-11-08T14:21:12.743Z"
+    },
+    {
+      "name": "Reebok",
+      "status": "no-structured-products",
+      "products": 0,
+      "pages": 19,
+      "reason": "Aucune fiche produit publique exploitable.",
+      "checkedAt": "2026-11-08T14:21:12.743Z"
+    },
+    {
+      "name": "HOKA",
+      "status": "unavailable",
+      "products": 0,
+      "pages": 0,
+      "reason": "Aucune fiche produit publique exploitable.",
+      "checkedAt": "2026-11-08T14:21:12.743Z"
+    },
+    {
+      "name": "Mizuno",
+      "status": "no-structured-products",
+      "products": 0,
+      "pages": 3,
+      "reason": "Aucune fiche produit publique exploitable.",
+      "checkedAt": "2026-11-08T14:21:12.743Z"
+    },
+    {
+      "name": "Salomon",
+      "status": "unavailable",
+      "products": 0,
+      "pages": 0,
+      "reason": "Aucune fiche produit publique exploitable.",
+      "checkedAt": "2026-11-08T14:21:12.743Z"
+    },
+    {
+      "name": "On",
+      "status": "no-structured-products",
+      "products": 0,
+      "pages": 19,
+      "reason": "Aucune fiche produit publique exploitable.",
+      "checkedAt": "2026-11-08T14:21:12.743Z"
     }
   ],
   "refreshCadence": "Rotation quotidienne de 36 enseignes parmi 200 ; chaque enseigne est revisitée à tour de rôle.",
@@ -935,8 +1117,8 @@
     "Les prix et stocks sont datés ; vérification finale sur la boutique avant achat.",
     "Les notes produit ne sont jamais présentées comme une note de fiabilité du marchand."
   ],
-  "priorityCursor": 36,
-  "regularCursor": 72,
+  "priorityCursor": 9,
+  "regularCursor": 96,
   "directoryCount": 200,
   "nextBatchSize": 36,
   "pageSize": 120,
