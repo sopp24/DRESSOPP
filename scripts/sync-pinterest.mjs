@@ -7,6 +7,10 @@ const BOARD_NAME = (process.env.PINTEREST_BOARD_NAME || "mode").trim().toLowerCa
 let TOKEN = "";
 const BOARD_URL = "https://fr.pinterest.com/sopppx24/mode/";
 const OUTPUT = "data/pinterest-pins.json";
+const ANALYSIS_ENDPOINT = String(process.env.PINTEREST_ANALYSIS_ENDPOINT || "https://dressopp-agent.adamsoppelsa.workers.dev").trim().replace(/\\/+$/, "");
+const SYNC_TOKEN = process.env.PINTEREST_SYNC_TOKEN || "";
+const ANALYSIS_BATCH_SIZE = 3;
+const ANALYSIS_VERSION = 1;
 
 async function obtainAccessToken() {
   if (STATIC_TOKEN) return STATIC_TOKEN;
@@ -70,6 +74,62 @@ function pickImage(pin) {
     (images["400x300"] && images["400x300"].url) || "";
 }
 
+
+async function analyzePendingPins(pins) {
+  const pending = pins.filter(pin => pin.imageUrl && !(
+    pin.visualAnalysis &&
+    pin.visualAnalysis.version === ANALYSIS_VERSION &&
+    pin.visualAnalysis.sourceImageUrl === pin.imageUrl
+  ));
+  if (!pending.length) {
+    console.log("Analyse visuelle : toutes les images sont déjà à jour.");
+    return;
+  }
+  if (!SYNC_TOKEN) {
+    console.warn("Analyse visuelle non lancée : ajoute PINTEREST_SYNC_TOKEN dans les secrets GitHub et dans le Worker Cloudflare. La synchronisation des Pins continue normalement.");
+    return;
+  }
+
+  let analyzed = 0;
+  let failed = 0;
+  for (let offset = 0; offset < pending.length; offset += ANALYSIS_BATCH_SIZE) {
+    const batch = pending.slice(offset, offset + ANALYSIS_BATCH_SIZE);
+    try {
+      const response = await fetch(ANALYSIS_ENDPOINT + "/analyze-pins", {
+        method:"POST",
+        headers:{
+          Authorization:"Bearer " + SYNC_TOKEN,
+          "Content-Type":"application/json",
+          Accept:"application/json"
+        },
+        body:JSON.stringify({
+          pins:batch.map(pin => ({id:pin.id,imageUrl:pin.imageUrl,title:pin.title,description:pin.description}))
+        })
+      });
+      const result = await response.json().catch(() => ({}));
+      if (!response.ok || !result.ok || !Array.isArray(result.analyses)) {
+        throw new Error(result.error || "Le service d’analyse visuelle a répondu avec le statut " + response.status + ".");
+      }
+      const byId = new Map(result.analyses.map(item => [String(item.id),item]));
+      batch.forEach(pin => {
+        const entry = byId.get(String(pin.id));
+        if (entry && entry.visualAnalysis && entry.visualAnalysis.version === ANALYSIS_VERSION) {
+          pin.visualAnalysis = entry.visualAnalysis;
+          analyzed += 1;
+        } else {
+          failed += 1;
+          console.warn("Analyse visuelle à réessayer pour le Pin " + pin.id + " : " + ((entry && entry.error) || "aucun résultat exploitable"));
+        }
+      });
+    } catch (error) {
+      failed += batch.length;
+      console.warn("Analyse visuelle interrompue pour un lot de Pins : " + (error && error.message ? error.message : "erreur inconnue"));
+      break;
+    }
+  }
+  console.log("Analyse visuelle Pinterest : " + analyzed + " image(s) analysée(s), " + failed + " à réessayer.");
+}
+
 async function main() {
   TOKEN = await obtainAccessToken();
   if (!TOKEN) return;
@@ -88,7 +148,8 @@ async function main() {
 
   const pins = await listAll("/boards/" + encodeURIComponent(board.id) + "/pins");
   const previous = await readFile(OUTPUT, "utf8").then(JSON.parse).catch(() => ({ pins: [] }));
-  const previousIds = new Set((previous.pins || []).map(pin => String(pin.id)));
+  const previousPins = new Map((previous.pins || []).map(pin => [String(pin.id),pin]));
+  const previousIds = new Set(previousPins.keys());
   const normalized = pins.map(pin => ({
     id: String(pin.id),
     title: pin.title || "",
@@ -102,15 +163,23 @@ async function main() {
     boardId: String(board.id)
   })).filter(pin => pin.id);
 
+  normalized.forEach(pin => {
+    const previousPin = previousPins.get(pin.id);
+    if (previousPin && previousPin.imageUrl === pin.imageUrl && previousPin.visualAnalysis) {
+      pin.visualAnalysis = previousPin.visualAnalysis;
+    }
+  });
+
   normalized.sort((a, b) => {
     const dateA = a.createdAt ? Date.parse(a.createdAt) : 0;
     const dateB = b.createdAt ? Date.parse(b.createdAt) : 0;
     return dateB - dateA;
   });
 
+  await analyzePendingPins(normalized);
   const newPinIds = normalized.filter(pin => !previousIds.has(pin.id)).map(pin => pin.id);
   const payload = {
-    schemaVersion: 1,
+    schemaVersion: 2,
     boardUrl: BOARD_URL,
     boardName: board.name,
     boardId: String(board.id),
