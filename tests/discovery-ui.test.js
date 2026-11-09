@@ -124,7 +124,8 @@ test("Pinterest is the sole inspiration source and the old local lookbook is abs
   assert.ok(index.includes("https://sopp24.github.io/SOPP-agents/assets/brand-mark.webp"));
 });
 
-\ntest("swiping down on the discovery card saves it to the list", function() {
+
+test("swiping down on the discovery card saves it to the list", function() {
   assert.ok(app.includes("verticalSaveIntent"));
   assert.ok(app.includes("const acceptedSave = verticalSaveIntent && deltaY >= saveThreshold"));
   assert.ok(app.includes('animateDeckDecision(productId, acceptedSave ? "save"'));
