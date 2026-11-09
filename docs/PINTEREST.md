@@ -29,16 +29,16 @@ Le script actuel n'écrit dans `data/pinterest-pins.json` que si l'API confirme 
 4. Dans GitHub, ouvrir **Settings → Secrets and variables → Actions → New repository secret** et ajouter :
    - `PINTEREST_APP_ID` : identifiant de l'application ;
    - `PINTEREST_APP_SECRET` : secret de l'application.
-   - `PINTEREST_SYNC_TOKEN` : jeton aléatoire partagé avec le Worker Cloudflare pour autoriser l’analyse visuelle des Pins. Génère-le avec `openssl rand -hex 32`, puis enregistre exactement la même valeur dans GitHub Actions et dans les secrets du Worker.
-5. Dans un terminal, depuis le dossier `workers/dressopp-agent`, configure le secret côté Cloudflare puis redéploie le Worker :
+5. Générer un jeton privé avec `openssl rand -hex 32`. Dans un terminal, depuis le dossier `workers/dressopp-agent`, le configurer côté Cloudflare puis redéployer le Worker :
    ```bash
    npx wrangler secret put PINTEREST_SYNC_TOKEN
    npx wrangler deploy
    ```
-   Lors de la demande de valeur, colle le jeton généré à l’étape précédente. Dans GitHub, ouvre **Settings → Secrets and variables → Actions → New repository secret**, nomme-le `PINTEREST_SYNC_TOKEN` et colle la même valeur.
-6. Le workflow génère un jeton Client Credentials pour les endpoints autorisés. Ce mode agit au nom de l'application et non d'un utilisateur tiers ; il ne donne pas accès à toutes les ressources d'un compte.
-7. Un secret `PINTEREST_ACCESS_TOKEN` peut être utilisé à la place. Pour des ressources utilisateur qui nécessitent un consentement, il faut le flux OAuth Authorization Code et les scopes correspondants.
-8. Lancer [Actions → Synchronisation Pinterest](https://github.com/sopp24/DRESSOPP/actions/workflows/pinterest-daily.yml) pour vérifier le premier passage.
+   Lorsque Cloudflare demande une valeur, coller le jeton généré.
+6. Dans GitHub, ouvrir **Settings → Secrets and variables → Actions → New repository secret**, nommer ce secret `PINTEREST_SYNC_TOKEN` et coller exactement le même jeton.
+7. Le workflow génère un jeton Client Credentials pour les endpoints autorisés. Ce mode agit au nom de l'application et non d'un utilisateur tiers ; il ne donne pas accès à toutes les ressources d'un compte.
+8. Un secret `PINTEREST_ACCESS_TOKEN` peut être utilisé à la place. Pour des ressources utilisateur qui nécessitent un consentement, il faut le flux OAuth Authorization Code et les scopes correspondants.
+9. Lancer [Actions → Synchronisation Pinterest](https://github.com/sopp24/DRESSOPP/actions/workflows/pinterest-daily.yml) pour vérifier le premier passage.
 
 Les scopes secrets `boards:read_secret` et `pins:read_secret` ne doivent être utilisés que dans un flux OAuth utilisateur qui a obtenu ce consentement. Le mécanisme public actuel refuse de publier les Pins secrets. Pour une utilisation future de tableaux privés, les données devront être stockées dans un backend privé et non dans ce dépôt public.
 
