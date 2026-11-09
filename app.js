@@ -831,6 +831,7 @@ function renderOutfitProposalCard(idea) {
     return '<div class="outfit-proposal-piece">' + imageMarkup(entry.product.imageUrl,entry.product.name) + '</div>';
   }).join("");
   const tags = idea.tags.slice(0,5).map(function(tag) { return '<span>' + esc(tag) + '</span>'; }).join("");
+  const missingLabels = (idea.missingSlots || []).map(outfitSlotLabel).join(", ");
   const total = idea.totalPrice == null ? "Prix total à confirmer" : formatPrice(idea.totalPrice);
   return '<article class="panel outfit-proposal-card">' +
     '<button class="outfit-proposal-open" type="button" data-action="show-outfit" data-id="' + esc(pinId) + '" aria-label="Voir la tenue ' + esc(pin.title || "inspirée de Pinterest") + '">' +
@@ -838,7 +839,9 @@ function renderOutfitProposalCard(idea) {
     '<div class="outfit-proposal-copy"><span class="eyebrow">' + esc(idea.tags.slice(0,2).join(" · ") || "Inspiration de ton tableau") + '</span><h2>' + esc(pin.title || "Une silhouette à adopter") + '</h2>' +
     (summary ? '<p>' + esc(String(summary).slice(0,130)) + '</p>' : '') +
     '<div class="inspiration-tags">' + tags + '</div><div class="outfit-proposal-preview">' + productPreviews + '</div>' +
-    '<div class="outfit-proposal-meta"><strong>' + esc(total) + '</strong><span>' + idea.items.length + ' articles associés</span></div></div></button>' +
+    '<div class="outfit-proposal-meta"><strong>' + esc(total) + '</strong><span>' + idea.items.length + ' articles associés</span></div>' +
+    (missingLabels ? '<small class="outfit-missing-note">À compléter : ' + esc(missingLabels) + '</small>' : '<small class="outfit-missing-note is-complete">✓ Les 3 pièces essentielles sont réunies</small>') +
+    '</div></button>' +
     '<div class="outfit-proposal-actions">' +
     '<button class="button-primary button-small" type="button" data-action="show-outfit" data-id="' + esc(pinId) + '">Voir la tenue <span aria-hidden="true">↗</span></button>' +
     (savedOutfit ? '<span class="outfit-saved-label">✓ Dans Mes tenues</span>' : '<button class="button-secondary button-small" type="button" data-action="save-full-outfit" data-id="' + esc(pinId) + '">♡ Enregistrer le look</button>') +
@@ -915,6 +918,7 @@ function openOutfitDetail(idea) {
     ? formatPrice(items.reduce(function(sum,entry) { return sum + Number(entry.product.price); },0))
     : "Prix total à confirmer";
   const summary = pin.visualAnalysis && pin.visualAnalysis.summary || pin.description || "";
+  const missingLabels = (idea.missingSlots || []).map(outfitSlotLabel).join(", ");
   const slides = items.map(function(entry,index) {
     const product = entry.product;
     const liked = isLiked(product.id);
@@ -934,7 +938,9 @@ function openOutfitDetail(idea) {
     '<div><span class="eyebrow">Inspiration Pinterest</span><h2 id="outfit-detail-title">' + esc(pin.title || "Une tenue inspirée de ton tableau") + '</h2>' +
     (summary ? '<p>' + esc(String(summary).slice(0,220)) + '</p>' : '') +
     '<div class="inspiration-tags">' + (idea.tags || []).slice(0,6).map(function(tag) { return '<span>' + esc(tag) + '</span>'; }).join("") + '</div>' +
-    '<strong class="outfit-detail-total">' + esc(total) + '</strong></div></div>' +
+    '<strong class="outfit-detail-total">' + esc(total) + '</strong>' +
+    (missingLabels ? '<p class="outfit-missing-note">Pièces essentielles à compléter : ' + esc(missingLabels) + '.</p>' : '<p class="outfit-missing-note is-complete">✓ Haut, bas et chaussures réunis</p>') +
+    '</div></div>' +
     '<button class="close-button" type="button" data-action="close-modal" aria-label="Fermer">×</button></div>' +
     '<div class="outfit-detail-toolbar"><div><strong>Les pièces de ce look</strong><small>' + items.length + ' article(s) · fais défiler pour les découvrir</small></div><div class="outfit-carousel-controls">' +
     '<button type="button" data-action="outfit-carousel-prev" aria-label="Articles précédents">‹</button><button type="button" data-action="outfit-carousel-next" aria-label="Articles suivants">›</button></div></div>' +
@@ -1084,9 +1090,9 @@ function render() {
   const count = document.querySelector("#wardrobe-count");
   if (count) count.textContent = String(state.likedProducts.length);
   const outfitCount = document.querySelector("#outfit-count");
-  if (outfitCount) outfitCount.textContent = String((state.savedOutfits || []).length);
+  if (outfitCount) { outfitCount.textContent = String((state.savedOutfits || []).length); outfitCount.hidden = !(state.savedOutfits || []).length; }
   const outfitCountMobile = document.querySelector("#outfit-count-mobile");
-  if (outfitCountMobile) outfitCountMobile.textContent = String((state.savedOutfits || []).length);
+  if (outfitCountMobile) { outfitCountMobile.textContent = String((state.savedOutfits || []).length); outfitCountMobile.hidden = !(state.savedOutfits || []).length; }
   if (currentView === "wardrobe") main.innerHTML = renderWardrobe();
   else if (currentView === "training") main.innerHTML = renderDiscover(true);
   else if (currentView === "inspirations") main.innerHTML = renderInspirations();
@@ -1501,6 +1507,8 @@ async function importBackupFile(file) {
   state.settings = Object.assign(base.settings, imported.settings || {});
   state.interactions = Object.assign(base.interactions, imported.interactions || {});
   state.likedProducts = Array.isArray(imported.likedProducts) ? imported.likedProducts : [];
+  state.savedOutfits = Array.isArray(imported.savedOutfits) ? imported.savedOutfits : [];
+  state.settings.outfitFilters = Object.assign(base.settings.outfitFilters,state.settings.outfitFilters || {});
   state.inspirations = Array.isArray(imported.inspirations) ? imported.inspirations : [];
   state.outfitFeedback = imported.outfitFeedback && typeof imported.outfitFeedback === "object" && !Array.isArray(imported.outfitFeedback) ? imported.outfitFeedback : {};
   state.products = imported.products.map(normalizeProduct);
