@@ -22,6 +22,12 @@ test("the product card includes the product details and original merchant link",
   assert.ok(app.includes("Voir l’article original"));
   assert.ok(app.includes("navigator.share"));
   assert.ok(app.includes("navigator.clipboard"));
+  assert.ok(app.includes('./assets/rewind.webp'));
+  assert.ok(app.includes('./assets/cross.webp'));
+  assert.ok(app.includes('./assets/star.webp'));
+  assert.ok(app.includes('./assets/fav.webp'));
+  assert.ok(app.includes('./assets/share.webp'));
+  assert.ok(css.includes(".deck-action-icon"));
 });
 
 test("the Tinder card styling has responsive tablet and mobile layouts", function() {
