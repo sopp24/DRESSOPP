@@ -2449,3 +2449,6 @@ body.is-discovery-app .app-footer { display: none; }
 @media (max-width: 600px) {
   .training-pins-panel .inspiration-grid { grid-template-columns: minmax(0,1fr); }
 }
+
+.product-card.swipe-preview-save .swipe-tint { background: rgba(255,203,37,.78); opacity: var(--swipe-tint-opacity,.4); }
+.product-card.swipe-preview-save .swipe-stamp-save { opacity: 1; transform: translate(-50%,-50%) scale(1); }
