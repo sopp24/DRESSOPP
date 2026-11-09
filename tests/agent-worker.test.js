@@ -55,3 +55,77 @@ test("AI Worker rejects empty product candidates without calling the model", asy
   assert.equal(response.status,400);
   assert.equal(called,false);
 });
+
+
+test("Pinterest image analysis requires the private sync token", async () => {
+  const req = new Request("https://dressopp-agent.example.workers.dev/analyze-pins", {
+    method:"POST",
+    headers:{"content-type":"application/json"},
+    body:JSON.stringify({pins:[{id:"pin-1",imageUrl:"https://i.pinimg.com/test.jpg"}]})
+  });
+  let imageRequested = false, modelCalled = false;
+  const originalFetch = globalThis.fetch;
+  globalThis.fetch = async () => { imageRequested = true; return new Response(new Uint8Array([1,2,3]),{headers:{"content-type":"image/jpeg"}}); };
+  try {
+    const response = await worker.fetch(req,{
+      PINTEREST_SYNC_TOKEN:"expected-secret",
+      AI:{run:async()=>{modelCalled=true;return {response:"{}"};}}
+    });
+    assert.equal(response.status,403);
+    assert.equal(imageRequested,false);
+    assert.equal(modelCalled,false);
+  } finally { globalThis.fetch = originalFetch; }
+});
+
+test("Pinterest image analysis uses the vision model and returns hidden structured features", async () => {
+  const req = new Request("https://dressopp-agent.example.workers.dev/analyze-pins", {
+    method:"POST",
+    headers:{"content-type":"application/json","authorization":"Bearer sync-secret"},
+    body:JSON.stringify({pins:[{id:"pin-vision-1",title:"",description:"",imageUrl:"https://i.pinimg.com/1200x/test.jpg"}]})
+  });
+  const originalFetch = globalThis.fetch;
+  let modelName = "", modelInput = null;
+  globalThis.fetch = async url => {
+    assert.equal(new URL(url).hostname,"i.pinimg.com");
+    return new Response(new Uint8Array([255,216,255,217]),{headers:{"content-type":"image/jpeg","content-length":"4"}});
+  };
+  try {
+    const response = await worker.fetch(req,{
+      PINTEREST_SYNC_TOKEN:"sync-secret",
+      AI:{run:async(model,input)=>{
+        modelName=model; modelInput=input;
+        return {response:JSON.stringify({
+          isFashion:true,summary:"Veste en cuir noire portée sur un sweat gris.",
+          styleTags:["Streetwear"],colors:["noir","gris"],materials:["cuir"],
+          cuts:["oversized"],patterns:[],confidence:0.94
+        })};
+      }}
+    });
+    const body = await response.json();
+    assert.equal(response.status,200);
+    assert.equal(body.ok,true);
+    assert.equal(body.analyses[0].id,"pin-vision-1");
+    assert.equal(body.analyses[0].visualAnalysis.styleTags[0],"Streetwear");
+    assert.deepEqual(body.analyses[0].visualAnalysis.colors,["noir","gris"]);
+    assert.equal(modelName,"@cf/google/gemma-4-26b-a4b-it");
+    const imagePart = modelInput.messages[1].content.find(part => part.type==="image_url");
+    assert.match(imagePart.image_url.url,/^data:image\/jpeg;base64,/);
+  } finally { globalThis.fetch = originalFetch; }
+});
+
+test("Pinterest image analysis refuses image URLs outside Pinterest CDN", async () => {
+  const req = new Request("https://dressopp-agent.example.workers.dev/analyze-pins", {
+    method:"POST",
+    headers:{"content-type":"application/json","authorization":"Bearer sync-secret"},
+    body:JSON.stringify({pins:[{id:"pin-evil",imageUrl:"https://attacker.example/image.jpg"}]})
+  });
+  let modelCalled = false;
+  const response = await worker.fetch(req,{
+    PINTEREST_SYNC_TOKEN:"sync-secret",
+    AI:{run:async()=>{modelCalled=true;return {response:"{}"};}}
+  });
+  const body = await response.json();
+  assert.equal(response.status,200);
+  assert.match(body.analyses[0].error,/i.pinimg.com/);
+  assert.equal(modelCalled,false);
+});
