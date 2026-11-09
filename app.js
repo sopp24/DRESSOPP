@@ -373,7 +373,7 @@ function renderFilterBar(training) {
       selectOption(seasonFor(new Date()), settings.season, "Saison actuelle · " + seasonFor(new Date())) +
       SEASONS.map(function(item) { return selectOption(item, settings.season); }).join("") +
       '</select></div>' +
-    '<div class="field"><label for="price-filter">Budget maximum (€)</label><input id="price-filter" data-filter="maxPrice" type="number" min="0" step="1" value="' + (settings.maxPrice == null ? "" : esc(settings.maxPrice)) + '" placeholder="Sans limite"></div>' +
+    '<div class="field"><label for="price-filter">Budget maximum</label><div class="price-input-wrap"><input id="price-filter" data-filter="maxPrice" type="number" min="0" step="1" value="' + (settings.maxPrice == null ? "" : esc(settings.maxPrice)) + '" placeholder="Sans limite"><span class="price-input-currency" aria-hidden="true">€</span></div></div>' +
     '<div class="field"><label for="preset-filter">Mes filtres enregistrés</label><select id="preset-filter" data-filter="preset">' +
       selectOption("", "", saved.length ? "Charger un filtre" : "Aucun filtre enregistré") +
       saved.map(function(item, index) { return selectOption(String(index), "", item.name || ("Filtre " + (index + 1))); }).join("") +
