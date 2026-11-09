@@ -51,3 +51,39 @@ test("approved outfit references move ahead of rejected ones", function() {
   });
   assert.deepEqual(trained.map(function(idea) { return idea.pin.id; }), ["approved", "rejected"]);
 });
+
+
+test("visual Pinterest analysis improves matching without changing visible text tags", function() {
+  const pin = {
+    id:"visual-pin",
+    title:"",
+    description:"",
+    visualAnalysis:{
+      isFashion:true,
+      summary:"Veste en cuir noire, pantalon ample et sneakers.",
+      styleTags:["Streetwear"],
+      colors:["noir"],
+      materials:["cuir"],
+      cuts:["oversized"],
+      patterns:[]
+    }
+  };
+  const features = inferPinterestFeatures(pin);
+  assert.ok(features.styleTags.includes("Streetwear"));
+  assert.ok(features.colors.includes("noir"));
+  assert.ok(features.materials.includes("cuir"));
+  assert.ok(features.cuts.includes("oversized"));
+  assert.deepEqual(inferPinterestTags(pin),[]);
+});
+
+test("visual analysis marked as non-fashion does not add style signals", function() {
+  const pin = {
+    title:"",
+    description:"",
+    visualAnalysis:{isFashion:false,summary:"",styleTags:["Streetwear"],colors:["noir"],materials:["cuir"],cuts:[],patterns:[]}
+  };
+  const features = inferPinterestFeatures(pin);
+  assert.deepEqual(features.styleTags,[]);
+  assert.deepEqual(features.colors,[]);
+  assert.deepEqual(inferPinterestTags(pin),[]);
+});
