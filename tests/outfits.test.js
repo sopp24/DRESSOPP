@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { inferPinterestFeatures, inferPinterestTags, productSlot, buildOutfitIdeas } from "../modules/outfits.js";
+import { inferPinterestFeatures, inferPinterestTags, productSlot, outfitTotalPrice, buildOutfitIdeas } from "../modules/outfits.js";
 
 test("Pinterest metadata is classified into style, color and material signals", function() {
   const features = inferPinterestFeatures({
@@ -129,4 +129,52 @@ test("saved wardrobe pieces can be included without a merchant URL, but suggesti
   assert.ok(ideas[0].items.some(entry=>entry.product.id==="manual-top"));
   assert.ok(ideas[0].items.some(entry=>entry.product.id==="linked-bottom"));
   assert.ok(!ideas[0].items.some(entry=>entry.product.id==="unlinked-shoes"));
+});
+
+
+test("unknown product prices never become a zero-euro outfit total", function() {
+  assert.equal(outfitTotalPrice([
+    {product:{price:null}},
+    {product:{price:29.99}}
+  ]),null);
+  assert.equal(outfitTotalPrice([
+    {product:{price:0}},
+    {product:{price:29.99}}
+  ]),29.99);
+});
+
+test("season filters ignore generic style tags and only reject explicit conflicting seasons", function() {
+  const neutralPin = {
+    id:"neutral-season",
+    title:"Streetwear capsule outfit",
+    tags:["Streetwear","noir"]
+  };
+  const winterOnly = buildOutfitIdeas([neutralPin],[],[],[],{},{
+    season:"Hiver",styles:[],profile:{}
+  });
+  assert.equal(winterOnly.length,1);
+
+  const summerPin = {
+    id:"summer-season",
+    title:"Summer streetwear outfit",
+    tags:["Streetwear","beige"]
+  };
+  const winterFiltered = buildOutfitIdeas([summerPin],[],[],[],{},{
+    season:"Hiver",styles:[],profile:{}
+  });
+  const summerFiltered = buildOutfitIdeas([summerPin],[],[],[],{},{
+    season:"Été",styles:[],profile:{}
+  });
+  assert.equal(winterFiltered.length,0);
+  assert.equal(summerFiltered.length,1);
+
+  const winterTagged = {
+    id:"winter-season",
+    title:"Streetwear outfit",
+    tags:["Streetwear"],
+    seasonTags:["Automne / Hiver"]
+  };
+  assert.equal(buildOutfitIdeas([winterTagged],[],[],[],{},{
+    season:"Hiver",styles:[],profile:{}
+  }).length,1);
 });

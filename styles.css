@@ -2139,8 +2139,10 @@ body.is-discovery-app .app-footer { display: none; }
   .mobile-nav {
     width: calc(100% - 16px);
     max-width: calc(100% - 16px);
-    right: 50%;
+    left: 50%;
+    right: auto;
     bottom: max(7px,env(safe-area-inset-bottom));
+    transform: translateX(-50%);
     gap: 1px;
     padding: 5px 5px;
     border-radius: 18px;

@@ -1,8 +1,11 @@
-const CACHE_NAME = "dressopp-static-v13";
+const CACHE_NAME = "dressopp-static-v14";
 const CORE_FILES = [
   "./", "./index.html", "./privacy.html", "./styles.css", "./app.js",
   "./modules/store.js", "./modules/engine.js", "./modules/integrations.js", "./modules/outfits.js", "./modules/community.js", "./modules/agent.js",
   "./data/catalog.json", "./data/catalog-manifest.json", "./data/catalog-meta.json", "./data/catalog-seeds.json", "./data/public-sources.json", "./data/merchant-directory.json", "./data/community-config.json", "./data/ai-agent-config.json", "./data/pinterest-pins.json", "./data/lookbook-pins.json",
+  "./data/catalog-pages/page-0001.json",
+  "./assets/logo-horizontal.png",
+  "./assets/rewind.webp", "./assets/cross.webp", "./assets/star.webp", "./assets/fav.webp", "./assets/share.webp",
   "./assets/lookbook/look-01.webp",
   "./assets/lookbook/look-02.webp",
   "./assets/lookbook/look-03.webp",

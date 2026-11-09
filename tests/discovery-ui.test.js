@@ -1,9 +1,12 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { readFileSync, existsSync } from "node:fs";
 
 const app = readFileSync(new URL("../app.js", import.meta.url), "utf8");
 const css = readFileSync(new URL("../styles.css", import.meta.url), "utf8");
+const index = readFileSync(new URL("../index.html", import.meta.url), "utf8");
+const sw = readFileSync(new URL("../sw.js", import.meta.url), "utf8");
+const root = new URL("../", import.meta.url);
 
 test("the discovery deck exposes the five Tinder-style actions", function() {
   for (const action of ["undo", "vote", "save-list", "share-product"]) {
@@ -51,4 +54,43 @@ test("the Tenues view is Pinterest-only and exposes outfit favorites and a produ
   assert.ok(css.includes(".outfit-proposal-grid"));
   assert.ok(css.includes(".outfit-product-carousel"));
   assert.ok(css.includes("@media (max-width: 600px)"));
+});
+
+
+test("saved outfit dependencies and total-price handling are imported by the application", function() {
+  assert.ok(app.includes("productSlot, outfitTotalPrice"));
+  assert.ok(app.includes("outfitTotalPrice(items)"));
+});
+
+test("all local files referenced by the application shell exist", function() {
+  for (const match of index.matchAll(/(?:src|href)="\.\/([^"]+)"/g)) {
+    assert.ok(existsSync(new URL(match[1],root)),"Missing local file: " + match[1]);
+  }
+  assert.ok(!index.includes("assets/brand-mark.webp"));
+});
+
+test("the PWA refreshes its cache and preloads the app icons and first catalogue page", function() {
+  assert.ok(sw.includes('dressopp-static-v14'));
+  for (const path of [
+    "./assets/logo-horizontal.png",
+    "./assets/logo-square.png",
+    "./assets/rewind.webp",
+    "./assets/cross.webp",
+    "./assets/star.webp",
+    "./assets/fav.webp",
+    "./assets/share.webp",
+    "./data/catalog-pages/page-0001.json"
+  ]) {
+    assert.ok(sw.includes('"' + path + '"'),"Missing offline cache entry: " + path);
+    assert.ok(existsSync(new URL(path,root)),"Cached file does not exist: " + path);
+  }
+});
+
+test("mobile navigation and outfit details retain compact responsive breakpoints", function() {
+  assert.ok(css.includes("left: 50%;"));
+  assert.ok(css.includes("transform: translateX(-50%)"));
+  assert.ok(css.includes("@media (max-width: 850px)"));
+  assert.ok(css.includes("@media (max-width: 600px)"));
+  assert.ok(css.includes("@media (max-width: 390px)"));
+  assert.ok(css.includes(".outfit-carousel-card"));
 });

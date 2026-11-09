@@ -1,7 +1,7 @@
 import { loadState, saveState, clearState } from "./modules/store.js";
 import { createInitialState, normalizeProduct, productIdentity, seasonFor, rankProducts, deriveLearnedPreferences, matchesFilters } from "./modules/engine.js";
 import { INTEGRATIONS, getPersistenceNotice, PINTEREST_BOARD_URL } from "./modules/integrations.js";
-import { inferPinterestTags, inferPinterestFeatures, buildOutfitIdeas } from "./modules/outfits.js";
+import { inferPinterestTags, inferPinterestFeatures, buildOutfitIdeas, productSlot, outfitTotalPrice } from "./modules/outfits.js";
 import { syncCommunityProfile, deleteCommunityProfile, buildCommunitySignals } from "./modules/community.js";
 import { requestAgentRecommendations, orderProductsByAgent, selectAgentCandidates, recommendLocally } from "./modules/agent.js";
 
@@ -914,9 +914,8 @@ function openOutfitDetail(idea) {
   const items = (idea.items || []).filter(function(entry) { return entry && entry.product; });
   const existingFavorite = (state.savedOutfits || []).find(function(item) { return item.pinId === pinId; });
   const isSaved = Boolean(existingFavorite);
-  const total = items.length && items.every(function(entry) { return Number.isFinite(Number(entry.product.price)); })
-    ? formatPrice(items.reduce(function(sum,entry) { return sum + Number(entry.product.price); },0))
-    : "Prix total à confirmer";
+  const totalAmount = outfitTotalPrice(items);
+  const total = totalAmount == null ? "Prix total à confirmer" : formatPrice(totalAmount);
   const summary = pin.visualAnalysis && pin.visualAnalysis.summary || pin.description || "";
   const missingLabels = (idea.missingSlots || []).map(outfitSlotLabel).join(", ");
   const slides = items.map(function(entry,index) {

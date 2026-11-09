@@ -2,7 +2,7 @@
 
 **Mode diligente.**
 
-DRESSOPP — « Mode diligente. » — est un personal shopper visuel pour la mode masculine et les marques mixtes : une expérience de découverte façon Tinder, construite autour d'un lookbook local, d'un catalogue multi-boutiques et d'un moteur qui apprend de chaque réponse Oui, Non et de chaque article sauvegardé. Le tableau Pinterest public de référence est synchronisé automatiquement ; ses images sont analysées côté serveur par un modèle de vision afin d'enrichir les signaux stylistiques exploités par le moteur, sans ajouter d'information technique à l'interface.
+DRESSOPP — « Mode diligente. » — est un personal shopper visuel pour la mode masculine et les marques mixtes : une expérience de découverte façon Tinder, construite autour d'un lookbook local, d'un catalogue multi-boutiques et d'un moteur qui apprend de chaque réponse Oui, Non et de chaque article sauvegardé. Les propositions de l'onglet Tenues partent exclusivement des Pins Pinterest synchronisés ou ajoutés comme inspirations ; leurs images sont analysées côté serveur par un modèle de vision afin d'enrichir les associations de vêtements, sans ajouter d'information technique à l'interface.
 
 Site : https://sopp24.github.io/DRESSOPP/
 

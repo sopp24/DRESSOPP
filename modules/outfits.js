@@ -217,10 +217,25 @@ function productExcludedByProfile(product, profile) {
     (p.excludedMaterials || []).some(value => materials.includes(clean(value))) ||
     (p.excludedCuts || []).some(value => cuts.includes(clean(value)));
 }
+const SEASON_HINTS = {
+  printemps:["printemps","spring","mid-season","mid season","mi-saison"],
+  ete:["ete","summer","estival"],
+  automne:["automne","autumn","fall"],
+  hiver:["hiver","winter","cold weather"]
+};
+function seasonHintsFor(season) {
+  return SEASON_HINTS[clean(season)] || [clean(season)];
+}
+function matchesSeasonValues(values, hints) {
+  return (values || []).some(value => {
+    const tag = clean(value);
+    return tag === "toute saison" || hints.some(hint => tag.includes(clean(hint)));
+  });
+}
 function productMatchesOutfitSeason(product, season) {
   if (!season || clean(season) === "toute saison") return true;
-  const tags = (product.seasonTags || []).map(clean);
-  return !tags.length || tags.some(tag => tag === clean(season) || tag === "toute saison");
+  const tags = (product.seasonTags || []).filter(Boolean);
+  return !tags.length || matchesSeasonValues(tags,seasonHintsFor(season));
 }
 function productSizeMatches(product, profile) {
   const supplied = (product.sizes || []).map(clean);
@@ -260,18 +275,30 @@ function pinMatchesOutfitFilters(pin, filters) {
   }
   const season = filters.season || "Toute saison";
   if (clean(season) !== "toute saison") {
-    const tags = (pin && pin.seasonTags || []).concat(pin && pin.tags || []).map(clean);
-    const text = clean([pinterestText(pin),pin && pin.visualAnalysis && pin.visualAnalysis.summary].join(" "));
-    const seasonalHints = {
-      "printemps":["printemps","spring","mid season","mi-saison"],
-      "été":["ete","summer","estival"],
-      "automne":["automne","autumn","fall"],
-      "hiver":["hiver","winter","cold weather"]
-    }[clean(season)] || [clean(season)];
-    if (tags.length && !tags.some(tag => seasonalHints.some(hint => tag.includes(hint)))) return false;
-    if (!tags.length && !seasonalHints.some(hint => text.includes(hint))) return true;
+    const hints = seasonHintsFor(season);
+    const seasonTags = (pin && pin.seasonTags || []).concat(pin && pin.season ? [pin.season] : []).filter(Boolean);
+    if (seasonTags.length) return matchesSeasonValues(seasonTags,hints);
+
+    const text = clean([
+      pin && pin.title,pin && pin.description,pin && pin.altText,pin && pin.alt_text,
+      pin && pin.visualAnalysis && pin.visualAnalysis.summary
+    ].filter(Boolean).join(" "));
+    const allSeasonHints = Object.values(SEASON_HINTS).flat().map(clean);
+    const hasExplicitSeason = allSeasonHints.some(hint => text.includes(hint));
+    // If Pinterest does not specify a season, keep the Pin eligible; product season tags still apply.
+    if (!hasExplicitSeason) return true;
+    return hints.some(hint => text.includes(clean(hint)));
   }
   return true;
+}
+
+export function outfitTotalPrice(items) {
+  const entries = Array.isArray(items) ? items : [];
+  if (!entries.length || entries.some(entry => {
+    const price = entry && entry.product ? entry.product.price : null;
+    return price == null || price === "" || !Number.isFinite(Number(price));
+  })) return null;
+  return entries.reduce((sum,entry) => sum + Number(entry.product.price),0);
 }
 
 export function buildOutfitIdeas(pins, wardrobe, catalogue, dislikedIds, outfitFeedback, filters) {
@@ -336,10 +363,7 @@ export function buildOutfitIdeas(pins, wardrobe, catalogue, dislikedIds, outfitF
     const pieces = items.filter(entry => entry.isSaved);
     const suggestions = items.filter(entry => !entry.isSaved);
     const missingSlots = coreSlots.filter(slot => !items.some(entry => entry.slot === slot));
-    const totalKnown = items.every(entry => Number.isFinite(Number(entry.product.price)));
-    const totalPrice = items.length && totalKnown
-      ? items.reduce((sum,entry) => sum + Number(entry.product.price),0)
-      : null;
+    const totalPrice = outfitTotalPrice(items);
     const matchAverage = items.length ? items.reduce((sum,entry) => sum + entry.score,0) / items.length : 0;
     ideas.push({
       pin,
