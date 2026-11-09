@@ -1957,6 +1957,35 @@ body.is-discovery-app .app-footer { display: none; }
 }
 .product-details-pill:active { transform: scale(.94); }
 .product-details-pill span { font-size: 13px; }
+.product-card-links {
+  display: flex;
+  max-width: 38%;
+  flex: 0 0 auto;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+}
+.discovery-page--app .product-card-links .product-original-link {
+  display: inline-flex;
+  min-height: 30px;
+  max-width: 100%;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  overflow: hidden;
+  padding: 6px 9px;
+  border: 1px solid rgba(255,255,255,.23);
+  border-radius: 99px;
+  color: rgba(255,255,255,.88);
+  background: rgba(8,8,10,.28);
+  font-size: 8px;
+  font-weight: 700;
+  text-decoration: none;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
 
 .discovery-page--app .deck-actions {
   position: absolute;
