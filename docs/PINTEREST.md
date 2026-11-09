@@ -29,15 +29,30 @@ Le script actuel n'écrit dans `data/pinterest-pins.json` que si l'API confirme 
 4. Dans GitHub, ouvrir **Settings → Secrets and variables → Actions → New repository secret** et ajouter :
    - `PINTEREST_APP_ID` : identifiant de l'application ;
    - `PINTEREST_APP_SECRET` : secret de l'application.
-5. Le workflow génère un jeton Client Credentials pour les endpoints autorisés. Ce mode agit au nom de l'application et non d'un utilisateur tiers ; il ne donne pas accès à toutes les ressources d'un compte.
-6. Un secret `PINTEREST_ACCESS_TOKEN` peut être utilisé à la place. Pour des ressources utilisateur qui nécessitent un consentement, il faut le flux OAuth Authorization Code et les scopes correspondants.
-7. Lancer [Actions → Synchronisation Pinterest](https://github.com/sopp24/DRESSOPP/actions/workflows/pinterest-daily.yml) pour vérifier le premier passage.
+   - `PINTEREST_SYNC_TOKEN` : jeton aléatoire partagé avec le Worker Cloudflare pour autoriser l’analyse visuelle des Pins. Génère-le avec `openssl rand -hex 32`, puis enregistre exactement la même valeur dans GitHub Actions et dans les secrets du Worker.
+5. Dans un terminal, depuis le dossier `workers/dressopp-agent`, configure le secret côté Cloudflare puis redéploie le Worker :
+   ```bash
+   npx wrangler secret put PINTEREST_SYNC_TOKEN
+   npx wrangler deploy
+   ```
+   Lors de la demande de valeur, colle le jeton généré à l’étape précédente. Dans GitHub, ouvre **Settings → Secrets and variables → Actions → New repository secret**, nomme-le `PINTEREST_SYNC_TOKEN` et colle la même valeur.
+6. Le workflow génère un jeton Client Credentials pour les endpoints autorisés. Ce mode agit au nom de l'application et non d'un utilisateur tiers ; il ne donne pas accès à toutes les ressources d'un compte.
+7. Un secret `PINTEREST_ACCESS_TOKEN` peut être utilisé à la place. Pour des ressources utilisateur qui nécessitent un consentement, il faut le flux OAuth Authorization Code et les scopes correspondants.
+8. Lancer [Actions → Synchronisation Pinterest](https://github.com/sopp24/DRESSOPP/actions/workflows/pinterest-daily.yml) pour vérifier le premier passage.
 
 Les scopes secrets `boards:read_secret` et `pins:read_secret` ne doivent être utilisés que dans un flux OAuth utilisateur qui a obtenu ce consentement. Le mécanisme public actuel refuse de publier les Pins secrets. Pour une utilisation future de tableaux privés, les données devront être stockées dans un backend privé et non dans ce dépôt public.
 
+## Analyse visuelle automatique
+
+Après la synchronisation Pinterest, le workflow transmet les images manquantes ou modifiées au Worker Cloudflare, qui utilise le modèle Gemma 4 déjà configuré avec sa capacité de vision. Les images sont récupérées uniquement depuis `i.pinimg.com`, puis analysées côté serveur. Le résultat structuré contient un résumé interne, les styles, couleurs, matières, coupes et motifs identifiables, ainsi qu’un indicateur de confiance.
+
+Les analyses sont conservées dans le champ technique `visualAnalysis` de chaque Pin. Elles alimentent le moteur de correspondance des tenues et le personal shopper IA, mais ne sont pas affichées dans les cartes, les tags visibles ou les paramètres de l’application. Les images déjà analysées ne sont pas renvoyées au modèle tant que leur URL ne change pas.
+
+L’analyse est facultative tant que `PINTEREST_SYNC_TOKEN` n’est pas configuré : la synchronisation classique continue et les images non analysées seront retentées lors d’un prochain passage. Une image inaccessible ou non vestimentaire n’interrompt pas le reste du flux.
+
 ## Données et confidentialité
 
-`data/pinterest-pins.json` contient les Pins publics synchronisés, leurs identifiants, liens, titres/descriptions et images. Les interactions et feedbacks personnels restent dans IndexedDB sur l'appareil. Les identifiants ou mots de passe Pinterest ne doivent jamais être committés dans le dépôt.
+`data/pinterest-pins.json` contient les Pins publics synchronisés, leurs identifiants, liens, titres/descriptions, images et métadonnées d’analyse visuelle. Le dépôt étant public, ces métadonnées techniques le sont également ; seules les images du tableau explicitement public sont traitées. Les interactions et feedbacks personnels restent dans IndexedDB sur l'appareil. Les identifiants ou mots de passe Pinterest ne doivent jamais être committés dans le dépôt.
 
 ## Limites
 
@@ -45,4 +60,4 @@ Les scopes secrets `boards:read_secret` et `pins:read_secret` ne doivent être u
 - Les pages du tableau doivent être publiques pour le workflow actuel.
 - Le client credentials ne remplace pas un consentement utilisateur pour des ressources privées.
 - Les horaires cron GitHub Actions sont des heures cibles et peuvent être retardés.
-- Le premier passage charge les Pins accessibles ; les suivants identifient les nouveaux Pins.
+- Le premier passage charge les Pins accessibles ; les suivants identifient les nouveaux Pins et analysent uniquement les images qui ne possèdent pas encore de résultat valide.
