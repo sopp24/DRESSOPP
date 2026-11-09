@@ -36,7 +36,7 @@ const SLOT_TERMS = {
   top: ["t-shirt","tee","shirt","chemise","polo","pull","sweat","hoodie","débardeur","top","cardigan","maille"],
   bottom: ["pantalon","jean","jeans","trouser","trousers","short","bermuda","cargo","chino"],
   shoes: ["chaussure","sneaker","basket","boot","boots","mocassin","loafer","sandale","shoe","shoes"],
-  outerwear: ["veste","manteau","blouson","coat","jacket","parka","surchemise","trench"],
+  outerwear: ["veste","manteau","blouson","doudoune","anorak","coat","jacket","parka","surchemise","trench"],
   accessory: ["sac","bag","ceinture","belt","lunette","sunglasses","casquette","cap","montre","watch","bijou","jewellery","jewelry","écharpe","bonnet"]
 };
 
@@ -292,12 +292,12 @@ export function buildOutfitIdeas(pins, wardrobe, catalogue, dislikedIds, outfitF
   const candidates = Array.from(productMap.values()).filter(product => {
     const expired = product.catalogStatus === "expired" || (product.expiresAt && Date.parse(product.expiresAt) <= Date.now());
     return !expired && product.catalogStatus !== "stale" && product.availabilityStatus !== "out_of_stock" &&
-      !disliked.has(product.id) && !productExcludedByProfile(product,profile) &&
+      !disliked.has(product.id) && (savedIds.has(product.id) || /^https?:\/\//i.test(String(product.url || ""))) && !productExcludedByProfile(product,profile) &&
       productMatchesOutfitSeason(product,season) && productSizeMatches(product,profile);
   });
   const ideas = [];
 
-  (pins || []).filter(pin => pin && pin.kind !== "detail" && pin.imageUrl && pinMatchesOutfitFilters(pin,options)).forEach(pin => {
+  (pins || []).filter(pin => pin && pin.kind !== "detail" && pinMatchesOutfitFilters(pin,options)).forEach(pin => {
     const featureSet = inferPinterestFeatures(pin);
     const ranked = candidates.map(product => {
       const slot = productSlot(product);
