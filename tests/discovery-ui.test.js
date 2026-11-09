@@ -144,3 +144,15 @@ test("mobile external article link keeps the desktop arrow instead of a large ci
   assert.ok(css.includes("Mobile: keep the original desktop external-link glyph"));
   assert.ok(css.includes("background: transparent;"));
 });
+
+ 
+test("the final mobile UX layer reserves space for the swipe deck and prevents nav/header overlap", function() {
+  assert.ok(css.includes("Mobile UX pass — reserve independent zones"));
+  assert.ok(css.includes("grid-template-columns: minmax(0,1fr) auto;"));
+  assert.ok(css.includes("body.is-discovery-app .main-content"));
+  assert.ok(css.includes("calc(78px + env(safe-area-inset-bottom))"));
+  assert.ok(css.includes("max-height: min(68dvh,560px)"));
+  assert.ok(css.includes("@media (max-width: 350px)"));
+  assert.ok(css.includes("orientation: landscape) and (max-height: 520px"));
+  assert.ok(css.includes("body.is-discovery-app .top-actions .icon-button { display: none; }"));
+});
