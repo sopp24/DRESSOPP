@@ -167,3 +167,11 @@ test("Pinterest style signals receive a strong baseline weight", function() {
   assert.equal(learned["materials:lin"], 2.5);
   assert.equal(learned["cuts:oversized"], 2.5);
 });
+
+
+test("new local state keeps outfit filters and a separate saved outfit collection", function() {
+  const state = createInitialState([]);
+  assert.deepEqual(state.savedOutfits,[]);
+  assert.deepEqual(state.settings.outfitFilters,{styles:[],season:"Toute saison",maxPrice:null});
+  assert.equal(state.settings.outfitLibraryView,"discover");
+});
