@@ -27,6 +27,7 @@ document.addEventListener("pointermove", updateLiquidGlassLight, { passive:true 
 document.addEventListener("pointerdown", updateLiquidGlassLight, { passive:true });
 let state = null;
 let currentView = "discover";
+let deckActionPending = false;
 let discoveryFiltersOpen = false;
 let currentModalProduct = null;
 let toastTimer = null;
@@ -630,25 +631,24 @@ function renderRetailerDirectory() {
 function renderDeckCard(product, training) {
   const brand = product.brand || product.merchant || product.source || "Marque non renseignée";
   const price = formatPrice(product.price);
-  const articleUrl = safeExternalUrl(product.url);
   const saved = isLiked(product.id);
-  const originalLink = articleUrl
-    ? '<a class="product-original-link" href="' + esc(articleUrl) + '" target="_blank" rel="noopener noreferrer"><span>Voir l’article original</span><i aria-hidden="true">↗</i></a>'
-    : '<button class="product-original-link" type="button" data-action="details" data-id="' + esc(product.id) + '"><span>Voir la fiche produit</span><i aria-hidden="true">↗</i></button>';
-  return '<div class="deck-card-wrap"><article class="product-card" id="active-product-card" data-product-id="' + esc(product.id) + '">' +
+  return '<div class="deck-card-wrap"><article class="product-card" id="active-product-card" data-product-id="' + esc(product.id) + '" aria-label="' + esc(product.name) + '">' +
     '<div class="product-visual">' + imageMarkup(product.imageUrl, product.name) + '</div>' +
+    '<div class="swipe-tint" aria-hidden="true"></div>' +
+    '<div class="swipe-stamp swipe-stamp-nope" aria-hidden="true">NON</div><div class="swipe-stamp swipe-stamp-like" aria-hidden="true">OUI</div><div class="swipe-stamp swipe-stamp-save" aria-hidden="true">AJOUTÉ</div>' +
     '<div class="product-info"><div class="product-copy">' +
+      '<span class="swipe-category">' + esc(product.objective || "Sélection DRESSOPP") + '</span>' +
       '<h2 class="product-title">' + esc(product.name) + '</h2>' +
       '<div class="product-brand-price"><span>' + esc(brand) + '</span><i aria-hidden="true">•</i><strong>' + esc(price) + '</strong></div>' +
-      aiAgentReason(product.id) + renderProductAttributes(product) + renderProductReview(product) +
-    '</div>' + originalLink + '</div>' +
-    '</article><div class="deck-actions" aria-label="Actions sur cet article">' +
+    '</div><button class="product-details-pill" type="button" data-action="details" data-id="' + esc(product.id) + '">Détails <span aria-hidden="true">↗</span></button></div>' +
+    '<div class="deck-actions" aria-label="Actions sur cet article">' +
     '<button class="deck-action deck-action-undo" type="button" data-action="undo" ' + (state.interactions.lastAction ? "" : "disabled") + ' aria-label="Annuler la dernière action" title="Annuler la dernière action"><img class="deck-action-icon" src="./assets/rewind.webp" alt="" aria-hidden="true" draggable="false"></button>' +
-    '<button class="deck-action deck-action-no" type="button" data-action="vote" data-vote="no" data-id="' + esc(product.id) + '" aria-label="Non" title="Non"><img class="deck-action-icon" src="./assets/cross.webp" alt="" aria-hidden="true" draggable="false"></button>' +
+    '<button class="deck-action deck-action-no" type="button" data-action="vote" data-vote="no" data-id="' + esc(product.id) + '" aria-label="Passer" title="Passer"><img class="deck-action-icon" src="./assets/cross.webp" alt="" aria-hidden="true" draggable="false"></button>' +
     '<button class="deck-action deck-action-save' + (saved ? ' is-selected' : '') + '" type="button" data-action="save-list" data-id="' + esc(product.id) + '" aria-label="' + (saved ? 'Déjà dans ma liste' : 'Ajouter à ma liste') + '" aria-pressed="' + String(saved) + '" title="' + (saved ? 'Dans ma liste' : 'Ajouter à ma liste') + '"><img class="deck-action-icon" src="./assets/star.webp" alt="" aria-hidden="true" draggable="false"></button>' +
-    '<button class="deck-action deck-action-yes" type="button" data-action="vote" data-vote="yes" data-id="' + esc(product.id) + '" aria-label="Oui" title="Oui"><img class="deck-action-icon" src="./assets/fav.webp" alt="" aria-hidden="true" draggable="false"></button>' +
+    '<button class="deck-action deck-action-yes" type="button" data-action="vote" data-vote="yes" data-id="' + esc(product.id) + '" aria-label="J’aime" title="J’aime"><img class="deck-action-icon" src="./assets/fav.webp" alt="" aria-hidden="true" draggable="false"></button>' +
     '<button class="deck-action deck-action-share" type="button" data-action="share-product" data-id="' + esc(product.id) + '" aria-label="Partager cet article" title="Partager"><img class="deck-action-icon" src="./assets/share.webp" alt="" aria-hidden="true" draggable="false"></button>' +
-    '</div><p class="deck-hint">Glisse à gauche pour dire Non · à droite pour dire Oui</p></div>';
+    '</div><span class="deck-hint">Glisse à gauche ou à droite</span>' +
+    '</article></div>';
 }
 function renderGridCards(products, options) {
   const opts = options || {};
@@ -666,9 +666,6 @@ function renderGridCards(products, options) {
   }).join("") + '</div>';
 }
 function renderDiscover(training) {
-  const heading = training
-    ? renderPageHeading("Élargis ton univers", "Entraînement", "Explore volontairement de nouvelles coupes, matières et associations. Tes réponses Oui et Non affinent le profil, sans ajout automatique à ta liste.", '<button class="button-secondary" type="button" data-view="discover">Retour à Découvrir</button>')
-    : renderPageHeading("Ton œil, tes règles", "Découvrir", "Des pièces sélectionnées selon tes préférences. Glisse à gauche pour dire Non, à droite pour dire Oui, ou utilise les cinq actions sous la carte.", '<button class="button-secondary" type="button" data-action="toggle-discovery-view">' + (state.settings.discoveryView === "grid" ? "Vue cartes" : "Explorer la grille") + '</button>');
   const locallyRanked = rankProducts(state.products, state, { training: training, communitySignals: communitySignals });
   const products = aiAgentState.status === "ready"
     ? orderProductsByAgent(locallyRanked, aiAgentState.recommendations)
@@ -677,12 +674,26 @@ function renderDiscover(training) {
   const savedCount = state.likedProducts.length;
   const rejected = state.interactions.dislikes.length;
   const isGrid = state.settings.discoveryView === "grid" && !training;
+  const isAppDeck = !training && !isGrid;
+  const heading = training
+    ? renderPageHeading("Élargis ton univers", "Entraînement", "Explore volontairement de nouvelles coupes, matières et associations. Tes réponses Oui et Non affinent le profil, sans ajout automatique à ta liste.", '<button class="button-secondary" type="button" data-view="discover">Retour à Découvrir</button>')
+    : (isGrid ? renderPageHeading("Ton œil, tes règles", "Découvrir", "Des pièces sélectionnées selon tes préférences.", '<button class="button-secondary" type="button" data-action="toggle-discovery-view">Vue swipe</button>') : "");
+  const appToolbar = isAppDeck
+    ? '<div class="discovery-app-toolbar"><div class="discovery-app-heading"><span class="eyebrow">Mode diligente.</span><strong>Pour toi</strong><small>' + products.length + ' pièces à découvrir · ' + yesCount + ' oui · ' + savedCount + ' sauvegardées</small></div>' +
+      '<div class="discovery-app-controls">' + renderFilterBar(false) +
+      '<button class="discovery-view-toggle" type="button" data-action="toggle-discovery-view" aria-label="Passer à la grille" title="Passer à la grille"><span aria-hidden="true">▦</span></button></div></div>'
+    : "";
   const body = isGrid ? renderGridCards(products) : (products.length ? renderDeckCard(products[0], training) : renderEmptyProducts(training));
   const searchToolbar = isGrid ? '<div class="toolbar"><div class="toolbar-left"><input class="search-input" type="search" data-search="discover" placeholder="Rechercher un vêtement, une marque, une couleur…" aria-label="Rechercher dans le catalogue"></div><span class="result-count">' + products.length + ' article(s)</span></div>' : "";
-  return '<div class="discovery-page">' + heading + renderFilterBar(training) + searchToolbar + '<div class="discovery-layout' + (isGrid ? '' : ' discovery-layout--swipe') + '"><section class="deck-column">' +
+  const regularFilterBar = (training || isGrid) ? renderFilterBar(training) : "";
+  const deckTopline = isAppDeck ? "" :
     '<div class="deck-topline"><span><strong>' + (training ? "Exploration active" : "Ta sélection") + '</strong> <span>· ' + products.length + ' article(s) à découvrir</span></span>' +
-    '<span>' + (training ? "Nouveauté prioritaire" : "Personnalisation active") + '</span></div>' + body +
-    '</section><aside class="deck-aside"><section class="panel aside-card"><h2 class="aside-title">Ton évolution <span>en direct</span></h2>' +
+    '<span>' + (training ? "Nouveauté prioritaire" : "Personnalisation active") + '</span></div>';
+  return '<div class="discovery-page' + (isAppDeck ? ' discovery-page--app' : '') + '">' +
+    (isAppDeck ? appToolbar : heading + regularFilterBar) + searchToolbar +
+    '<div class="discovery-layout' + (isGrid ? '' : ' discovery-layout--swipe') + '"><section class="deck-column">' +
+    deckTopline + body + '</section>' +
+    '<aside class="deck-aside"><section class="panel aside-card"><h2 class="aside-title">Ton évolution <span>en direct</span></h2>' +
     '<p>Chaque décision affine ton profil. Une consultation reste un signal léger ; tes réponses Oui et Non comptent davantage.</p>' +
     '<div class="aside-stat"><div class="stat-box"><strong>' + yesCount + '</strong><small>Oui</small></div><div class="stat-box"><strong>' + rejected + '</strong><small>Non</small></div><div class="stat-box"><strong>' + savedCount + '</strong><small>Dans ma liste</small></div></div></section>' +
     '<section class="panel aside-card"><h2 class="aside-title">Équilibre du moment <span>' + esc(training ? state.settings.trainingDiscoveryLevel : state.settings.discoveryLevel) + '% découverte</span></h2>' +
@@ -892,6 +903,7 @@ function renderSettings() {
     '<section class="panel section-panel"><h2 class="section-title">Zone sensible</h2><p class="field-hint">La réinitialisation supprime les données enregistrées sur cet appareil. Exporte d’abord une copie de sécurité.</p><div class="form-actions"><button class="button-danger button-small" type="button" data-action="delete-data">Supprimer toutes mes données locales</button></div></section>';
 }
 function render() {
+  document.body.classList.toggle("is-discovery-app", currentView === "discover" && state.settings.discoveryView !== "grid");
   document.querySelectorAll("[data-view]").forEach(function(button) {
     button.classList.toggle("is-active", button.dataset.view === currentView);
   });
@@ -938,6 +950,27 @@ function showToast(message, undoAvailable) {
     (undoAvailable ? '<button type="button" data-action="undo">Annuler</button>' : "") + '</div>';
   clearTimeout(toastTimer);
   toastTimer = setTimeout(function() { toastRoot.innerHTML = ""; }, 5000);
+}
+function animateDeckDecision(productId, action) {
+  if (deckActionPending) return;
+  const card = document.querySelector("#active-product-card");
+  if (!card || card.dataset.productId !== String(productId)) {
+    if (action === "save") saveToList(productId);
+    else vote(productId, action);
+    return;
+  }
+  deckActionPending = true;
+  const directionClass = action === "yes" ? "is-like" : action === "no" ? "is-nope" : "is-save";
+  card.classList.remove("is-dragging", "swipe-preview-like", "swipe-preview-nope");
+  card.classList.add("is-committing", directionClass);
+  card.style.removeProperty("transform");
+  card.style.removeProperty("border-color");
+  card.style.removeProperty("--swipe-tint-opacity");
+  window.setTimeout(function() {
+    deckActionPending = false;
+    if (action === "save") saveToList(productId);
+    else vote(productId, action);
+  }, 340);
 }
 function vote(productId, value) {
   const product = productById(productId);
@@ -1364,8 +1397,8 @@ function handleClick(event) {
   else if (action === "add-product") openProductForm();
   else if (action === "add-inspiration") openInspirationForm();
   else if (action === "close-modal") closeModal(); else if (action === "details") openProductDetails(actionButton.dataset.id);
-  else if (action === "vote") vote(actionButton.dataset.id, actionButton.dataset.vote || "no");
-  else if (action === "save-list") saveToList(actionButton.dataset.id);
+  else if (action === "vote") animateDeckDecision(actionButton.dataset.id, actionButton.dataset.vote || "no");
+  else if (action === "save-list") animateDeckDecision(actionButton.dataset.id, "save");
   else if (action === "share-product") shareProduct(actionButton.dataset.id);
   else if (action === "undo") undoLast();
   else if (action === "rate-outfit") rateOutfit(actionButton.dataset.id, actionButton.dataset.vote);
@@ -1495,42 +1528,98 @@ function handleSubmit(event) {
 }
 function attachSwipe() {
   const card = document.querySelector("#active-product-card");
-  if (!card) return;
+  if (!card || card.dataset.swipeBound === "true") return;
+  card.dataset.swipeBound = "true";
   let startX = 0;
   let startY = 0;
+  let startTime = 0;
   let deltaX = 0;
+  let deltaY = 0;
   let dragging = false;
+  let horizontalIntent = false;
+  let pointerId = null;
+
+  function clearPreview(animateBack) {
+    dragging = false;
+    horizontalIntent = false;
+    card.classList.remove("is-dragging", "swipe-preview-like", "swipe-preview-nope");
+    card.style.removeProperty("--swipe-tint-opacity");
+    card.style.removeProperty("border-color");
+    if (animateBack) card.classList.add("is-returning");
+    card.style.removeProperty("transform");
+    if (animateBack) window.setTimeout(function() { card.classList.remove("is-returning"); }, 360);
+  }
+
   card.addEventListener("pointerdown", function(event) {
-    if (event.target.closest("button, a")) return;
+    if (deckActionPending || event.button !== 0 || event.target.closest("button, a")) return;
     startX = event.clientX;
     startY = event.clientY;
+    startTime = performance.now();
     deltaX = 0;
+    deltaY = 0;
+    horizontalIntent = false;
     dragging = true;
+    pointerId = event.pointerId;
+    card.classList.remove("is-returning");
     card.classList.add("is-dragging");
-    try { card.setPointerCapture(event.pointerId); } catch (error) {}
+    try { card.setPointerCapture(pointerId); } catch (error) {}
   });
+
   card.addEventListener("pointermove", function(event) {
-    if (!dragging) return;
+    if (!dragging || event.pointerId !== pointerId) return;
     deltaX = event.clientX - startX;
-    const deltaY = event.clientY - startY;
-    if (Math.abs(deltaY) > Math.abs(deltaX) && Math.abs(deltaX) < 22) return;
-    card.style.transform = "translateX(" + deltaX + "px) rotate(" + (deltaX / 22) + "deg)";
-    card.style.borderColor = deltaX > 45 ? "rgba(255,0,0,.8)" : (deltaX < -45 ? "rgba(255,255,255,.6)" : "");
+    deltaY = event.clientY - startY;
+    if (!horizontalIntent) {
+      if (Math.abs(deltaY) > 12 && Math.abs(deltaY) > Math.abs(deltaX) * 1.08) {
+        dragging = false;
+        clearPreview(false);
+        return;
+      }
+      if (Math.abs(deltaX) > 8 && Math.abs(deltaX) > Math.abs(deltaY) * 1.12) horizontalIntent = true;
+      else return;
+    }
+    if (event.cancelable) event.preventDefault();
+    const width = Math.max(1, card.getBoundingClientRect().width);
+    const progress = Math.min(1, Math.abs(deltaX) / (width * .42));
+    const rotation = Math.max(-15, Math.min(15, deltaX / width * 19));
+    const lift = Math.min(9, Math.abs(deltaX) / width * 10);
+    card.style.transform = "translate3d(" + deltaX.toFixed(1) + "px," + (-lift).toFixed(1) + "px,0) rotate(" + rotation.toFixed(2) + "deg)";
+    card.style.setProperty("--swipe-tint-opacity", (progress * .58).toFixed(3));
+    card.classList.toggle("swipe-preview-like", deltaX > 0);
+    card.classList.toggle("swipe-preview-nope", deltaX < 0);
+    card.style.borderColor = deltaX > 0 ? "rgba(255,55,75," + (progress * .92).toFixed(2) + ")" : "rgba(255,255,255," + (progress * .8).toFixed(2) + ")";
   });
-  card.addEventListener("pointerup", function(event) {
-    if (!dragging) return;
+
+  function finishSwipe(event) {
+    if (!dragging || event.pointerId !== pointerId) return;
     dragging = false;
-    card.classList.remove("is-dragging");
-    card.style.transform = "";
-    card.style.borderColor = "";
-    if (Math.abs(deltaX) > 95) vote(card.dataset.productId, deltaX > 0 ? "yes" : "no");
-    else if (Math.abs(deltaX) < 12 && Math.abs(event.clientY - startY) < 12) openProductDetails(card.dataset.productId);
+    const width = Math.max(1, card.getBoundingClientRect().width);
+    const elapsed = Math.max(1, performance.now() - startTime);
+    const velocity = deltaX / elapsed;
+    const threshold = Math.max(78, Math.min(132, width * .22));
+    const accepted = horizontalIntent && (Math.abs(deltaX) >= threshold || (Math.abs(deltaX) > 46 && Math.abs(velocity) > .58));
+    const productId = card.dataset.productId;
+    pointerId = null;
+    if (accepted) {
+      card.classList.remove("is-dragging", "swipe-preview-like", "swipe-preview-nope");
+      card.style.removeProperty("--swipe-tint-opacity");
+      card.style.removeProperty("border-color");
+      animateDeckDecision(productId, deltaX > 0 ? "yes" : "no");
+      return;
+    }
+    const wasTap = Math.abs(deltaX) < 10 && Math.abs(deltaY) < 10 && !horizontalIntent;
+    clearPreview(true);
+    if (wasTap) openProductDetails(productId);
+  }
+
+  card.addEventListener("pointerup", finishSwipe);
+  card.addEventListener("pointercancel", function(event) {
+    if (!dragging || (pointerId !== null && event.pointerId !== pointerId)) return;
+    pointerId = null;
+    clearPreview(true);
   });
-  card.addEventListener("pointercancel", function() {
-    dragging = false;
-    card.classList.remove("is-dragging");
-    card.style.transform = "";
-    card.style.borderColor = "";
+  card.addEventListener("lostpointercapture", function() {
+    if (dragging) { pointerId = null; clearPreview(true); }
   });
 }
 document.addEventListener("click", handleClick);
@@ -1559,8 +1648,8 @@ document.addEventListener("keydown", function(event) {
   if (currentView === "discover" || currentView === "training") {
     const card = document.querySelector("#active-product-card");
     if (!card) return;
-    if (event.key === "ArrowRight") vote(card.dataset.productId, "yes");
-    else if (event.key === "ArrowLeft") vote(card.dataset.productId, "no");
+    if (event.key === "ArrowRight") animateDeckDecision(card.dataset.productId, "yes");
+    else if (event.key === "ArrowLeft") animateDeckDecision(card.dataset.productId, "no");
     else if (event.key.toLowerCase() === "z" && (event.metaKey || event.ctrlKey)) undoLast();
   }
 });
