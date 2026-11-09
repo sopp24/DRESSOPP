@@ -1372,3 +1372,305 @@ a { color: inherit; }
 @media (max-width: 850px) {
   .sopp-home-float { bottom: calc(92px + env(safe-area-inset-bottom)); }
 }
+
+
+/* Liquid Glass — refinement optique et mouvement interactif.
+   Les surfaces vitrées restent dans la couche fonctionnelle (navigation/contrôles).
+   Les cartes et panneaux de contenu conservent leurs matériaux opaques. */
+:root {
+  --liquid-glass-fill: linear-gradient(145deg,
+    rgba(255,255,255,.075) 0%,
+    rgba(255,255,255,.025) 38%,
+    rgba(255,255,255,.012) 66%,
+    rgba(255,255,255,.055) 100%);
+  --liquid-glass-stroke: rgba(255,255,255,.16);
+  --liquid-glass-shadow:
+    0 12px 36px rgba(0,0,0,.28),
+    inset 0 1px 0 rgba(255,255,255,.16),
+    inset 0 -1px 0 rgba(255,255,255,.025);
+  --liquid-glass-ease: cubic-bezier(.22,.82,.22,1);
+  --liquid-glass-press: cubic-bezier(.2,.9,.25,1);
+}
+
+/* Regular glass : adaptatif et suffisamment dense pour la navigation textuelle. */
+.topbar {
+  border-bottom-color: rgba(255,255,255,.12);
+  background:
+    linear-gradient(105deg,rgba(255,255,255,.026),transparent 42%,rgba(255,255,255,.012)),
+    rgba(16,17,21,.38);
+  box-shadow: 0 7px 24px rgba(0,0,0,.13),inset 0 -1px 0 rgba(255,255,255,.035);
+  -webkit-backdrop-filter: blur(25px) saturate(175%);
+  backdrop-filter: blur(25px) saturate(175%);
+  transition: background 360ms var(--liquid-glass-ease),box-shadow 360ms var(--liquid-glass-ease);
+}
+.topbar::before {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  content: "";
+  background: radial-gradient(ellipse at var(--glass-x,50%) var(--glass-y,0%),rgba(255,255,255,.105),transparent 38%);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 300ms ease;
+}
+.topbar::after { background: linear-gradient(90deg,transparent,rgba(255,255,255,.22),transparent); }
+
+.mobile-nav {
+  border-color: rgba(255,255,255,.18);
+  background:
+    radial-gradient(ellipse at 18% 0%,rgba(255,255,255,.065),transparent 48%),
+    radial-gradient(ellipse at 86% 100%,rgba(255,255,255,.025),transparent 54%),
+    rgba(18,20,25,.28);
+  box-shadow:
+    0 15px 42px rgba(0,0,0,.34),
+    inset 0 1px 0 rgba(255,255,255,.19),
+    inset 0 -1px 0 rgba(255,255,255,.035);
+  -webkit-backdrop-filter: blur(29px) saturate(180%);
+  backdrop-filter: blur(29px) saturate(180%);
+  transition: box-shadow 360ms var(--liquid-glass-ease),border-color 300ms ease;
+}
+.mobile-nav::before {
+  background: linear-gradient(90deg,transparent,rgba(255,255,255,.34),transparent);
+}
+.mobile-nav::after {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  border-radius: inherit;
+  content: "";
+  background: radial-gradient(ellipse at var(--glass-x,50%) var(--glass-y,0%),rgba(255,255,255,.105),transparent 42%);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 280ms ease;
+}
+.mobile-nav button {
+  position: relative;
+  isolation: isolate;
+  border: 1px solid transparent;
+  transition:
+    color 260ms ease,
+    background 300ms var(--liquid-glass-ease),
+    border-color 300ms ease,
+    box-shadow 360ms var(--liquid-glass-ease),
+    transform 380ms var(--liquid-glass-press);
+}
+.mobile-nav button::before {
+  position: absolute;
+  z-index: -1;
+  inset: 1px;
+  border-radius: inherit;
+  content: "";
+  background: radial-gradient(circle at var(--glass-x,50%) var(--glass-y,0%),rgba(255,255,255,.17),transparent 70%);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 260ms ease;
+}
+.mobile-nav button.is-active {
+  border-color: rgba(255,255,255,.13);
+  background: linear-gradient(145deg,rgba(255,255,255,.105),rgba(255,255,255,.025));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.13),0 3px 10px rgba(0,0,0,.12);
+  animation: liquid-glass-select 420ms var(--liquid-glass-press) both;
+}
+.mobile-nav button.is-active span { color: var(--accent); }
+.mobile-nav button:active { transform: scale(.965); }
+.mobile-nav button:active::before { opacity: 1; }
+
+/* Le déclencheur est plus clair ; le panneau ouvert reste en Regular pour les libellés. */
+.filter-menu-trigger {
+  border-color: rgba(255,255,255,.18);
+  background: var(--liquid-glass-fill),rgba(24,25,30,.24);
+  box-shadow:
+    0 8px 24px rgba(0,0,0,.22),
+    inset 0 1px 0 rgba(255,255,255,.17),
+    inset 0 -1px 0 rgba(255,255,255,.025);
+  -webkit-backdrop-filter: blur(20px) saturate(175%);
+  backdrop-filter: blur(20px) saturate(175%);
+  transition:
+    transform 360ms var(--liquid-glass-press),
+    border-color 300ms ease,
+    background 320ms var(--liquid-glass-ease),
+    box-shadow 360ms var(--liquid-glass-ease);
+}
+.filter-menu-trigger > * { position: relative; z-index: 1; }
+.filter-menu-trigger::before {
+  background: linear-gradient(90deg,transparent,rgba(255,255,255,.34),transparent);
+}
+.filter-menu-trigger::after {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  border-radius: inherit;
+  content: "";
+  background: radial-gradient(ellipse at var(--glass-x,50%) var(--glass-y,0%),rgba(255,255,255,.15),transparent 65%);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 260ms ease;
+}
+.filter-menu-trigger[aria-expanded="true"] {
+  border-color: rgba(255,255,255,.25);
+  box-shadow: 0 10px 28px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.2);
+}
+.filter-menu-trigger[aria-expanded="true"]::after,
+.filter-menu-trigger:active::after { opacity: 1; }
+
+.discovery-filter-menu .filter-bar {
+  border-color: rgba(255,255,255,.17);
+  background:
+    radial-gradient(ellipse at 12% 0%,rgba(255,255,255,.055),transparent 56%),
+    linear-gradient(145deg,rgba(29,30,36,.66),rgba(17,18,23,.62));
+  box-shadow:
+    0 20px 56px rgba(0,0,0,.44),
+    inset 0 1px 0 rgba(255,255,255,.16),
+    inset 0 -1px 0 rgba(255,255,255,.025);
+  -webkit-backdrop-filter: blur(29px) saturate(170%);
+  backdrop-filter: blur(29px) saturate(170%);
+}
+.discovery-filter-menu .filter-bar.is-open {
+  transform-origin: top left;
+  animation: liquid-glass-materialize 430ms var(--liquid-glass-press) both;
+}
+.discovery-filter-menu .filter-bar .field input,
+.discovery-filter-menu .filter-bar .field select {
+  border-color: rgba(255,255,255,.13);
+  background-color: rgba(6,7,10,.34);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+/* Petits contrôles flottants : clairs au repos, lumineux seulement pendant l'interaction. */
+.deck-action {
+  border-color: rgba(255,255,255,.17);
+  background:
+    radial-gradient(ellipse at var(--glass-x,50%) var(--glass-y,0%),rgba(255,255,255,.13),transparent 58%),
+    linear-gradient(145deg,rgba(255,255,255,.075),rgba(255,255,255,.012) 64%,rgba(255,255,255,.04)),
+    rgba(21,22,27,.24);
+  box-shadow:
+    0 8px 22px rgba(0,0,0,.3),
+    inset 0 1px 0 rgba(255,255,255,.18),
+    inset 0 -1px 0 rgba(255,255,255,.025);
+  -webkit-backdrop-filter: blur(19px) saturate(175%);
+  backdrop-filter: blur(19px) saturate(175%);
+  transition:
+    transform 380ms var(--liquid-glass-press),
+    border-color 280ms ease,
+    background 320ms var(--liquid-glass-ease),
+    box-shadow 360ms var(--liquid-glass-ease);
+}
+.deck-action::before {
+  background: linear-gradient(90deg,transparent,rgba(255,255,255,.36),transparent);
+}
+.deck-action::after {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  border-radius: inherit;
+  content: "";
+  background: radial-gradient(circle at var(--glass-x,50%) var(--glass-y,0%),rgba(255,255,255,.2),transparent 66%);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 240ms ease;
+}
+.deck-action > * { position: relative; z-index: 1; }
+.deck-action:hover:not(:disabled) {
+  border-color: rgba(255,255,255,.27);
+  background:
+    radial-gradient(ellipse at var(--glass-x,50%) var(--glass-y,0%),rgba(255,255,255,.17),transparent 62%),
+    linear-gradient(145deg,rgba(255,255,255,.095),rgba(255,255,255,.02)),
+    rgba(24,25,31,.28);
+  box-shadow: 0 11px 26px rgba(0,0,0,.34),inset 0 1px 0 rgba(255,255,255,.22);
+}
+.deck-action:hover:not(:disabled)::after,
+.deck-action:active:not(:disabled)::after { opacity: 1; }
+.deck-action:active:not(:disabled) { transform: scale(.96); }
+
+/* Contrôles secondaires : translucides, sans ajouter une deuxième couche de verre. */
+.icon-button {
+  border-color: rgba(255,255,255,.16);
+  background: rgba(255,255,255,.035);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.095);
+  -webkit-backdrop-filter: blur(15px) saturate(155%);
+  backdrop-filter: blur(15px) saturate(155%);
+  transition: transform 340ms var(--liquid-glass-press),background 260ms ease,border-color 260ms ease;
+}
+.button-secondary {
+  border-color: rgba(255,255,255,.15);
+  background: rgba(255,255,255,.055);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.09);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+.button-secondary:hover { background: rgba(255,255,255,.085); }
+.icon-button:active,.button-secondary:active { transform: scale(.97); }
+
+/* Les messages flottants gardent un Regular légèrement plus épais pour leur lisibilité. */
+.toast {
+  border-color: rgba(255,255,255,.18);
+  background: linear-gradient(135deg,rgba(255,255,255,.065),rgba(255,255,255,.018)),rgba(23,24,29,.56);
+  box-shadow: 0 14px 38px rgba(0,0,0,.38),inset 0 1px 0 rgba(255,255,255,.14);
+  -webkit-backdrop-filter: blur(24px) saturate(170%);
+  backdrop-filter: blur(24px) saturate(170%);
+  animation: liquid-glass-materialize 380ms var(--liquid-glass-press) both;
+}
+/* Le contenu long d'une fenêtre modale reste sur un support opaque : pas de verre sur verre. */
+.modal {
+  border-color: rgba(255,255,255,.16);
+  background: rgba(19,20,24,.96);
+  box-shadow: 0 26px 76px rgba(0,0,0,.62),inset 0 1px 0 rgba(255,255,255,.08);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+.modal-backdrop { backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+.sopp-home-float {
+  box-shadow: 0 10px 28px rgba(0,0,0,.28),0 0 0 1px rgba(255,255,255,.19),inset 0 1px 0 rgba(255,255,255,.38);
+}
+
+/* Lumière réactive : son point suit le doigt ou le pointeur au lieu de scintiller en continu. */
+@media (hover:hover) and (pointer:fine) {
+  .topbar:hover::before,
+  .mobile-nav:hover::after,
+  .filter-menu-trigger:hover::after,
+  .mobile-nav button:hover::before { opacity: 1; }
+  .mobile-nav button:hover { color: #fff; }
+  .filter-menu-trigger:hover {
+    border-color: rgba(255,255,255,.25);
+    box-shadow: 0 10px 28px rgba(0,0,0,.27),inset 0 1px 0 rgba(255,255,255,.2);
+  }
+}
+.topbar:active::before { opacity: .85; }
+.mobile-nav button:focus-visible,
+.filter-menu-trigger:focus-visible,
+.deck-action:focus-visible {
+  outline: 2px solid rgba(255,255,255,.68);
+  outline-offset: 3px;
+}
+
+/* Materialisation et sélection : le verre se forme, se soulève légèrement, puis se stabilise. */
+@keyframes liquid-glass-materialize {
+  0% { opacity: .35; transform: translateY(-7px) scale(.975); filter: blur(5px); }
+  68% { opacity: 1; transform: translateY(1px) scale(1.006); filter: blur(.35px); }
+  100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+}
+@keyframes liquid-glass-select {
+  0% { transform: scale(.94); filter: brightness(1.12); }
+  68% { transform: scale(1.018); }
+  100% { transform: scale(1); filter: brightness(1); }
+}
+@media (prefers-reduced-transparency: reduce) {
+  .topbar { background: rgba(12,13,16,.94); -webkit-backdrop-filter: none; backdrop-filter: none; }
+  .mobile-nav { background: rgba(18,20,24,.96); -webkit-backdrop-filter: none; backdrop-filter: none; }
+  .filter-menu-trigger,
+  .discovery-filter-menu .filter-bar,
+  .deck-action,
+  .toast { background: rgba(24,25,29,.96); -webkit-backdrop-filter: none; backdrop-filter: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .topbar,.mobile-nav,.mobile-nav button,.filter-menu-trigger,.deck-action,.icon-button,.button-secondary,
+  .discovery-filter-menu .filter-bar,.toast,.modal,.modal-backdrop {
+    animation: none !important;
+    transition: none !important;
+  }
+  .mobile-nav button:active,.filter-menu-trigger:active,.deck-action:active { transform: none !important; }
+  .topbar::before,.mobile-nav::after,.mobile-nav button::before,.filter-menu-trigger::after,.deck-action::after {
+    transition: none !important;
+  }
+}
