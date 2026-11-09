@@ -5,6 +5,9 @@ on:
     - cron: "0 12 * * *"
       timezone: "Europe/Paris"
   workflow_dispatch:
+  push:
+    paths:
+      - ".github/workflows/pinterest-daily.yml"
 
 permissions:
   contents: write
@@ -50,4 +53,3 @@ jobs:
             echo "Aucune modification Pinterest à enregistrer."
             echo "changed=false" >> "$GITHUB_OUTPUT"
           fi
-
