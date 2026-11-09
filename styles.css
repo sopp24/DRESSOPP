@@ -843,16 +843,16 @@ a { color: inherit; }
 .deck-action span { display: block; line-height: 1; }
 .deck-action-icon {
   display: block;
-  width: 44%;
-  height: 44%;
+  width: 36%;
+  height: 36%;
   object-fit: contain;
   pointer-events: none;
   user-select: none;
   -webkit-user-drag: none;
 }
 .deck-action-undo .deck-action-icon,
-.deck-action-share .deck-action-icon { width: 42%; height: 42%; }
-.deck-action-save .deck-action-icon { width: 43%; height: 43%; }
+.deck-action-share .deck-action-icon { width: 34%; height: 34%; }
+.deck-action-save .deck-action-icon { width: 35%; height: 35%; }
 .deck-action-undo { width: 88px; height: 88px; flex-basis: 88px; color: #eee; font-size: 40px; }
 .deck-action-no { width: 124px; height: 124px; flex-basis: 124px; font-size: 76px; font-weight: 300; }
 .deck-action-save { width: 88px; height: 88px; flex-basis: 88px; color: #f4c64b; font-size: 40px; }
