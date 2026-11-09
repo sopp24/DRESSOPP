@@ -75,6 +75,22 @@ function pickImage(pin) {
 }
 
 
+
+async function fetchAnalysisService(url, options) {
+  let lastError;
+  for (let attempt = 1; attempt <= 3; attempt += 1) {
+    try {
+      return await fetch(url, options);
+    } catch (error) {
+      lastError = error;
+      if (attempt < 3) await new Promise(resolve => setTimeout(resolve, attempt * 1500));
+    }
+  }
+  const cause = lastError && lastError.cause;
+  const details = [lastError && lastError.message, cause && cause.code, cause && cause.message].filter(Boolean).join(" · ");
+  throw new Error("Connexion au Worker impossible après 3 tentatives : " + (details || "erreur réseau inconnue"));
+}
+
 async function analyzePendingPins(pins) {
   const pending = pins.filter(pin => pin.imageUrl && !(
     pin.visualAnalysis &&
@@ -95,7 +111,7 @@ async function analyzePendingPins(pins) {
   for (let offset = 0; offset < pending.length; offset += ANALYSIS_BATCH_SIZE) {
     const batch = pending.slice(offset, offset + ANALYSIS_BATCH_SIZE);
     try {
-      const response = await fetch(ANALYSIS_ENDPOINT + "/analyze-pins", {
+      const response = await fetchAnalysisService(ANALYSIS_ENDPOINT + "/analyze-pins", {
         method:"POST",
         headers:{
           Authorization:"Bearer " + SYNC_TOKEN,
