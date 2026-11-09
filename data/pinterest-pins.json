@@ -4,10 +4,96 @@
   "boardName": "mode",
   "boardId": "780952460324562575",
   "privacy": "PUBLIC",
-  "lastSync": "2026-11-09T14:00:27.082Z",
-  "totalPins": 22,
-  "newPinIds": [],
+  "lastSync": "2026-11-09T21:11:54.182Z",
+  "totalPins": 24,
+  "newPinIds": [
+    "780952391681965140",
+    "780952391681965137"
+  ],
   "pins": [
+    {
+      "id": "780952391681965140",
+      "title": "Slate Blue Monochrome Streetwear Outfit | Luxury Men's Fashion 2026",
+      "description": "Elevate your wardrobe with this premium slate blue monochrome streetwear look featuring an oversized hoodie, tailored shirt and tie, luxury accessories, and refined layering. A perfect blend of modern minimalism and high-end men's fashion inspiration for 2026. Save and follow for outfit ideas, monochrome styling, luxury streetwear, and contemporary menswear trends.",
+      "altText": "",
+      "link": "",
+      "pinUrl": "https://www.pinterest.com/pin/780952391681965140/",
+      "imageUrl": "https://i.pinimg.com/1200x/47/8f/73/478f739412ad1d58e911f7ef5e2818bf.jpg",
+      "dominantColor": "#4b5062",
+      "createdAt": "2026-11-09T15:12:35",
+      "boardId": "780952460324562575",
+      "visualAnalysis": {
+        "version": 1,
+        "analyzedAt": "2026-11-09T21:11:52.625Z",
+        "sourceImageUrl": "https://i.pinimg.com/1200x/47/8f/73/478f739412ad1d58e911f7ef5e2818bf.jpg",
+        "model": "@cf/google/gemma-4-26b-a4b-it",
+        "isFashion": true,
+        "summary": "Tenue monochrome bleu ardoise composée d'un hoodie oversize structuré porté sur une chemise avec cravate à motifs, agrémentée de bijoux argentés imposants.",
+        "styleTags": [
+          "Streetwear",
+          "Smart Casual",
+          "Créatif"
+        ],
+        "colors": [
+          "bleu"
+        ],
+        "materials": [
+          "coton"
+        ],
+        "cuts": [
+          "oversized",
+          "ample"
+        ],
+        "patterns": [
+          "graphique"
+        ],
+        "confidence": 0.95
+      }
+    },
+    {
+      "id": "780952391681965137",
+      "title": "Outfits",
+      "description": " ",
+      "altText": "",
+      "link": "https://beacons.ai/novaire",
+      "pinUrl": "https://www.pinterest.com/pin/780952391681965137/",
+      "imageUrl": "https://i.pinimg.com/1200x/fe/d1/cc/fed1ccfbdd0e688c46e774a2fbe4dc24.jpg",
+      "dominantColor": "#845732",
+      "createdAt": "2026-11-09T15:12:26",
+      "boardId": "780952460324562575",
+      "visualAnalysis": {
+        "version": 1,
+        "analyzedAt": "2026-11-09T21:11:54.174Z",
+        "sourceImageUrl": "https://i.pinimg.com/1200x/fe/d1/cc/fed1ccfbdd0e688c46e774a2fbe4dc24.jpg",
+        "model": "@cf/google/gemma-4-26b-a4b-it",
+        "isFashion": true,
+        "summary": "Une tenue élégante composée d'un polo en maille marron sur une chemise blanche avec cravate, accompagnée d'un pantalon à pinces gris anthracite, de chaussures en cuir marron et d'un grand sac en cuir.",
+        "styleTags": [
+          "Classique",
+          "Smart Casual",
+          "Heritage"
+        ],
+        "colors": [
+          "marron",
+          "blanc",
+          "gris",
+          "anthracite",
+          "chocolat"
+        ],
+        "materials": [
+          "maille",
+          "coton",
+          "cuir"
+        ],
+        "cuts": [
+          "large",
+          "a pinces",
+          "regular"
+        ],
+        "patterns": [],
+        "confidence": 1
+      }
+    },
     {
       "id": "780952391681874726",
       "title": "",
@@ -338,7 +424,7 @@
     {
       "id": "780952391681858014",
       "title": "",
-      "description": " ",
+      "description": "Diving into comfortable, oversized streetwear silhouettes today. Layering an abstract graphic knit sweater with heavy washed denim and minimal accessories. Watch until the end to see the full layout breakdown of the pieces.\nClogs or retro sneakers with a heavy knit look like this? Let me know below 👇🏾",
       "altText": "",
       "link": "",
       "pinUrl": "https://www.pinterest.com/pin/780952391681858014/",
@@ -382,7 +468,7 @@
     {
       "id": "780952391681858012",
       "title": "",
-      "description": " ",
+      "description": "Blending classic vintage rugby prep with a heavy, relaxed street silhouette. Watch until the end to see the full layout breakdown of the individual pieces.\n\nLoafers or retro sneakers with this fit? Let me know below\n\n#menswear\n\n#streetwearstyle\n\n#aestheticmenswear",
       "altText": "",
       "link": "",
       "pinUrl": "https://www.pinterest.com/pin/780952391681858012/",
