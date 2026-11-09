@@ -631,7 +631,11 @@ function renderRetailerDirectory() {
 function renderDeckCard(product, training) {
   const brand = product.brand || product.merchant || product.source || "Marque non renseignée";
   const price = formatPrice(product.price);
+  const articleUrl = safeExternalUrl(product.url);
   const saved = isLiked(product.id);
+  const originalLink = articleUrl
+    ? '<a class="product-original-link" href="' + esc(articleUrl) + '" target="_blank" rel="noopener noreferrer"><span>Voir l’article original</span><i aria-hidden="true">↗</i></a>'
+    : '<button class="product-original-link" type="button" data-action="details" data-id="' + esc(product.id) + '"><span>Voir la fiche produit</span><i aria-hidden="true">↗</i></button>';
   return '<div class="deck-card-wrap"><article class="product-card" id="active-product-card" data-product-id="' + esc(product.id) + '" aria-label="' + esc(product.name) + '">' +
     '<div class="product-visual">' + imageMarkup(product.imageUrl, product.name) + '</div>' +
     '<div class="swipe-tint" aria-hidden="true"></div>' +
@@ -640,7 +644,7 @@ function renderDeckCard(product, training) {
       '<span class="swipe-category">' + esc(product.objective || "Sélection DRESSOPP") + '</span>' +
       '<h2 class="product-title">' + esc(product.name) + '</h2>' +
       '<div class="product-brand-price"><span>' + esc(brand) + '</span><i aria-hidden="true">•</i><strong>' + esc(price) + '</strong></div>' +
-    '</div><button class="product-details-pill" type="button" data-action="details" data-id="' + esc(product.id) + '">Détails <span aria-hidden="true">↗</span></button></div>' +
+    '</div><div class="product-card-links"><button class="product-details-pill" type="button" data-action="details" data-id="' + esc(product.id) + '">Détails <span aria-hidden="true">↗</span></button>' + originalLink + '</div></div>' +
     '<div class="deck-actions" aria-label="Actions sur cet article">' +
     '<button class="deck-action deck-action-undo" type="button" data-action="undo" ' + (state.interactions.lastAction ? "" : "disabled") + ' aria-label="Annuler la dernière action" title="Annuler la dernière action"><img class="deck-action-icon" src="./assets/rewind.webp" alt="" aria-hidden="true" draggable="false"></button>' +
     '<button class="deck-action deck-action-no" type="button" data-action="vote" data-vote="no" data-id="' + esc(product.id) + '" aria-label="Passer" title="Passer"><img class="deck-action-icon" src="./assets/cross.webp" alt="" aria-hidden="true" draggable="false"></button>' +
