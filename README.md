@@ -2,7 +2,7 @@
 
 **Find your style. Build your identity.**
 
-DRESSOPP est un personal shopper visuel pour la mode masculine et les marques mixtes : une expérience de découverte façon Tinder, construite autour d'un lookbook local, d'un catalogue multi-boutiques et d'un moteur qui apprend de chaque réponse Oui, Non et de chaque article sauvegardé. Une synchronisation Pinterest officielle est prévue dans le projet et devient exploitable lorsque le tableau et les autorisations sont effectivement connectés.
+DRESSOPP est un personal shopper visuel pour la mode masculine et les marques mixtes : une expérience de découverte façon Tinder, construite autour d'un lookbook local, d'un catalogue multi-boutiques et d'un moteur qui apprend de chaque réponse Oui, Non et de chaque article sauvegardé. Le tableau Pinterest public de référence est synchronisé automatiquement ; ses images sont analysées côté serveur par un modèle de vision afin d'enrichir les signaux stylistiques exploités par le moteur, sans ajouter d'information technique à l'interface.
 
 Site : https://sopp24.github.io/DRESSOPP/
 
@@ -17,8 +17,9 @@ Les éléments ci-dessous ont été comparés aux fichiers réellement présents
 | Fiches du catalogue | **108 au total** : 78 fiches publiques actives, 16 références éditoriales et 14 fiches publiques périmées. |
 | Sources actives du dernier instantané | 78 fiches publiques réparties entre BZB (18), Jules (18), Carhartt WIP (12), Courir (17), Foot Locker (5) et C.P. Company (8). |
 | Dernière collecte | 36 enseignes examinées et 200 pages contrôlées pendant cette exécution. |
-| Pinterest | `privacy: UNKNOWN`, `lastSync: null`, **0 Pin synchronisé**. Le lookbook local contient toutefois 20 références visuelles distinctes. |
-| Personal shopper IA | Le mode local est disponible. L'actualisation automatique est désactivée par défaut. Un endpoint Cloudflare est renseigné, mais sa disponibilité en ligne doit être vérifiée séparément. |
+| Pinterest | Tableau `mode` confirmé **PUBLIC** ; **22 Pins synchronisés et 22 analyses visuelles enregistrées** dans `data/pinterest-pins.json`. Dernière synchronisation vérifiée : **9 novembre 2026 à 14:00:27 UTC**. |
+| Analyse visuelle Pinterest | **22/22 images analysées** par Gemma 4 via Cloudflare Workers AI ; styles, couleurs, matières, coupes, motifs et résumé descriptif enregistrés dans `visualAnalysis`. Les signaux sont exploités par le moteur sans être affichés dans l'interface. |
+| Personal shopper IA | Le mode local est disponible. Le Worker Cloudflare `dressopp-agent` est déployé et son endpoint de santé répond. Les recommandations distantes nécessitent toujours un consentement explicite dans l'application. |
 | Partage communautaire | Désactivé et non configuré dans les fichiers publiés (`enabled: false`, sans identifiants de projet). |
 | Avis | 25 fiches sur 108 comportent une note de **produit** ; aucune ne comporte actuellement de note de **marchand**. |
 
@@ -109,17 +110,29 @@ Le prix et le stock correspondent au dernier contrôle. Le marchand reste la ré
 
 Le personal shopper local est **disponible sans configuration externe**. L'utilisateur le lance depuis le panneau dédié ; il croise les préférences, les votes Oui/Non, les favoris, les attributs des vêtements et les tags/titres des inspirations réellement chargées (lookbook et, lorsque synchronisé, Pinterest). Il diversifie les boutiques et les catégories, et explique ses recommandations à partir des informations présentes dans les fiches. Ce mode fonctionne dans le navigateur, sans clé API ni transfert de données. L'actualisation automatique est une option distincte, désactivée par défaut ; lorsqu'elle est activée, l'analyse peut être relancée après trois nouvelles décisions.
 
-Un mode génératif Cloudflare Workers AI est prévu en complément. Le dépôt référence le modèle `@cf/google/gemma-4-26b-a4b-it` ([documentation Cloudflare](https://developers.cloudflare.com/workers-ai/models/gemma-4-26b-a4b-it/)) et contient le code du Worker dans `workers/dressopp-agent/`. Le fichier `data/ai-agent-config.json` active cette option et renseigne un endpoint, mais la seule présence de cette configuration ne garantit pas que le Worker est encore déployé ou joignable. Vérifier son état avec [l'endpoint de santé](https://dressopp-agent.asoppelsa.workers.dev/health) avant de considérer le service distant comme opérationnel. Le modèle distant n'est appelé qu'après accord explicite dans DRESSOPP. En cas d'erreur ou d'indisponibilité, le personal shopper local prend le relais.
+Le mode génératif Cloudflare Workers AI est déployé dans `workers/dressopp-agent/` et utilise le modèle `@cf/google/gemma-4-26b-a4b-it` ([documentation Cloudflare](https://developers.cloudflare.com/workers-ai/models/gemma-4-26b-a4b-it/)). Son endpoint est `https://dressopp-agent.asoppelsa.workers.dev` ; son état peut être contrôlé avec [l'endpoint de santé](https://dressopp-agent.asoppelsa.workers.dev/health). Les recommandations personnalisées à partir du profil, des votes et des fiches candidates ne sont envoyées à ce Worker qu'après accord explicite dans DRESSOPP. En cas d'erreur ou d'indisponibilité, le personal shopper local prend le relais.
+
+Le même Worker fournit une route privée d'analyse visuelle utilisée par le workflow Pinterest. Elle reçoit les images publiques du tableau, les analyse avec la capacité de vision de Gemma 4 et renvoie des caractéristiques normalisées. Cette tâche de synchronisation traite les références publiques du tableau ; elle ne transmet pas le profil personnel, les tailles ou les interactions de l'utilisateur.
 
 L'agent classe au maximum 50 candidats déjà présents dans le catalogue. Il ne fabrique pas de produits et ne remplace pas le collecteur : les connecteurs et la collecte quotidienne trouvent les pièces réelles, l'agent choisit celles à afficher en premier. L'option d'actualisation automatique relance l'analyse locale après trois nouvelles décisions ; l'envoi à Cloudflare n'a lieu que si le consentement est actif.
 
 ## Pinterest — source stylistique prioritaire
 
-Le tableau `sopppx24/mode` est la référence d'inspiration. Le workflow `.github/workflows/pinterest-daily.yml` synchronise le tableau via Pinterest API v5 lorsque l'application et les secrets sont configurés. Le flux actuel utilise les autorisations `boards:read` et `pins:read` et peut employer le flux Client Credentials pour les ressources publiques ([documentation officielle Pinterest](https://dev.pinterest.com/docs/getting-started/set-up-authentication-and-authorization/)). Le tableau doit être public pour le mécanisme de publication actuel dans ce dépôt public. Les tableaux secrets nécessitent une autorisation utilisateur adaptée et un stockage privé : ne jamais publier des Pins privés dans ce dépôt.
+Le tableau `sopppx24/mode` est la référence d'inspiration prioritaire. Le workflow `.github/workflows/pinterest-daily.yml` synchronise le tableau via Pinterest API v5, puis déclenche l'analyse visuelle des images nouvelles, modifiées ou encore dépourvues d'analyse valide. Le flux utilise les autorisations `boards:read` et `pins:read` et le mécanisme Client Credentials pour les ressources publiques ([documentation officielle Pinterest](https://dev.pinterest.com/docs/getting-started/set-up-authentication-and-authorization/)). Le tableau doit être public pour le mécanisme de publication dans ce dépôt public. Les tableaux secrets nécessitent une autorisation utilisateur adaptée et un stockage privé : aucun Pin privé ne doit être publié ici.
 
-**État actuel :** `data/pinterest-pins.json` indique `privacy: UNKNOWN`, sans date de dernière synchronisation et avec une liste `pins` vide. Il ne faut donc pas présenter le compte Pinterest comme connecté ni dire que ses Pins alimentent déjà les recommandations. Le moteur dispose en revanche du lookbook local de 20 références décrit dans `data/lookbook-pins.json`.
+**État vérifié au 9 novembre 2026 :** l'API confirme `privacy: PUBLIC` pour le tableau `mode`. Le fichier `data/pinterest-pins.json` contient **22 Pins**, chacun muni d'une analyse visuelle valide (version 1), soit **22/22 images analysées**. La dernière synchronisation enregistrée est `2026-11-09T14:00:27.082Z` (UTC).
 
-La synchronisation utilise `boards:read` et `pins:read`. Pour connecter l'application, il faut configurer l'application Pinterest et les secrets GitHub décrits dans [`docs/PINTEREST.md`](./docs/PINTEREST.md). Aucune connexion active ne doit être annoncée tant que le flux confirme `privacy: PUBLIC` et contient les Pins.
+### Analyse visuelle automatique
+
+Le workflow GitHub Actions envoie les images publiques au Worker Cloudflare `dressopp-agent`, route privée `/analyze-pins`. L'accès à cette route est protégé par le secret partagé `PINTEREST_SYNC_TOKEN`, stocké dans les secrets GitHub Actions et dans les secrets du Worker ; sa valeur ne doit jamais être ajoutée au dépôt. Le Worker n'accepte que les images HTTPS du domaine `i.pinimg.com`, contrôle les redirections et limite le type et la taille des images.
+
+Le modèle Gemma 4 renvoie un résumé descriptif ainsi que des listes normalisées de styles, couleurs, matières, coupes et motifs, avec un indicateur de confiance. Les signaux sont enregistrés dans le champ technique `visualAnalysis` de chaque Pin. Ils alimentent les correspondances entre les tenues Pinterest, la garde-robe et les produits du catalogue, ainsi que les inspirations transmises au personal shopper distant lorsque l'utilisateur a donné son consentement.
+
+Les caractéristiques issues de la vision ne sont pas ajoutées aux tags affichés sur les cartes Pinterest et ne créent pas de nouvelle rubrique ou de réglage dans l'application. Les analyses sont réutilisées tant que l'URL de l'image ne change pas ; seules les images nouvelles, modifiées ou en échec sont renvoyées au modèle lors des synchronisations suivantes. Une image non vestimentaire peut être classée comme telle et ne fournit alors aucun signal de mode.
+
+Cette analyse porte sur les images du tableau public et ses métadonnées sont conservées dans le dépôt public. Elle ne transforme jamais un Pin en fiche commerciale et ne fabrique ni marque, ni prix, ni lien produit.
+
+La configuration et les étapes d'activation sont détaillées dans [`docs/PINTEREST.md`](./docs/PINTEREST.md).
 
 ## Zalando et comptes personnels
 
@@ -137,12 +150,12 @@ Par défaut, le profil, les tailles, les votes, les préférences, la garde-robe
 
 Le partage communautaire est actuellement désactivé et non configuré dans `data/community-config.json`. S'il est activé ultérieurement, DRESSOPP transmet des étiquettes de goûts et des identifiants hachés de fiches publiques à Firebase. Ces identifiants sont pseudonymisés, pas anonymes au sens strict ; les règles décrites dans `docs/COMMUNITY.md` permettent aux utilisateurs authentifiés de lire les profils communautaires. Lire cette documentation et configurer les règles Firestore avant toute activation.
 
-Le dépôt est public : seules des données de sources publiques doivent y être publiées. La synchronisation Pinterest publique ne doit contenir que des Pins d'un tableau confirmé public. Aucun identifiant ou mot de passe Zalando/Pinterest ne doit être committé.
+Le dépôt est public : seules des données de sources publiques doivent y être publiées. Le flux Pinterest contient les Pins du tableau confirmé public `sopppx24/mode` ainsi que leurs métadonnées d'analyse visuelle (`visualAnalysis`) ; ces métadonnées sont donc elles aussi publiques. Les images sont analysées côté Worker à partir du CDN public Pinterest. Les interactions, tailles, notes privées et préférences personnelles restent dans IndexedDB ; elles ne sont pas incluses dans le flux Pinterest. Aucun jeton, identifiant ou mot de passe Pinterest/Zalando ne doit être committé.
 
 ## Automatisations GitHub
 
 - Catalogue : [workflow catalogue](https://github.com/sopp24/DRESSOPP/actions/workflows/refresh-public-catalog.yml), planifié chaque jour à 08 h 17 (Europe/Paris).
-- Pinterest : [workflow Pinterest](https://github.com/sopp24/DRESSOPP/actions/workflows/pinterest-daily.yml), planifié chaque jour à 12 h (Europe/Paris).
+- Pinterest : [workflow Pinterest](https://github.com/sopp24/DRESSOPP/actions/workflows/pinterest-daily.yml), planifié chaque jour à 12 h (Europe/Paris). Il synchronise les Pins publics, analyse uniquement les images à enrichir via Cloudflare Workers AI, puis commit le flux JSON actualisé.
 - Chaque mise à jour du catalogue republie le site GitHub Pages après la génération des pages.
 - Les horaires GitHub Actions sont des heures cibles et peuvent être retardés.
 
@@ -169,7 +182,7 @@ Le dépôt étant public et les workflows utilisant `ubuntu-latest`, les runners
 - `data/catalog-seeds.json` : références produits éditoriales conservées lors des collectes.
 - `data/catalog-manifest.json` et `data/catalog-pages/` : manifeste et pages du catalogue.
 - `data/lookbook-pins.json` et `assets/lookbook/` : 20 références visuelles locales.
-- `data/pinterest-pins.json` : instantané public Pinterest, actuellement non synchronisé.
+- `data/pinterest-pins.json` : instantané du tableau Pinterest public, avec les Pins synchronisés et leurs analyses visuelles dans `visualAnalysis`.
 - `workers/dressopp-agent/` : code du Worker Cloudflare du mode génératif.
 - `docs/SOURCES.md`, `docs/AI-AGENT.md`, `docs/PINTEREST.md`, `docs/COMMUNITY.md` et `docs/DEPLOYMENT.md` : documentation technique détaillée.
 - `.github/workflows/refresh-public-catalog.yml` : actualisation quotidienne du catalogue et déclenchement de Pages si les données changent.
