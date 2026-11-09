@@ -99,6 +99,12 @@ a { color: inherit; }
 }
 .field textarea { min-height: 88px; padding: 11px 12px; resize: vertical; }
 .field input::placeholder, .field textarea::placeholder, .search-input::placeholder { color: #666; }
+.price-input-wrap { position: relative; width: 100%; min-width: 0; }
+.price-input-wrap input { padding-right: 42px; }
+.price-input-currency {
+  position: absolute; top: 50%; right: 27px; transform: translateY(-50%);
+  color: #929292; font-size: 12px; line-height: 1; pointer-events: none; user-select: none;
+}
 .field input:focus, .field select:focus, .field textarea:focus, .search-input:focus { border-color: rgba(255,0,0,.65); background: #151515; }
 .field select { appearance: none; background-image: linear-gradient(45deg,transparent 50%,#888 50%),linear-gradient(135deg,#888 50%,transparent 50%); background-position: calc(100% - 15px) 17px,calc(100% - 11px) 17px; background-size: 4px 4px,4px 4px; background-repeat: no-repeat; padding-right: 28px; }
 .filter-footer { display: flex; align-items: center; justify-content: space-between; gap: 15px; padding: 0 3px; margin: -7px 0 18px; }
