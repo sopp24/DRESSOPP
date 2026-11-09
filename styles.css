@@ -2360,3 +2360,21 @@ body.is-discovery-app .app-footer { display: none; }
   }
   .outfit-proposal-card:hover { transform: none; }
 }
+
+.nav-count[hidden],.mobile-nav .nav-count[hidden] { display: none !important; }
+.mobile-nav button { position: relative; }
+.mobile-nav button .nav-count {
+  position: absolute;
+  top: 1px;
+  right: 5px;
+  min-width: 14px;
+  height: 14px;
+  padding: 0 4px;
+  border: 1px solid rgba(255,255,255,.12);
+  color: #fff;
+  background: rgba(255,0,0,.82);
+  font-size: 7px;
+  line-height: 1;
+}
+.outfit-missing-note { display: block; margin-top: 7px; color: #d8ae6d; font-size: 8px; line-height: 1.4; }
+.outfit-missing-note.is-complete { color: #8bbd9a; }
