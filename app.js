@@ -651,7 +651,7 @@ function renderDeckCard(product, training) {
     '<button class="deck-action deck-action-save' + (saved ? ' is-selected' : '') + '" type="button" data-action="save-list" data-id="' + esc(product.id) + '" aria-label="' + (saved ? 'Déjà dans ma liste' : 'Ajouter à ma liste') + '" aria-pressed="' + String(saved) + '" title="' + (saved ? 'Dans ma liste' : 'Ajouter à ma liste') + '"><img class="deck-action-icon" src="./assets/star.webp" alt="" aria-hidden="true" draggable="false"></button>' +
     '<button class="deck-action deck-action-yes" type="button" data-action="vote" data-vote="yes" data-id="' + esc(product.id) + '" aria-label="J’aime" title="J’aime"><img class="deck-action-icon" src="./assets/fav.webp" alt="" aria-hidden="true" draggable="false"></button>' +
     '<button class="deck-action deck-action-share" type="button" data-action="share-product" data-id="' + esc(product.id) + '" aria-label="Partager cet article" title="Partager"><img class="deck-action-icon" src="./assets/share.webp" alt="" aria-hidden="true" draggable="false"></button>' +
-    '</div><span class="deck-hint">Glisse à gauche ou à droite</span>' +
+    '</div><span class="deck-hint">Gauche : passer · Droite : j’aime · Bas : ajouter à ma liste</span>' +
     '</article></div>';
 }
 function renderGridCards(products, options) {
@@ -1145,7 +1145,7 @@ function animateDeckDecision(productId, action) {
   }
   deckActionPending = true;
   const directionClass = action === "yes" ? "is-like" : action === "no" ? "is-nope" : "is-save";
-  card.classList.remove("is-dragging", "swipe-preview-like", "swipe-preview-nope");
+  card.classList.remove("is-dragging", "swipe-preview-like", "swipe-preview-nope", "swipe-preview-save");
   card.classList.add("is-committing", directionClass);
   card.style.removeProperty("transform");
   card.style.removeProperty("border-color");
@@ -1767,7 +1767,7 @@ function attachSwipe() {
   function clearPreview(animateBack) {
     dragging = false;
     horizontalIntent = false;
-    card.classList.remove("is-dragging", "swipe-preview-like", "swipe-preview-nope");
+    card.classList.remove("is-dragging", "swipe-preview-like", "swipe-preview-nope", "swipe-preview-save");
     card.style.removeProperty("--swipe-tint-opacity");
     card.style.removeProperty("border-color");
     if (animateBack) card.classList.add("is-returning");
