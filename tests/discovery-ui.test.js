@@ -101,9 +101,12 @@ test("Pour toi is swipe-first and moves all secondary discovery panels to Settin
   const settings=app.slice(app.indexOf("function renderDiscoveryInsights()"),app.indexOf("function renderSettings()"));
   assert.ok(discover.includes("renderDeckCard(products[0],training)"));
   assert.ok(discover.includes("renderFilterBar(false)"));
-  assert.ok(!discover.includes("renderAiAgentPanel()"));
-  assert.ok(!discover.includes("renderCatalogStatus()"));
-  assert.ok(!discover.includes("renderRetailerDirectory()"));
+  const primaryBranch=discover.slice(0,discover.indexOf("const trainingExtras = training"));
+  assert.ok(primaryBranch.includes("const appToolbar = !training"));
+  assert.ok(!primaryBranch.includes("renderAiAgentPanel()"));
+  assert.ok(!primaryBranch.includes("renderCatalogStatus()"));
+  assert.ok(!primaryBranch.includes("renderRetailerDirectory()"));
+  assert.ok(discover.includes("const trainingExtras = training"));
   assert.ok(settings.includes("renderAiAgentPanel()"));
   assert.ok(settings.includes("renderCatalogStatus()"));
   assert.ok(settings.includes("renderRetailerDirectory()"));
