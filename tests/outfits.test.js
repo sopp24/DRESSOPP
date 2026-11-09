@@ -36,12 +36,14 @@ test("outfit ideas use saved pieces and only suggest catalogue products with mer
   assert.equal(ideas[0].pieces.length, 2);
   assert.equal(ideas[0].suggestions.length, 1);
   assert.equal(ideas[0].suggestions[0].product.id, "bottom-1");
-  assert.ok(ideas[0].missingSlots.includes("bottom"));
+  assert.equal(ideas[0].items.length,3);
+  assert.ok(!ideas[0].missingSlots.includes("bottom"));
+  assert.equal(ideas[0].totalPrice,null);
 });
 
 test("approved outfit references move ahead of rejected ones", function() {
-  const rejected = { id: "rejected", title: "Streetwear red oversized outfit" };
-  const approved = { id: "approved", title: "Minimalist beige linen outfit" };
+  const rejected = { id: "rejected", title: "Streetwear red oversized outfit", imageUrl:"https://images.example/rejected.jpg" };
+  const approved = { id: "approved", title: "Minimalist beige linen outfit", imageUrl:"https://images.example/approved.jpg" };
   const untrained = buildOutfitIdeas([rejected, approved], [], [], []);
   assert.deepEqual(untrained.map(function(idea) { return idea.pin.id; }), ["rejected", "approved"]);
 
@@ -86,4 +88,45 @@ test("visual analysis marked as non-fashion does not add style signals", functio
   assert.deepEqual(features.styleTags,[]);
   assert.deepEqual(features.colors,[]);
   assert.deepEqual(inferPinterestTags(pin),[]);
+});
+
+
+test("outfit ideas respect selected Pinterest styles and total budget", function() {
+  const pin = {
+    id:"pin-street",
+    title:"Streetwear black outfit",
+    description:"Black oversized hoodie and wide trousers",
+    imageUrl:"https://images.example/pin.jpg",
+    visualAnalysis:{isFashion:true,summary:"Tenue streetwear noire avec hoodie ample, pantalon large et baskets.",styleTags:["Streetwear"],colors:["noir"],materials:["coton"],cuts:["oversized","wide leg"],patterns:[]}
+  };
+  const products = [
+    {id:"hoodie",name:"Hoodie noir oversized",objective:"Vêtements",styleTags:["Streetwear"],colors:["noir"],cuts:["oversized"],price:60,url:"https://shop.example/hoodie"},
+    {id:"trousers",name:"Pantalon large noir",objective:"Vêtements",styleTags:["Streetwear"],colors:["noir"],cuts:["wide leg"],price:70,url:"https://shop.example/trousers"},
+    {id:"sneakers",name:"Sneakers noires",objective:"Chaussures",styleTags:["Streetwear"],colors:["noir"],price:90,url:"https://shop.example/sneakers"},
+    {id:"blazer",name:"Blazer gris formel",objective:"Vêtements",styleTags:["Classe"],colors:["gris"],price:120,url:"https://shop.example/blazer"}
+  ];
+  const filtered = buildOutfitIdeas([pin],[],products,[],{},{
+    styles:["Streetwear"],season:"Toute saison",maxPrice:180,profile:{}
+  });
+  assert.equal(filtered.length,1);
+  assert.deepEqual(filtered[0].items.map(entry=>entry.product.id),["hoodie","trousers"]);
+  assert.equal(filtered[0].totalPrice,130);
+
+  const wrongStyle = buildOutfitIdeas([pin],[],products,[],{},{
+    styles:["Classe"],season:"Toute saison",maxPrice:null,profile:{}
+  });
+  assert.equal(wrongStyle.length,0);
+});
+
+test("saved wardrobe pieces can be included without a merchant URL, but suggestions need real links", function() {
+  const pin={id:"pin-saved",title:"Minimalist beige outfit",imageUrl:"https://images.example/pin.jpg"};
+  const wardrobe=[{id:"manual-top",name:"Chemise beige",objective:"Vêtements",colors:["beige"]}];
+  const catalogue=[
+    {id:"linked-bottom",name:"Pantalon beige",objective:"Vêtements",colors:["beige"],url:"https://shop.example/bottom"},
+    {id:"unlinked-shoes",name:"Sneakers beige",objective:"Chaussures",colors:["beige"],url:""}
+  ];
+  const ideas=buildOutfitIdeas([pin],wardrobe,catalogue,[]);
+  assert.ok(ideas[0].items.some(entry=>entry.product.id==="manual-top"));
+  assert.ok(ideas[0].items.some(entry=>entry.product.id==="linked-bottom"));
+  assert.ok(!ideas[0].items.some(entry=>entry.product.id==="unlinked-shoes"));
 });
