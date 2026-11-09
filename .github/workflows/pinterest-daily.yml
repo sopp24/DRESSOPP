@@ -32,6 +32,7 @@ jobs:
       - name: Vérifier le code et les tests
         run: npm test
 
+      # Images sent to the private Cloudflare vision endpoint; token is read only from Actions secrets.
       - name: Lire le tableau Pinterest et repérer les nouvelles épingles
         run: node scripts/sync-pinterest.mjs
         env:
