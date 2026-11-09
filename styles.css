@@ -2417,3 +2417,35 @@ body.is-discovery-app .app-footer { display: none; }
   .filter-bar .filter-tools { width: 100%; justify-content: stretch; }
   .filter-bar .filter-tools > button { flex: 1 1 auto; }
 }
+
+/* Mobile: keep the original desktop external-link glyph; the native-looking circular arrow is intentionally removed. */
+@media (max-width: 600px) {
+  .discovery-layout--swipe .product-original-link > i {
+    display: inline-block;
+    width: auto;
+    height: auto;
+    flex: 0 0 auto;
+    padding: 0 12px;
+    border-radius: 0;
+    color: #090909;
+    background: transparent;
+    font-size: inherit;
+    font-style: normal;
+    line-height: 1;
+  }
+}
+/* Training contains the Pinterest pins and the agent sits after the add-to-list swipe area. */
+.training-pins-panel { display: grid; gap: 14px; margin-top: 18px; }
+.training-pins-heading { display: grid; gap: 5px; }
+.training-pins-heading h2 { margin: 0; color: #f5f5f5; font-size: 20px; letter-spacing: -.04em; }
+.training-pins-heading p { margin: 0; color: #888; font-size: 11px; line-height: 1.55; }
+.training-pins-panel .page-heading { display: none; }
+.training-pins-panel .pinterest-status-strip { margin-top: 0; }
+.training-support .ai-agent-panel { margin-top: 22px; }
+@media (max-width: 850px) {
+  .training-pins-panel { min-width: 0; padding: 14px; }
+  .training-pins-panel .inspiration-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+}
+@media (max-width: 600px) {
+  .training-pins-panel .inspiration-grid { grid-template-columns: minmax(0,1fr); }
+}
