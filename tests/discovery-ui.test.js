@@ -123,3 +123,23 @@ test("Pinterest is the sole inspiration source and the old local lookbook is abs
   assert.ok(app.includes("function renderInspirations()"));
   assert.ok(index.includes("https://sopp24.github.io/SOPP-agents/assets/brand-mark.webp"));
 });
+
+\ntest("swiping down on the discovery card saves it to the list", function() {
+  assert.ok(app.includes("verticalSaveIntent"));
+  assert.ok(app.includes("const acceptedSave = verticalSaveIntent && deltaY >= saveThreshold"));
+  assert.ok(app.includes('animateDeckDecision(productId, acceptedSave ? "save"'));
+  assert.ok(css.includes(".product-card.is-committing.is-save .swipe-tint"));
+});
+
+test("Pinterest pins are inside Training and no standalone Pins navigation remains", function() {
+  assert.ok(!index.includes('data-view="inspirations"'));
+  assert.ok(app.includes("training-pins-panel"));
+  assert.ok(app.includes("renderInspirations()"));
+  assert.ok(app.includes("renderCatalogStatus() + renderRetailerDirectory() + renderAiAgentPanel()"));
+  assert.ok(css.includes(".training-support .ai-agent-panel"));
+});
+
+test("mobile external article link keeps the desktop arrow instead of a large circular icon", function() {
+  assert.ok(css.includes("Mobile: keep the original desktop external-link glyph"));
+  assert.ok(css.includes("background: transparent;"));
+});
