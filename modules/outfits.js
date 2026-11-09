@@ -50,8 +50,7 @@ export function pinterestText(pin) {
   return [pin.title, pin.description, pin.altText, pin.alt_text, ...(pin.tags || [])].filter(Boolean).join(" ");
 }
 
-export function inferPinterestFeatures(pin) {
-  const source = clean(pinterestText(pin));
+function classifyPinterestText(source) {
   const features = { styleTags: [], colors: [], materials: [], cuts: [], patterns: [] };
   Object.entries(STYLE_HINTS).forEach(function(entry) {
     if (entry[1].some(function(term) { return source.includes(clean(term)); })) features.styleTags.push(entry[0]);
@@ -68,8 +67,29 @@ export function inferPinterestFeatures(pin) {
   Object.keys(features).forEach(function(key) { features[key] = unique(features[key]); });
   return features;
 }
+function mergeVisualValues(target, values, allowed) {
+  const lookup = new Map(allowed.map(function(value) { return [clean(value),value]; }));
+  const visual = Array.isArray(values) ? values : [];
+  target.push(...visual.map(function(value) { return lookup.get(clean(value)); }).filter(Boolean));
+  return unique(target);
+}
+export function inferPinterestFeatures(pin) {
+  const visual = pin && pin.visualAnalysis && pin.visualAnalysis.isFashion !== false ? pin.visualAnalysis : null;
+  const source = clean([pinterestText(pin), visual && visual.summary].filter(Boolean).join(" "));
+  const features = classifyPinterestText(source);
+  if (visual) {
+    features.styleTags = mergeVisualValues(features.styleTags,visual.styleTags,Object.keys(STYLE_HINTS));
+    features.colors = mergeVisualValues(features.colors,visual.colors,COLOR_HINTS);
+    features.materials = mergeVisualValues(features.materials,visual.materials,MATERIAL_HINTS);
+    features.cuts = mergeVisualValues(features.cuts,visual.cuts,CUT_HINTS);
+    features.patterns = mergeVisualValues(features.patterns,visual.patterns,PATTERN_HINTS.map(function(pattern) { return pattern.value; }));
+  }
+  return features;
+}
 export function inferPinterestTags(pin) {
-  const features = inferPinterestFeatures(pin);
+  // Les étiquettes visibles restent fondées sur les seuls textes Pinterest.
+  // Les signaux visuels sont réservés au moteur de recommandation.
+  const features = classifyPinterestText(clean(pinterestText(pin)));
   return unique([].concat(features.styleTags, features.colors, features.materials, features.cuts, features.patterns));
 }
 
@@ -93,8 +113,9 @@ function productTerms(product) {
 }
 
 function matchScore(product, pin) {
-  const pinText = clean(pinterestText(pin));
-  const tags = inferPinterestTags(pin).map(clean);
+  const pinText = clean([pinterestText(pin),pin && pin.visualAnalysis && pin.visualAnalysis.isFashion !== false ? pin.visualAnalysis.summary : ""].filter(Boolean).join(" "));
+  const features = inferPinterestFeatures(pin);
+  const tags = unique([].concat(features.styleTags,features.colors,features.materials,features.cuts,features.patterns)).map(clean);
   const fields = [
     ...(product.styleTags || []), ...(product.colors || []),
     ...(product.materials || []), ...(product.cuts || []), ...(product.patterns || [])
