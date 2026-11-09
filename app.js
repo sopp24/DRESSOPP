@@ -793,70 +793,239 @@ function renderInspirations() {
 function outfitPinKey(pin) {
   return String(pin && (pin.pinId || pin.id || pin.sourceUrl || pin.pinUrl) || "");
 }
+function getOutfitFilters() {
+  const saved = state.settings.outfitFilters || {};
+  const fallbackStyles = state.settings.style && state.settings.style !== "Tous"
+    ? [state.settings.style]
+    : (state.profile.preferredStyles || []);
+  return {
+    styles:Array.isArray(saved.styles) ? saved.styles : fallbackStyles,
+    season:saved.season || "Toute saison",
+    maxPrice:saved.maxPrice == null || saved.maxPrice === "" ? null : Number(saved.maxPrice)
+  };
+}
+function renderOutfitFilters() {
+  const filters = getOutfitFilters();
+  const selected = new Set(filters.styles);
+  return '<section class="panel outfit-filter-panel">' +
+    '<div class="outfit-filter-heading"><div><span class="eyebrow">Personnalise les propositions</span><strong>Quels looks te correspondent ?</strong><small>Pinterest reste la seule source d’inspiration des tenues.</small></div>' +
+    '<button class="button-quiet button-small" type="button" data-action="reset-outfit-filters">Réinitialiser</button></div>' +
+    '<div class="outfit-filter-row"><div class="outfit-style-filter"><span class="outfit-filter-label">Styles</span><div class="outfit-style-options">' +
+    STYLES.map(function(style) {
+      return '<label class="outfit-style-option' + (selected.has(style) ? ' is-selected' : '') + '"><input type="checkbox" data-outfit-style value="' + esc(style) + '"' + (selected.has(style) ? ' checked' : '') + '><span>' + esc(style) + '</span></label>';
+    }).join("") +
+    '</div></div><div class="outfit-extra-filters"><div class="field"><label for="outfit-season">Saison</label><select id="outfit-season" data-outfit-filter="season">' +
+    selectOption("Toute saison",filters.season) + SEASONS.map(function(item) { return selectOption(item,filters.season); }).join("") +
+    '</select></div><div class="field outfit-budget-field"><label for="outfit-budget">Budget total du look</label><div class="price-input-wrap"><input id="outfit-budget" data-outfit-filter="maxPrice" type="number" min="0" step="1" value="' + (filters.maxPrice == null ? "" : esc(filters.maxPrice)) + '" placeholder="Sans limite"><span class="price-input-currency" aria-hidden="true">€</span></div></div></div></div>' +
+    '<p class="field-hint outfit-filter-note">Tes inspirations Pinterest, tes préférences de profil, tes tailles et ton budget servent à sélectionner les pièces. Les filtres ne remplacent jamais les caractéristiques réellement disponibles dans les fiches produit.</p>' +
+    '</section>';
+}
+function renderOutfitProposalCard(idea) {
+  const pin = idea.pin;
+  const pinId = outfitPinKey(pin);
+  const savedOutfit = (state.savedOutfits || []).some(function(item) { return item.pinId === pinId; });
+  const feedback = state.outfitFeedback && state.outfitFeedback[pinId] && state.outfitFeedback[pinId].vote || "";
+  const summary = pin.visualAnalysis && pin.visualAnalysis.summary || pin.description || "";
+  const productPreviews = idea.items.slice(0,3).map(function(entry) {
+    return '<div class="outfit-proposal-piece">' + imageMarkup(entry.product.imageUrl,entry.product.name) + '</div>';
+  }).join("");
+  const tags = idea.tags.slice(0,5).map(function(tag) { return '<span>' + esc(tag) + '</span>'; }).join("");
+  const total = idea.totalPrice == null ? "Prix total à confirmer" : formatPrice(idea.totalPrice);
+  return '<article class="panel outfit-proposal-card">' +
+    '<button class="outfit-proposal-open" type="button" data-action="show-outfit" data-id="' + esc(pinId) + '" aria-label="Voir la tenue ' + esc(pin.title || "inspirée de Pinterest") + '">' +
+    '<div class="outfit-proposal-image">' + imageMarkup(pin.imageUrl,pin.title || summary || "Inspiration Pinterest") + '<span class="outfit-source-pill">Pinterest</span><span class="outfit-piece-count">' + idea.items.length + ' pièces</span></div>' +
+    '<div class="outfit-proposal-copy"><span class="eyebrow">' + esc(idea.tags.slice(0,2).join(" · ") || "Inspiration de ton tableau") + '</span><h2>' + esc(pin.title || "Une silhouette à adopter") + '</h2>' +
+    (summary ? '<p>' + esc(String(summary).slice(0,130)) + '</p>' : '') +
+    '<div class="inspiration-tags">' + tags + '</div><div class="outfit-proposal-preview">' + productPreviews + '</div>' +
+    '<div class="outfit-proposal-meta"><strong>' + esc(total) + '</strong><span>' + idea.items.length + ' articles associés</span></div></div></button>' +
+    '<div class="outfit-proposal-actions">' +
+    '<button class="button-primary button-small" type="button" data-action="show-outfit" data-id="' + esc(pinId) + '">Voir la tenue <span aria-hidden="true">↗</span></button>' +
+    (savedOutfit ? '<span class="outfit-saved-label">✓ Dans Mes tenues</span>' : '<button class="button-secondary button-small" type="button" data-action="save-full-outfit" data-id="' + esc(pinId) + '">♡ Enregistrer le look</button>') +
+    '<div class="outfit-quick-feedback"><button type="button" data-action="rate-outfit" data-id="' + esc(pinId) + '" data-vote="yes" aria-label="J’aime ce style" aria-pressed="' + String(feedback === "yes") + '" class="' + (feedback === "yes" ? "is-selected" : "") + '">✓</button><button type="button" data-action="rate-outfit" data-id="' + esc(pinId) + '" data-vote="no" aria-label="Ce style ne me plaît pas" aria-pressed="' + String(feedback === "no") + '" class="' + (feedback === "no" ? "is-selected" : "") + '">×</button></div>' +
+    '</div></article>';
+}
+function renderSavedOutfitCard(saved, pinsById) {
+  const pin = pinsById.get(saved.pinId) || saved.reference || {};
+  const products = (saved.productIds || []).map(productById).filter(Boolean);
+  return '<article class="panel outfit-proposal-card outfit-saved-card">' +
+    '<button class="outfit-proposal-open" type="button" data-action="open-saved-outfit" data-id="' + esc(saved.pinId) + '">' +
+    '<div class="outfit-proposal-image">' + imageMarkup(pin.imageUrl || saved.imageUrl,pin.title || saved.title || "Tenue enregistrée") + '<span class="outfit-source-pill">Favori</span><span class="outfit-piece-count">' + products.length + ' pièces</span></div>' +
+    '<div class="outfit-proposal-copy"><span class="eyebrow">Enregistrée le ' + esc(saved.savedAt ? new Date(saved.savedAt).toLocaleDateString("fr-FR") : "—") + '</span><h2>' + esc(pin.title || saved.title || "Ma tenue") + '</h2>' +
+    '<div class="outfit-proposal-preview">' + products.slice(0,3).map(function(product) { return '<div class="outfit-proposal-piece">' + imageMarkup(product.imageUrl,product.name) + '</div>'; }).join("") + '</div>' +
+    '<div class="outfit-proposal-meta"><strong>' + esc(products.length + " articles dans ta garde-robe") + '</strong><span>Tenue sauvegardée</span></div></div></button>' +
+    '<div class="outfit-proposal-actions"><button class="button-primary button-small" type="button" data-action="open-saved-outfit" data-id="' + esc(saved.pinId) + '">Ouvrir la tenue ↗</button>' +
+    '<button class="button-quiet button-small" type="button" data-action="remove-saved-outfit" data-id="' + esc(saved.pinId) + '">Retirer des favoris</button></div></article>';
+}
 function renderOutfits() {
-  const pins = pinterestPinCards().filter(function(pin) { return pin.kind !== "detail"; }).slice(0, 40);
+  const pinterestPins = pinterestPinCards().filter(function(pin) { return pin.origin === "Pinterest" && pin.kind !== "detail" && pin.imageUrl; });
+  const pinsById = new Map(pinterestPins.map(function(pin) { return [outfitPinKey(pin),pin]; }));
   const wardrobe = state.likedProducts.map(function(item) { return productById(item.productId); }).filter(Boolean);
   const dislikedIds = (state.interactions.dislikes || []).map(function(item) { return item.productId; });
   const feedbacks = state.outfitFeedback && typeof state.outfitFeedback === "object" ? state.outfitFeedback : {};
-  const ideas = buildOutfitIdeas(pins, wardrobe, state.products, dislikedIds, feedbacks);
+  const filters = getOutfitFilters();
+  const ideas = buildOutfitIdeas(pinterestPins,wardrobe,state.products,dislikedIds,feedbacks,{
+    styles:filters.styles,season:filters.season,maxPrice:filters.maxPrice,profile:state.profile
+  }).filter(function(idea) { return idea.items.length >= 2; });
+  currentOutfitIdeas = ideas;
   if (state.selectedPinterestPin) {
-    ideas.sort(function(a, b) {
+    ideas.sort(function(a,b) {
       const selected = String(state.selectedPinterestPin);
       return Number(outfitPinKey(b.pin) === selected) - Number(outfitPinKey(a.pin) === selected);
     });
   }
-
+  const savedOutfits = Array.isArray(state.savedOutfits) ? state.savedOutfits : [];
+  const savedView = state.settings.outfitLibraryView === "saved";
   const feedbackValues = Object.values(feedbacks);
   const approvedCount = feedbackValues.filter(function(item) { return item && item.vote === "yes"; }).length;
   const rejectedCount = feedbackValues.filter(function(item) { return item && item.vote === "no"; }).length;
-  const heading = renderPageHeading("De Pinterest à ton dressing", "Tenues", "Des compositions inspirées de tes références, rapprochées des pièces de ta garde-robe et complétées uniquement avec des produits vérifiables.",
+  const heading = renderPageHeading("Des looks guidés par tes inspirations", "Tenues", "Chaque proposition part d’un Pin Pinterest, puis sélectionne des pièces du catalogue et de ta garde-robe selon ton style, tes préférences et ton budget.",
     '<a class="button-secondary" href="' + esc(PINTEREST_BOARD_URL) + '" target="_blank" rel="noopener noreferrer">Voir Pinterest ↗</a>');
-
-  if (!ideas.length) {
-    return heading + '<div class="empty-state"><div class="empty-mark">✦</div><h2>Les tenues viendront de tes inspirations</h2><p>Ajoute des Pins depuis la rubrique Pinterest pour commencer à composer des propositions à partir de ta garde-robe et du catalogue disponible.</p><div class="empty-actions"><button class="button-primary" type="button" data-view="inspirations">Voir mes inspirations</button><button class="button-secondary" type="button" data-view="wardrobe">Voir ma garde-robe</button></div></div>';
+  const tabs = '<div class="outfit-library-tabs" role="tablist" aria-label="Tenues proposées et favorites">' +
+    '<button type="button" role="tab" data-action="toggle-outfit-library" data-view-mode="discover" aria-selected="' + String(!savedView) + '" class="' + (!savedView ? "is-active" : "") + '">Pour toi <span>' + ideas.length + '</span></button>' +
+    '<button type="button" role="tab" data-action="toggle-outfit-library" data-view-mode="saved" aria-selected="' + String(savedView) + '" class="' + (savedView ? "is-active" : "") + '">Mes tenues <span>' + savedOutfits.length + '</span></button></div>';
+  if (savedView) {
+    return heading + tabs + (savedOutfits.length
+      ? '<div class="outfit-proposal-grid">' + savedOutfits.slice().sort(function(a,b) { return new Date(b.savedAt || 0) - new Date(a.savedAt || 0); }).map(function(saved) { return renderSavedOutfitCard(saved,pinsById); }).join("") + '</div>'
+      : '<div class="empty-state"><div class="empty-mark">♡</div><h2>Pas encore de tenue favorite</h2><p>Ouvre un look dans « Pour toi », puis enregistre la tenue complète. Ses pièces rejoindront aussi ta garde-robe.</p><div class="empty-actions"><button class="button-primary" type="button" data-action="toggle-outfit-library" data-view-mode="discover">Découvrir les tenues</button></div></div>');
   }
-
-  const cards = ideas.map(function(idea) {
-    const pin = idea.pin;
-    const pinId = outfitPinKey(pin);
-    const feedback = feedbacks[pinId] && feedbacks[pinId].vote || "";
-    const pinLink = safeExternalUrl(pin.sourceUrl || pin.pinUrl);
-    const saved = idea.pieces.map(function(entry) {
-      const product = entry.product;
-      return '<article class="outfit-piece"><div class="outfit-piece-image">' + imageMarkup(product.imageUrl, product.name) + '</div><div><small>Dans ta liste · ' + esc(product.objective || product.category) + '</small><strong>' + esc(product.name) + '</strong><span>' + esc(formatPrice(product.price)) + '</span><button class="button-quiet button-small" type="button" data-action="details" data-id="' + esc(product.id) + '">Détails</button></div></article>';
-    }).join("");
-    const suggested = idea.suggestions.map(function(entry) {
-      const product = entry.product;
-      return '<article class="outfit-piece is-suggestion"><div class="outfit-piece-image">' + imageMarkup(product.imageUrl, product.name) + '</div><div><small>À compléter · ' + esc(entry.slot === "top" ? "Haut" : entry.slot === "bottom" ? "Bas" : "Chaussures") + '</small><strong>' + esc(product.name) + '</strong><span>' + esc(formatPrice(product.price)) + '</span><button class="button-quiet button-small" type="button" data-action="details" data-id="' + esc(product.id) + '">Voir la pièce</button></div></article>';
-    }).join("");
-    const missing = idea.missingSlots.filter(function(slot) {
-      return !idea.suggestions.some(function(entry) { return entry.slot === slot; });
-    });
-    const approved = feedback === "yes";
-    const rejected = feedback === "no";
-
-    return '<article class="panel outfit-card' + (approved ? ' is-approved' : rejected ? ' is-rejected' : '') + '">' +
-      '<div class="outfit-feedback"><span>Cette tenue te plaît ?</span><div class="outfit-feedback-actions">' +
-      '<button class="outfit-rate-button is-positive' + (approved ? ' is-selected' : '') + '" type="button" data-action="rate-outfit" data-id="' + esc(pinId) + '" data-vote="yes" aria-pressed="' + String(approved) + '" aria-label="Valider cette tenue" title="Valider cette tenue"><span aria-hidden="true">✓</span><small>Valider</small></button>' +
-      '<button class="outfit-rate-button is-negative' + (rejected ? ' is-selected' : '') + '" type="button" data-action="rate-outfit" data-id="' + esc(pinId) + '" data-vote="no" aria-pressed="' + String(rejected) + '" aria-label="Refuser cette tenue" title="Refuser cette tenue"><span aria-hidden="true">✕</span><small>Refuser</small></button>' +
-      '</div></div>' +
-      '<div class="outfit-reference"><div class="outfit-reference-image">' + imageMarkup(pin.imageUrl, pin.title) + '</div>' +
-      '<div class="outfit-reference-copy"><span class="eyebrow">' + (pin.origin === "lookbook" ? "Référence lookbook · " + esc(pin.season || "Automne / Hiver") : "Inspiration Pinterest") + '</span><h2>' + esc(pin.title || "Tenue de référence") + '</h2>' +
-      (pin.description ? '<p>' + esc(String(pin.description).slice(0, 180)) + '</p>' : '') +
-      (pinLink ? '<a href="' + esc(pinLink) + '" target="_blank" rel="noopener noreferrer">Ouvrir le Pin ↗</a>' : '') +
-      '<div class="inspiration-tags">' + idea.tags.map(function(tag) { return '<span>' + esc(tag) + '</span>'; }).join("") + '</div></div></div>' +
-      '<div class="outfit-pieces"><div class="outfit-column"><h3>Tes pièces qui s’en rapprochent</h3>' +
-      (saved || '<p class="field-hint">Aucune pièce enregistrée ne correspond encore aux métadonnées de cette épingle.</p>') + '</div>' +
-      '<div class="outfit-column"><h3>Pour compléter la tenue</h3>' +
-      (suggested || '<p class="field-hint">' + (missing.length ? "Pas encore d’article correspondant dans le catalogue. Ajoute ou importe des produits pour obtenir des compléments." : "Ta sélection couvre déjà les catégories principales identifiées.") + '</p>') +
+  if (!pinterestPins.length) {
+    return heading + tabs + '<div class="empty-state"><div class="empty-mark">⌁</div><h2>Aucune inspiration Pinterest disponible</h2><p>Les propositions de tenues sont exclusivement générées depuis les épingles Pinterest synchronisées ou ajoutées manuellement dans tes inspirations. Le lookbook local n’est pas utilisé comme source de tenues.</p><div class="empty-actions"><button class="button-primary" type="button" data-view="inspirations">Voir mes inspirations Pinterest</button><a class="button-secondary" href="' + esc(PINTEREST_BOARD_URL) + '" target="_blank" rel="noopener noreferrer">Ouvrir Pinterest ↗</a></div></div>';
+  }
+  const intro = '<div class="outfit-intro panel"><div><strong>' + ideas.length + ' look(s) correspondant aux critères</strong><p>' +
+    (filters.styles.length ? "Styles : " + esc(filters.styles.join(", ")) + " · " : "Tous les styles · ") +
+    esc(filters.season) + (filters.maxPrice == null ? " · Sans budget maximum" : " · " + esc(formatPrice(filters.maxPrice)) + " maximum par tenue") +
+    '</p><div class="outfit-feedback-summary"><span>' + approvedCount + ' style(s) aimé(s)</span><span>' + rejectedCount + ' à éviter</span></div></div><button class="button-secondary button-small" type="button" data-view="wardrobe">Voir mes vêtements · ' + wardrobe.length + '</button></div>';
+  const cards = ideas.map(renderOutfitProposalCard).join("");
+  const noMatches = '<div class="empty-state"><div class="empty-mark">✦</div><h2>Aucune composition ne passe ces critères</h2><p>Essaie un autre style, une autre saison ou un budget plus souple. Les inspirations restent exclusivement issues de Pinterest.</p><button class="button-secondary" type="button" data-action="reset-outfit-filters">Élargir les critères</button></div>';
+  return heading + tabs + renderOutfitFilters() + intro +
+    (ideas.length ? '<div class="outfit-proposal-grid">' + cards + '</div>' : noMatches);
+}
+function outfitSlotLabel(slot) {
+  return ({top:"Haut",bottom:"Bas",shoes:"Chaussures",outerwear:"Veste / manteau",accessory:"Accessoire"})[slot] || "Pièce";
+}
+function openOutfitDetail(idea) {
+  if (!idea || !idea.pin) return;
+  const pin = idea.pin;
+  const pinId = outfitPinKey(pin);
+  const items = (idea.items || []).filter(function(entry) { return entry && entry.product; });
+  const existingFavorite = (state.savedOutfits || []).find(function(item) { return item.pinId === pinId; });
+  const isSaved = Boolean(existingFavorite);
+  const total = items.length && items.every(function(entry) { return Number.isFinite(Number(entry.product.price)); })
+    ? formatPrice(items.reduce(function(sum,entry) { return sum + Number(entry.product.price); },0))
+    : "Prix total à confirmer";
+  const summary = pin.visualAnalysis && pin.visualAnalysis.summary || pin.description || "";
+  const slides = items.map(function(entry,index) {
+    const product = entry.product;
+    const liked = isLiked(product.id);
+    const url = safeExternalUrl(product.url);
+    return '<article class="outfit-carousel-card" data-outfit-slide="' + index + '">' +
+      '<div class="outfit-carousel-image">' + imageMarkup(product.imageUrl,product.name) + '<span class="outfit-carousel-slot">' + esc(outfitSlotLabel(entry.slot)) + '</span><span class="outfit-carousel-index">' + (index+1) + ' / ' + items.length + '</span></div>' +
+      '<div class="outfit-carousel-copy"><span class="product-brand">' + esc(product.brand || product.merchant || "Marque non renseignée") + '</span><h3>' + esc(product.name) + '</h3>' +
+      '<strong class="outfit-carousel-price">' + esc(formatPrice(product.price)) + '</strong><p>' + esc(product.description || (product.colors || []).join(" · ") || "Fiche produit enregistrée dans le catalogue.") + '</p>' +
+      '<div class="outfit-carousel-actions">' +
+      (liked ? '<span class="outfit-in-wardrobe">✓ Dans Vêtements</span>' : '<button class="button-primary button-small" type="button" data-action="save-outfit-piece" data-id="' + esc(product.id) + '" data-pin-id="' + esc(pinId) + '">＋ Ajouter à Vêtements</button>') +
+      '<button class="button-secondary button-small" type="button" data-action="details" data-id="' + esc(product.id) + '">Détails</button>' +
+      (url ? '<a class="button-quiet button-small" href="' + esc(url) + '" target="_blank" rel="noopener noreferrer">Boutique ↗</a>' : '') +
       '</div></div></article>';
   }).join("");
-
-  return heading +
-    '<div class="outfit-intro panel"><div><strong>' + wardrobe.length + ' pièce(s) dans ta liste</strong><p>Les 19 silhouettes du lookbook sont prêtes à être évaluées. Les associations reposent sur les descriptions et caractéristiques structurées ; les images ne sont pas analysées automatiquement. Valide ou refuse chaque tenue : tes retours affinent progressivement ton profil de style et les correspondances avec les pièces de ta garde-robe.</p><div class="outfit-feedback-summary"><span>' + approvedCount + ' validée(s)</span><span>' + rejectedCount + ' refusée(s)</span></div></div><button class="button-secondary button-small" type="button" data-view="wardrobe">Voir ma liste</button></div>' +
-    '<div class="outfit-board">' + cards + '</div>';
+  modalRoot.innerHTML = '<div class="modal-backdrop outfit-modal-backdrop"><section class="modal modal-wide outfit-detail-modal" role="dialog" aria-modal="true" aria-labelledby="outfit-detail-title" data-modal-content>' +
+    '<div class="modal-head outfit-detail-head"><div class="outfit-detail-reference">' + imageMarkup(pin.imageUrl,pin.title || "Inspiration Pinterest") +
+    '<div><span class="eyebrow">Inspiration Pinterest</span><h2 id="outfit-detail-title">' + esc(pin.title || "Une tenue inspirée de ton tableau") + '</h2>' +
+    (summary ? '<p>' + esc(String(summary).slice(0,220)) + '</p>' : '') +
+    '<div class="inspiration-tags">' + (idea.tags || []).slice(0,6).map(function(tag) { return '<span>' + esc(tag) + '</span>'; }).join("") + '</div>' +
+    '<strong class="outfit-detail-total">' + esc(total) + '</strong></div></div>' +
+    '<button class="close-button" type="button" data-action="close-modal" aria-label="Fermer">×</button></div>' +
+    '<div class="outfit-detail-toolbar"><div><strong>Les pièces de ce look</strong><small>' + items.length + ' article(s) · fais défiler pour les découvrir</small></div><div class="outfit-carousel-controls">' +
+    '<button type="button" data-action="outfit-carousel-prev" aria-label="Articles précédents">‹</button><button type="button" data-action="outfit-carousel-next" aria-label="Articles suivants">›</button></div></div>' +
+    (items.length ? '<div class="outfit-product-carousel" id="outfit-product-carousel">' + slides + '</div>' : '<div class="empty-state"><h2>Aucune pièce disponible</h2><p>Le catalogue ne contient pas encore d’article suffisamment proche de cette inspiration.</p></div>') +
+    '<div class="outfit-detail-footer"><p>Enregistrer le look ajoute la tenue à <strong>Mes tenues</strong> et chaque article à <strong>Vêtements</strong>. Tu peux aussi ne garder que certaines pièces.</p>' +
+    (isSaved ? '<button class="button-secondary" type="button" data-action="remove-saved-outfit" data-id="' + esc(pinId) + '">Retirer de Mes tenues</button>' :
+      '<button class="button-primary" type="button" data-action="save-full-outfit" data-id="' + esc(pinId) + '"' + (items.length < 2 ? " disabled" : "") + '>♡ Ajouter toute la tenue aux favoris</button>') +
+    '</div></section></div>';
+  const backdrop = modalRoot.querySelector(".modal-backdrop");
+  backdrop.addEventListener("click",function(event) { if(event.target === backdrop) closeModal(); });
+  attachImageFallbacks(modalRoot);
 }
-
+function saveOutfitPiece(productId, pinId) {
+  const product = productById(productId);
+  if (!product) return;
+  if (isLiked(productId)) { showToast("Cette pièce est déjà dans Vêtements",false); return; }
+  const createdAt = new Date().toISOString();
+  state.likedProducts.push({productId:productId,addedAt:createdAt});
+  state.interactions.saves = Array.isArray(state.interactions.saves) ? state.interactions.saves : [];
+  state.interactions.saves.push({productId:productId,createdAt:createdAt,view:"outfits"});
+  state.interactions.lastAction = {productId:productId,action:"save",createdAt:createdAt};
+  persist();
+  render();
+  const idea = currentOutfitIdeas.find(item => outfitPinKey(item.pin) === String(pinId));
+  if (idea) openOutfitDetail(idea);
+  showToast("Pièce ajoutée à Vêtements",true);
+}
+function saveFullOutfit(pinId) {
+  const idea = currentOutfitIdeas.find(item => outfitPinKey(item.pin) === String(pinId));
+  if (!idea || !idea.items || idea.items.length < 2) return;
+  state.savedOutfits = Array.isArray(state.savedOutfits) ? state.savedOutfits : [];
+  if (state.savedOutfits.some(item => item.pinId === String(pinId))) {
+    showToast("Cette tenue est déjà dans Mes tenues",false);
+    return;
+  }
+  const savedAt = new Date().toISOString();
+  const productIds = [];
+  let addedCount = 0;
+  idea.items.forEach(function(entry) {
+    const product = entry.product;
+    if (!product || productIds.includes(product.id)) return;
+    productIds.push(product.id);
+    if (!isLiked(product.id)) {
+      state.likedProducts.push({productId:product.id,addedAt:savedAt});
+      state.interactions.saves = Array.isArray(state.interactions.saves) ? state.interactions.saves : [];
+      state.interactions.saves.push({productId:product.id,createdAt:savedAt,view:"outfits"});
+      addedCount += 1;
+    }
+  });
+  state.savedOutfits.push({
+    pinId:String(pinId),title:idea.pin.title || "Tenue Pinterest",description:idea.pin.description || "",
+    imageUrl:idea.pin.imageUrl || "",sourceUrl:idea.pin.sourceUrl || "",
+    tags:idea.tags || [],productIds:productIds,savedAt:savedAt
+  });
+  state.interactions.lastAction = null;
+  persist();
+  render();
+  const updatedIdea = currentOutfitIdeas.find(item => outfitPinKey(item.pin) === String(pinId)) || idea;
+  openOutfitDetail(updatedIdea);
+  showToast("Tenue ajoutée à Mes tenues et " + addedCount + " pièce(s) ajoutée(s) à Vêtements",false);
+}
+function openSavedOutfit(pinId) {
+  const saved = (state.savedOutfits || []).find(item => item.pinId === String(pinId));
+  if (!saved) return;
+  const liveIdea = currentOutfitIdeas.find(item => outfitPinKey(item.pin) === String(pinId));
+  const pin = liveIdea && liveIdea.pin || Object.assign({
+    id:saved.pinId,pinId:saved.pinId,origin:"Pinterest",kind:"outfit"
+  },saved.reference || {},{
+    title:saved.title,imageUrl:saved.imageUrl,description:saved.description,sourceUrl:saved.sourceUrl
+  });
+  const products = (saved.productIds || []).map(productById).filter(Boolean);
+  const idea = liveIdea ? Object.assign({},liveIdea,{items:products.map(product => ({
+    product,slot:productSlot(product),isSaved:true
+  }))}) : {
+    pin:pin,tags:saved.tags || [],items:products.map(product => ({product,slot:productSlot(product),isSaved:true}))
+  };
+  openOutfitDetail(idea);
+}
+function removeSavedOutfit(pinId) {
+  state.savedOutfits = (state.savedOutfits || []).filter(item => item.pinId !== String(pinId));
+  persist();
+  render();
+  closeModal();
+  showToast("Tenue retirée de Mes tenues ; les pièces restent dans Vêtements",false);
+}
+function scrollOutfitCarousel(direction) {
+  const track = modalRoot.querySelector("#outfit-product-carousel");
+  if (!track) return;
+  const slide = track.querySelector(".outfit-carousel-card");
+  const distance = slide ? slide.getBoundingClientRect().width + 14 : track.clientWidth * .8;
+  track.scrollBy({left:direction * distance,behavior:"smooth"});
+}
 function renderProfile() {
   const profile = state.profile;
   const sizes = profile.sizes || {};
