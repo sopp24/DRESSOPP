@@ -2,7 +2,7 @@
 
 **Mode diligente.**
 
-DRESSOPP — « Mode diligente. » — est un personal shopper visuel pour la mode masculine et les marques mixtes : une expérience de découverte façon Tinder, construite autour d'un lookbook local, d'un catalogue multi-boutiques et d'un moteur qui apprend de chaque réponse Oui, Non et de chaque article sauvegardé. Les propositions de l'onglet Tenues partent exclusivement des Pins Pinterest synchronisés ou ajoutés comme inspirations ; leurs images sont analysées côté serveur par un modèle de vision afin d'enrichir les associations de vêtements, sans ajouter d'information technique à l'interface.
+DRESSOPP — « Mode diligente. » — est un personal shopper visuel pour la mode masculine et les marques mixtes : une expérience de découverte façon Tinder, construite autour d'un catalogue multi-boutiques et d'un moteur qui apprend de chaque réponse Oui, Non et de chaque article sauvegardé. Les Pins Pinterest synchronisés ou ajoutés comme inspirations alimentent le profil stylistique et les propositions de tenues ; leurs images sont analysées côté serveur par un modèle de vision, sans ajouter d'information technique à l'interface.
 
 Site : https://sopp24.github.io/DRESSOPP/
 
@@ -108,7 +108,7 @@ Le prix et le stock correspondent au dernier contrôle. Le marchand reste la ré
 
 ## Personal shopper IA intégré
 
-Le personal shopper local est **disponible sans configuration externe**. L'utilisateur le lance depuis le panneau dédié ; il croise les préférences, les votes Oui/Non, les favoris, les attributs des vêtements et les tags/titres des inspirations réellement chargées (lookbook et, lorsque synchronisé, Pinterest). Il diversifie les boutiques et les catégories, et explique ses recommandations à partir des informations présentes dans les fiches. Ce mode fonctionne dans le navigateur, sans clé API ni transfert de données. L'actualisation automatique est une option distincte, désactivée par défaut ; lorsqu'elle est activée, l'analyse peut être relancée après trois nouvelles décisions.
+Le personal shopper local est **disponible sans configuration externe**. L'utilisateur le lance depuis le panneau dédié ; il croise les préférences, les votes Oui/Non, les favoris, les attributs des vêtements et les titres, tags et analyses visuelles des Pins Pinterest synchronisés ou ajoutés manuellement. Il diversifie les boutiques et les catégories, et explique ses recommandations à partir des informations présentes dans les fiches. Ce mode fonctionne dans le navigateur, sans clé API ni transfert de données. L'actualisation automatique est une option distincte, désactivée par défaut ; lorsqu'elle est activée, l'analyse peut être relancée après trois nouvelles décisions.
 
 Le mode génératif Cloudflare Workers AI est déployé dans `workers/dressopp-agent/` et utilise le modèle `@cf/google/gemma-4-26b-a4b-it` ([documentation Cloudflare](https://developers.cloudflare.com/workers-ai/models/gemma-4-26b-a4b-it/)). Son endpoint est `https://dressopp-agent.asoppelsa.workers.dev` ; son état peut être contrôlé avec [l'endpoint de santé](https://dressopp-agent.asoppelsa.workers.dev/health). Les recommandations personnalisées à partir du profil, des votes et des fiches candidates ne sont envoyées à ce Worker qu'après accord explicite dans DRESSOPP. En cas d'erreur ou d'indisponibilité, le personal shopper local prend le relais.
 
@@ -181,7 +181,6 @@ Le dépôt étant public et les workflows utilisant `ubuntu-latest`, les runners
 - `data/public-sources.json` : paramètres de rotation (36 enseignes par exécution, dont 12 emplacements prioritaires).
 - `data/catalog-seeds.json` : références produits éditoriales conservées lors des collectes.
 - `data/catalog-manifest.json` et `data/catalog-pages/` : manifeste et pages du catalogue.
-- `data/lookbook-pins.json` et `assets/lookbook/` : 20 références visuelles locales.
 - `data/pinterest-pins.json` : instantané du tableau Pinterest public, avec les Pins synchronisés et leurs analyses visuelles dans `visualAnalysis`.
 - `workers/dressopp-agent/` : code du Worker Cloudflare du mode génératif.
 - `docs/SOURCES.md`, `docs/AI-AGENT.md`, `docs/PINTEREST.md`, `docs/COMMUNITY.md` et `docs/DEPLOYMENT.md` : documentation technique détaillée.

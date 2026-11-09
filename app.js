@@ -36,7 +36,6 @@ let persistPending = false;
 let persistRevision = 0;
 let persistPromise = Promise.resolve();
 let pinterestFeed = { privacy: "UNKNOWN", pins: [], lastSync: null, newPinIds: [] };
-let lookbookFeed = { source: "lookbook", season: "Automne / Hiver", pins: [] };
 let catalogMeta = {
   status: "needs-configuration", productCount: 0, liveProductCount: 0,
   curatedProductCount: 0, sources: [], syncedAt: null,
@@ -395,9 +394,9 @@ function renderFilterBar(training) {
     '<div class="field"><label for="preset-filter">Mes filtres enregistrés</label><select id="preset-filter" data-filter="preset">' +
       selectOption("", "", saved.length ? "Charger un filtre" : "Aucun filtre enregistré") +
       saved.map(function(item, index) { return selectOption(String(index), "", item.name || ("Filtre " + (index + 1))); }).join("") +
-      '</select></div></section>' +
+      '</select></div>' +
     '<div class="filter-footer"><label class="discovery-level"><span>Mes goûts</span><input type="range" min="0" max="100" step="1" data-filter="' + (training ? "trainingDiscoveryLevel" : "discoveryLevel") + '" value="' + esc(selectedLevel) + '"><span>Découverte</span><output id="discovery-output">' + esc(selectedLevel) + '%</output></label>' +
-    '<div class="filter-tools"><button class="button-quiet button-small" type="button" data-action="save-filters">＋ Enregistrer ces filtres</button><button class="button-primary button-small" type="button" data-action="toggle-filters">Appliquer</button></div></div></div>';
+    '<div class="filter-tools"><button class="button-quiet button-small" type="button" data-action="save-filters">＋ Enregistrer ces filtres</button><button class="button-primary button-small" type="button" data-action="toggle-filters">Appliquer</button></div></div></section></div>';
 }
 function renderEmptyProducts(training) {
   const title = catalogPagePending ? "On prépare la suite" : (state.products.length ? "Aucun article ne correspond à ces filtres" : "Ton dressing commence ici");
@@ -678,33 +677,29 @@ function renderDiscover(training) {
   const yesCount = state.interactions.likes.length;
   const savedCount = state.likedProducts.length;
   const rejected = state.interactions.dislikes.length;
-  const isGrid = state.settings.discoveryView === "grid" && !training;
-  const isAppDeck = !training && !isGrid;
   const heading = training
-    ? renderPageHeading("Élargis ton univers", "Entraînement", "Explore volontairement de nouvelles coupes, matières et associations. Tes réponses Oui et Non affinent le profil, sans ajout automatique à ta liste.", '<button class="button-secondary" type="button" data-view="discover">Retour à Découvrir</button>')
-    : (isGrid ? renderPageHeading("Ton œil, tes règles", "Découvrir", "Des pièces sélectionnées selon tes préférences.", '<button class="button-secondary" type="button" data-action="toggle-discovery-view">Vue swipe</button>') : "");
-  const appToolbar = isAppDeck
-    ? '<div class="discovery-app-toolbar"><div class="discovery-app-heading"><span class="eyebrow">Mode diligente.</span><strong>Pour toi</strong><small>' + products.length + ' pièces à découvrir · ' + yesCount + ' oui · ' + savedCount + ' sauvegardées</small></div>' +
-      '<div class="discovery-app-controls">' + renderFilterBar(false) +
-      '<button class="discovery-view-toggle" type="button" data-action="toggle-discovery-view" aria-label="Passer à la grille" title="Passer à la grille"><span aria-hidden="true">▦</span></button></div></div>'
+    ? renderPageHeading("Élargis ton univers", "Entraînement", "Explore volontairement de nouvelles coupes, matières et associations. Tes réponses Oui et Non affinent le profil, sans ajout automatique à ta liste.", '<button class="button-secondary" type="button" data-view="discover">Retour à Pour toi</button>')
     : "";
-  const body = isGrid ? renderGridCards(products) : (products.length ? renderDeckCard(products[0], training) : renderEmptyProducts(training));
-  const searchToolbar = isGrid ? '<div class="toolbar"><div class="toolbar-left"><input class="search-input" type="search" data-search="discover" placeholder="Rechercher un vêtement, une marque, une couleur…" aria-label="Rechercher dans le catalogue"></div><span class="result-count">' + products.length + ' article(s)</span></div>' : "";
-  const regularFilterBar = (training || isGrid) ? renderFilterBar(training) : "";
-  const deckTopline = isAppDeck ? "" :
-    '<div class="deck-topline"><span><strong>' + (training ? "Exploration active" : "Ta sélection") + '</strong> <span>· ' + products.length + ' article(s) à découvrir</span></span>' +
-    '<span>' + (training ? "Nouveauté prioritaire" : "Personnalisation active") + '</span></div>';
-  return '<div class="discovery-page' + (isAppDeck ? ' discovery-page--app' : '') + '">' +
-    (isAppDeck ? appToolbar : heading + regularFilterBar) + searchToolbar +
-    '<div class="discovery-layout' + (isGrid ? '' : ' discovery-layout--swipe') + '"><section class="deck-column">' +
-    deckTopline + body + '</section>' +
-    '<aside class="deck-aside"><section class="panel aside-card"><h2 class="aside-title">Ton évolution <span>en direct</span></h2>' +
-    '<p>Chaque décision affine ton profil. Une consultation reste un signal léger ; tes réponses Oui et Non comptent davantage.</p>' +
-    '<div class="aside-stat"><div class="stat-box"><strong>' + yesCount + '</strong><small>Oui</small></div><div class="stat-box"><strong>' + rejected + '</strong><small>Non</small></div><div class="stat-box"><strong>' + savedCount + '</strong><small>Dans ma liste</small></div></div></section>' +
-    '<section class="panel aside-card"><h2 class="aside-title">Équilibre du moment <span>' + esc(training ? state.settings.trainingDiscoveryLevel : state.settings.discoveryLevel) + '% découverte</span></h2>' +
-    '<p>' + (training ? "Le mode Entraînement donne plus de poids à la nouveauté pour élargir ton terrain de jeu." : "Le curseur mélange tes goûts déjà identifiés et des propositions plus inattendues. Ajuste-le à tout moment.") + '</p></section>' +
-    '<div class="source-note">Le classement combine les caractéristiques du lookbook, tes votes, la fraîcheur du flux et les avis d’article vérifiables. Les notes d’article ne représentent pas la fiabilité globale du marchand.</div>' +
-    '</aside></div>' + renderAiAgentPanel() + renderCatalogStatus() + renderRetailerDirectory() + '</div>';
+  const appToolbar = !training
+    ? '<div class="discovery-app-toolbar"><div class="discovery-app-controls">' + renderFilterBar(false) + '</div></div>'
+    : "";
+  const body = products.length ? renderDeckCard(products[0],training) : renderEmptyProducts(training);
+  const trainingFilter = training ? renderFilterBar(true) : "";
+  const trainingExtras = training
+    ? '<div class="deck-topline"><span><strong>Exploration active</strong> · ' + products.length + ' article(s) à découvrir</span><span>Nouveauté prioritaire</span></div>' +
+      '<aside class="deck-aside"><section class="panel aside-card"><h2 class="aside-title">Ton évolution <span>en direct</span></h2>' +
+      '<p>Chaque décision affine ton profil. Une consultation reste un signal léger ; tes réponses Oui et Non comptent davantage.</p>' +
+      '<div class="aside-stat"><div class="stat-box"><strong>' + yesCount + '</strong><small>Oui</small></div><div class="stat-box"><strong>' + rejected + '</strong><small>Non</small></div><div class="stat-box"><strong>' + savedCount + '</strong><small>Dans ma liste</small></div></div></section>' +
+      '<section class="panel aside-card"><h2 class="aside-title">Équilibre du moment <span>' + esc(state.settings.trainingDiscoveryLevel) + '% découverte</span></h2>' +
+      '<p>Le mode Entraînement donne plus de poids à la nouveauté pour élargir ton terrain de jeu.</p></section></aside>' +
+      renderAiAgentPanel() + renderCatalogStatus() + renderRetailerDirectory()
+    : "";
+  return '<div class="discovery-page' + (!training ? ' discovery-page--app' : '') + '">' +
+    (training ? heading + trainingFilter : appToolbar) +
+    '<div class="discovery-layout discovery-layout--swipe"><section class="deck-column">' +
+    (training ? trainingExtras.split('<aside')[0] : "") + body + '</section>' +
+    (training ? '<div class="training-support">' + trainingExtras.slice(trainingExtras.indexOf('<aside')) + '</div>' : "") +
+    '</div></div>';
 }
 function renderWardrobe() {
   const heading = renderPageHeading("Tes pièces retenues", "Ma garde-robe", "Tous tes coups de cœur au même endroit. Retirer un favori ne crée pas de rejet dans ton profil de style.", '<button class="button-primary" type="button" data-action="add-product">＋ Ajouter un article</button>');
@@ -731,16 +726,6 @@ function renderWardrobe() {
     '<div id="wardrobe-grid">' + (favorites.length ? cards : '<div class="empty-state"><div class="empty-mark">♡</div><h2>Ta garde-robe est encore vide</h2><p>Les articles que tu ajoutes à ta liste dans Découvrir apparaîtront ici. Tu peux aussi ajouter un produit manuellement.</p><div class="empty-actions"><button class="button-primary" type="button" data-view="discover">Commencer à découvrir</button><button class="button-secondary" type="button" data-action="add-product">Ajouter un article</button></div></div>') + '</div>';
 }
 function pinterestPinCards() {
-  const curated = (lookbookFeed.pins || []).map(function(pin) {
-    const id = String(pin.id || "");
-    return {
-      id: id, pinId: id, title: pin.title || "Référence du lookbook",
-      description: pin.description || "", imageUrl: pin.imageUrl || "",
-      sourceUrl: "", tags: inferPinterestTags(pin), importedAt: null,
-      fromFeed: false, origin: "lookbook", kind: pin.kind || "outfit",
-      season: pin.season || lookbookFeed.season || "Automne / Hiver"
-    };
-  });
   const remote = (pinterestFeed.pins || []).map(function(pin) {
     const id = String(pin.id);
     return {
@@ -755,7 +740,7 @@ function pinterestPinCards() {
     return Object.assign({ origin: "Pinterest", kind: "outfit" }, pin);
   });
   const seen = new Set();
-  return curated.concat(remote, local).filter(function(pin) {
+  return remote.concat(local).filter(function(pin) {
     const key = pin.pinId || pin.sourceUrl || pin.id;
     if (!key || seen.has(key)) return false;
     seen.add(key);
@@ -763,32 +748,33 @@ function pinterestPinCards() {
   });
 }
 function renderInspirations() {
-  const items = pinterestPinCards().slice(0, 80);
+  const items = pinterestPinCards().slice(0,80);
   const unseen = items.filter(function(item) {
     return item.fromFeed && !(state.seenPinterestPins || []).includes(String(item.pinId));
   });
-  const lookCount = items.filter(function(item) { return item.origin === "lookbook"; }).length;
-  const lastSync = pinterestFeed.lastSync ? new Date(pinterestFeed.lastSync).toLocaleString("fr-FR") : "API Pinterest non synchronisée";
-  const heading = renderPageHeading("20 références · Automne / Hiver", "Pinterest & Lookbook", "Ton lookbook importé et les nouvelles épingles Pinterest nourrissent le moteur de style. Les références restent consultables même sans connexion à l’API Pinterest.",
+  const lastSync = pinterestFeed.lastSync ? new Date(pinterestFeed.lastSync).toLocaleString("fr-FR") : "Aucune synchronisation réussie";
+  const heading = renderPageHeading("Tes inspirations de style", "Pinterest", "Les épingles synchronisées et celles que tu ajoutes servent à apprendre tes préférences et à composer des tenues.",
     '<a class="button-secondary" href="' + esc(PINTEREST_BOARD_URL) + '" target="_blank" rel="noopener noreferrer">Ouvrir mon tableau ↗</a><button class="button-primary" type="button" data-action="add-inspiration">＋ Ajouter un Pin</button>');
   const cards = items.length ? '<div class="inspiration-grid">' + items.map(function(item) {
     const seen = item.fromFeed && (state.seenPinterestPins || []).includes(String(item.pinId));
     const newBadge = item.fromFeed && !seen ? '<span class="pin-new-badge">NOUVEAU</span>' : '';
-    const sourceLabel = item.origin === "lookbook" ? "Lookbook · " + (item.season || "Automne / Hiver") : "Pinterest · " + (item.importedAt ? new Date(item.importedAt).toLocaleDateString("fr-FR") : "Ajout manuel");
+    const sourceLabel = "Pinterest · " + (item.importedAt ? new Date(item.importedAt).toLocaleDateString("fr-FR") : "Ajout manuel");
     const link = safeExternalUrl(item.sourceUrl)
       ? '<a class="button-quiet button-small" data-mark-seen-on-open="' + esc(item.pinId || item.id) + '" href="' + esc(safeExternalUrl(item.sourceUrl)) + '" target="_blank" rel="noopener noreferrer">Voir le Pin ↗</a>'
-      : '<span class="button-quiet button-small">Référence du lookbook</span>';
-    return '<article class="inspiration-card"><div class="inspiration-image">' + imageMarkup(item.imageUrl, item.title) + newBadge + '</div><div class="inspiration-copy"><strong>' + esc(item.title || "Référence vestimentaire") + '</strong><small>' + esc(sourceLabel) + '</small>' +
-      '<div class="inspiration-tags">' + (item.tags || []).slice(0, 8).map(function(tag) { return '<span>' + esc(tag) + '</span>'; }).join("") + '</div>' +
+      : '<span class="button-quiet button-small">Pin ajouté manuellement</span>';
+    return '<article class="inspiration-card"><div class="inspiration-image">' + imageMarkup(item.imageUrl,item.title) + newBadge + '</div><div class="inspiration-copy"><strong>' + esc(item.title || "Inspiration Pinterest") + '</strong><small>' + esc(sourceLabel) + '</small>' +
+      '<div class="inspiration-tags">' + (item.tags || []).slice(0,8).map(function(tag) { return '<span>' + esc(tag) + '</span>'; }).join("") + '</div>' +
       '<div class="grid-bottom">' + link +
       (item.fromFeed && !seen ? '<button class="button-secondary button-small" type="button" data-action="mark-pin-seen" data-id="' + esc(item.pinId) + '">Marquer vu</button>' : '') +
       (item.kind !== "detail" ? '<button class="mini-icon-button" type="button" data-action="use-pin-outfit" data-id="' + esc(item.pinId || item.id) + '" aria-label="Composer une tenue depuis cette référence">✦</button>' : '') +
       '</div></div></article>';
-  }).join("") + '</div>' : '<div class="empty-state"><div class="empty-mark">⌁</div><h2>Aucune inspiration chargée</h2><p>Le lookbook local ou les Pins Pinterest pourront être ajoutés ici. Tu peux aussi importer des références depuis ton tableau.</p><div class="empty-actions"><a class="button-primary" href="' + esc(PINTEREST_BOARD_URL) + '" target="_blank" rel="noopener noreferrer">Ouvrir mon tableau Pinterest ↗</a><button class="button-secondary" type="button" data-action="add-inspiration">Ajouter une référence</button></div></div>';
-  const pinterestStatus = pinterestFeed.privacy === "PUBLIC" ? "Tableau Pinterest public confirmé par l’API" : "API Pinterest non vérifiée (non nécessaire pour le lookbook)";
+  }).join("") + '</div>' : '<div class="empty-state"><div class="empty-mark">⌁</div><h2>Aucune épingle Pinterest chargée</h2><p>Synchronise ton tableau mode ou ajoute directement une inspiration pour commencer à personnaliser tes propositions.</p><div class="empty-actions"><a class="button-primary" href="' + esc(PINTEREST_BOARD_URL) + '" target="_blank" rel="noopener noreferrer">Ouvrir mon tableau Pinterest ↗</a><button class="button-secondary" type="button" data-action="add-inspiration">Ajouter un Pin</button></div></div>';
+  const pinterestStatus = pinterestFeed.privacy === "PUBLIC"
+    ? "Tableau Pinterest confirmé par l’API"
+    : "En attente de la prochaine synchronisation Pinterest";
   return heading +
-    '<div class="pinterest-status-strip"><div><strong>' + lookCount + '</strong><span>références du lookbook intégrées</span><strong>' + unseen.length + '</strong><span>nouvelle(s) épingle(s) Pinterest</span></div><div><small>Lookbook local · ' + esc(lookbookFeed.season || "Automne / Hiver") + '</small><small>' + esc(pinterestStatus) + '</small><small>Dernière synchronisation : ' + esc(lastSync) + '</small></div></div>' +
-    '<div class="source-note pinterest-notice">Les 20 références du book sont intégrées avec leurs visuels et leurs caractéristiques. Elles servent à apprendre tes préférences et à composer des tenues ; elles ne sont pas présentées comme des articles marchands ni associées à de faux prix ou liens.</div>' +
+    '<div class="pinterest-status-strip"><div><strong>' + items.length + '</strong><span>épingle(s) disponibles</span><strong>' + unseen.length + '</strong><span>nouvelle(s) épingle(s)</span></div><div><small>' + esc(pinterestStatus) + '</small><small>Dernière synchronisation : ' + esc(lastSync) + '</small></div></div>' +
+    '<div class="source-note pinterest-notice">Les photos, descriptions et caractéristiques visuelles des Pins servent à personnaliser les propositions. Les inspirations ne sont pas présentées comme des articles marchands et ne reçoivent jamais de faux prix ou liens.</div>' +
     cards;
 }
 function outfitPinKey(pin) {
@@ -893,7 +879,7 @@ function renderOutfits() {
       : '<div class="empty-state"><div class="empty-mark">♡</div><h2>Pas encore de tenue favorite</h2><p>Ouvre un look dans « Pour toi », puis enregistre la tenue complète. Ses pièces rejoindront aussi ta garde-robe.</p><div class="empty-actions"><button class="button-primary" type="button" data-action="toggle-outfit-library" data-view-mode="discover">Découvrir les tenues</button></div></div>');
   }
   if (!pinterestPins.length) {
-    return heading + tabs + '<div class="empty-state"><div class="empty-mark">⌁</div><h2>Aucune inspiration Pinterest disponible</h2><p>Les propositions de tenues sont exclusivement générées depuis les épingles Pinterest synchronisées ou ajoutées manuellement dans tes inspirations. Le lookbook local n’est pas utilisé comme source de tenues.</p><div class="empty-actions"><button class="button-primary" type="button" data-view="inspirations">Voir mes inspirations Pinterest</button><a class="button-secondary" href="' + esc(PINTEREST_BOARD_URL) + '" target="_blank" rel="noopener noreferrer">Ouvrir Pinterest ↗</a></div></div>';
+    return heading + tabs + '<div class="empty-state"><div class="empty-mark">⌁</div><h2>Aucune inspiration Pinterest disponible</h2><p>Les propositions de tenues sont exclusivement générées depuis les épingles Pinterest synchronisées ou ajoutées manuellement dans tes inspirations. </p><div class="empty-actions"><button class="button-primary" type="button" data-view="inspirations">Voir mes inspirations Pinterest</button><a class="button-secondary" href="' + esc(PINTEREST_BOARD_URL) + '" target="_blank" rel="noopener noreferrer">Ouvrir Pinterest ↗</a></div></div>';
   }
   const intro = '<div class="outfit-intro panel"><div><strong>' + ideas.length + ' look(s) correspondant aux critères</strong><p>' +
     (filters.styles.length ? "Styles : " + esc(filters.styles.join(", ")) + " · " : "Tous les styles · ") +
@@ -1057,6 +1043,21 @@ function profileField(label, name, value) {
 function preferenceField(label, name, values) {
   return '<div class="preference-block"><h3>' + esc(label) + '</h3><div class="field"><input name="' + esc(name) + '" value="' + esc((values || []).join(", ")) + '" placeholder="Sépare les valeurs par des virgules"></div></div>';
 }
+function renderDiscoveryInsights() {
+  const yesCount = state.interactions.likes.length;
+  const rejectedCount = state.interactions.dislikes.length;
+  const savedCount = state.likedProducts.length;
+  const level = state.settings.discoveryLevel;
+  return '<section class="discovery-insights-settings"><div class="discovery-insights-heading"><span class="eyebrow">Toutes les informations de Pour toi</span><h2>Ton expérience de découverte</h2><p>Retrouve ici les statistiques, le fonctionnement du personal shopper, l’état du catalogue et les boutiques disponibles. Ces informations ne prennent plus de place dans le swipe.</p></div>' +
+    '<div class="discovery-insights-grid"><section class="panel aside-card"><h2 class="aside-title">Ton évolution <span>en direct</span></h2>' +
+    '<p>Chaque décision affine ton profil. Une consultation reste un signal léger ; tes réponses Oui et Non comptent davantage.</p>' +
+    '<div class="aside-stat"><div class="stat-box"><strong>' + yesCount + '</strong><small>Oui</small></div><div class="stat-box"><strong>' + rejectedCount + '</strong><small>Non</small></div><div class="stat-box"><strong>' + savedCount + '</strong><small>Dans ma liste</small></div></div></section>' +
+    '<section class="panel aside-card"><h2 class="aside-title">Équilibre du moment <span>' + esc(level) + '% découverte</span></h2>' +
+    '<p>Le curseur mélange tes goûts identifiés et des propositions plus inattendues. Ajuste-le depuis les filtres de Pour toi.</p></section></div>' +
+    '<div class="source-note">Le classement combine ton profil, tes votes, les caractéristiques des Pins Pinterest analysés, la fraîcheur du catalogue et les avis d’article vérifiables. Les notes d’article ne représentent pas la fiabilité globale du marchand.</div>' +
+    renderAiAgentPanel() + renderCatalogStatus() + renderRetailerDirectory() +
+    '</section>';
+}
 function renderSettings() {
   const updated = state.updatedAt ? new Date(state.updatedAt).toLocaleString("fr-FR") : "Pas encore enregistrée";
   const lastPinterestSync = pinterestFeed.lastSync ? new Date(pinterestFeed.lastSync).toLocaleString("fr-FR") : "Aucune synchronisation réussie";
@@ -1079,10 +1080,10 @@ function renderSettings() {
     '<div class="preference-block"><h3>Copie de sécurité</h3><p class="field-hint">Exporte régulièrement ton fichier JSON. Il contient tes articles, préférences, votes, avis sur les tenues et Pins ajoutés manuellement.</p><div class="form-actions"><button class="button-primary button-small" type="button" data-action="export">Exporter mes données</button><button class="button-secondary button-small" type="button" data-action="import-backup">Importer une sauvegarde</button></div></div></div>' +
     '<input id="backup-file" type="file" accept=".json,application/json" hidden></section>' +
     '<section class="panel section-panel"><h2 class="section-title">Catalogue personnel</h2><p class="field-hint">Les compléments de tenues proviennent uniquement de fiches produit vérifiables ou de tes importations manuelles.</p><div class="form-actions"><button class="button-secondary" type="button" data-action="import-catalog">Importer un catalogue JSON</button></div><input id="catalog-file" type="file" accept=".json,application/json" hidden></section>' +
-    '<section class="panel section-panel"><h2 class="section-title">Zone sensible</h2><p class="field-hint">La réinitialisation supprime les données enregistrées sur cet appareil. Exporte d’abord une copie de sécurité.</p><div class="form-actions"><button class="button-danger button-small" type="button" data-action="delete-data">Supprimer toutes mes données locales</button></div></section>';
+    '<section class="panel section-panel"><h2 class="section-title">Zone sensible</h2><p class="field-hint">La réinitialisation supprime les données enregistrées sur cet appareil. Exporte d’abord une copie de sécurité.</p><div class="form-actions"><button class="button-danger button-small" type="button" data-action="delete-data">Supprimer toutes mes données locales</button></div></section>' + renderDiscoveryInsights();
 }
 function render() {
-  document.body.classList.toggle("is-discovery-app", currentView === "discover" && state.settings.discoveryView !== "grid");
+  document.body.classList.toggle("is-discovery-app", currentView === "discover");
   document.querySelectorAll("[data-view]").forEach(function(button) {
     button.classList.toggle("is-active", button.dataset.view === currentView);
   });
@@ -1887,13 +1888,6 @@ async function boot() {
     }
   } catch (error) { console.warn("Flux Pinterest non chargé.", error); }
   try {
-    const lookbookResponse = await fetch("./data/lookbook-pins.json", { cache: "no-store" });
-    if (lookbookResponse.ok) {
-      const payload = await lookbookResponse.json();
-      if (Array.isArray(payload.pins)) lookbookFeed = payload;
-    }
-  } catch (error) { console.warn("Lookbook local non chargé.", error); }
-  try {
     await refreshCatalogManifest(true);
     if (catalogManifest && Array.isArray(catalogManifest.pages) && catalogManifest.pages.length) {
       const first = catalogManifest.pages.findIndex(page => !catalogLoadedPages.has(page.file));
@@ -1941,6 +1935,7 @@ async function boot() {
   state.profile = Object.assign(base.profile, state.profile || {});
   state.profile.sizes = Object.assign(base.profile.sizes, state.profile.sizes || {});
   state.settings = Object.assign(base.settings, state.settings || {});
+  state.settings.discoveryView = "cards";
   state.settings.outfitFilters = Object.assign(base.settings.outfitFilters || {},state.settings.outfitFilters || {});
   state.settings.outfitFilters.styles = Array.isArray(state.settings.outfitFilters.styles) ? state.settings.outfitFilters.styles : (state.profile.preferredStyles || []);
   state.settings.outfitFilters.season = state.settings.outfitFilters.season || "Toute saison";
@@ -1994,7 +1989,7 @@ async function boot() {
   }
   state.inspirations = Array.isArray(state.inspirations) ? state.inspirations.filter(function(item) { return item.source === "Pinterest"; }) : [];
   state.seenPinterestPins = Array.isArray(state.seenPinterestPins) ? state.seenPinterestPins : [];
-  state.pinterestPins = (pinterestFeed.pins || []).concat(lookbookFeed.pins || []);
+  state.pinterestPins = (pinterestFeed.pins || []).slice();
   state.learnedPreferences = deriveLearnedPreferences(state);
   aiAgentLastActionCount = aiAgentActionCount();
   render();

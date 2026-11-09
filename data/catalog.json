@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "description": "Aperçu de compatibilité du catalogue DRESSOPP ; le catalogue complet est découpé en pages.",
+  "description": "Références produits DRESSOPP contrôlées manuellement.",
   "syncedAt": "2026-11-08T14:21:12.743Z",
   "products": [
     {
@@ -3772,7 +3772,7 @@
       "patterns": [
         "Côtelé"
       ],
-      "description": "Pull polo marron à maille côtelée épaisse. Équivalent partiel du lookbook #19 pour le col polo et la texture de maille ; il n'a pas les rayures du modèle de référence.",
+      "description": "Pull polo marron à maille côtelée épaisse. Col polo et maille côtelée épaisse, sans rayures.",
       "sizes": [],
       "availability": "Fiche produit relevée sur ASOS FR ; tailles et disponibilité à confirmer au panier.",
       "availabilityStatus": "listed",
@@ -3816,7 +3816,7 @@
         "Col roulé"
       ],
       "patterns": [],
-      "description": "Col roulé en laine mérinos gris. Référence complémentaire au lookbook #02 : maille sombre portée sous une veste en cuir.",
+      "description": "Col roulé en laine mérinos gris. Maille sombre à porter sous une veste en cuir.",
       "sizes": [
         "XXS",
         "XS",
@@ -4044,7 +4044,7 @@
         "Col rond"
       ],
       "patterns": [],
-      "description": "Pull homme vert foncé en 100 % laine, col rond et coupe regular. Équivalent visuel très proche du lookbook #04 : pull vert porté sur une chemise claire. Produit listé chez Zalando, vendu et expédié par OVS Group.",
+      "description": "Pull homme vert foncé en 100 % laine, col rond et coupe regular. Pull vert à porter sur une chemise claire. Produit listé chez Zalando, vendu et expédié par OVS Group.",
       "sizes": [],
       "availability": "Fiche produit active avec sélection de taille ; disponibilité de chaque taille à vérifier sur Zalando.",
       "availabilityStatus": "listed",
@@ -4088,7 +4088,7 @@
         "Semelle épaisse"
       ],
       "patterns": [],
-      "description": "Chaussure KLEMAN en cuir bordeaux, semelle caoutchouc crantée et piqûres décoratives. Équivalent visuel partiel du lookbook #09 par le ton bordeaux et la semelle épaisse ; modèle à lacets, pas un mocassin. La marque indique un cuir de tannerie espagnole certifiée LWG.",
+      "description": "Chaussure KLEMAN en cuir bordeaux, semelle caoutchouc crantée et piqûres décoratives. Modèle à lacets, pas un mocassin. La marque indique un cuir de tannerie espagnole certifiée LWG.",
       "sizes": [],
       "availability": "Sélecteur de pointure présent sur la fiche officielle ; vérifier le stock de la pointure choisie.",
       "availabilityStatus": "listed",
@@ -4134,7 +4134,7 @@
       "patterns": [
         "Rayures"
       ],
-      "description": "Pull rugby homme Polo Sport Ralph Lauren rose et bleu marine, col blanc, encolure V et coupe oversize, 100 % coton. Équivalent visuel fort du lookbook #10 : esprit rugby et palette rose/brun, même si les bandes sont bleu marine sur cet article.",
+      "description": "Pull rugby homme Polo Sport Ralph Lauren rose et bleu marine, col blanc, encolure V et coupe oversize, 100 % coton. Style rugby avec une palette rose et bleu marine.",
       "sizes": [
         "S",
         "M",
@@ -4186,7 +4186,7 @@
         "Col V"
       ],
       "patterns": [],
-      "description": "Pull homme crème à col V, maille 90 % coton et 10 % polyamide, coupe regular. Correspondance directe de forme et de couleur avec le haut du lookbook #11, à porter sur une chemise blanche.",
+      "description": "Pull homme crème à col V, maille 90 % coton et 10 % polyamide, coupe regular. À porter sur une chemise blanche.",
       "sizes": [],
       "availability": "Fiche produit active avec sélection de taille ; vérifier les tailles disponibles sur Zalando.",
       "availabilityStatus": "listed",
@@ -4230,7 +4230,7 @@
         "Ample"
       ],
       "patterns": [],
-      "description": "Blouson homme COS en cuir noir patiné, coupe décontractée et col en peau lainée amovible. Très proche de l'esprit du lookbook #18 ; correspondance partielle avec le look #07 pour le col lainé et la veste d'hiver, mais le book montre une veste en daim.",
+      "description": "Blouson homme COS en cuir noir patiné, coupe décontractée et col en peau lainée amovible. Col en peau lainée amovible, dans un esprit hivernal.",
       "sizes": [
         "XS",
         "S",
@@ -4284,7 +4284,7 @@
       "patterns": [
         "Rayures"
       ],
-      "description": "Pull homme à col polo zippé et rayures, indiqué 100 % laine sur la fiche Zalando, coupe regular. Correspondance visuelle forte avec le lookbook #19 (maille rayée à col polo) et partielle avec le #20 pour le col zippé ; la palette est plus sombre que le bleu ciel du book.",
+      "description": "Pull homme à col polo zippé et rayures, indiqué 100 % laine sur la fiche Zalando, coupe regular. Maille rayée à col polo zippé, dans une palette sombre.",
       "sizes": [],
       "availability": "Fiche produit active avec sélection de taille ; vérifier le stock sur Zalando.",
       "availabilityStatus": "listed",
@@ -4330,7 +4330,7 @@
       "patterns": [
         "Délavé"
       ],
-      "description": "Jean homme B.ANGEL en denim bleu clair 100 % coton, coupe loose, taille regular et jambe droite ample. Équivalent visuel proche des looks #08 et #13 du lookbook : jean clair délavé avec volume ample. La fiche Zalando précise que les visuels sont générés par IA ; la coupe, composition et référence produit sont indiquées sur la fiche.",
+      "description": "Jean homme B.ANGEL en denim bleu clair 100 % coton, coupe loose, taille regular et jambe droite ample. Jean clair délavé à volume ample. La fiche Zalando précise que les visuels sont générés par IA ; la coupe, composition et référence produit sont indiquées sur la fiche.",
       "sizes": [],
       "availability": "Fiche produit active avec taille sélectionnable ; stock de la taille à confirmer sur Zalando.",
       "availabilityStatus": "listed",
@@ -4378,7 +4378,7 @@
       "patterns": [
         "Chiné"
       ],
-      "description": "Pantalon de survêtement homme B.ANGEL gris chiné, coupe over-fit et jambe ample droite, taille élastiquée. Correspondance directe de silhouette avec le pantalon du lookbook #17 (pull crème et jogging gris large).",
+      "description": "Pantalon de survêtement homme B.ANGEL gris chiné, coupe over-fit et jambe ample droite, taille élastiquée. Coupe over-fit et jambe ample droite.",
       "sizes": [],
       "availability": "Fiche produit active avec taille sélectionnable ; stock de la taille à confirmer sur Zalando.",
       "availabilityStatus": "listed",

@@ -66,11 +66,11 @@ test("all local files referenced by the application shell exist", function() {
   for (const match of index.matchAll(/(?:src|href)="\.\/([^"]+)"/g)) {
     assert.ok(existsSync(new URL(match[1],root)),"Missing local file: " + match[1]);
   }
-  assert.ok(!index.includes("assets/brand-mark.webp"));
+  assert.ok(index.includes("https://sopp24.github.io/SOPP-agents/assets/brand-mark.webp"));
 });
 
 test("the PWA refreshes its cache and preloads the app icons and first catalogue page", function() {
-  assert.ok(sw.includes('dressopp-static-v14'));
+  assert.ok(sw.includes('dressopp-static-v15'));
   for (const path of [
     "./assets/logo-horizontal.png",
     "./assets/logo-square.png",
@@ -93,4 +93,30 @@ test("mobile navigation and outfit details retain compact responsive breakpoints
   assert.ok(css.includes("@media (max-width: 600px)"));
   assert.ok(css.includes("@media (max-width: 390px)"));
   assert.ok(css.includes(".outfit-carousel-card"));
+});
+
+
+test("Pour toi is swipe-first and moves all secondary discovery panels to Settings", function() {
+  const discover=app.slice(app.indexOf("function renderDiscover(training)"),app.indexOf("function renderWardrobe()"));
+  const settings=app.slice(app.indexOf("function renderDiscoveryInsights()"),app.indexOf("function renderSettings()"));
+  assert.ok(discover.includes("renderDeckCard(products[0],training)"));
+  assert.ok(discover.includes("renderFilterBar(false)"));
+  assert.ok(!discover.includes("renderAiAgentPanel()"));
+  assert.ok(!discover.includes("renderCatalogStatus()"));
+  assert.ok(!discover.includes("renderRetailerDirectory()"));
+  assert.ok(settings.includes("renderAiAgentPanel()"));
+  assert.ok(settings.includes("renderCatalogStatus()"));
+  assert.ok(settings.includes("renderRetailerDirectory()"));
+  assert.ok(app.includes('currentView === "discover"'));
+  assert.ok(css.includes("height: 100dvh"));
+  assert.ok(css.includes(".discovery-page--app .deck-card-wrap"));
+});
+
+test("Pinterest is the sole inspiration source and the old local lookbook is absent", function() {
+  assert.ok(!app.toLowerCase().includes("lookbook"));
+  assert.ok(!sw.toLowerCase().includes("lookbook"));
+  assert.ok(app.includes('fromFeed: true, origin: "Pinterest"'));
+  assert.ok(app.includes('source === "Pinterest"'));
+  assert.ok(app.includes("function renderInspirations()"));
+  assert.ok(index.includes("https://sopp24.github.io/SOPP-agents/assets/brand-mark.webp"));
 });

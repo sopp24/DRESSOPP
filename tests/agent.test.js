@@ -52,12 +52,12 @@ test("AI response ordering prioritizes known recommended ids and keeps local fal
   assert.deepEqual(result.map(item=>item.id),["c","a","b","d"]);
 });
 
-test("AI candidate selection reserves space for curated lookbook references", () => {
+test("AI candidate selection reserves space for curated product references", () => {
   const ranked = Array.from({length:55},(_,index)=>({id:"public-"+index,sourceType:"public-web"}));
-  ranked.push({id:"lookbook-a",sourceType:"curated"},{id:"lookbook-b",sourceType:"curated"});
+  ranked.push({id:"curated-a",sourceType:"curated"},{id:"curated-b",sourceType:"curated"});
   const selected = selectAgentCandidates(ranked,50);
   assert.equal(selected.length,50);
-  assert.deepEqual(selected.slice(0,2).map(item=>item.id),["lookbook-a","lookbook-b"]);
+  assert.deepEqual(selected.slice(0,2).map(item=>item.id),["curated-a","curated-b"]);
   assert.equal(selected.some(item=>item.id==="public-0"),true);
   assert.equal(selected.some(item=>item.id==="public-48"),false);
 });

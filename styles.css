@@ -1685,8 +1685,8 @@ body.is-discovery-app {
 body.is-discovery-app .app-shell {
   display: flex;
   width: 100%;
-  height: 100svh;
-  min-height: 0;
+  height: 100dvh;
+  min-height: 100svh;
   flex-direction: column;
   padding: 0;
 }
@@ -1700,7 +1700,8 @@ body.is-discovery-app .main-content {
   min-height: 0;
   flex: 1 1 auto;
   flex-direction: column;
-  padding: 12px clamp(14px,2.4vw,34px) 92px;
+  overflow: hidden;
+  padding: 10px clamp(14px,2.4vw,34px) 16px;
 }
 body.is-discovery-app .app-footer { display: none; }
 .discovery-page--app {
@@ -1742,7 +1743,7 @@ body.is-discovery-app .app-footer { display: none; }
 .discovery-app-controls { display: flex; flex: 0 0 auto; align-items: center; gap: 8px; }
 .discovery-app-controls .discovery-filter-menu { width: auto; }
 .discovery-app-controls .filter-menu-trigger { min-height: 38px; padding: 0 13px; }
-.discovery-app-controls .filter-footer { display: none; }
+
 .discovery-app-controls .discovery-filter-menu .filter-bar {
   top: calc(100% + 10px);
   right: 0;
@@ -1769,31 +1770,41 @@ body.is-discovery-app .app-footer { display: none; }
 
 .discovery-page--app .discovery-layout--swipe {
   display: flex;
+  width: min(100%,760px);
   min-height: 0;
+  height: 100%;
   flex: 1 1 auto;
   align-items: stretch;
   justify-content: center;
   gap: 0;
+  margin: 0 auto;
 }
 .discovery-page--app .deck-column {
   display: flex;
   width: 100%;
-  max-width: 540px;
+  max-width: 620px;
+  min-width: 0;
   min-height: 0;
   flex: 1 1 auto;
   flex-direction: column;
 }
 .discovery-page--app .deck-card-wrap {
-  width: min(100%,540px);
+  display: flex;
+  width: min(100%,620px);
+  min-width: 0;
   min-height: 0;
   flex: 1 1 auto;
+  flex-direction: column;
   margin: 0 auto;
 }
 .discovery-page--app .product-card {
   position: relative;
+  display: block;
   width: 100%;
   height: 100%;
+  min-width: 0;
   min-height: 0;
+  flex: 1 1 auto;
   overflow: hidden;
   border: 1px solid rgba(255,255,255,.14);
   border-radius: clamp(20px,2.8vw,30px);
@@ -2122,11 +2133,8 @@ body.is-discovery-app .app-footer { display: none; }
     padding: 8px 10px calc(84px + env(safe-area-inset-bottom));
   }
   .discovery-page--app { gap: 8px; }
-  .discovery-app-toolbar { min-height: 44px; gap: 8px; }
-  .discovery-app-heading .eyebrow { font-size: 7px; }
-  .discovery-app-heading strong { font-size: 20px; }
-  .discovery-app-heading small { max-width: 46vw; font-size: 8px; }
-  .discovery-app-controls { gap: 6px; }
+  .discovery-app-toolbar { min-height: 40px; gap: 8px; justify-content: flex-end; }
+  .discovery-app-controls { width: 100%; justify-content: flex-end; gap: 6px; }
   .discovery-app-controls .filter-menu-trigger { min-height: 36px; padding: 0 10px; font-size: 10px; }
   .discovery-view-toggle { width: 36px; height: 36px; flex-basis: 36px; }
   .discovery-page--app .deck-column { max-width: none; }
@@ -2380,3 +2388,32 @@ body.is-discovery-app .app-footer { display: none; }
 }
 .outfit-missing-note { display: block; margin-top: 7px; color: #d8ae6d; font-size: 8px; line-height: 1.4; }
 .outfit-missing-note.is-complete { color: #8bbd9a; }
+
+
+/* Les filtres restent accessibles dans leur panneau ; les infos secondaires sont rangées dans Paramètres. */
+.filter-bar .filter-footer {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 0;
+  padding-top: 4px;
+}
+.filter-bar .filter-tools { display: flex; justify-content: flex-end; flex-wrap: wrap; gap: 8px; }
+.discovery-insights-settings { display: grid; gap: 16px; margin-top: 22px; }
+.discovery-insights-heading { display: grid; gap: 5px; }
+.discovery-insights-heading .eyebrow { color: var(--accent); font-size: 8px; letter-spacing: .15em; text-transform: uppercase; }
+.discovery-insights-heading h2 { margin: 0; color: #fff; font-size: clamp(18px,2vw,24px); letter-spacing: -.04em; }
+.discovery-insights-heading p { max-width: 760px; margin: 0; color: #888; font-size: 10px; line-height: 1.6; }
+.discovery-insights-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 12px; }
+.discovery-insights-grid .aside-card { min-width: 0; margin: 0; }
+.discovery-insights-settings .ai-agent-panel,
+.discovery-insights-settings .catalog-status,
+.discovery-insights-settings .retailer-directory { width: 100%; margin: 0; }
+@media (max-width: 700px) {
+  .discovery-insights-grid { grid-template-columns: minmax(0,1fr); }
+  .filter-bar .filter-footer { align-items: stretch; flex-direction: column; }
+  .filter-bar .filter-tools { width: 100%; justify-content: stretch; }
+  .filter-bar .filter-tools > button { flex: 1 1 auto; }
+}
