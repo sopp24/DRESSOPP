@@ -1,7 +1,7 @@
 import { loadState, saveState, clearState } from "./modules/store.js";
 import { createInitialState, normalizeProduct, productIdentity, seasonFor, rankProducts, deriveLearnedPreferences, matchesFilters } from "./modules/engine.js";
 import { INTEGRATIONS, getPersistenceNotice, PINTEREST_BOARD_URL } from "./modules/integrations.js";
-import { inferPinterestTags, buildOutfitIdeas } from "./modules/outfits.js";
+import { inferPinterestTags, inferPinterestFeatures, buildOutfitIdeas } from "./modules/outfits.js";
 import { syncCommunityProfile, deleteCommunityProfile, buildCommunitySignals } from "./modules/community.js";
 import { requestAgentRecommendations, orderProductsByAgent, selectAgentCandidates, recommendLocally } from "./modules/agent.js";
 
@@ -166,7 +166,9 @@ function aiAgentActionCount() {
 }
 function aiAgentInspirations() {
   return pinterestPinCards().slice(0,12).map(function(pin) {
-    return { title:pin.title || "", tags:Array.isArray(pin.tags) ? pin.tags : [] };
+    const visualFeatures = inferPinterestFeatures(pin);
+    const hiddenSignals = Object.values(visualFeatures).flat();
+    return { title:pin.title || "", tags:Array.from(new Set([...(Array.isArray(pin.tags) ? pin.tags : []),...hiddenSignals])) };
   });
 }
 function aiAgentContextSignature(training) {
@@ -713,7 +715,7 @@ function pinterestPinCards() {
       id: id, pinId: id, title: pin.title || pin.description || pin.altText || "Épingle Pinterest",
       description: pin.description || pin.altText || "",
       imageUrl: pin.imageUrl || "", sourceUrl: pin.pinUrl || "https://www.pinterest.com/pin/" + encodeURIComponent(id) + "/",
-      tags: inferPinterestTags(pin), importedAt: pin.createdAt || null,
+      visualAnalysis: pin.visualAnalysis || null, tags: inferPinterestTags(pin), importedAt: pin.createdAt || null,
       fromFeed: true, origin: "Pinterest", kind: "outfit"
     };
   });
