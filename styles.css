@@ -2452,3 +2452,141 @@ body.is-discovery-app .app-footer { display: none; }
 
 .product-card.swipe-preview-save .swipe-tint { background: rgba(255,203,37,.78); opacity: var(--swipe-tint-opacity,.4); }
 .product-card.swipe-preview-save .swipe-stamp-save { opacity: 1; transform: translate(-50%,-50%) scale(1); }
+
+
+/* Mobile UX hardening: prevent the swipe deck, details and navigation from colliding. */
+@media (max-width: 600px) {
+  html, body.is-discovery-app { height: 100%; min-height: 100%; }
+  body.is-discovery-app { height: 100dvh; min-height: 100dvh; }
+  body.is-discovery-app .app-shell { height: 100dvh; min-height: 100dvh; }
+  body.is-discovery-app .topbar {
+    min-height: 52px;
+    padding: 0 10px;
+    gap: 8px;
+    grid-template-columns: minmax(0,1fr) auto;
+  }
+  body.is-discovery-app .topbar .brand-logo { width: 92px; height: 42px; max-height: 38px; }
+  body.is-discovery-app .main-content {
+    height: calc(100dvh - 52px);
+    min-height: 0;
+    padding: 6px 8px calc(78px + env(safe-area-inset-bottom));
+    overflow: hidden;
+  }
+  .discovery-page--app { min-height: 0; height: 100%; gap: 6px; }
+  .discovery-app-toolbar { min-height: 36px; }
+  .discovery-app-controls { min-width: 0; gap: 5px; }
+  .discovery-app-controls .filter-menu-trigger { min-height: 34px; padding: 0 9px; }
+  .discovery-page--app .discovery-layout--swipe {
+    width: 100%;
+    min-height: 0;
+    height: auto;
+    flex: 1 1 0;
+  }
+  .discovery-page--app .deck-column,
+  .discovery-page--app .deck-card-wrap { min-height: 0; height: 100%; }
+  .discovery-page--app .product-card {
+    min-height: 0;
+    height: 100%;
+    border-radius: 20px;
+  }
+  .discovery-page--app .product-info {
+    bottom: 76px;
+    align-items: flex-end;
+    gap: 8px;
+    padding: 12px 12px 10px;
+  }
+  .discovery-page--app .product-copy { max-width: calc(100% - 94px); }
+  .discovery-page--app .product-title {
+    font-size: clamp(17px,5vw,22px);
+    line-height: 1.1;
+    -webkit-line-clamp: 2;
+  }
+  .discovery-page--app .product-brand-price { gap: 5px; font-size: 10px; }
+  .discovery-page--app .product-card-links { max-width: 92px; gap: 5px; }
+  .discovery-page--app .product-details-pill,
+  .discovery-page--app .product-card-links .product-original-link {
+    min-height: 28px;
+    padding: 5px 7px;
+    font-size: 8px;
+  }
+  .discovery-page--app .deck-actions {
+    bottom: 9px;
+    justify-content: space-between;
+    gap: 4px;
+    padding: 0 9px;
+  }
+  .discovery-page--app .deck-action {
+    width: clamp(34px,10vw,43px);
+    height: clamp(34px,10vw,43px);
+    flex: 0 1 clamp(34px,10vw,43px);
+  }
+  .discovery-page--app .deck-action-no {
+    width: clamp(39px,11.5vw,48px);
+    height: clamp(39px,11.5vw,48px);
+    flex-basis: clamp(39px,11.5vw,48px);
+  }
+  .discovery-page--app .deck-action-yes {
+    width: clamp(42px,12.5vw,52px);
+    height: clamp(42px,12.5vw,52px);
+    flex-basis: clamp(42px,12.5vw,52px);
+  }
+  .discovery-page--app .deck-action-undo,
+  .discovery-page--app .deck-action-share {
+    width: clamp(32px,9vw,39px);
+    height: clamp(32px,9vw,39px);
+    flex-basis: clamp(32px,9vw,39px);
+  }
+  .discovery-page--app .deck-action-icon { width: 17px; height: 17px; }
+  .discovery-page--app .deck-hint { bottom: 61px; font-size: 7px; letter-spacing: .06em; }
+  .mobile-nav {
+    bottom: max(5px,env(safe-area-inset-bottom));
+    width: calc(100% - 12px);
+    max-width: calc(100% - 12px);
+    padding: 4px 3px;
+    gap: 0;
+    border-radius: 16px;
+  }
+  .mobile-nav button { min-height: 45px; padding: 0 2px; gap: 2px; }
+  .mobile-nav button span { font-size: 15px; }
+  .mobile-nav button small { font-size: clamp(6px,1.75vw,7.5px); }
+}
+@media (max-width: 370px) {
+  body.is-discovery-app .topbar { padding: 0 7px; }
+  body.is-discovery-app .topbar .brand-logo { width: 82px; }
+  body.is-discovery-app .top-actions { gap: 4px; }
+  body.is-discovery-app .top-actions .icon-button { width: 32px; height: 32px; }
+  .discovery-page--app .product-info { bottom: 72px; padding: 10px; }
+  .discovery-page--app .product-copy { max-width: calc(100% - 82px); }
+  .discovery-page--app .product-card-links { max-width: 82px; }
+  .discovery-page--app .deck-actions { padding: 0 6px; gap: 2px; }
+  .discovery-page--app .deck-action { width: 32px; height: 32px; flex-basis: 32px; }
+  .discovery-page--app .deck-action-no { width: 37px; height: 37px; flex-basis: 37px; }
+  .discovery-page--app .deck-action-yes { width: 40px; height: 40px; flex-basis: 40px; }
+  .discovery-page--app .deck-action-undo,
+  .discovery-page--app .deck-action-share { width: 29px; height: 29px; flex-basis: 29px; }
+  .mobile-nav button small { font-size: 6px; }
+}
+@media (max-height: 700px) and (max-width: 600px) and (orientation: portrait) {
+  body.is-discovery-app .main-content { padding-top: 4px; padding-bottom: calc(72px + env(safe-area-inset-bottom)); }
+  .discovery-app-toolbar { min-height: 32px; }
+  .discovery-page--app .product-info { bottom: 66px; padding-top: 8px; padding-bottom: 7px; }
+  .discovery-page--app .swipe-category { margin-bottom: 4px; padding: 3px 7px; }
+  .discovery-page--app .product-title { font-size: clamp(16px,4.8vw,19px); }
+  .discovery-page--app .deck-actions { bottom: 6px; }
+  .discovery-page--app .deck-hint { bottom: 53px; }
+  .mobile-nav button { min-height: 41px; }
+}
+@media (orientation: landscape) and (max-height: 600px) and (max-width: 850px) {
+  body.is-discovery-app .main-content { padding: 4px 8px 58px; }
+  .discovery-page--app { gap: 4px; }
+  .discovery-app-toolbar { min-height: 30px; }
+  .discovery-page--app .product-info { bottom: 58px; padding: 7px 10px; }
+  .discovery-page--app .product-title { font-size: 16px; }
+  .discovery-page--app .deck-actions { bottom: 5px; }
+  .discovery-page--app .deck-action,
+  .discovery-page--app .deck-action-no,
+  .discovery-page--app .deck-action-yes { width: 35px; height: 35px; flex-basis: 35px; }
+  .discovery-page--app .deck-hint { bottom: 45px; }
+  .mobile-nav { bottom: 3px; padding-top: 2px; padding-bottom: 2px; }
+  .mobile-nav button { min-height: 34px; }
+}
