@@ -28,6 +28,7 @@ document.addEventListener("pointerdown", updateLiquidGlassLight, { passive:true 
 let state = null;
 let currentView = "discover";
 let deckActionPending = false;
+let currentOutfitIdeas = [];
 let discoveryFiltersOpen = false;
 let currentModalProduct = null;
 let toastTimer = null;
@@ -1082,6 +1083,10 @@ function render() {
   });
   const count = document.querySelector("#wardrobe-count");
   if (count) count.textContent = String(state.likedProducts.length);
+  const outfitCount = document.querySelector("#outfit-count");
+  if (outfitCount) outfitCount.textContent = String((state.savedOutfits || []).length);
+  const outfitCountMobile = document.querySelector("#outfit-count-mobile");
+  if (outfitCountMobile) outfitCountMobile.textContent = String((state.savedOutfits || []).length);
   if (currentView === "wardrobe") main.innerHTML = renderWardrobe();
   else if (currentView === "training") main.innerHTML = renderDiscover(true);
   else if (currentView === "inspirations") main.innerHTML = renderInspirations();
@@ -1575,6 +1580,24 @@ function handleClick(event) {
   else if (action === "share-product") shareProduct(actionButton.dataset.id);
   else if (action === "undo") undoLast();
   else if (action === "rate-outfit") rateOutfit(actionButton.dataset.id, actionButton.dataset.vote);
+  else if (action === "show-outfit") {
+    const idea = currentOutfitIdeas.find(function(item) { return outfitPinKey(item.pin) === String(actionButton.dataset.id); });
+    if (idea) openOutfitDetail(idea);
+  }
+  else if (action === "open-saved-outfit") openSavedOutfit(actionButton.dataset.id);
+  else if (action === "save-full-outfit") saveFullOutfit(actionButton.dataset.id);
+  else if (action === "save-outfit-piece") saveOutfitPiece(actionButton.dataset.id,actionButton.dataset.pinId);
+  else if (action === "remove-saved-outfit") removeSavedOutfit(actionButton.dataset.id);
+  else if (action === "toggle-outfit-library") {
+    state.settings.outfitLibraryView = actionButton.dataset.viewMode === "saved" ? "saved" : "discover";
+    persist(); render();
+  }
+  else if (action === "reset-outfit-filters") {
+    state.settings.outfitFilters = {styles:[],season:"Toute saison",maxPrice:null};
+    persist(); render();
+  }
+  else if (action === "outfit-carousel-prev") scrollOutfitCarousel(-1);
+  else if (action === "outfit-carousel-next") scrollOutfitCarousel(1);
   else if (action === "remove-favorite") removeFavorite(actionButton.dataset.id);
   else if (action === "toggle-discovery-view") toggleDiscoveryView();
   else if (action === "toggle-filters") { discoveryFiltersOpen = !discoveryFiltersOpen; render(); }
@@ -1598,6 +1621,26 @@ function handleClick(event) {
 }
 function handleChange(event) {
   const target = event.target;
+  if (target.matches("[data-outfit-style]")) {
+    const filters = getOutfitFilters();
+    const selected = new Set(filters.styles);
+    if (target.checked) selected.add(target.value);
+    else selected.delete(target.value);
+    state.settings.outfitFilters = Object.assign({},filters,{styles:Array.from(selected)});
+    persist();
+    render();
+    return;
+  }
+  if (target.matches("[data-outfit-filter]")) {
+    const filters = getOutfitFilters();
+    const key = target.dataset.outfitFilter;
+    if (key === "maxPrice") filters.maxPrice = target.value.trim() === "" ? null : Math.max(0,Number(target.value));
+    else filters[key] = target.value;
+    state.settings.outfitFilters = filters;
+    persist();
+    render();
+    return;
+  }
   if (target.id === "ai-agent-consent") {
     state.settings.aiAgentConsent = Boolean(target.checked);
     if (!target.checked) {
@@ -1891,6 +1934,10 @@ async function boot() {
   state.profile = Object.assign(base.profile, state.profile || {});
   state.profile.sizes = Object.assign(base.profile.sizes, state.profile.sizes || {});
   state.settings = Object.assign(base.settings, state.settings || {});
+  state.settings.outfitFilters = Object.assign(base.settings.outfitFilters || {},state.settings.outfitFilters || {});
+  state.settings.outfitFilters.styles = Array.isArray(state.settings.outfitFilters.styles) ? state.settings.outfitFilters.styles : (state.profile.preferredStyles || []);
+  state.settings.outfitFilters.season = state.settings.outfitFilters.season || "Toute saison";
+  state.savedOutfits = Array.isArray(state.savedOutfits) ? state.savedOutfits : [];
   const migrateLegacyPriceCeiling = state.settings.catalogBudgetMigration !== "multi-shop-v1";
   if (migrateLegacyPriceCeiling && state.settings.maxPrice === 20) state.settings.maxPrice = null;
   state.settings.catalogBudgetMigration = "multi-shop-v1";
