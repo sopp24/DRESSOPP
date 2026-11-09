@@ -9,6 +9,22 @@ const main = document.querySelector("#app-main");
 const modalRoot = document.querySelector("#modal-root");
 const toastRoot = document.querySelector("#toast-root");
 const saveStatus = document.querySelector("#save-status");
+
+const LIQUID_GLASS_TARGETS = ".topbar, .mobile-nav, .mobile-nav button, .filter-menu-trigger, .deck-action";
+function updateLiquidGlassLight(event) {
+  const target = event.target;
+  if (!target || typeof target.closest !== "function") return;
+  const surface = target.closest(LIQUID_GLASS_TARGETS);
+  if (!surface) return;
+  const bounds = surface.getBoundingClientRect();
+  if (!bounds.width || !bounds.height) return;
+  const x = Math.max(0, Math.min(100, ((event.clientX - bounds.left) / bounds.width) * 100));
+  const y = Math.max(0, Math.min(100, ((event.clientY - bounds.top) / bounds.height) * 100));
+  surface.style.setProperty("--glass-x", x.toFixed(1) + "%");
+  surface.style.setProperty("--glass-y", y.toFixed(1) + "%");
+}
+document.addEventListener("pointermove", updateLiquidGlassLight, { passive:true });
+document.addEventListener("pointerdown", updateLiquidGlassLight, { passive:true });
 let state = null;
 let currentView = "discover";
 let discoveryFiltersOpen = false;
