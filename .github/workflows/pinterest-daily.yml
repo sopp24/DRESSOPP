@@ -38,6 +38,8 @@ jobs:
           PINTEREST_APP_SECRET: ${{ secrets.PINTEREST_APP_SECRET }}
           PINTEREST_ACCESS_TOKEN: ${{ secrets.PINTEREST_ACCESS_TOKEN }}
           PINTEREST_BOARD_NAME: mode
+          PINTEREST_ANALYSIS_ENDPOINT: https://dressopp-agent.adamsoppelsa.workers.dev
+          PINTEREST_SYNC_TOKEN: ${{ secrets.PINTEREST_SYNC_TOKEN }}
 
       - name: Enregistrer le flux public des épingles
         id: save-feed
