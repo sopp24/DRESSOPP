@@ -19,6 +19,7 @@ concurrency:
 jobs:
   sync-pinterest:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - name: Récupérer DRESSOPP
         uses: actions/checkout@v4
