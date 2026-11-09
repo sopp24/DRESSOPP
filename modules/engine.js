@@ -42,10 +42,11 @@ export function createInitialState(products) {
     },
     settings: {
       objective: "Vêtements", style: "Tous", season: seasonFor(new Date()), maxPrice: null,
-      communitySharing: false, aiAgentConsent: false, aiAgentAutoRefresh: false, discoveryLevel: 30, trainingDiscoveryLevel: 75, discoveryView: "cards", savedFilters: [], wardrobeFilters: { objective: "Tout", style: "Tous", season: "Toute saison", maxPrice: null }, wardrobeSort: "recent"
+      communitySharing: false, aiAgentConsent: false, aiAgentAutoRefresh: false, discoveryLevel: 30, trainingDiscoveryLevel: 75, discoveryView: "cards", savedFilters: [], wardrobeFilters: { objective: "Tout", style: "Tous", season: "Toute saison", maxPrice: null }, wardrobeSort: "recent",
+      outfitFilters: { styles: [], season: "Toute saison", maxPrice: null }, outfitLibraryView: "discover"
     },
     products: Array.isArray(products) ? products : [],
-    likedProducts: [], removedFavorites: [],
+    likedProducts: [], removedFavorites: [], savedOutfits: [],
     interactions: { likes: [], dislikes: [], views: [], saves: [], undoEvents: [] },
     learnedPreferences: {}, inspirations: [], outfitFeedback: {},
     integrations: {
