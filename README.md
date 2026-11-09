@@ -2,7 +2,7 @@
 
 **Find your style. Build your identity.**
 
-DRESSOPP est un personal shopper visuel pour la mode masculine et les marques mixtes : une expérience de découverte façon Tinder, nourrie par Pinterest, un catalogue multi-boutiques et un moteur qui apprend de chaque réponse Oui, Non et de chaque article sauvegardé.
+DRESSOPP est un personal shopper visuel pour la mode masculine et les marques mixtes : une expérience de découverte façon Tinder, construite autour d'un lookbook local, d'un catalogue multi-boutiques et d'un moteur qui apprend de chaque réponse Oui, Non et de chaque article sauvegardé. Une synchronisation Pinterest officielle est prévue dans le projet et devient exploitable lorsque le tableau et les autorisations sont effectivement connectés.
 
 Site : https://sopp24.github.io/DRESSOPP/
 
