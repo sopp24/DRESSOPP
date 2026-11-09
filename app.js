@@ -11,6 +11,7 @@ const toastRoot = document.querySelector("#toast-root");
 const saveStatus = document.querySelector("#save-status");
 let state = null;
 let currentView = "discover";
+let discoveryFiltersOpen = false;
 let currentModalProduct = null;
 let toastTimer = null;
 let persistPending = false;
@@ -356,7 +357,10 @@ function renderFilterBar(training) {
   const settings = state.settings;
   const saved = settings.savedFilters || [];
   const selectedLevel = training ? settings.trainingDiscoveryLevel : settings.discoveryLevel;
-  return '<section class="panel filter-bar" aria-label="Filtres de découverte">' +
+  return '<div class="discovery-filter-menu">' +
+    '<button class="filter-menu-trigger" type="button" data-action="toggle-filters" aria-expanded="' + (discoveryFiltersOpen ? "true" : "false") + '" aria-controls="discovery-filter-panel"><span aria-hidden="true">☷</span><span>Filtres</span>' +
+    ((settings.objective !== "Vêtements" || settings.style !== "Tous" || settings.season !== seasonFor(new Date()) || settings.maxPrice != null) ? '<i class="filter-active-dot" aria-label="Filtres actifs"></i>' : '') + '</button>' +
+    '<section id="discovery-filter-panel" class="panel filter-bar' + (discoveryFiltersOpen ? ' is-open' : '') + '" aria-label="Filtres de découverte" ' + (discoveryFiltersOpen ? '' : 'hidden') + '>' +
     '<div class="field"><label for="objective-filter">Objectif</label><select id="objective-filter" data-filter="objective">' +
       OBJECTIVES.map(function(item) { return selectOption(item, settings.objective); }).join("") +
       selectOption("Tout", settings.objective, "Toutes les catégories") + '</select></div>' +
@@ -373,7 +377,7 @@ function renderFilterBar(training) {
       saved.map(function(item, index) { return selectOption(String(index), "", item.name || ("Filtre " + (index + 1))); }).join("") +
       '</select></div></section>' +
     '<div class="filter-footer"><label class="discovery-level"><span>Mes goûts</span><input type="range" min="0" max="100" step="1" data-filter="' + (training ? "trainingDiscoveryLevel" : "discoveryLevel") + '" value="' + esc(selectedLevel) + '"><span>Découverte</span><output id="discovery-output">' + esc(selectedLevel) + '%</output></label>' +
-    '<div class="filter-tools"><button class="button-quiet button-small" type="button" data-action="save-filters">＋ Enregistrer ces filtres</button></div></div>';
+    '<div class="filter-tools"><button class="button-quiet button-small" type="button" data-action="save-filters">＋ Enregistrer ces filtres</button><button class="button-primary button-small" type="button" data-action="toggle-filters">Appliquer</button></div></div></div>';
 }
 function renderEmptyProducts(training) {
   const title = catalogPagePending ? "On prépare la suite" : (state.products.length ? "Aucun article ne correspond à ces filtres" : "Ton dressing commence ici");
@@ -657,7 +661,7 @@ function renderDiscover(training) {
   const isGrid = state.settings.discoveryView === "grid" && !training;
   const body = isGrid ? renderGridCards(products) : (products.length ? renderDeckCard(products[0], training) : renderEmptyProducts(training));
   const searchToolbar = isGrid ? '<div class="toolbar"><div class="toolbar-left"><input class="search-input" type="search" data-search="discover" placeholder="Rechercher un vêtement, une marque, une couleur…" aria-label="Rechercher dans le catalogue"></div><span class="result-count">' + products.length + ' article(s)</span></div>' : "";
-  return heading + renderCatalogStatus() + renderFilterBar(training) + renderAiAgentPanel() + searchToolbar + '<div class="discovery-layout' + (isGrid ? '' : ' discovery-layout--swipe') + '"><section class="deck-column">' +
+  return '<div class="discovery-page">' + heading + renderFilterBar(training) + searchToolbar + '<div class="discovery-layout' + (isGrid ? '' : ' discovery-layout--swipe') + '"><section class="deck-column">' +
     '<div class="deck-topline"><span><strong>' + (training ? "Exploration active" : "Ta sélection") + '</strong> <span>· ' + products.length + ' article(s) à découvrir</span></span>' +
     '<span>' + (training ? "Nouveauté prioritaire" : "Personnalisation active") + '</span></div>' + body +
     '</section><aside class="deck-aside"><section class="panel aside-card"><h2 class="aside-title">Ton évolution <span>en direct</span></h2>' +
@@ -666,7 +670,7 @@ function renderDiscover(training) {
     '<section class="panel aside-card"><h2 class="aside-title">Équilibre du moment <span>' + esc(training ? state.settings.trainingDiscoveryLevel : state.settings.discoveryLevel) + '% découverte</span></h2>' +
     '<p>' + (training ? "Le mode Entraînement donne plus de poids à la nouveauté pour élargir ton terrain de jeu." : "Le curseur mélange tes goûts déjà identifiés et des propositions plus inattendues. Ajuste-le à tout moment.") + '</p></section>' +
     '<div class="source-note">Le classement combine les caractéristiques du lookbook, tes votes, la fraîcheur du flux et les avis d’article vérifiables. Les notes d’article ne représentent pas la fiabilité globale du marchand.</div>' +
-    '</aside></div>' + renderRetailerDirectory();
+    '</aside></div>' + renderAiAgentPanel() + renderCatalogStatus() + renderRetailerDirectory() + '</div>';
 }
 function renderWardrobe() {
   const heading = renderPageHeading("Tes pièces retenues", "Ma garde-robe", "Tous tes coups de cœur au même endroit. Retirer un favori ne crée pas de rejet dans ton profil de style.", '<button class="button-primary" type="button" data-action="add-product">＋ Ajouter un article</button>');
@@ -1349,6 +1353,7 @@ function handleClick(event) {
   else if (action === "rate-outfit") rateOutfit(actionButton.dataset.id, actionButton.dataset.vote);
   else if (action === "remove-favorite") removeFavorite(actionButton.dataset.id);
   else if (action === "toggle-discovery-view") toggleDiscoveryView();
+  else if (action === "toggle-filters") { discoveryFiltersOpen = !discoveryFiltersOpen; render(); }
   else if (action === "save-filters") saveFilters();
   else if (action === "export") exportData();
   else if (action === "import-backup") document.querySelector("#backup-file").click();
