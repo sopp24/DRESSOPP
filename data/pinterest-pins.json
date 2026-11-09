@@ -4,7 +4,7 @@
   "boardName": "mode",
   "boardId": "780952460324562575",
   "privacy": "PUBLIC",
-  "lastSync": "2026-11-09T13:53:12.931Z",
+  "lastSync": "2026-11-09T13:59:53.282Z",
   "totalPins": 22,
   "newPinIds": [],
   "pins": [
@@ -18,7 +18,35 @@
       "imageUrl": "https://i.pinimg.com/1200x/f3/26/09/f32609de15dc419532b3f0b8c66f01bc.jpg",
       "dominantColor": "#292c36",
       "createdAt": "2026-11-04T14:21:49",
-      "boardId": "780952460324562575"
+      "boardId": "780952460324562575",
+      "visualAnalysis": {
+        "version": 1,
+        "analyzedAt": "2026-11-09T13:59:23.057Z",
+        "sourceImageUrl": "https://i.pinimg.com/1200x/f3/26/09/f32609de15dc419532b3f0b8c66f01bc.jpg",
+        "model": "@cf/google/gemma-4-26b-a4b-it",
+        "isFashion": true,
+        "summary": "Une tenue décontractée composée d'un cardigan bleu ciel à col blanc, d'un pantalon large blanc et d'une casquette de baseball assortie.",
+        "styleTags": [
+          "Smart Casual",
+          "Casual",
+          "Preppy"
+        ],
+        "colors": [
+          "bleu ciel",
+          "blanc",
+          "marine"
+        ],
+        "materials": [
+          "maille",
+          "coton"
+        ],
+        "cuts": [
+          "wide leg",
+          "regular"
+        ],
+        "patterns": [],
+        "confidence": 0.95
+      }
     },
     {
       "id": "780952391681874722",
@@ -30,7 +58,35 @@
       "imageUrl": "https://i.pinimg.com/1200x/44/85/33/4485331a6a2c2d6217945409f6053033.jpg",
       "dominantColor": "#6e6b67",
       "createdAt": "2026-11-04T14:21:34",
-      "boardId": "780952460324562575"
+      "boardId": "780952460324562575",
+      "visualAnalysis": {
+        "version": 1,
+        "analyzedAt": "2026-11-09T13:59:22.937Z",
+        "sourceImageUrl": "https://i.pinimg.com/1200x/44/85/33/4485331a6a2c2d6217945409f6053033.jpg",
+        "model": "@cf/google/gemma-4-26b-a4b-it",
+        "isFashion": true,
+        "summary": "Un pull à col montant zippé à moitié avec des rayures horizontales noires sur un fond gris chiné, porté avec un t-shirt blanc et un jean bleu foncé.",
+        "styleTags": [
+          "Casual",
+          "Smart Casual"
+        ],
+        "colors": [
+          "gris",
+          "noir",
+          "blanc",
+          "bleu"
+        ],
+        "materials": [
+          "maille"
+        ],
+        "cuts": [
+          "regular"
+        ],
+        "patterns": [
+          "rayures"
+        ],
+        "confidence": 0.95
+      }
     },
     {
       "id": "780952391681874716",
@@ -42,7 +98,37 @@
       "imageUrl": "https://i.pinimg.com/1200x/e5/72/95/e572958bf49fc9efb6c99be617f19e6f.jpg",
       "dominantColor": "#98816a",
       "createdAt": "2026-11-04T14:21:15",
-      "boardId": "780952460324562575"
+      "boardId": "780952460324562575",
+      "visualAnalysis": {
+        "version": 1,
+        "analyzedAt": "2026-11-09T13:59:23.515Z",
+        "sourceImageUrl": "https://i.pinimg.com/1200x/e5/72/95/e572958bf49fc9efb6c99be617f19e6f.jpg",
+        "model": "@cf/google/gemma-4-26b-a4b-it",
+        "isFashion": true,
+        "summary": "Tenue composée d'un blouson en cuir noir sur un sweat à capuche gris et un t-shirt blanc, associée à un pantalon large noir et des bottines massives.",
+        "styleTags": [
+          "Streetwear",
+          "Casual",
+          "Smart Casual"
+        ],
+        "colors": [
+          "noir",
+          "gris",
+          "blanc"
+        ],
+        "materials": [
+          "cuir",
+          "coton",
+          "maille"
+        ],
+        "cuts": [
+          "oversized",
+          "wide leg",
+          "long"
+        ],
+        "patterns": [],
+        "confidence": 0.95
+      }
     },
     {
       "id": "780952391681874714",
@@ -54,7 +140,33 @@
       "imageUrl": "https://i.pinimg.com/1200x/02/51/8b/02518b297bdd7ffd14948c048e7d2802.jpg",
       "dominantColor": "#594e45",
       "createdAt": "2026-11-04T14:21:03",
-      "boardId": "780952460324562575"
+      "boardId": "780952460324562575",
+      "visualAnalysis": {
+        "version": 1,
+        "analyzedAt": "2026-11-09T13:59:26.516Z",
+        "sourceImageUrl": "https://i.pinimg.com/1200x/02/51/8b/02518b297bdd7ffd14948c048e7d2802.jpg",
+        "model": "@cf/google/gemma-4-26b-a4b-it",
+        "isFashion": true,
+        "summary": "Tenue composée d'un pull en maille grise et d'un pantalon large marron avec une ceinture noire à boucle argentée.",
+        "styleTags": [
+          "Smart Casual",
+          "Casual"
+        ],
+        "colors": [
+          "gris",
+          "marron",
+          "noir"
+        ],
+        "materials": [
+          "maille"
+        ],
+        "cuts": [
+          "wide leg",
+          "large"
+        ],
+        "patterns": [],
+        "confidence": 0.95
+      }
     },
     {
       "id": "780952391681874709",
@@ -66,7 +178,41 @@
       "imageUrl": "https://i.pinimg.com/1200x/78/fb/de/78fbde65bcbe6a9778a823c1371e5b86.jpg",
       "dominantColor": "#383838",
       "createdAt": "2026-11-04T14:20:48",
-      "boardId": "780952460324562575"
+      "boardId": "780952460324562575",
+      "visualAnalysis": {
+        "version": 1,
+        "analyzedAt": "2026-11-09T13:59:27.113Z",
+        "sourceImageUrl": "https://i.pinimg.com/1200x/78/fb/de/78fbde65bcbe6a9778a823c1371e5b86.jpg",
+        "model": "@cf/google/gemma-4-26b-a4b-it",
+        "isFashion": true,
+        "summary": "Une tenue décontractée composée d'un pull gris à motifs graphiques porté sur une chemise blanche avec cravate noire, associée à un jean large délavé et une casquette noire.",
+        "styleTags": [
+          "Streetwear",
+          "Casual",
+          "Vintage"
+        ],
+        "colors": [
+          "gris",
+          "blanc",
+          "noir",
+          "bleu"
+        ],
+        "materials": [
+          "maille",
+          "coton",
+          "denim",
+          "jean"
+        ],
+        "cuts": [
+          "oversized",
+          "wide leg",
+          "ample"
+        ],
+        "patterns": [
+          "graphique"
+        ],
+        "confidence": 0.95
+      }
     },
     {
       "id": "780952391681858021",
@@ -78,7 +224,35 @@
       "imageUrl": "https://i.pinimg.com/1200x/dc/d7/a3/dcd7a32bffa8e817b714efed7e2a9d7d.jpg",
       "dominantColor": "#665639",
       "createdAt": "2026-11-03T14:24:14",
-      "boardId": "780952460324562575"
+      "boardId": "780952460324562575",
+      "visualAnalysis": {
+        "version": 1,
+        "analyzedAt": "2026-11-09T13:59:26.968Z",
+        "sourceImageUrl": "https://i.pinimg.com/1200x/dc/d7/a3/dcd7a32bffa8e817b714efed7e2a9d7d.jpg",
+        "model": "@cf/google/gemma-4-26b-a4b-it",
+        "isFashion": true,
+        "summary": "Une tenue décontractée composée d'un pull en maille côtelée crème et d'un pantalon de jogging gris ample, complétée par un bonnet bleu marine et des baskets grises.",
+        "styleTags": [
+          "Casual",
+          "Streetwear"
+        ],
+        "colors": [
+          "crème",
+          "gris",
+          "bleu",
+          "blanc"
+        ],
+        "materials": [
+          "maille",
+          "coton"
+        ],
+        "cuts": [
+          "oversized",
+          "ample"
+        ],
+        "patterns": [],
+        "confidence": 0.95
+      }
     },
     {
       "id": "780952391681858019",
@@ -90,7 +264,35 @@
       "imageUrl": "https://i.pinimg.com/1200x/a3/3b/24/a33b24071f3805214db17477f435d4b8.jpg",
       "dominantColor": "#5d5e57",
       "createdAt": "2026-11-03T14:24:06",
-      "boardId": "780952460324562575"
+      "boardId": "780952460324562575",
+      "visualAnalysis": {
+        "version": 1,
+        "analyzedAt": "2026-11-09T13:59:31.105Z",
+        "sourceImageUrl": "https://i.pinimg.com/1200x/a3/3b/24/a33b24071f3805214db17477f435d4b8.jpg",
+        "model": "@cf/google/gemma-4-26b-a4b-it",
+        "isFashion": true,
+        "summary": "Une tenue décontractée composée d'un pull en maille vert forêt sur un t-shirt blanc, associée à un jean bleu large et un grand sac en maille texturée.",
+        "styleTags": [
+          "Casual",
+          "Streetwear"
+        ],
+        "colors": [
+          "vert forêt",
+          "blanc",
+          "bleu"
+        ],
+        "materials": [
+          "maille",
+          "denim",
+          "jean"
+        ],
+        "cuts": [
+          "oversized",
+          "wide leg"
+        ],
+        "patterns": [],
+        "confidence": 0.95
+      }
     },
     {
       "id": "780952391681858017",
@@ -102,7 +304,36 @@
       "imageUrl": "https://i.pinimg.com/1200x/e1/49/42/e14942729de549878021e89c080e7ce3.jpg",
       "dominantColor": "#443b35",
       "createdAt": "2026-11-03T14:24:00",
-      "boardId": "780952460324562575"
+      "boardId": "780952460324562575",
+      "visualAnalysis": {
+        "version": 1,
+        "analyzedAt": "2026-11-09T13:59:30.393Z",
+        "sourceImageUrl": "https://i.pinimg.com/1200x/e1/49/42/e14942729de549878021e89c080e7ce3.jpg",
+        "model": "@cf/google/gemma-4-26b-a4b-it",
+        "isFashion": true,
+        "summary": "Un ensemble décontracté composé d'un pull en maille à motif damier gris et blanc, d'un pantalon large noir et d'une casquette assortie.",
+        "styleTags": [
+          "Streetwear",
+          "Casual",
+          "Vintage"
+        ],
+        "colors": [
+          "gris",
+          "blanc",
+          "noir"
+        ],
+        "materials": [
+          "maille"
+        ],
+        "cuts": [
+          "oversized",
+          "large"
+        ],
+        "patterns": [
+          "damier"
+        ],
+        "confidence": 0.95
+      }
     },
     {
       "id": "780952391681858014",
@@ -114,7 +345,39 @@
       "imageUrl": "https://i.pinimg.com/1200x/2a/ff/75/2aff75be9e92d2f6f50b007e007ff3d6.jpg",
       "dominantColor": "#887f78",
       "createdAt": "2026-11-03T14:23:54",
-      "boardId": "780952460324562575"
+      "boardId": "780952460324562575",
+      "visualAnalysis": {
+        "version": 1,
+        "analyzedAt": "2026-11-09T13:59:29.917Z",
+        "sourceImageUrl": "https://i.pinimg.com/1200x/2a/ff/75/2aff75be9e92d2f6f50b007e007ff3d6.jpg",
+        "model": "@cf/google/gemma-4-26b-a4b-it",
+        "isFashion": true,
+        "summary": "Une tenue décontractée composée d'un pull en maille à motif graphique marron et crème, d'un jean large gris foncé et de mocassins en daim beige.",
+        "styleTags": [
+          "Streetwear",
+          "Casual",
+          "Vintage"
+        ],
+        "colors": [
+          "marron",
+          "crème",
+          "gris",
+          "beige"
+        ],
+        "materials": [
+          "maille",
+          "denim",
+          "daim"
+        ],
+        "cuts": [
+          "oversized",
+          "wide leg"
+        ],
+        "patterns": [
+          "graphique"
+        ],
+        "confidence": 0.95
+      }
     },
     {
       "id": "780952391681858012",
@@ -126,7 +389,36 @@
       "imageUrl": "https://i.pinimg.com/1200x/b0/9b/b5/b09bb59a34a8b2c7c95c42a760f673f9.jpg",
       "dominantColor": "#867975",
       "createdAt": "2026-11-03T14:23:49",
-      "boardId": "780952460324562575"
+      "boardId": "780952460324562575",
+      "visualAnalysis": {
+        "version": 1,
+        "analyzedAt": "2026-11-09T13:59:35.503Z",
+        "sourceImageUrl": "https://i.pinimg.com/1200x/b0/9b/b5/b09bb59a34a8b2c7c95c42a760f673f9.jpg",
+        "model": "@cf/google/gemma-4-26b-a4b-it",
+        "isFashion": true,
+        "summary": "Tenue décontractée composée d'un sweat à col polo à rayures horizontales roses et marron, d'un pantalon cargo large marron et d'une casquette assortie.",
+        "styleTags": [
+          "Streetwear",
+          "Casual",
+          "Workwear"
+        ],
+        "colors": [
+          "rose",
+          "marron",
+          "beige"
+        ],
+        "materials": [
+          "coton"
+        ],
+        "cuts": [
+          "oversized",
+          "large"
+        ],
+        "patterns": [
+          "rayures"
+        ],
+        "confidence": 0.95
+      }
     },
     {
       "id": "780952391681858009",
@@ -138,7 +430,35 @@
       "imageUrl": "https://i.pinimg.com/1200x/69/87/4b/69874bc2ca3b63b0df10eba09e30cd18.jpg",
       "dominantColor": "#848079",
       "createdAt": "2026-11-03T14:23:38",
-      "boardId": "780952460324562575"
+      "boardId": "780952460324562575",
+      "visualAnalysis": {
+        "version": 1,
+        "analyzedAt": "2026-11-09T13:59:34.939Z",
+        "sourceImageUrl": "https://i.pinimg.com/1200x/69/87/4b/69874bc2ca3b63b0df10eba09e30cd18.jpg",
+        "model": "@cf/google/gemma-4-26b-a4b-it",
+        "isFashion": true,
+        "summary": "Une tenue décontractée composée d'un pull en maille torsadée noir sur une chemise blanche, associée à un jean large noir et des mocassins vernis.",
+        "styleTags": [
+          "Smart Casual",
+          "Casual",
+          "Streetwear"
+        ],
+        "colors": [
+          "noir",
+          "blanc"
+        ],
+        "materials": [
+          "maille",
+          "denim",
+          "cuir"
+        ],
+        "cuts": [
+          "wide leg",
+          "large"
+        ],
+        "patterns": [],
+        "confidence": 0.95
+      }
     },
     {
       "id": "780952391681858006",
@@ -150,7 +470,35 @@
       "imageUrl": "https://i.pinimg.com/1200x/7c/97/92/7c9792aef8534d5e05229f17da497a52.jpg",
       "dominantColor": "#8a7a66",
       "createdAt": "2026-11-03T14:23:30",
-      "boardId": "780952460324562575"
+      "boardId": "780952460324562575",
+      "visualAnalysis": {
+        "version": 1,
+        "analyzedAt": "2026-11-09T13:59:33.147Z",
+        "sourceImageUrl": "https://i.pinimg.com/1200x/7c/97/92/7c9792aef8534d5e05229f17da497a52.jpg",
+        "model": "@cf/google/gemma-4-26b-a4b-it",
+        "isFashion": true,
+        "summary": "Tenue composée d'un pull en maille crème à col en V porté sur une chemise blanche, associée à un pantalon marron maintenu par une ceinture en cuir à boucle métallique.",
+        "styleTags": [
+          "Smart Casual",
+          "Casual",
+          "Heritage"
+        ],
+        "colors": [
+          "crème",
+          "blanc",
+          "marron"
+        ],
+        "materials": [
+          "maille",
+          "coton",
+          "cuir"
+        ],
+        "cuts": [
+          "regular"
+        ],
+        "patterns": [],
+        "confidence": 0.95
+      }
     },
     {
       "id": "780952391681857992",
@@ -162,7 +510,32 @@
       "imageUrl": "https://i.pinimg.com/1200x/47/59/8c/47598c09093f06cf7f1aef20ca8c5827.jpg",
       "dominantColor": "#343537",
       "createdAt": "2026-11-03T14:22:51",
-      "boardId": "780952460324562575"
+      "boardId": "780952460324562575",
+      "visualAnalysis": {
+        "version": 1,
+        "analyzedAt": "2026-11-09T13:59:38.978Z",
+        "sourceImageUrl": "https://i.pinimg.com/1200x/47/59/8c/47598c09093f06cf7f1aef20ca8c5827.jpg",
+        "model": "@cf/google/gemma-4-26b-a4b-it",
+        "isFashion": true,
+        "summary": "Une veste en cuir noir de style streetwear arborant un motif de toile d'araignée embossé et un large emblème d'araignée dans le dos.",
+        "styleTags": [
+          "Streetwear",
+          "Créatif"
+        ],
+        "colors": [
+          "noir"
+        ],
+        "materials": [
+          "cuir"
+        ],
+        "cuts": [
+          "regular"
+        ],
+        "patterns": [
+          "graphique"
+        ],
+        "confidence": 0.95
+      }
     },
     {
       "id": "780952391681857987",
@@ -186,7 +559,40 @@
       "imageUrl": "https://i.pinimg.com/1200x/e7/f7/9b/e7f79bae0ec4b5c9fc2eea27277f2dba.jpg",
       "dominantColor": "#b7aca1",
       "createdAt": "2026-11-03T14:22:06",
-      "boardId": "780952460324562575"
+      "boardId": "780952460324562575",
+      "visualAnalysis": {
+        "version": 1,
+        "analyzedAt": "2026-11-09T13:59:43.279Z",
+        "sourceImageUrl": "https://i.pinimg.com/1200x/e7/f7/9b/e7f79bae0ec4b5c9fc2eea27277f2dba.jpg",
+        "model": "@cf/google/gemma-4-26b-a4b-it",
+        "isFashion": true,
+        "summary": "Une tenue composée d'une veste en daim olive, d'un pull noir, d'un pantalon large à pinces gris anthracite et de baskets crème, complétée par un grand sac noir.",
+        "styleTags": [
+          "Smart Casual",
+          "Casual",
+          "Heritage"
+        ],
+        "colors": [
+          "olive",
+          "noir",
+          "gris",
+          "anthracite",
+          "crème"
+        ],
+        "materials": [
+          "daim",
+          "maille",
+          "laine",
+          "cuir"
+        ],
+        "cuts": [
+          "ample",
+          "wide leg",
+          "a pinces"
+        ],
+        "patterns": [],
+        "confidence": 0.95
+      }
     },
     {
       "id": "780952391681857981",
@@ -198,7 +604,38 @@
       "imageUrl": "https://i.pinimg.com/1200x/11/ed/77/11ed7733201338912fd602c09f446f30.jpg",
       "dominantColor": "#5d5c5b",
       "createdAt": "2026-11-03T14:22:01",
-      "boardId": "780952460324562575"
+      "boardId": "780952460324562575",
+      "visualAnalysis": {
+        "version": 1,
+        "analyzedAt": "2026-11-09T13:59:47.145Z",
+        "sourceImageUrl": "https://i.pinimg.com/1200x/11/ed/77/11ed7733201338912fd602c09f446f30.jpg",
+        "model": "@cf/google/gemma-4-26b-a4b-it",
+        "isFashion": true,
+        "summary": "Une tenue élégante composée d'un blouson en cuir bordeaux, d'une chemise blanche à rayures fines et d'un pantalon gris à rayures verticales larges.",
+        "styleTags": [
+          "Smart Casual",
+          "Classique",
+          "Vintage"
+        ],
+        "colors": [
+          "bordeaux",
+          "blanc",
+          "gris"
+        ],
+        "materials": [
+          "cuir",
+          "coton"
+        ],
+        "cuts": [
+          "regular",
+          "large",
+          "long"
+        ],
+        "patterns": [
+          "rayures"
+        ],
+        "confidence": 0.95
+      }
     },
     {
       "id": "780952391681857977",
@@ -210,7 +647,29 @@
       "imageUrl": "https://i.pinimg.com/1200x/0d/15/b2/0d15b2089d17665286743521a3ca884a.jpg",
       "dominantColor": "#786445",
       "createdAt": "2026-11-03T14:21:37",
-      "boardId": "780952460324562575"
+      "boardId": "780952460324562575",
+      "visualAnalysis": {
+        "version": 1,
+        "analyzedAt": "2026-11-09T13:59:46.445Z",
+        "sourceImageUrl": "https://i.pinimg.com/1200x/0d/15/b2/0d15b2089d17665286743521a3ca884a.jpg",
+        "model": "@cf/google/gemma-4-26b-a4b-it",
+        "isFashion": true,
+        "summary": "Une montre au cadran argenté de forme irrégulière et organique, dotée de chiffres romains noirs et d'un bracelet en cuir marron foncé.",
+        "styleTags": [
+          "Classique",
+          "Vintage"
+        ],
+        "colors": [
+          "noir",
+          "marron"
+        ],
+        "materials": [
+          "cuir"
+        ],
+        "cuts": [],
+        "patterns": [],
+        "confidence": 0.95
+      }
     },
     {
       "id": "780952391681857968",
@@ -222,7 +681,36 @@
       "imageUrl": "https://i.pinimg.com/1200x/eb/69/b6/eb69b62cc66bbb06a0b3b3ed917368bd.jpg",
       "dominantColor": "#504f4f",
       "createdAt": "2026-11-03T14:21:07",
-      "boardId": "780952460324562575"
+      "boardId": "780952460324562575",
+      "visualAnalysis": {
+        "version": 1,
+        "analyzedAt": "2026-11-09T13:59:46.475Z",
+        "sourceImageUrl": "https://i.pinimg.com/1200x/eb/69/b6/eb69b62cc66bbb06a0b3b3ed917368bd.jpg",
+        "model": "@cf/google/gemma-4-26b-a4b-it",
+        "isFashion": true,
+        "summary": "Un costume deux pièces à rayures verticales porté sur une chemise blanche avec une cravate bordeaux, offrant une silhouette élégante et structurée.",
+        "styleTags": [
+          "Classique",
+          "Smart Casual",
+          "Classe"
+        ],
+        "colors": [
+          "noir",
+          "blanc",
+          "bordeaux"
+        ],
+        "materials": [
+          "laine"
+        ],
+        "cuts": [
+          "droit",
+          "long"
+        ],
+        "patterns": [
+          "rayures"
+        ],
+        "confidence": 0.95
+      }
     },
     {
       "id": "780952391681857966",
@@ -234,7 +722,37 @@
       "imageUrl": "https://i.pinimg.com/1200x/26/0d/db/260ddbcdff5a773482755519937b8f3e.jpg",
       "dominantColor": "#827569",
       "createdAt": "2026-11-03T14:20:58",
-      "boardId": "780952460324562575"
+      "boardId": "780952460324562575",
+      "visualAnalysis": {
+        "version": 1,
+        "analyzedAt": "2026-11-09T13:59:50.001Z",
+        "sourceImageUrl": "https://i.pinimg.com/1200x/26/0d/db/260ddbcdff5a773482755519937b8f3e.jpg",
+        "model": "@cf/google/gemma-4-26b-a4b-it",
+        "isFashion": true,
+        "summary": "Tenue élégante composée d'un pull vert forêt sur une chemise blanche, d'un pantalon beige à pinces et de mocassins en cuir marron.",
+        "styleTags": [
+          "Classique",
+          "Smart Casual",
+          "Heritage"
+        ],
+        "colors": [
+          "vert forêt",
+          "blanc",
+          "beige",
+          "marron"
+        ],
+        "materials": [
+          "maille",
+          "coton",
+          "cuir"
+        ],
+        "cuts": [
+          "regular",
+          "a pinces"
+        ],
+        "patterns": [],
+        "confidence": 0.95
+      }
     },
     {
       "id": "780952391681857965",
@@ -258,7 +776,38 @@
       "imageUrl": "https://i.pinimg.com/1200x/61/00/d3/6100d341e77d80720c77532e4883ab97.jpg",
       "dominantColor": "#917e7d",
       "createdAt": "2026-11-03T14:20:53",
-      "boardId": "780952460324562575"
+      "boardId": "780952460324562575",
+      "visualAnalysis": {
+        "version": 1,
+        "analyzedAt": "2026-11-09T13:59:49.513Z",
+        "sourceImageUrl": "https://i.pinimg.com/1200x/61/00/d3/6100d341e77d80720c77532e4883ab97.jpg",
+        "model": "@cf/google/gemma-4-26b-a4b-it",
+        "isFashion": true,
+        "summary": "Tenue élégante composée d'une chemise rose, d'un t-shirt blanc, d'un pull bordeaux noué sur les épaules et d'un pantalon large à pinces assorti.",
+        "styleTags": [
+          "Smart Casual",
+          "Classique",
+          "Preppy"
+        ],
+        "colors": [
+          "rose",
+          "blanc",
+          "bordeaux",
+          "marron"
+        ],
+        "materials": [
+          "coton",
+          "cuir"
+        ],
+        "cuts": [
+          "ample",
+          "wide leg",
+          "a pinces",
+          "long"
+        ],
+        "patterns": [],
+        "confidence": 0.95
+      }
     },
     {
       "id": "780952391681857957",
@@ -270,7 +819,34 @@
       "imageUrl": "https://i.pinimg.com/1200x/6c/6a/49/6c6a4931e3ee2c136d51292a750a5366.jpg",
       "dominantColor": "#827c75",
       "createdAt": "2026-11-03T14:20:25",
-      "boardId": "780952460324562575"
+      "boardId": "780952460324562575",
+      "visualAnalysis": {
+        "version": 1,
+        "analyzedAt": "2026-11-09T13:59:53.275Z",
+        "sourceImageUrl": "https://i.pinimg.com/1200x/6c/6a/49/6c6a4931e3ee2c136d51292a750a5366.jpg",
+        "model": "@cf/google/gemma-4-26b-a4b-it",
+        "isFashion": true,
+        "summary": "Tenue élégante composée d'un blouson en cuir marron, d'une chemise blanche avec cravate et d'un pantalon à pinces assorti.",
+        "styleTags": [
+          "Classique",
+          "Smart Casual",
+          "Classe"
+        ],
+        "colors": [
+          "marron",
+          "blanc"
+        ],
+        "materials": [
+          "cuir"
+        ],
+        "cuts": [
+          "droit",
+          "long",
+          "a pinces"
+        ],
+        "patterns": [],
+        "confidence": 0.95
+      }
     }
   ]
 }
