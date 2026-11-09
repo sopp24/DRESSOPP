@@ -94,12 +94,18 @@ export function inferPinterestTags(pin) {
 }
 
 export function productSlot(product) {
-  const category = clean(product.objective || product.category || "");
-  if (category.includes("chauss")) return "shoes";
-  if (category.includes("access")) return "accessory";
-  const text = clean([product.name, product.description, product.category, product.objective].join(" "));
-  for (const slot of ["shoes","outerwear","top","bottom","accessory"]) {
-    if (SLOT_TERMS[slot].some(function(term) { return text.includes(clean(term)); })) return slot;
+  const nameText = clean([product.name,product.description].join(" "));
+  const metadataText = clean([product.category,product.objective].join(" "));
+  // Le nom et la description priment sur les catégories marchandes, parfois mal renseignées.
+  if (SLOT_TERMS.shoes.some(term => nameText.includes(clean(term)))) return "shoes";
+  if (SLOT_TERMS.bottom.some(term => nameText.includes(clean(term)))) return "bottom";
+  if (SLOT_TERMS.outerwear.some(term => nameText.includes(clean(term)))) return "outerwear";
+  if (SLOT_TERMS.top.some(term => nameText.includes(clean(term)))) return "top";
+  if (SLOT_TERMS.accessory.some(term => nameText.includes(clean(term)))) return "accessory";
+  if (metadataText.includes("chauss")) return "shoes";
+  if (metadataText.includes("access")) return "accessory";
+  for (const slot of ["shoes","bottom","outerwear","top","accessory"]) {
+    if (SLOT_TERMS[slot].some(term => metadataText.includes(clean(term)))) return slot;
   }
   return "other";
 }
@@ -196,61 +202,163 @@ function pinFeedbackScore(pin, profile) {
   }, 0) / tokens.length;
 }
 
-export function buildOutfitIdeas(pins, wardrobe, catalogue, dislikedIds, outfitFeedback) {
+function matchesAny(values, expected) {
+  const source = (Array.isArray(values) ? values : []).map(clean);
+  return expected.some(value => source.includes(clean(value)));
+}
+function productExcludedByProfile(product, profile) {
+  const p = profile || {};
+  const colors = (product.colors || []).map(clean);
+  const materials = (product.materials || []).map(clean);
+  const cuts = (product.cuts || []).map(clean);
+  const brands = [product.brand,product.merchant].map(clean);
+  return (p.excludedBrands || []).some(value => brands.includes(clean(value))) ||
+    (p.excludedColors || []).some(value => colors.includes(clean(value))) ||
+    (p.excludedMaterials || []).some(value => materials.includes(clean(value))) ||
+    (p.excludedCuts || []).some(value => cuts.includes(clean(value)));
+}
+function productMatchesOutfitSeason(product, season) {
+  if (!season || clean(season) === "toute saison") return true;
+  const tags = (product.seasonTags || []).map(clean);
+  return !tags.length || tags.some(tag => tag === clean(season) || tag === "toute saison");
+}
+function productSizeMatches(product, profile) {
+  const supplied = (product.sizes || []).map(clean);
+  if (!supplied.length) return true;
+  const slot = productSlot(product), sizes = (profile && profile.sizes) || {};
+  const preferred = slot === "shoes" ? sizes.shoes : slot === "bottom" ? sizes.bottoms :
+    slot === "outerwear" ? sizes.outerwear : slot === "accessory" ? "" : sizes.tops;
+  if (!preferred) return true;
+  const wanted = clean(preferred).replace(/^(eu|fr|uk|us)\s*/,"");
+  return supplied.some(size => size === clean(preferred) ||
+    size.replace(/^(eu|fr|uk|us)\s*/,"") === wanted ||
+    (wanted.length >= 2 && size.includes(wanted)));
+}
+function profileProductScore(product, profile) {
+  const p = profile || {};
+  let score = 0;
+  if (matchesAny(product.styleTags,p.preferredStyles || [])) score += 5;
+  if (matchesAny(product.colors,p.preferredColors || [])) score += 3;
+  if (matchesAny(product.materials,p.preferredMaterials || [])) score += 3;
+  if (matchesAny(product.cuts,p.preferredCuts || [])) score += 3;
+  if ([product.brand,product.merchant].some(value => (p.favoriteBrands || []).some(brand => clean(value) === clean(brand)))) score += 4;
+  return score;
+}
+function productMatchesSelectedStyles(product, styles) {
+  if (!styles.length) return true;
+  const tags = (product.styleTags || []).map(clean);
+  return !tags.length || styles.some(style => tags.includes(clean(style)));
+}
+function pinMatchesOutfitFilters(pin, filters) {
+  const styles = (filters.styles || []).filter(Boolean);
+  if (styles.length) {
+    const features = inferPinterestFeatures(pin);
+    const pinStyles = features.styleTags.map(clean);
+    const text = clean([pinterestText(pin),features.styleTags.join(" "),features.summary || ""].join(" "));
+    const matched = styles.some(style => pinStyles.includes(clean(style)) || text.includes(clean(style)));
+    if (!matched) return false;
+  }
+  const season = filters.season || "Toute saison";
+  if (clean(season) !== "toute saison") {
+    const tags = (pin && pin.seasonTags || []).concat(pin && pin.tags || []).map(clean);
+    const text = clean([pinterestText(pin),pin && pin.visualAnalysis && pin.visualAnalysis.summary].join(" "));
+    const seasonalHints = {
+      "printemps":["printemps","spring","mid season","mi-saison"],
+      "été":["ete","summer","estival"],
+      "automne":["automne","autumn","fall"],
+      "hiver":["hiver","winter","cold weather"]
+    }[clean(season)] || [clean(season)];
+    if (tags.length && !tags.some(tag => seasonalHints.some(hint => tag.includes(hint)))) return false;
+    if (!tags.length && !seasonalHints.some(hint => text.includes(hint))) return true;
+  }
+  return true;
+}
+
+export function buildOutfitIdeas(pins, wardrobe, catalogue, dislikedIds, outfitFeedback, filters) {
+  const options = filters || {};
+  const profile = options.profile || {};
+  const selectedStyles = Array.isArray(options.styles) ? options.styles : [];
+  const season = options.season || "Toute saison";
+  const maxPrice = options.maxPrice == null || options.maxPrice === "" ? null : Number(options.maxPrice);
+  const budget = Number.isFinite(maxPrice) && maxPrice >= 0 ? maxPrice : null;
   const disliked = new Set(dislikedIds || []);
-  const savedIds = new Set((wardrobe || []).map(function(product) { return product.id; }));
+  const savedIds = new Set((wardrobe || []).map(product => product.id));
   const feedbackProfile = buildFeedbackProfile(pins, outfitFeedback);
   const hasFeedback = Object.keys(feedbackProfile).length > 0;
+  const productMap = new Map();
+  (catalogue || []).concat(wardrobe || []).forEach(product => {
+    if (product && product.id) productMap.set(product.id,product);
+  });
+  const candidates = Array.from(productMap.values()).filter(product => {
+    const expired = product.catalogStatus === "expired" || (product.expiresAt && Date.parse(product.expiresAt) <= Date.now());
+    return !expired && product.catalogStatus !== "stale" && product.availabilityStatus !== "out_of_stock" &&
+      !disliked.has(product.id) && !productExcludedByProfile(product,profile) &&
+      productMatchesOutfitSeason(product,season) && productSizeMatches(product,profile);
+  });
   const ideas = [];
-  (pins || []).forEach(function(pin) {
-    const rankedWardrobe = (wardrobe || []).map(function(product) {
-      const personalScore = hasFeedback ? productFeedbackScore(product, feedbackProfile) : 0;
-      return {
-        product: product,
-        score: matchScore(product, pin) + personalScore * 0.35,
-        slot: productSlot(product)
-      };
-    }).sort(function(a, b) { return b.score - a.score; });
 
-    const selected = [];
-    const usedSlots = new Set();
-    rankedWardrobe.forEach(function(entry) {
-      if (selected.length >= 4 || entry.slot === "other" || usedSlots.has(entry.slot) || entry.score <= 0) return;
-      selected.push(entry);
-      usedSlots.add(entry.slot);
+  (pins || []).filter(pin => pin && pin.kind !== "detail" && pin.imageUrl && pinMatchesOutfitFilters(pin,options)).forEach(pin => {
+    const featureSet = inferPinterestFeatures(pin);
+    const ranked = candidates.map(product => {
+      const slot = productSlot(product);
+      if (slot === "other" || !productMatchesSelectedStyles(product,selectedStyles)) return null;
+      const match = matchScore(product,pin);
+      const personal = profileProductScore(product,profile);
+      const learned = hasFeedback ? productFeedbackScore(product,feedbackProfile) * .35 : 0;
+      const score = match + personal + learned + (savedIds.has(product.id) ? 1.25 : 0);
+      if (score <= 0) return null;
+      if (budget !== null && (product.price == null || Number(product.price) > budget)) return null;
+      return {product,slot,score,isSaved:savedIds.has(product.id)};
+    }).filter(Boolean);
+
+    const used = new Set();
+    const items = [];
+    let remainingBudget = budget;
+    const coreSlots = ["top","bottom","shoes"];
+    const optionalSlots = ["outerwear","accessory"];
+    coreSlots.concat(optionalSlots).forEach(slot => {
+      const slotCandidates = ranked.filter(entry => entry.slot === slot && !used.has(entry.product.id))
+        .sort((a,b) => {
+          const affordabilityA = budget !== null ? (Number(a.product.price || 0) / Math.max(1,budget)) * 2 : 0;
+          const affordabilityB = budget !== null ? (Number(b.product.price || 0) / Math.max(1,budget)) * 2 : 0;
+          return (b.score - affordabilityB) - (a.score - affordabilityA);
+        });
+      const chosen = slotCandidates.find(entry => {
+        if (remainingBudget === null) return true;
+        return Number(entry.product.price) <= remainingBudget;
+      });
+      if (!chosen) return;
+      if (remainingBudget !== null) remainingBudget -= Number(chosen.product.price);
+      used.add(chosen.product.id);
+      items.push(chosen);
     });
 
-    const missingSlots = ["top","bottom","shoes"].filter(function(slot) { return !usedSlots.has(slot); });
-    const suggestions = [];
-    missingSlots.forEach(function(slot) {
-      const candidate = (catalogue || []).map(function(product) {
-        const personalScore = hasFeedback ? productFeedbackScore(product, feedbackProfile) : 0;
-        return {
-          product: product,
-          score: matchScore(product, pin) + personalScore * 0.35,
-          slot: productSlot(product)
-        };
-      }).filter(function(entry) {
-        return entry.slot === slot && entry.score > 0 && !savedIds.has(entry.product.id) && !disliked.has(entry.product.id) && Boolean(entry.product.url);
-      }).sort(function(a, b) { return b.score - a.score; })[0];
-      if (candidate) suggestions.push(candidate);
-    });
-
+    const pieces = items.filter(entry => entry.isSaved);
+    const suggestions = items.filter(entry => !entry.isSaved);
+    const missingSlots = coreSlots.filter(slot => !items.some(entry => entry.slot === slot));
+    const totalKnown = items.every(entry => Number.isFinite(Number(entry.product.price)));
+    const totalPrice = items.length && totalKnown
+      ? items.reduce((sum,entry) => sum + Number(entry.product.price),0)
+      : null;
+    const matchAverage = items.length ? items.reduce((sum,entry) => sum + entry.score,0) / items.length : 0;
     ideas.push({
-      pin: pin,
-      tags: inferPinterestTags(pin),
-      pieces: selected,
-      missingSlots: missingSlots,
-      suggestions: suggestions,
-      matchCount: selected.filter(function(entry) { return entry.score > 0; }).length,
-      feedbackScore: hasFeedback ? pinFeedbackScore(pin, feedbackProfile) : 0
+      pin,
+      tags: Array.from(new Set([].concat(featureSet.styleTags,featureSet.colors,featureSet.materials,featureSet.cuts,featureSet.patterns))),
+      pieces,
+      suggestions,
+      items,
+      missingSlots,
+      matchCount: items.length,
+      totalPrice,
+      score: matchAverage,
+      feedbackScore: hasFeedback ? pinFeedbackScore(pin,feedbackProfile) : 0
     });
   });
 
-  if (hasFeedback) {
-    ideas.sort(function(a, b) {
-      return b.feedbackScore - a.feedbackScore || b.matchCount - a.matchCount;
-    });
-  }
+  ideas.sort((a,b) =>
+    b.feedbackScore - a.feedbackScore ||
+    b.score - a.score ||
+    b.matchCount - a.matchCount
+  );
   return ideas;
 }
