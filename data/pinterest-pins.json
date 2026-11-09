@@ -4,7 +4,7 @@
   "boardName": "mode",
   "boardId": "780952460324562575",
   "privacy": "PUBLIC",
-  "lastSync": "2026-11-09T13:59:53.282Z",
+  "lastSync": "2026-11-09T14:00:27.082Z",
   "totalPins": 22,
   "newPinIds": [],
   "pins": [
@@ -547,7 +547,40 @@
       "imageUrl": "https://i.pinimg.com/1200x/d8/64/a2/d864a2e7a576658d19fa762659552e97.jpg",
       "dominantColor": "#827d7e",
       "createdAt": "2026-11-03T14:22:25",
-      "boardId": "780952460324562575"
+      "boardId": "780952460324562575",
+      "visualAnalysis": {
+        "version": 1,
+        "analyzedAt": "2026-11-09T14:00:27.061Z",
+        "sourceImageUrl": "https://i.pinimg.com/1200x/d8/64/a2/d864a2e7a576658d19fa762659552e97.jpg",
+        "model": "@cf/google/gemma-4-26b-a4b-it",
+        "isFashion": true,
+        "summary": "Une tenue décontractée composée d'une veste en cuir bordeaux, d'une chemise à carreaux rouge et blanc sur un t-shirt blanc, complétée par un jean bleu délavé.",
+        "styleTags": [
+          "Casual",
+          "Vintage",
+          "Heritage"
+        ],
+        "colors": [
+          "bordeaux",
+          "blanc",
+          "bleu",
+          "rouge"
+        ],
+        "materials": [
+          "cuir",
+          "coton",
+          "denim",
+          "jean"
+        ],
+        "cuts": [
+          "regular",
+          "droit"
+        ],
+        "patterns": [
+          "carreaux"
+        ],
+        "confidence": 0.95
+      }
     },
     {
       "id": "780952391681857982",
@@ -764,7 +797,37 @@
       "imageUrl": "https://i.pinimg.com/1200x/0e/57/e0/0e57e0761fce0f36045395b3b2068891.jpg",
       "dominantColor": "#2c2927",
       "createdAt": "2026-11-03T14:20:56",
-      "boardId": "780952460324562575"
+      "boardId": "780952460324562575",
+      "visualAnalysis": {
+        "version": 1,
+        "analyzedAt": "2026-11-09T14:00:26.913Z",
+        "sourceImageUrl": "https://i.pinimg.com/1200x/0e/57/e0/0e57e0761fce0f36045395b3b2068891.jpg",
+        "model": "@cf/google/gemma-4-26b-a4b-it",
+        "isFashion": true,
+        "summary": "Une tenue masculine composée d'un blouson en cuir sombre, d'un t-shirt noir et d'un pantalon large à pinces de couleur marron foncé.",
+        "styleTags": [
+          "Smart Casual",
+          "Streetwear",
+          "Classique"
+        ],
+        "colors": [
+          "noir",
+          "marron",
+          "chocolat"
+        ],
+        "materials": [
+          "cuir",
+          "coton"
+        ],
+        "cuts": [
+          "wide leg",
+          "large",
+          "long",
+          "a pinces"
+        ],
+        "patterns": [],
+        "confidence": 0.95
+      }
     },
     {
       "id": "780952391681857963",
