@@ -37,3 +37,18 @@ test("the Tinder card styling has responsive tablet and mobile layouts", functio
   assert.ok(css.includes(".deck-action-yes"));
   assert.ok(css.includes("aspect-ratio: 3 / 4"));
 });
+
+
+test("the Tenues view is Pinterest-only and exposes outfit favorites and a product carousel", function() {
+  assert.ok(app.includes('pin.origin === "Pinterest"'));
+  assert.ok(app.includes("data-outfit-style"));
+  assert.ok(app.includes("outfitFilters"));
+  assert.ok(app.includes("save-full-outfit"));
+  assert.ok(app.includes("save-outfit-piece"));
+  assert.ok(app.includes("open-saved-outfit"));
+  assert.ok(app.includes("outfit-product-carousel"));
+  assert.ok(app.includes("outfit-count"));
+  assert.ok(css.includes(".outfit-proposal-grid"));
+  assert.ok(css.includes(".outfit-product-carousel"));
+  assert.ok(css.includes("@media (max-width: 600px)"));
+});
