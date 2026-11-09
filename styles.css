@@ -2193,3 +2193,170 @@ body.is-discovery-app .app-footer { display: none; }
     animation: none !important;
   }
 }
+
+
+/* Tenues — idées construites depuis Pinterest, puis articles consultables en carrousel. */
+.outfit-library-tabs {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin: -4px 0 2px;
+  padding: 4px;
+  width: fit-content;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(255,255,255,.025);
+}
+.outfit-library-tabs button {
+  display: inline-flex;
+  min-height: 36px;
+  align-items: center;
+  gap: 9px;
+  padding: 0 15px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  color: #888;
+  background: transparent;
+  font-size: 10px;
+  font-weight: 750;
+  cursor: pointer;
+  transition: color .2s ease,background .22s ease,border-color .22s ease;
+}
+.outfit-library-tabs button span {
+  display: grid;
+  min-width: 19px;
+  height: 19px;
+  place-items: center;
+  padding: 0 5px;
+  border-radius: 99px;
+  color: #aaa;
+  background: rgba(255,255,255,.07);
+  font-size: 9px;
+  font-variant-numeric: tabular-nums;
+}
+.outfit-library-tabs button.is-active {
+  border-color: rgba(255,0,0,.28);
+  color: #fff;
+  background: rgba(255,0,0,.1);
+}
+.outfit-library-tabs button.is-active span { color: #fff; background: rgba(255,0,0,.35); }
+
+.outfit-filter-panel { display: grid; gap: 15px; padding: 17px; }
+.outfit-filter-heading { display: flex; align-items: center; justify-content: space-between; gap: 15px; }
+.outfit-filter-heading > div { display: flex; flex-direction: column; gap: 3px; }
+.outfit-filter-heading .eyebrow { margin: 0; font-size: 8px; }
+.outfit-filter-heading strong { color: #f7f7f7; font-size: 13px; }
+.outfit-filter-heading small { color: #777; font-size: 9px; }
+.outfit-filter-row { display: grid; grid-template-columns: minmax(0,1.4fr) minmax(220px,.8fr); gap: 20px; align-items: start; }
+.outfit-filter-label { display: block; margin-bottom: 8px; color: #999; font-size: 9px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
+.outfit-style-options { display: flex; flex-wrap: wrap; gap: 7px; }
+.outfit-style-option { position: relative; display: inline-flex; cursor: pointer; }
+.outfit-style-option input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+.outfit-style-option span { display: inline-flex; min-height: 31px; align-items: center; padding: 0 11px; border: 1px solid rgba(255,255,255,.12); border-radius: 99px; color: #8e8e8e; background: rgba(255,255,255,.025); font-size: 9px; font-weight: 650; transition: color .2s ease,background .2s ease,border-color .2s ease,transform .2s ease; }
+.outfit-style-option:hover span { border-color: rgba(255,255,255,.3); color: #fff; }
+.outfit-style-option.is-selected span { border-color: rgba(255,0,0,.42); color: #fff; background: rgba(255,0,0,.14); box-shadow: inset 0 1px 0 rgba(255,255,255,.045); }
+.outfit-style-option input:focus-visible + span { outline: 2px solid var(--accent); outline-offset: 2px; }
+.outfit-extra-filters { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); align-items: end; gap: 10px; }
+.outfit-extra-filters .field { gap: 6px; }
+.outfit-extra-filters .field label { font-size: 8px; }
+.outfit-extra-filters .field input,.outfit-extra-filters .field select { min-height: 37px; font-size: 10px; }
+.outfit-filter-note { margin: 0; color: #6d6d6d; font-size: 9px; line-height: 1.5; }
+
+.outfit-proposal-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 14px; align-items: stretch; }
+.outfit-proposal-card { display: flex; min-width: 0; flex-direction: column; overflow: hidden; border-color: rgba(255,255,255,.1); background: linear-gradient(145deg,rgba(24,24,27,.98),rgba(13,13,15,.98)); transition: transform .28s var(--ease),border-color .2s ease,box-shadow .25s ease; }
+.outfit-proposal-card:hover { transform: translateY(-3px); border-color: rgba(255,0,0,.28); box-shadow: 0 20px 48px rgba(0,0,0,.26); }
+.outfit-proposal-open { display: flex; width: 100%; flex: 1 1 auto; flex-direction: column; padding: 0; border: 0; color: inherit; background: transparent; text-align: left; cursor: pointer; }
+.outfit-proposal-image { position: relative; width: 100%; aspect-ratio: 4 / 3.3; overflow: hidden; background: #1a1a1d; }
+.outfit-proposal-image > img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s var(--ease); }
+.outfit-proposal-card:hover .outfit-proposal-image > img { transform: scale(1.035); }
+.outfit-proposal-image::after { position: absolute; inset: 42% 0 0; content: ""; background: linear-gradient(180deg,transparent,rgba(0,0,0,.54)); pointer-events: none; }
+.outfit-source-pill,.outfit-piece-count { position: absolute; z-index: 1; top: 10px; display: inline-flex; min-height: 24px; align-items: center; padding: 0 9px; border: 1px solid rgba(255,255,255,.2); border-radius: 99px; color: #fff; background: rgba(7,7,8,.48); font-size: 8px; font-weight: 800; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+.outfit-source-pill { left: 10px; }
+.outfit-piece-count { right: 10px; }
+.outfit-proposal-copy { display: flex; min-width: 0; flex: 1 1 auto; flex-direction: column; padding: 14px 14px 11px; }
+.outfit-proposal-copy .eyebrow { margin: 0 0 6px; font-size: 7px; letter-spacing: .14em; }
+.outfit-proposal-copy h2 { margin: 0; color: #f5f5f5; font-size: 15px; font-weight: 730; letter-spacing: -.035em; line-height: 1.25; }
+.outfit-proposal-copy p { display: -webkit-box; overflow: hidden; min-height: 30px; margin: 7px 0 0; color: #85858a; font-size: 9px; line-height: 1.5; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+.outfit-proposal-copy .inspiration-tags { margin-top: 8px; }
+.outfit-proposal-preview { display: flex; gap: 6px; margin-top: auto; padding-top: 12px; }
+.outfit-proposal-piece { width: 48px; height: 54px; overflow: hidden; border: 1px solid rgba(255,255,255,.09); border-radius: 8px; background: #202024; }
+.outfit-proposal-piece img { width: 100%; height: 100%; object-fit: cover; }
+.outfit-proposal-meta { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 9px; }
+.outfit-proposal-meta strong { color: #f4f4f4; font-size: 10px; font-variant-numeric: tabular-nums; }
+.outfit-proposal-meta span { color: #74747a; font-size: 8px; text-align: right; }
+.outfit-proposal-actions { display: flex; min-height: 52px; align-items: center; flex-wrap: wrap; gap: 7px; padding: 9px 12px 11px; border-top: 1px solid rgba(255,255,255,.07); }
+.outfit-proposal-actions .button-small { min-height: 31px; font-size: 8px; }
+.outfit-saved-label { color: #9dcaab; font-size: 8px; font-weight: 750; }
+.outfit-quick-feedback { display: flex; gap: 4px; margin-left: auto; }
+.outfit-quick-feedback button { display: grid; width: 27px; height: 27px; place-items: center; border: 1px solid rgba(255,255,255,.12); border-radius: 50%; color: #777; background: transparent; font-size: 11px; cursor: pointer; }
+.outfit-quick-feedback button.is-selected { border-color: rgba(255,0,0,.42); color: #fff; background: rgba(255,0,0,.14); }
+
+.outfit-detail-modal { width: min(980px,100%); max-height: min(92vh,940px); padding: clamp(14px,2.5vw,25px); }
+.outfit-detail-head { align-items: flex-start; gap: 16px; margin-bottom: 17px; }
+.outfit-detail-reference { display: grid; min-width: 0; grid-template-columns: 112px minmax(0,1fr); align-items: start; gap: 14px; }
+.outfit-detail-reference > img { width: 112px; height: 128px; border-radius: 11px; object-fit: cover; background: #222; }
+.outfit-detail-reference > div { min-width: 0; }
+.outfit-detail-reference .eyebrow { margin: 0 0 6px; font-size: 8px; }
+.outfit-detail-reference h2 { margin: 0; color: #fff; font-size: clamp(16px,2vw,22px); letter-spacing: -.04em; line-height: 1.2; }
+.outfit-detail-reference p { margin: 7px 0 0; color: #929298; font-size: 9px; line-height: 1.5; }
+.outfit-detail-reference .inspiration-tags { margin-top: 8px; }
+.outfit-detail-total { display: block; margin-top: 8px; color: #fff; font-size: 12px; }
+.outfit-detail-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 7px 0 11px; }
+.outfit-detail-toolbar > div:first-child { display: flex; flex-direction: column; gap: 3px; }
+.outfit-detail-toolbar strong { color: #eee; font-size: 12px; }
+.outfit-detail-toolbar small { color: #777; font-size: 8px; }
+.outfit-carousel-controls { display: flex; gap: 6px; }
+.outfit-carousel-controls button { display: grid; width: 31px; height: 31px; place-items: center; border: 1px solid rgba(255,255,255,.16); border-radius: 50%; color: #fff; background: rgba(255,255,255,.035); font-size: 19px; cursor: pointer; transition: background .2s ease,transform .2s ease; }
+.outfit-carousel-controls button:hover { background: rgba(255,255,255,.1); }
+.outfit-carousel-controls button:active { transform: scale(.92); }
+.outfit-product-carousel { display: flex; gap: 13px; overflow-x: auto; overflow-y: hidden; padding: 2px 2px 12px; scroll-snap-type: x mandatory; overscroll-behavior-x: contain; -webkit-overflow-scrolling: touch; scrollbar-width: thin; scrollbar-color: rgba(255,255,255,.22) transparent; }
+.outfit-carousel-card { display: flex; width: min(76%,255px); min-width: min(76%,255px); flex: 0 0 min(76%,255px); flex-direction: column; overflow: hidden; scroll-snap-align: start; border: 1px solid rgba(255,255,255,.12); border-radius: 17px; background: #111114; }
+.outfit-carousel-image { position: relative; height: 205px; flex: 0 0 205px; overflow: hidden; background: #202024; }
+.outfit-carousel-image > img { width: 100%; height: 100%; object-fit: cover; }
+.outfit-carousel-slot,.outfit-carousel-index { position: absolute; bottom: 9px; padding: 5px 8px; border: 1px solid rgba(255,255,255,.16); border-radius: 99px; color: #fff; background: rgba(0,0,0,.56); font-size: 8px; font-weight: 800; backdrop-filter: blur(12px); }
+.outfit-carousel-slot { left: 9px; }
+.outfit-carousel-index { right: 9px; }
+.outfit-carousel-copy { display: flex; flex: 1 1 auto; flex-direction: column; padding: 12px; }
+.outfit-carousel-copy .product-brand { margin-bottom: 5px; font-size: 8px; }
+.outfit-carousel-copy h3 { display: -webkit-box; overflow: hidden; min-height: 35px; margin: 0; color: #f5f5f5; font-size: 13px; letter-spacing: -.025em; line-height: 1.3; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+.outfit-carousel-price { display: block; margin-top: 7px; color: #fff; font-size: 13px; }
+.outfit-carousel-copy p { display: -webkit-box; overflow: hidden; min-height: 30px; margin: 6px 0 10px; color: #777; font-size: 8px; line-height: 1.45; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+.outfit-carousel-actions { display: flex; flex-wrap: wrap; gap: 5px; margin-top: auto; }
+.outfit-carousel-actions .button-small { min-height: 29px; padding: 0 8px; font-size: 8px; }
+.outfit-in-wardrobe { display: inline-flex; min-height: 29px; align-items: center; color: #a1d3af; font-size: 8px; font-weight: 750; }
+.outfit-detail-footer { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding-top: 13px; margin-top: 5px; border-top: 1px solid rgba(255,255,255,.08); }
+.outfit-detail-footer p { max-width: 540px; margin: 0; color: #777; font-size: 8px; line-height: 1.5; }
+.outfit-detail-footer strong { color: #ccc; }
+
+@media (max-width: 900px) {
+  .outfit-proposal-grid { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 11px; }
+  .outfit-filter-row { grid-template-columns: 1fr; gap: 13px; }
+}
+@media (max-width: 600px) {
+  .outfit-library-tabs { width: 100%; }
+  .outfit-library-tabs button { flex: 1 1 0; justify-content: center; padding: 0 10px; }
+  .outfit-filter-panel { gap: 12px; padding: 13px; }
+  .outfit-filter-heading strong { font-size: 11px; }
+  .outfit-style-options { gap: 6px; }
+  .outfit-style-option span { min-height: 29px; padding: 0 9px; font-size: 8px; }
+  .outfit-extra-filters { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  .outfit-proposal-grid { grid-template-columns: 1fr; gap: 11px; }
+  .outfit-proposal-card { display: grid; grid-template-columns: minmax(0,1fr); }
+  .outfit-proposal-image { aspect-ratio: 5 / 3; }
+  .outfit-proposal-copy h2 { font-size: 14px; }
+  .outfit-detail-modal { max-height: 94vh; padding: 13px; }
+  .outfit-detail-reference { grid-template-columns: 82px minmax(0,1fr); gap: 10px; }
+  .outfit-detail-reference > img { width: 82px; height: 98px; }
+  .outfit-detail-reference h2 { font-size: 15px; }
+  .outfit-detail-reference p { font-size: 8px; }
+  .outfit-carousel-card { width: min(82%,250px); min-width: min(82%,250px); flex-basis: min(82%,250px); }
+  .outfit-carousel-image { height: 190px; flex-basis: 190px; }
+  .outfit-detail-footer { align-items: stretch; flex-direction: column; }
+  .outfit-detail-footer .button-primary,.outfit-detail-footer .button-secondary { width: 100%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .outfit-proposal-card,.outfit-proposal-image > img,.outfit-library-tabs button,.outfit-carousel-controls button {
+    transition: none !important;
+  }
+  .outfit-proposal-card:hover { transform: none; }
+}
