@@ -663,14 +663,14 @@ a { color: inherit; }
 .discovery-layout--swipe .deck-topline { justify-content: center; margin-bottom: 14px; }
 .discovery-layout--swipe .deck-topline > span:last-child { display: none; }
 .discovery-layout--swipe .deck-aside { display: none; }
-.discovery-layout--swipe .deck-card-wrap { width: min(100%, 640px); }
+.discovery-layout--swipe .deck-card-wrap { width: min(100%, 620px); }
 .discovery-layout--swipe .product-card {
   display: flex;
-  padding: 20px 20px 22px;
+  padding: 30px 27px 30px;
   flex-direction: column;
   overflow: hidden;
   border: 0;
-  border-radius: 30px;
+  border-radius: 32px;
   color: #080808;
   background: #fff;
   box-shadow: 0 22px 70px rgba(0,0,0,.42);
@@ -704,7 +704,7 @@ a { color: inherit; }
 .discovery-layout--swipe .product-visual .image-fallback small { color: #666; }
 .discovery-layout--swipe .product-info {
   display: flex;
-  padding: 23px 12px 0;
+  padding: 24px 10px 0;
   flex-direction: column;
   align-items: stretch;
   gap: 18px;
@@ -715,7 +715,7 @@ a { color: inherit; }
   margin: 0;
   overflow: visible;
   color: #050505;
-  font-size: clamp(22px, 3vw, 31px);
+  font-size: clamp(24px, 3.7vw, 38px);
   font-weight: 850;
   letter-spacing: -.035em;
   line-height: 1.12;
@@ -732,7 +732,7 @@ a { color: inherit; }
   gap: 19px;
   margin: 35px 0 30px;
   color: #090909;
-  font-size: clamp(18px, 2.6vw, 25px);
+  font-size: clamp(20px, 2.8vw, 29px);
   line-height: 1.2;
 }
 .discovery-layout--swipe .product-brand-price > span { font-weight: 450; }
@@ -745,7 +745,7 @@ a { color: inherit; }
   flex-wrap: wrap;
   gap: 12px 24px;
   color: #151515;
-  font-size: 12px;
+  font-size: 15px;
 }
 .discovery-layout--swipe .product-attribute-group {
   display: inline-flex;
@@ -754,13 +754,13 @@ a { color: inherit; }
   flex-wrap: wrap;
   gap: 6px;
 }
-.discovery-layout--swipe .product-attribute-group > strong { font-size: 12px; font-weight: 800; }
+.discovery-layout--swipe .product-attribute-group > strong { font-size: 15px; font-weight: 800; }
 .discovery-layout--swipe .product-attribute-values { display: inline-flex; align-items: center; flex-wrap: wrap; gap: 7px; }
 .discovery-layout--swipe .product-color-value { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
 .discovery-layout--swipe .product-color-value i {
   display: inline-block;
-  width: 19px;
-  height: 19px;
+  width: 24px;
+  height: 24px;
   border: 1px solid rgba(0,0,0,.08);
   border-radius: 50%;
   box-shadow: inset 0 0 0 1px rgba(0,0,0,.025);
@@ -770,7 +770,7 @@ a { color: inherit; }
 .discovery-layout--swipe .product-original-link {
   display: flex;
   width: min(100%, 490px);
-  min-height: 62px;
+  min-height: 72px;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
@@ -780,23 +780,32 @@ a { color: inherit; }
   border-radius: 999px;
   color: #090909;
   background: #eeeeee;
-  font-size: clamp(15px, 2.4vw, 22px);
+  font-size: clamp(20px, 3.4vw, 35px);
   font-weight: 450;
   text-align: left;
   text-decoration: none;
   cursor: pointer;
+  transform-origin: center;
+  transition: transform .2s cubic-bezier(.2,.8,.2,1), background .2s ease, box-shadow .2s ease;
 }
-.discovery-layout--swipe .product-original-link:hover { background: #e5e5e5; }
+@media (hover: hover) and (pointer: fine) {
+  .discovery-layout--swipe .product-original-link:hover {
+    transform: scale(1.025);
+    background: #e5e5e5;
+    box-shadow: 0 8px 22px rgba(0,0,0,.08);
+  }
+}
+.discovery-layout--swipe .product-original-link:active { transform: scale(.99); }
 .discovery-layout--swipe .product-original-link > i {
   display: grid;
-  width: 48px;
-  height: 48px;
-  flex: 0 0 48px;
+  width: 60px;
+  height: 60px;
+  flex: 0 0 60px;
   place-items: center;
   border-radius: 50%;
   color: #fff;
   background: #777;
-  font-size: 32px;
+  font-size: 40px;
   font-style: normal;
   line-height: 1;
 }
@@ -805,9 +814,9 @@ a { color: inherit; }
   width: 100%;
   align-items: center;
   justify-content: center;
-  gap: clamp(12px, 3vw, 33px);
+  gap: clamp(20px, 5.5vw, 56px);
   padding: 0;
-  margin: 28px auto 0;
+  margin: 44px auto 0;
 }
 .deck-action {
   display: grid;
@@ -832,24 +841,30 @@ a { color: inherit; }
 .deck-action:active:not(:disabled) { transform: scale(.96); }
 .deck-action:disabled { opacity: .32; cursor: not-allowed; }
 .deck-action span { display: block; line-height: 1; }
-.deck-action-undo { width: 60px; height: 60px; flex-basis: 60px; color: #eee; font-size: 35px; }
-.deck-action-no { width: 78px; height: 78px; flex-basis: 78px; font-size: 70px; font-weight: 300; }
-.deck-action-save { width: 62px; height: 62px; flex-basis: 62px; color: #f4c64b; font-size: 31px; }
+.deck-action-undo { width: 88px; height: 88px; flex-basis: 88px; color: #eee; font-size: 40px; }
+.deck-action-no { width: 124px; height: 124px; flex-basis: 124px; font-size: 76px; font-weight: 300; }
+.deck-action-save { width: 88px; height: 88px; flex-basis: 88px; color: #f4c64b; font-size: 40px; }
 .deck-action-save.is-selected { border-color: rgba(244,198,75,.55); background: linear-gradient(145deg,#292318,#0d0b08); }
-.deck-action-yes { width: 78px; height: 78px; flex-basis: 78px; color: #ff0000; font-size: 48px; }
-.deck-action-share { width: 60px; height: 60px; flex-basis: 60px; color: #ff0000; }
-.deck-action-share svg { width: 29px; height: 29px; }
+.deck-action-yes { width: 124px; height: 124px; flex-basis: 124px; color: #ff0000; font-size: 60px; }
+.deck-action-share { width: 88px; height: 88px; flex-basis: 88px; color: #ff0000; }
+.deck-action-share svg { width: 36px; height: 36px; }
 .discovery-layout--swipe .deck-hint { margin: 14px 0 0; color: #777; font-size: 10px; }
 
 @media (max-width: 850px) {
   .discovery-layout--swipe { width: 100%; }
   .discovery-layout--swipe .deck-card-wrap { width: min(100%, 600px); }
-  .discovery-layout--swipe .product-card { padding: 17px 17px 19px; border-radius: 25px; }
+  .discovery-layout--swipe .product-card { padding: 22px 22px 24px; border-radius: 27px; }
   .discovery-layout--swipe .product-info { padding: 20px 8px 0; gap: 15px; }
   .discovery-layout--swipe .product-brand-price { margin: 25px 0 23px; }
-  .discovery-layout--swipe .product-original-link { min-height: 56px; }
-  .discovery-layout--swipe .product-original-link > i { width: 42px; height: 42px; flex-basis: 42px; font-size: 28px; }
-  .discovery-layout--swipe .deck-actions { margin-top: 23px; }
+  .discovery-layout--swipe .product-original-link { min-height: 58px; font-size: clamp(18px, 3vw, 26px); }
+  .discovery-layout--swipe .product-original-link > i { width: 46px; height: 46px; flex-basis: 46px; font-size: 30px; }
+  .discovery-layout--swipe .deck-actions { gap: clamp(12px, 3.5vw, 28px); margin-top: 30px; }
+  .deck-action-undo, .deck-action-share { width: 66px; height: 66px; flex-basis: 66px; }
+  .deck-action-no, .deck-action-yes { width: 94px; height: 94px; flex-basis: 94px; }
+  .deck-action-save { width: 66px; height: 66px; flex-basis: 66px; }
+  .deck-action-no { font-size: 60px; }
+  .deck-action-yes { font-size: 47px; }
+  .deck-action-share svg { width: 30px; height: 30px; }
 }
 @media (max-width: 600px) {
   .discovery-layout--swipe .deck-topline { margin-bottom: 10px; }
