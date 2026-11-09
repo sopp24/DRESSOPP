@@ -692,7 +692,8 @@ function renderDiscover(training) {
       '<div class="aside-stat"><div class="stat-box"><strong>' + yesCount + '</strong><small>Oui</small></div><div class="stat-box"><strong>' + rejected + '</strong><small>Non</small></div><div class="stat-box"><strong>' + savedCount + '</strong><small>Dans ma liste</small></div></div></section>' +
       '<section class="panel aside-card"><h2 class="aside-title">Équilibre du moment <span>' + esc(state.settings.trainingDiscoveryLevel) + '% découverte</span></h2>' +
       '<p>Le mode Entraînement donne plus de poids à la nouveauté pour élargir ton terrain de jeu.</p></section></aside>' +
-      renderAiAgentPanel() + renderCatalogStatus() + renderRetailerDirectory()
+      '<section class="panel training-pins-panel"><div class="training-pins-heading"><span class="eyebrow">Tes références visuelles</span><h2>Pins Pinterest</h2><p>Les épingles synchronisées nourrissent ton exploration et tes propositions de tenues.</p></div>' + renderInspirations() + '</section>' +
+      renderCatalogStatus() + renderRetailerDirectory() + renderAiAgentPanel()
     : "";
   return '<div class="discovery-page' + (!training ? ' discovery-page--app' : '') + '">' +
     (training ? heading + trainingFilter : appToolbar) +
@@ -1095,7 +1096,6 @@ function render() {
   if (outfitCountMobile) { outfitCountMobile.textContent = String((state.savedOutfits || []).length); outfitCountMobile.hidden = !(state.savedOutfits || []).length; }
   if (currentView === "wardrobe") main.innerHTML = renderWardrobe();
   else if (currentView === "training") main.innerHTML = renderDiscover(true);
-  else if (currentView === "inspirations") main.innerHTML = renderInspirations();
   else if (currentView === "outfits") main.innerHTML = renderOutfits();
   else if (currentView === "profile") main.innerHTML = renderProfile();
   else if (currentView === "settings") main.innerHTML = renderSettings();
@@ -1761,6 +1761,7 @@ function attachSwipe() {
   let deltaY = 0;
   let dragging = false;
   let horizontalIntent = false;
+  let verticalSaveIntent = false;
   let pointerId = null;
 
   function clearPreview(animateBack) {
@@ -1782,6 +1783,7 @@ function attachSwipe() {
     deltaX = 0;
     deltaY = 0;
     horizontalIntent = false;
+    verticalSaveIntent = false;
     dragging = true;
     pointerId = event.pointerId;
     card.classList.remove("is-returning");
@@ -1793,13 +1795,14 @@ function attachSwipe() {
     if (!dragging || event.pointerId !== pointerId) return;
     deltaX = event.clientX - startX;
     deltaY = event.clientY - startY;
-    if (!horizontalIntent) {
-      if (Math.abs(deltaY) > 12 && Math.abs(deltaY) > Math.abs(deltaX) * 1.08) {
+    if (!horizontalIntent && !verticalSaveIntent) {
+      if (deltaY > 14 && deltaY > Math.abs(deltaX) * 1.08) verticalSaveIntent = true;
+      else if (Math.abs(deltaY) > 14 && Math.abs(deltaY) > Math.abs(deltaX) * 1.08) {
         dragging = false;
         clearPreview(false);
         return;
       }
-      if (Math.abs(deltaX) > 8 && Math.abs(deltaX) > Math.abs(deltaY) * 1.12) horizontalIntent = true;
+      else if (Math.abs(deltaX) > 8 && Math.abs(deltaX) > Math.abs(deltaY) * 1.12) horizontalIntent = true;
       else return;
     }
     if (event.cancelable) event.preventDefault();
@@ -1809,9 +1812,17 @@ function attachSwipe() {
     const lift = Math.min(9, Math.abs(deltaX) / width * 10);
     card.style.transform = "translate3d(" + deltaX.toFixed(1) + "px," + (-lift).toFixed(1) + "px,0) rotate(" + rotation.toFixed(2) + "deg)";
     card.style.setProperty("--swipe-tint-opacity", (progress * .58).toFixed(3));
-    card.classList.toggle("swipe-preview-like", deltaX > 0);
-    card.classList.toggle("swipe-preview-nope", deltaX < 0);
-    card.style.borderColor = deltaX > 0 ? "rgba(255,55,75," + (progress * .92).toFixed(2) + ")" : "rgba(255,255,255," + (progress * .8).toFixed(2) + ")";
+    card.classList.toggle("swipe-preview-like", horizontalIntent && deltaX > 0);
+    card.classList.toggle("swipe-preview-nope", horizontalIntent && deltaX < 0);
+    card.classList.toggle("swipe-preview-save", verticalSaveIntent);
+    if (verticalSaveIntent) {
+      const saveProgress = Math.min(1, Math.max(0, deltaY) / Math.max(1, card.getBoundingClientRect().height * .35));
+      card.style.setProperty("--swipe-tint-opacity", (saveProgress * .72).toFixed(3));
+      card.style.borderColor = "rgba(255,203,37," + (saveProgress * .9).toFixed(2) + ")";
+      card.style.transform = "translate3d(0," + Math.min(70,deltaY * .35).toFixed(1) + "px,0)";
+    } else {
+      card.style.borderColor = deltaX > 0 ? "rgba(255,55,75," + (progress * .92).toFixed(2) + ")" : "rgba(255,255,255," + (progress * .8).toFixed(2) + ")";
+    }
   });
 
   function finishSwipe(event) {
@@ -1822,16 +1833,18 @@ function attachSwipe() {
     const velocity = deltaX / elapsed;
     const threshold = Math.max(78, Math.min(132, width * .22));
     const accepted = horizontalIntent && (Math.abs(deltaX) >= threshold || (Math.abs(deltaX) > 46 && Math.abs(velocity) > .58));
+    const saveThreshold = Math.max(82, Math.min(150, card.getBoundingClientRect().height * .18));
+    const acceptedSave = verticalSaveIntent && deltaY >= saveThreshold;
     const productId = card.dataset.productId;
     pointerId = null;
-    if (accepted) {
-      card.classList.remove("is-dragging", "swipe-preview-like", "swipe-preview-nope");
+    if (accepted || acceptedSave) {
+      card.classList.remove("is-dragging", "swipe-preview-like", "swipe-preview-nope", "swipe-preview-save");
       card.style.removeProperty("--swipe-tint-opacity");
       card.style.removeProperty("border-color");
-      animateDeckDecision(productId, deltaX > 0 ? "yes" : "no");
+      animateDeckDecision(productId, acceptedSave ? "save" : (deltaX > 0 ? "yes" : "no"));
       return;
     }
-    const wasTap = Math.abs(deltaX) < 10 && Math.abs(deltaY) < 10 && !horizontalIntent;
+    const wasTap = Math.abs(deltaX) < 10 && Math.abs(deltaY) < 10 && !horizontalIntent && !verticalSaveIntent;
     clearPreview(true);
     if (wasTap) openProductDetails(productId);
   }
