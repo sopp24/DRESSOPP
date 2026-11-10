@@ -16,6 +16,26 @@ function safeHttpUrl(value) {
     return url.protocol === "http:" || url.protocol === "https:" ? url.href : "";
   } catch (error) { return ""; }
 }
+export function inferProductGender(source) {
+  const item = source || {};
+  const audience = item.audience && typeof item.audience === "object"
+    ? [item.audience.name, item.audience.suggestedGender, item.audience.genderType].filter(Boolean).join(" ")
+    : item.audience;
+  const evidence = normalizeText([
+    item.gender, audience, item.name, item.title, item.description,
+    item.category, item.objective, item.url, item.productUrl
+  ].filter(Boolean).join(" "));
+  if (/(^|[^a-z])(femme|femmes|woman|women|womens|ladies|女装|damen)([^a-z]|$)/.test(evidence) ||
+      /pour femme|for women|womenswear|collection femme/.test(evidence)) return "women";
+  if (/(^|[^a-z])(unisexe|unisex|mixte)([^a-z]|$)/.test(evidence) ||
+      /gender.?neutral|tous les genres|all genders/.test(evidence)) return "unisex";
+  if (/(^|[^a-z])(homme|hommes|man|men|mens|masculin|male)([^a-z]|$)/.test(evidence) ||
+      /pour homme|for men|menswear|collection homme/.test(evidence)) return "men";
+  // The merchant directory is intentionally curated for men's and mixed fashion.
+  // Explicit women's department signals above are excluded; neutral product naming remains eligible.
+  return "men";
+}
+
 function hash(value) {
   let result = 2166136261;
   for (let index = 0; index < value.length; index += 1) { result ^= value.charCodeAt(index); result = Math.imul(result, 16777619); }
@@ -72,7 +92,7 @@ export function normalizeProduct(raw) {
   const price = Number.isFinite(suppliedPrice) && suppliedPrice >= 0 ? suppliedPrice : null;
   const id = text(source.id) || "prod-" + hash(identity);
   return {
-    id: id, name: name, brand: brand, merchant: merchant, url: url, imageUrl: imageUrl,
+    id: id, name: name, brand: brand, merchant: merchant, url: url, imageUrl: imageUrl, gender: inferProductGender(source),
     price: price,
     originalPrice: source.originalPrice == null || source.originalPrice === "" ? null : Number(source.originalPrice),
     objective: text(source.objective || source.category) || "Vêtements",
@@ -316,7 +336,7 @@ export function rankProducts(products, state, options) {
       (product.expiresAt && Date.parse(product.expiresAt) <= Date.now());
     const stale = product.catalogStatus === "stale";
     const unavailable = product.availabilityStatus === "out_of_stock";
-    return !expired && !stale && !unavailable && sizeMatches(product) &&
+    return product.gender !== "women" && !expired && !stale && !unavailable && sizeMatches(product) &&
       matchesFilters(product, opts.filters || config) && !seen.has(product.id);
   }).map(function(product) {
     const familiarity = preferenceScore(product, learned) + explicitProfileScore(product, profile);
