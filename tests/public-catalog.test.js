@@ -95,3 +95,14 @@ test("the 200-store directory rotates across batches and keeps priority sources"
   assert.equal(second.sources.filter(source=>source.priority===1).length,12);
   assert.equal(new Set(first.sources.concat(second.sources).map(source=>source.name)).size,72);
 });
+
+
+test("catalogue extraction labels men's, mixed and women's product departments", function() {
+  const html = '<script type="application/ld+json">[' +
+    '{"@type":"Product","name":"Chemise homme","url":"https://example.com/homme/chemise","image":"https://cdn.example.com/m.jpg","offers":{"price":"40","priceCurrency":"EUR"}},' +
+    '{"@type":"Product","name":"T-shirt unisexe","url":"https://example.com/unisex/tee","image":"https://cdn.example.com/u.jpg","offers":{"price":"25","priceCurrency":"EUR"}},' +
+    '{"@type":"Product","name":"Blouse femme","url":"https://example.com/femme/blouse","image":"https://cdn.example.com/w.jpg","offers":{"price":"35","priceCurrency":"EUR"}}' +
+    ']</script>';
+  const products=extractProductsFromHtml(html,source,"https://example.com/catalogue","2026-11-10T08:00:00.000Z");
+  assert.deepEqual(products.map(item=>item.gender),["men","unisex","women"]);
+});
