@@ -161,3 +161,12 @@ test("the final mobile UX layer reserves space for the swipe deck and prevents n
 test("stored catalogue products are re-normalized for men's and mixed gender filtering", function() {
   assert.ok(app.includes("state.products = (Array.isArray(state.products) ? state.products : []).map(normalizeProduct)"));
 });
+
+
+test("swipe cards do not display gesture instructions inside the product card", function() {
+  assert.ok(!app.includes("Gauche : passer"));
+  assert.ok(!app.includes("Droite : j’aime"));
+  assert.ok(app.includes('data-vote="no"'));
+  assert.ok(app.includes('data-vote="yes"'));
+  assert.ok(app.includes('data-action="save-list"'));
+});
