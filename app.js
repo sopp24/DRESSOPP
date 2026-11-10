@@ -1945,6 +1945,8 @@ async function boot() {
   const stored = await loadState();
   const base = createInitialState(catalog);
   state = stored ? Object.assign(base, stored) : base;
+  // Migrate older local catalogues so legacy products receive the men's/mixed gender classification.
+  state.products = (Array.isArray(state.products) ? state.products : []).map(normalizeProduct);
   state.profile = Object.assign(base.profile, state.profile || {});
   state.profile.sizes = Object.assign(base.profile.sizes, state.profile.sizes || {});
   state.settings = Object.assign(base.settings, state.settings || {});
