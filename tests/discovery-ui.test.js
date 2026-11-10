@@ -156,3 +156,8 @@ test("the final mobile UX layer reserves space for the swipe deck and prevents n
   assert.ok(css.includes("orientation: landscape) and (max-height: 520px"));
   assert.ok(css.includes("body.is-discovery-app .top-actions .icon-button { display: none; }"));
 });
+
+
+test("stored catalogue products are re-normalized for men's and mixed gender filtering", function() {
+  assert.ok(app.includes("state.products = (Array.isArray(state.products) ? state.products : []).map(normalizeProduct)"));
+});
