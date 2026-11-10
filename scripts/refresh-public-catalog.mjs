@@ -123,6 +123,22 @@ function flattenProducts(value) {
   const found = type.includes("product") ? [value] : [];
   return found.concat(flattenProducts(value["@graph"]),flattenProducts(value.mainEntity),flattenProducts(value.itemListElement),flattenProducts(value.item));
 }
+function inferCatalogGender(item,pageUrl) {
+  const audience = item && item.audience && typeof item.audience === "object"
+    ? [item.audience.name,item.audience.suggestedGender,item.audience.genderType].filter(Boolean).join(" ")
+    : item && item.audience;
+  const value = clean([
+    item && item.gender,audience,item && item.name,item && item.description,
+    item && item.category,pageUrl
+  ].filter(Boolean).join(" "));
+  if (/(^|[^a-z])(femme|femmes|woman|women|womens|ladies|damen)([^a-z]|$)/.test(value) ||
+      /pour femme|for women|womenswear|collection femme/.test(value)) return "women";
+  if (/(^|[^a-z])(unisexe|unisex|mixte)([^a-z]|$)/.test(value) ||
+      /gender.?neutral|all genders/.test(value)) return "unisex";
+  if (/(^|[^a-z])(homme|hommes|man|men|mens|masculin|male)([^a-z]|$)/.test(value) ||
+      /pour homme|for men|menswear|collection homme/.test(value)) return "men";
+  return "men";
+}
 function productRecord(item,source,pageUrl,checkedAt) {
   const offers = list(item.offers).flatMap(offer => offer && Array.isArray(offer.offers) ? offer.offers : [offer]).filter(Boolean);
   const offer = offers.find(value => value.price != null || value.lowPrice != null || value.priceSpecification) || {};
@@ -175,7 +191,7 @@ function productRecord(item,source,pageUrl,checkedAt) {
   return {
     id:"web-" + hash(page.href.split("?")[0].toLowerCase()), name, brand, merchant:source.name,
     url:page.href, imageUrl:image, price, originalPrice:Number(offer.highPrice) || null,
-    objective, category,
+    objective, category, gender:inferCatalogGender(item,page.href),
     styleTags:rules.filter(([,pattern]) => pattern.test(terms)).map(([label]) => label),
     seasonTags:[], colors:list(item.color).map(clean).filter(Boolean), materials:list(item.material).map(clean).filter(Boolean),
     cuts:[], patterns:[], description, sizes:list(item.size).map(clean).filter(Boolean),
@@ -205,7 +221,7 @@ export function extractProductsFromHtml(html,source,pageUrl,checkedAt = new Date
     const checked = new Date(checkedAt).toISOString();
     products.push({
       id:"web-" + hash(pageUrl), name:title, brand:meta(html,"product:brand") || source.name, merchant:source.name,
-      url:pageUrl, imageUrl:image, price, originalPrice:null, objective:"Vêtements", category:"Vêtements",
+      url:pageUrl, imageUrl:image, price, originalPrice:null, objective:"Vêtements", category:"Vêtements", gender:inferCatalogGender({name:title,description:meta(html,"og:description")},pageUrl),
       styleTags:[], seasonTags:[], colors:[], materials:[], cuts:[], patterns:[], description:meta(html,"og:description"), sizes:[],
       availability:"Disponibilité à confirmer sur la boutique", availabilityStatus:"unknown",
       source:source.name, sourceType:"public-web", catalogStatus:"active", verifiedAt:checked, syncedAt:checked,
