@@ -206,6 +206,15 @@ function matchesAny(values, expected) {
   const source = (Array.isArray(values) ? values : []).map(clean);
   return expected.some(value => source.includes(clean(value)));
 }
+function productIsForWomen(product) {
+  const evidence = clean([
+    product && product.gender, product && product.name, product && product.description,
+    product && product.category, product && product.objective, product && product.url
+  ].filter(Boolean).join(" "));
+  return clean(product && product.gender) === "women" ||
+    /(^|[^a-z])(femme|femmes|woman|women|womens|female|girl|girls|ladies|damen|feminin)([^a-z]|$)/.test(evidence) ||
+    /pour femme|for women|womenswear|collection femme/.test(evidence);
+}
 function productExcludedByProfile(product, profile) {
   const p = profile || {};
   const colors = (product.colors || []).map(clean);
@@ -318,7 +327,7 @@ export function buildOutfitIdeas(pins, wardrobe, catalogue, dislikedIds, outfitF
   });
   const candidates = Array.from(productMap.values()).filter(product => {
     const expired = product.catalogStatus === "expired" || (product.expiresAt && Date.parse(product.expiresAt) <= Date.now());
-    return product.gender !== "women" && !expired && product.catalogStatus !== "stale" && product.availabilityStatus !== "out_of_stock" &&
+    return !productIsForWomen(product) && !expired && product.catalogStatus !== "stale" && product.availabilityStatus !== "out_of_stock" &&
       !disliked.has(product.id) && (savedIds.has(product.id) || /^https?:\/\//i.test(String(product.url || ""))) && !productExcludedByProfile(product,profile) &&
       productMatchesOutfitSeason(product,season) && productSizeMatches(product,profile);
   });
