@@ -178,3 +178,15 @@ test("season filters ignore generic style tags and only reject explicit conflict
     season:"Hiver",styles:[],profile:{}
   }).length,1);
 });
+
+
+test("outfit suggestions exclude products identified for women", function() {
+  const pin={id:"pin-gender",title:"Minimalist outfit"};
+  const wardrobe=[
+    {id:"men-top",name:"Chemise homme",objective:"Vêtements",url:"https://shop.example/men/top"},
+    {id:"women-top",name:"Chemise femme",objective:"Vêtements",url:"https://shop.example/women/top"}
+  ];
+  const ideas=buildOutfitIdeas([pin],wardrobe,[],[]);
+  assert.ok(ideas.length);
+  assert.ok(ideas[0].items.every(entry=>entry.product.id!=="women-top"));
+});
