@@ -175,3 +175,18 @@ test("new local state keeps outfit filters and a separate saved outfit collectio
   assert.deepEqual(state.settings.outfitFilters,{styles:[],season:"Toute saison",maxPrice:null});
   assert.equal(state.settings.outfitLibraryView,"discover");
 });
+
+
+test("product gender is limited to men's and mixed items in discovery", function() {
+  const men = normalizeProduct({ id:"men", name:"Chemise homme", price:40 });
+  const unisex = normalizeProduct({ id:"unisex", name:"T-shirt unisexe", price:25 });
+  const women = normalizeProduct({ id:"women", name:"Blouse femme", url:"https://shop.example/femme/blouse", price:30 });
+  const state = createInitialState([men,unisex,women]);
+  const result = rankProducts([women,unisex,men],state,{
+    includeSeen:true,
+    filters:{objective:"Tout",style:"Tous",season:"Toute saison",maxPrice:null}
+  });
+  assert.deepEqual(result.map(item=>item.id).sort(),["men","unisex"]);
+  assert.equal(women.gender,"women");
+  assert.equal(unisex.gender,"unisex");
+});
