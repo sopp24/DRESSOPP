@@ -25,12 +25,14 @@ export function inferProductGender(source) {
     item.gender, audience, item.name, item.title, item.description,
     item.category, item.objective, item.url, item.productUrl
   ].filter(Boolean).join(" "));
-  if (/(^|[^a-z])(femme|femmes|woman|women|womens|ladies|女装|damen)([^a-z]|$)/.test(evidence) ||
-      /pour femme|for women|womenswear|collection femme/.test(evidence)) return "women";
+  const women = /(^|[^a-z])(femme|femmes|woman|women|womens|female|girl|girls|ladies|damen|feminin)([^a-z]|$)/.test(evidence) ||
+    /pour femme|for women|womenswear|collection femme/.test(evidence);
+  const men = /(^|[^a-z])(homme|hommes|man|men|mens|masculin|male)([^a-z]|$)/.test(evidence) ||
+    /pour homme|for men|menswear|collection homme/.test(evidence);
   if (/(^|[^a-z])(unisexe|unisex|mixte)([^a-z]|$)/.test(evidence) ||
-      /gender.?neutral|tous les genres|all genders/.test(evidence)) return "unisex";
-  if (/(^|[^a-z])(homme|hommes|man|men|mens|masculin|male)([^a-z]|$)/.test(evidence) ||
-      /pour homme|for men|menswear|collection homme/.test(evidence)) return "men";
+      /gender.?neutral|tous les genres|all genders/.test(evidence) || (women && men)) return "unisex";
+  if (women) return "women";
+  if (men) return "men";
   // The merchant directory is intentionally curated for men's and mixed fashion.
   // Explicit women's department signals above are excluded; neutral product naming remains eligible.
   return "men";
