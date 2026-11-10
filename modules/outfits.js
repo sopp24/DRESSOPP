@@ -318,7 +318,7 @@ export function buildOutfitIdeas(pins, wardrobe, catalogue, dislikedIds, outfitF
   });
   const candidates = Array.from(productMap.values()).filter(product => {
     const expired = product.catalogStatus === "expired" || (product.expiresAt && Date.parse(product.expiresAt) <= Date.now());
-    return !expired && product.catalogStatus !== "stale" && product.availabilityStatus !== "out_of_stock" &&
+    return product.gender !== "women" && !expired && product.catalogStatus !== "stale" && product.availabilityStatus !== "out_of_stock" &&
       !disliked.has(product.id) && (savedIds.has(product.id) || /^https?:\/\//i.test(String(product.url || ""))) && !productExcludedByProfile(product,profile) &&
       productMatchesOutfitSeason(product,season) && productSizeMatches(product,profile);
   });
