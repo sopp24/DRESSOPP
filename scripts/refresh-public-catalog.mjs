@@ -131,12 +131,14 @@ function inferCatalogGender(item,pageUrl) {
     item && item.gender,audience,item && item.name,item && item.description,
     item && item.category,pageUrl
   ].filter(Boolean).join(" "));
-  if (/(^|[^a-z])(femme|femmes|woman|women|womens|ladies|damen)([^a-z]|$)/.test(value) ||
-      /pour femme|for women|womenswear|collection femme/.test(value)) return "women";
+  const women = /(^|[^a-z])(femme|femmes|woman|women|womens|female|girl|girls|ladies|damen|feminin)([^a-z]|$)/.test(value) ||
+    /pour femme|for women|womenswear|collection femme/.test(value);
+  const men = /(^|[^a-z])(homme|hommes|man|men|mens|masculin|male)([^a-z]|$)/.test(value) ||
+    /pour homme|for men|menswear|collection homme/.test(value);
   if (/(^|[^a-z])(unisexe|unisex|mixte)([^a-z]|$)/.test(value) ||
-      /gender.?neutral|all genders/.test(value)) return "unisex";
-  if (/(^|[^a-z])(homme|hommes|man|men|mens|masculin|male)([^a-z]|$)/.test(value) ||
-      /pour homme|for men|menswear|collection homme/.test(value)) return "men";
+      /gender.?neutral|all genders/.test(value) || (women && men)) return "unisex";
+  if (women) return "women";
+  if (men) return "men";
   return "men";
 }
 function productRecord(item,source,pageUrl,checkedAt) {
