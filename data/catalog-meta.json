@@ -2,16 +2,16 @@
   "schemaVersion": 3,
   "provider": "Pages produits publiques autorisées (Schema.org / Open Graph)",
   "status": "partial",
-  "syncedAt": "2026-11-10T15:39:03.619Z",
-  "productCount": 124,
+  "syncedAt": "2026-11-11T15:18:52.925Z",
+  "productCount": 125,
   "liveProductCount": 95,
   "publicProductCount": 95,
   "curatedProductCount": 16,
-  "staleProductCount": 13,
+  "staleProductCount": 14,
   "sourceCount": 6,
   "attemptedSourceCount": 200,
   "scannedSourceCount": 36,
-  "pagesChecked": 197,
+  "pagesChecked": 301,
   "sources": [
     "BZB",
     "C.P. Company",
@@ -28,7 +28,7 @@
       "products": 0,
       "pages": 0,
       "reason": "robots.txt inaccessible ou accès refusé",
-      "checkedAt": "2026-11-08T14:21:12.743Z"
+      "checkedAt": "2026-11-11T15:18:52.925Z"
     },
     {
       "name": "Zalando",
@@ -44,7 +44,7 @@
       "products": 0,
       "pages": 0,
       "reason": "robots.txt inaccessible ou accès refusé",
-      "checkedAt": "2026-11-08T14:21:12.743Z"
+      "checkedAt": "2026-11-11T15:18:52.925Z"
     },
     {
       "name": "Bershka",
@@ -52,7 +52,7 @@
       "products": 0,
       "pages": 0,
       "reason": "robots.txt inaccessible ou accès refusé",
-      "checkedAt": "2026-11-09T17:36:03.261Z"
+      "checkedAt": "2026-11-11T15:18:52.925Z"
     },
     {
       "name": "H&M",
@@ -60,7 +60,7 @@
       "products": 0,
       "pages": 0,
       "reason": "robots.txt inaccessible ou accès refusé",
-      "checkedAt": "2026-11-09T17:36:03.261Z"
+      "checkedAt": "2026-11-11T15:18:52.925Z"
     },
     {
       "name": "ASOS",
@@ -84,7 +84,7 @@
       "products": 0,
       "pages": 0,
       "reason": "robots.txt inaccessible ou accès refusé",
-      "checkedAt": "2026-11-09T17:36:03.261Z"
+      "checkedAt": "2026-11-11T15:18:52.925Z"
     },
     {
       "name": "BZB",
@@ -92,7 +92,7 @@
       "products": 18,
       "pages": 19,
       "reason": "",
-      "checkedAt": "2026-11-08T14:21:12.743Z"
+      "checkedAt": "2026-11-11T15:18:52.925Z"
     },
     {
       "name": "Levi's",
@@ -108,7 +108,7 @@
       "products": 0,
       "pages": 1,
       "reason": "Aucune fiche produit publique exploitable.",
-      "checkedAt": "2026-11-09T17:36:03.261Z"
+      "checkedAt": "2026-11-11T15:18:52.925Z"
     },
     {
       "name": "Celio",
@@ -116,7 +116,7 @@
       "products": 0,
       "pages": 0,
       "reason": "robots.txt inaccessible ou accès refusé",
-      "checkedAt": "2026-11-09T17:36:03.261Z"
+      "checkedAt": "2026-11-11T15:18:52.925Z"
     },
     {
       "name": "COS",
@@ -124,7 +124,7 @@
       "products": 0,
       "pages": 17,
       "reason": "Aucune fiche produit publique exploitable.",
-      "checkedAt": "2026-11-09T17:36:03.261Z"
+      "checkedAt": "2026-11-11T15:18:52.925Z"
     },
     {
       "name": "Carhartt WIP",
@@ -148,7 +148,7 @@
       "products": 18,
       "pages": 19,
       "reason": "",
-      "checkedAt": "2026-11-09T17:36:03.261Z"
+      "checkedAt": "2026-11-11T15:18:52.925Z"
     },
     {
       "name": "New Balance",
@@ -188,7 +188,7 @@
       "products": 0,
       "pages": 18,
       "reason": "Aucune fiche produit publique exploitable.",
-      "checkedAt": "2026-11-09T17:36:03.261Z"
+      "checkedAt": "2026-11-11T15:18:52.925Z"
     },
     {
       "name": "ASICS",
@@ -332,7 +332,7 @@
       "products": 0,
       "pages": 3,
       "reason": "Aucune fiche produit publique exploitable.",
-      "checkedAt": "2026-11-06T18:01:00.186Z"
+      "checkedAt": "2026-11-11T15:18:52.925Z"
     },
     {
       "name": "24S",
@@ -364,7 +364,7 @@
       "products": 0,
       "pages": 18,
       "reason": "Aucune fiche produit publique exploitable.",
-      "checkedAt": "2026-11-06T18:01:00.186Z"
+      "checkedAt": "2026-11-11T15:18:52.925Z"
     },
     {
       "name": "Decathlon",
@@ -388,7 +388,7 @@
       "products": 0,
       "pages": 0,
       "reason": "robots.txt inaccessible ou accès refusé",
-      "checkedAt": "2026-11-09T17:36:03.261Z"
+      "checkedAt": "2026-11-11T15:18:52.925Z"
     },
     {
       "name": "END.",
@@ -428,7 +428,7 @@
       "products": 0,
       "pages": 0,
       "reason": "robots.txt inaccessible ou accès refusé",
-      "checkedAt": "2026-11-06T18:01:00.186Z"
+      "checkedAt": "2026-11-11T15:18:52.925Z"
     },
     {
       "name": "LUISAVIAROMA",
@@ -436,7 +436,7 @@
       "products": 0,
       "pages": 0,
       "reason": "Aucune fiche produit publique exploitable.",
-      "checkedAt": "2026-11-06T18:01:00.186Z"
+      "checkedAt": "2026-11-11T15:18:52.925Z"
     },
     {
       "name": "Selfridges",
@@ -444,7 +444,7 @@
       "products": 0,
       "pages": 0,
       "reason": "robots.txt inaccessible ou accès refusé",
-      "checkedAt": "2026-11-06T18:01:00.186Z"
+      "checkedAt": "2026-11-11T15:18:52.925Z"
     },
     {
       "name": "Harrods",
@@ -452,7 +452,7 @@
       "products": 0,
       "pages": 0,
       "reason": "robots.txt inaccessible ou accès refusé",
-      "checkedAt": "2026-11-06T18:01:00.186Z"
+      "checkedAt": "2026-11-11T15:18:52.925Z"
     },
     {
       "name": "SSENSE",
@@ -468,7 +468,7 @@
       "products": 0,
       "pages": 0,
       "reason": "robots.txt inaccessible ou accès refusé",
-      "checkedAt": "2026-11-06T18:01:00.186Z"
+      "checkedAt": "2026-11-11T15:18:52.925Z"
     },
     {
       "name": "Urban Outfitters",
@@ -476,7 +476,7 @@
       "products": 0,
       "pages": 0,
       "reason": "robots.txt inaccessible ou accès refusé",
-      "checkedAt": "2026-11-06T18:01:00.186Z"
+      "checkedAt": "2026-11-11T15:18:52.925Z"
     },
     {
       "name": "NEXT",
@@ -484,7 +484,7 @@
       "products": 0,
       "pages": 0,
       "reason": "robots.txt inaccessible ou accès refusé",
-      "checkedAt": "2026-11-06T18:01:00.186Z"
+      "checkedAt": "2026-11-11T15:18:52.925Z"
     },
     {
       "name": "Flannels",
@@ -492,7 +492,7 @@
       "products": 0,
       "pages": 19,
       "reason": "Aucune fiche produit publique exploitable.",
-      "checkedAt": "2026-11-06T18:01:00.186Z"
+      "checkedAt": "2026-11-11T15:18:52.925Z"
     },
     {
       "name": "Boozt",
@@ -500,7 +500,7 @@
       "products": 0,
       "pages": 0,
       "reason": "robots.txt inaccessible ou accès refusé",
-      "checkedAt": "2026-11-06T18:01:00.186Z"
+      "checkedAt": "2026-11-11T15:18:52.925Z"
     },
     {
       "name": "Browns",
@@ -508,7 +508,7 @@
       "products": 0,
       "pages": 19,
       "reason": "Aucune fiche produit publique exploitable.",
-      "checkedAt": "2026-11-06T18:01:00.186Z"
+      "checkedAt": "2026-11-11T15:18:52.925Z"
     },
     {
       "name": "Nordstrom",
@@ -516,7 +516,7 @@
       "products": 0,
       "pages": 19,
       "reason": "Aucune fiche produit publique exploitable.",
-      "checkedAt": "2026-11-06T18:01:00.186Z"
+      "checkedAt": "2026-11-11T15:18:52.925Z"
     },
     {
       "name": "Marks & Spencer",
@@ -524,7 +524,7 @@
       "products": 0,
       "pages": 19,
       "reason": "Aucune fiche produit publique exploitable.",
-      "checkedAt": "2026-11-06T18:01:00.186Z"
+      "checkedAt": "2026-11-11T15:18:52.925Z"
     },
     {
       "name": "GAP",
@@ -532,7 +532,7 @@
       "products": 0,
       "pages": 19,
       "reason": "Aucune fiche produit publique exploitable.",
-      "checkedAt": "2026-11-06T18:01:00.186Z"
+      "checkedAt": "2026-11-11T15:18:52.925Z"
     },
     {
       "name": "Primark",
@@ -540,7 +540,7 @@
       "products": 0,
       "pages": 21,
       "reason": "Aucune fiche produit publique exploitable.",
-      "checkedAt": "2026-11-06T18:01:00.186Z"
+      "checkedAt": "2026-11-11T15:18:52.925Z"
     },
     {
       "name": "Care of Carl",
@@ -548,7 +548,7 @@
       "products": 0,
       "pages": 19,
       "reason": "Aucune fiche produit publique exploitable.",
-      "checkedAt": "2026-11-06T18:01:00.186Z"
+      "checkedAt": "2026-11-11T15:18:52.925Z"
     },
     {
       "name": "Abercrombie & Fitch",
@@ -556,7 +556,7 @@
       "products": 0,
       "pages": 1,
       "reason": "Aucune fiche produit publique exploitable.",
-      "checkedAt": "2026-11-06T18:04:18.581Z"
+      "checkedAt": "2026-11-11T15:18:52.925Z"
     },
     {
       "name": "Hollister",
@@ -564,7 +564,7 @@
       "products": 0,
       "pages": 1,
       "reason": "Aucune fiche produit publique exploitable.",
-      "checkedAt": "2026-11-06T18:04:18.581Z"
+      "checkedAt": "2026-11-11T15:18:52.925Z"
     },
     {
       "name": "Cotton On",
@@ -572,7 +572,7 @@
       "products": 0,
       "pages": 3,
       "reason": "Aucune fiche produit publique exploitable.",
-      "checkedAt": "2026-11-06T18:04:18.581Z"
+      "checkedAt": "2026-11-11T15:18:52.925Z"
     },
     {
       "name": "J.Crew",
@@ -580,7 +580,7 @@
       "products": 0,
       "pages": 19,
       "reason": "Aucune fiche produit publique exploitable.",
-      "checkedAt": "2026-11-06T18:04:18.581Z"
+      "checkedAt": "2026-11-11T15:18:52.925Z"
     },
     {
       "name": "Only & Sons",
@@ -612,15 +612,15 @@
       "products": 0,
       "pages": 19,
       "reason": "Aucune fiche produit publique exploitable.",
-      "checkedAt": "2026-11-06T18:04:18.581Z"
+      "checkedAt": "2026-11-11T15:18:52.925Z"
     },
     {
       "name": "PacSun",
       "status": "no-structured-products",
       "products": 0,
-      "pages": 7,
+      "pages": 8,
       "reason": "Aucune fiche produit publique exploitable.",
-      "checkedAt": "2026-11-06T18:04:18.581Z"
+      "checkedAt": "2026-11-11T15:18:52.925Z"
     },
     {
       "name": "The Iconic",
@@ -636,7 +636,7 @@
       "products": 0,
       "pages": 20,
       "reason": "Aucune fiche produit publique exploitable.",
-      "checkedAt": "2026-11-06T18:04:18.581Z"
+      "checkedAt": "2026-11-11T15:18:52.925Z"
     },
     {
       "name": "River Island",
@@ -1631,8 +1631,8 @@
     "Les prix et stocks sont datés ; vérification finale sur la boutique avant achat.",
     "Les notes produit ne sont jamais présentées comme une note de fiabilité du marchand."
   ],
-  "priorityCursor": 6,
-  "regularCursor": 7,
+  "priorityCursor": 18,
+  "regularCursor": 31,
   "directoryCount": 200,
   "nextBatchSize": 36,
   "pageSize": 120,
