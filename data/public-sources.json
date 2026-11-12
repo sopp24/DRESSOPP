@@ -4,6 +4,6 @@
   "directoryFile": "data/merchant-directory.json",
   "batchSize": 36,
   "prioritySlots": 12,
-  "note": "Le répertoire de 200 enseignes est la source de vérité. Le collecteur quotidien sélectionne un lot tournant ; les boutiques non accessibles par des flux publics autorisés restent référencées, sans contournement.",
+  "note": "Le répertoire éditorial de data/merchant-directory.json est la source de vérité. Le collecteur quotidien sélectionne un lot tournant ; les boutiques non accessibles par des flux publics autorisés restent référencées, sans contournement.",
   "sources": []
 }
