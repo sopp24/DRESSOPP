@@ -35,12 +35,13 @@ test("the product card includes the product details and original merchant link",
   assert.ok(css.includes(".deck-action-icon"));
 });
 
-test("the Tinder card styling has responsive tablet and mobile layouts", function() {
+test("the restored Tinder card styling keeps responsive tablet and mobile layouts", function() {
   assert.ok(css.includes(".discovery-layout--swipe"));
   assert.ok(css.includes("@media (max-width: 850px)"));
   assert.ok(css.includes("@media (max-width: 600px)"));
   assert.ok(css.includes(".deck-action-yes"));
-  assert.ok(css.includes("aspect-ratio: 3 / 4"));
+  assert.ok(css.includes(".product-visual"));
+  assert.ok(css.includes("object-fit: cover"));
 });
 
 
@@ -174,17 +175,18 @@ test("swipe cards do not display gesture instructions inside the product card", 
 });
 
 
-test("the mobile swipe card follows the vertical product-card mockup", function() {
+test("the restored swipe card keeps its original photo, information, link and actions together", function() {
   const cardRenderer = app.slice(app.indexOf("function renderDeckCard"),app.indexOf("function renderGridCards"));
-  assert.ok(cardRenderer.indexOf("'</article>'") < cardRenderer.indexOf("deck-actions"));
+  assert.ok(cardRenderer.indexOf("'<div class=\"product-visual\">'") < cardRenderer.indexOf("'<div class=\"product-info\">"));
+  assert.ok(cardRenderer.indexOf("'<div class=\"product-info\">") < cardRenderer.indexOf("'<div class=\"deck-actions\""));
+  assert.ok(cardRenderer.indexOf("'<div class=\"deck-actions\"") < cardRenderer.indexOf("'</article></div>'"));
   assert.ok(app.includes("renderProductAttributes(product)"));
   assert.ok(app.includes('const gestureSurface = card.closest(".deck-card-wrap") || card;'));
   assert.ok(app.includes("gestureSurface.setPointerCapture(pointerId)"));
-  assert.ok(css.includes("Maquette DRESSOPP — carte mobile verticale"));
-  assert.ok(css.includes("position: static;"));
-  assert.ok(css.includes("aspect-ratio: 3 / 4"));
-  assert.ok(css.includes("product-brand-price"));
-  assert.ok(css.includes("product-original-link"));
+  assert.ok(css.includes(".product-card {"));
+  assert.ok(css.includes(".product-visual img"));
+  assert.ok(css.includes(".product-info {"));
+  assert.ok(css.includes(".deck-actions {"));
   assert.ok(css.includes("min-width: 44px"));
   assert.ok(app.includes("isMenswearPin(pin)"));
   assert.ok(app.includes('gender: "men", genderVerified: true'));
