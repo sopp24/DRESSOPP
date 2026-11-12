@@ -244,7 +244,7 @@ test("season filters ignore generic style tags and only reject explicit conflict
 
 
 test("outfit suggestions exclude products identified for women", function() {
-  const pin={id:"pin-gender",title:"Men's minimalist outfit",visualAnalysis:{version:3,audience:"men",isFashion:true}};
+  const pin={id:"pin-gender",title:"Men's minimalist outfit",visualAnalysis:{version:4,audience:"men",isFashion:true}};
   const wardrobe=[
     {id:"men-top",name:"Chemise homme",gender:"men",objective:"Vêtements",url:"https://shop.example/men/top"},
     {id:"women-top",name:"Chemise femme",gender:"women",objective:"Vêtements",url:"https://shop.example/women/top"}
