@@ -1,4 +1,4 @@
-import { inferPinterestFeatures } from "./outfits.js";
+import { inferPinterestFeatures, isMenswearPin } from "./outfits.js";
 
 const FEATURE_FIELDS = ["styleTags", "colors", "materials", "cuts", "patterns", "categories"];
 
@@ -185,7 +185,7 @@ export function deriveLearnedPreferences(state) {
     if (product) featureTokens(product).forEach(function(token) { totals[token] = (totals[token] || 0) - 4; });
   });
 
-  const pins = (source.inspirations || []).concat(source.pinterestPins || []);
+  const pins = (source.inspirations || []).concat(source.pinterestPins || []).filter(isMenswearPin);
   const pinsById = new Map();
   pins.forEach(function(pin) {
     const id = String(pin.pinId || pin.id || pin.sourceUrl || pin.pinUrl || "");
