@@ -1,6 +1,6 @@
 # Agent IA DRESSOPP — Personal shopper
 
-DRESSOPP possède désormais un agent utilisable dès l'ouverture, sans déployer de service et sans accepter de transfert de données.
+DRESSOPP possède désormais un agent utilisable dès l'ouverture, sans déployer de service et sans accepter de transfert de données. La sélection est strictement masculine : seuls les produits confirmés pour homme entrent dans le classement local ou distant ; les fiches mixtes, unisexes ou de public inconnu sont exclues.
 
 ## Mode local — activé par défaut
 
