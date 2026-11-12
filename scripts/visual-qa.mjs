@@ -101,6 +101,42 @@ async function runViewport(browser, config) {
   page.on("pageerror", error => pageErrors.push(config.name + ": " + error.message));
   await ensureAppReady(page);
   await capture(page, config.name, "pour-toi");
+  if (config.name === "phone-390" && await page.locator("#active-product-card").count()) {
+    const card = page.locator("#active-product-card");
+    const firstId = await card.getAttribute("data-product-id");
+    const firstBox = await card.boundingBox();
+    if (firstBox) {
+      await page.mouse.move(firstBox.x + firstBox.width * 0.8, firstBox.y + firstBox.height * 0.45);
+      await page.mouse.down();
+      await page.mouse.move(firstBox.x + firstBox.width * 0.18, firstBox.y + firstBox.height * 0.45, {steps:10});
+      await page.mouse.up();
+      try {
+        await page.waitForFunction(previousId => {
+          const active = document.querySelector("#active-product-card");
+          return !active || active.dataset.productId !== previousId;
+        }, firstId, {timeout:6000});
+      } catch {
+        results.push({viewport:config.name,view:"swipe-horizontal",issues:["le glissement horizontal ne passe pas à l'article suivant"]});
+      }
+      const nextCard = page.locator("#active-product-card");
+      if (await nextCard.count()) {
+        const nextId = await nextCard.getAttribute("data-product-id");
+        const nextBox = await nextCard.boundingBox();
+        const savedBefore = Number(await page.locator("#wardrobe-count").textContent());
+        if (nextBox) {
+          await page.mouse.move(nextBox.x + nextBox.width * 0.5, nextBox.y + nextBox.height * 0.38);
+          await page.mouse.down();
+          await page.mouse.move(nextBox.x + nextBox.width * 0.5, nextBox.y + nextBox.height * 0.68, {steps:10});
+          await page.mouse.up();
+          try {
+            await page.waitForFunction(previousCount => Number(document.querySelector("#wardrobe-count").textContent) > previousCount, savedBefore, {timeout:6000});
+          } catch {
+            results.push({viewport:config.name,view:"swipe-save",productId:nextId,issues:["le glissement vers le bas n'ajoute pas l'article à la liste"]});
+          }
+        }
+      }
+    }
+  }
   if (config.name === "desktop-1440" && await page.locator("#active-product-card").count()) {
     const card = page.locator("#active-product-card");
     await card.focus();
