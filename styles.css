@@ -3182,3 +3182,11 @@ button, a { touch-action: manipulation; }
   .mobile-nav button span { font-size: 14px; }
   .mobile-nav button small { font-size: 7px; }
 }
+
+
+/* Desktop : réserver toute la hauteur de la navigation basse sous la carte Tinder. */
+@media (min-width: 851px) {
+  body.is-discovery-app .main-content {
+    padding-bottom: 100px;
+  }
+}
