@@ -165,7 +165,7 @@ test("rankProducts gives a small lift to explicit best-seller signals", function
 
 test("Pinterest style signals receive a strong baseline weight", function() {
   const state = createInitialState([]);
-  state.pinterestPins = [{ title:"Minimalist beige linen oversized outfit",visualAnalysis:{version:3,audience:"men",isFashion:true} }];
+  state.pinterestPins = [{ title:"Minimalist beige linen oversized outfit",visualAnalysis:{version:4,audience:"men",isFashion:true,confidence:1} }];
   const learned = deriveLearnedPreferences(state);
   assert.equal(learned["colors:beige"], 3.8);
   assert.equal(learned["materials:lin"], 2.1);
