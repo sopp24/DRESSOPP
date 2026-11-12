@@ -138,7 +138,7 @@ function inferCatalogGender(item,pageUrl) {
   if (/(^|[^a-z])(unisexe|unisex|mixte)([^a-z]|$)/.test(value) ||
       /gender.?neutral|all genders/.test(value) || (women && men)) return "unisex";
   if (women) return "women";
-  if (men) return "men";
+  if (men) return "unknown";
   return "men";
 }
 function productRecord(item,source,pageUrl,checkedAt) {
@@ -190,10 +190,11 @@ function productRecord(item,source,pageUrl,checkedAt) {
   const checked = new Date(checkedAt).toISOString();
   const rating = Number(item.aggregateRating && item.aggregateRating.ratingValue);
   const aggregate = item.aggregateRating || {};
+  const gender = inferCatalogGender(item,page.href);
   return {
     id:"web-" + hash(page.href.split("?")[0].toLowerCase()), name, brand, merchant:source.name,
     url:page.href, imageUrl:image, price, originalPrice:Number(offer.highPrice) || null,
-    objective, category, gender:inferCatalogGender(item,page.href),
+    objective, category, gender, genderVerified:gender === "men",
     styleTags:rules.filter(([,pattern]) => pattern.test(terms)).map(([label]) => label),
     seasonTags:[], colors:list(item.color).map(clean).filter(Boolean), materials:list(item.material).map(clean).filter(Boolean),
     cuts:[], patterns:[], description, sizes:list(item.size).map(clean).filter(Boolean),
@@ -223,7 +224,9 @@ export function extractProductsFromHtml(html,source,pageUrl,checkedAt = new Date
     const checked = new Date(checkedAt).toISOString();
     products.push({
       id:"web-" + hash(pageUrl), name:title, brand:meta(html,"product:brand") || source.name, merchant:source.name,
-      url:pageUrl, imageUrl:image, price, originalPrice:null, objective:"Vêtements", category:"Vêtements", gender:inferCatalogGender({name:title,description:meta(html,"og:description")},pageUrl),
+      url:pageUrl, imageUrl:image, price, originalPrice:null, objective:"Vêtements", category:"Vêtements",
+      gender:inferCatalogGender({name:title,description:meta(html,"og:description")},pageUrl),
+      genderVerified:inferCatalogGender({name:title,description:meta(html,"og:description")},pageUrl) === "men",
       styleTags:[], seasonTags:[], colors:[], materials:[], cuts:[], patterns:[], description:meta(html,"og:description"), sizes:[],
       availability:"Disponibilité à confirmer sur la boutique", availabilityStatus:"unknown",
       source:source.name, sourceType:"public-web", catalogStatus:"active", verifiedAt:checked, syncedAt:checked,
