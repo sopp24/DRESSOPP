@@ -138,8 +138,8 @@ function inferCatalogGender(item,pageUrl) {
   if (/(^|[^a-z])(unisexe|unisex|mixte)([^a-z]|$)/.test(value) ||
       /gender.?neutral|all genders/.test(value) || (women && men)) return "unisex";
   if (women) return "women";
-  if (men) return "unknown";
-  return "men";
+  if (men) return "men";
+  return "unknown";
 }
 function productRecord(item,source,pageUrl,checkedAt) {
   const offers = list(item.offers).flatMap(offer => offer && Array.isArray(offer.offers) ? offer.offers : [offer]).filter(Boolean);
