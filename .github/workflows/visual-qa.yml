@@ -1,24 +1,35 @@
 name: DRESSOPP visual QA
 
 on:
-  workflow_run:
-    workflows: ["Deploy DRESSOPP to GitHub Pages"]
-    types: [completed]
+  push:
     branches: [main]
+    paths:
+      - "index.html"
+      - "styles.css"
+      - "app.js"
+      - "modules/**"
+      - "assets/**"
+      - "data/**"
+      - "scripts/visual-qa.mjs"
+      - ".github/workflows/visual-qa.yml"
+  workflow_dispatch:
+
+concurrency:
+  group: dressopp-visual-qa
+  cancel-in-progress: true
 
 permissions:
   contents: write
 
 jobs:
   visual-qa:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
       - name: Checkout the deployed revision
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.workflow_run.head_sha }}
+          ref: ${{ github.sha }}
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
@@ -54,7 +65,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: dressopp-visual-qa-${{ github.event.workflow_run.head_sha }}
+          name: dressopp-visual-qa-${{ github.sha }}
           path: artifacts/visual-qa/
           if-no-files-found: warn
           retention-days: 7
