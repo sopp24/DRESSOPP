@@ -10,7 +10,7 @@ const OUTPUT = "data/pinterest-pins.json";
 const ANALYSIS_ENDPOINT = String(process.env.PINTEREST_ANALYSIS_ENDPOINT || "https://dressopp-agent.asoppelsa.workers.dev").trim().replace(/\/+$/, "");
 const SYNC_TOKEN = process.env.PINTEREST_SYNC_TOKEN || "";
 const ANALYSIS_BATCH_SIZE = 3;
-const ANALYSIS_VERSION = 3;
+const ANALYSIS_VERSION = 4;
 
 async function obtainAccessToken() {
   if (STATIC_TOKEN) return STATIC_TOKEN;
