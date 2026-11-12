@@ -99,7 +99,7 @@ test("Pinterest image analysis uses the vision model and returns hidden structur
         return {response:JSON.stringify({
           audience:"men",
           isFashion:true,
-          summary:"Veste en cuir noire portée sur un sweat gris, avec un pantalon ample et des baskets.",
+          summary:"Cardigan court et boxy en maille rose vif à rayures bordeaux, avec un pantalon wide-leg.",
           styleTags:["Créatif","Streetwear","Maille graphique"],colors:["rose vif","bordeaux","blanc"],materials:["maille","cuir"],
           cuts:["boxy","cropped","wide leg"],patterns:["color block","rayures"],
           pieces:[
@@ -136,12 +136,14 @@ test("Pinterest image analysis uses the vision model and returns hidden structur
     assert.deepEqual(analysis.designDetails,["broderie","coutures contrastées"]);
     assert.equal(analysis.colorHarmony,"Rose vif et bordeaux équilibrés par le blanc.");
     assert.equal(analysis.silhouetteProportions,"Cardigan court et boxy avec un pantalon très large.");
-    assert.deepEqual(analysis.pieces[0].details,["fermeture zippée","col montant"]);
+    assert.deepEqual(analysis.pieces[0].details,["zip contrasté","maille texturée"]);
     assert.deepEqual(analysis.seasonTags,["Automne","Hiver"]);
     assert.deepEqual(analysis.paletteTags,["Color block","Accents colorés"]);
-    assert.match(analysis.outfitFormula,/Veste en cuir/);
+    assert.match(analysis.outfitFormula,/Cardigan graphique/);
     assert.match(modelInput.messages[1].content.find(part => part.type==="text").text,/mode masculine uniquement/);
     assert.match(modelInput.messages[1].content.find(part => part.type==="text").text,/audience/);
+    assert.match(modelInput.messages[1].content.find(part => part.type==="text").text,/teintes précises/);
+    assert.match(modelInput.messages[1].content.find(part => part.type==="text").text,/coupes modernes/);
     assert.equal(modelName,"@cf/google/gemma-4-26b-a4b-it");
     const imagePart = modelInput.messages[1].content.find(part => part.type==="image_url");
     assert.match(imagePart.image_url.url,/^data:image\/jpeg;base64,/);
