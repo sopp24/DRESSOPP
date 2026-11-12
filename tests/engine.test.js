@@ -59,7 +59,7 @@ test("rankProducts excludes already rated products and respects price cap", func
 test("Pinterest board metadata contributes positive learned style signals", function() {
   const state = createInitialState([]);
   state.pinterestPins = [
-    { title: "Minimalist beige linen oversized outfit", description: "Clean summer streetwear" }
+    { title: "Minimalist beige linen oversized outfit", description: "Clean summer streetwear", visualAnalysis:{version:3,audience:"men",isFashion:true} }
   ];
   const learned = deriveLearnedPreferences(state);
   assert.ok(learned["styleTags:classique"] > 0);
@@ -88,7 +88,7 @@ test("rankProducts never recommends an item already saved in the wardrobe", func
 test("validating and rejecting an outfit changes learned style preferences", function() {
   const state = createInitialState([]);
   state.pinterestPins = [
-    { id: "look-1", title: "Minimalist beige linen oversized outfit" }
+    { id: "look-1", title: "Minimalist beige linen oversized outfit", visualAnalysis:{version:3,audience:"men",isFashion:true} }
   ];
   const baseline = deriveLearnedPreferences(state);
   assert.deepEqual(state.outfitFeedback, {});
