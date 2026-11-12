@@ -2007,7 +2007,7 @@ async function boot() {
   const stored = await loadState();
   const base = createInitialState(catalog);
   state = stored ? Object.assign(base, stored) : base;
-  // Migrate older local catalogues so legacy products receive the men's/mixed gender classification.
+  // Keep only products with explicit men's evidence or a confirmed men's-only manual entry.
   state.products = (Array.isArray(state.products) ? state.products : []).map(normalizeProduct).filter(function(product) { return product.gender === "men" && product.genderVerified !== false; });
   state.profile = Object.assign(base.profile, state.profile || {});
   state.profile.sizes = Object.assign(base.profile.sizes, state.profile.sizes || {});
