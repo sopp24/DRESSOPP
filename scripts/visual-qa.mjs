@@ -129,8 +129,9 @@ async function runViewport(browser, config) {
           await page.evaluate(() => {
             window.__dressoppGestureQA = [];
             const card = document.querySelector("#active-product-card");
-            if (!card) return;
-            ["pointerdown","pointermove","pointerup","pointercancel","lostpointercapture"].forEach(type => card.addEventListener(type,event => {
+            const surface = card && (card.closest(".deck-card-wrap") || card);
+            if (!surface) return;
+            ["pointerdown","pointermove","pointerup","pointercancel","lostpointercapture"].forEach(type => surface.addEventListener(type,event => {
               window.__dressoppGestureQA.push({type,pointerId:event.pointerId,button:event.button,x:Math.round(event.clientX),y:Math.round(event.clientY),className:card.className});
             }));
           });
