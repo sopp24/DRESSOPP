@@ -123,13 +123,13 @@ function flattenProducts(value) {
   const found = type.includes("product") ? [value] : [];
   return found.concat(flattenProducts(value["@graph"]),flattenProducts(value.mainEntity),flattenProducts(value.itemListElement),flattenProducts(value.item));
 }
-function inferCatalogGender(item,pageUrl) {
+function inferCatalogGender(item,pageUrl,trustDeclaredGender = true) {
   const audience = item && item.audience && typeof item.audience === "object"
     ? [item.audience.name,item.audience.suggestedGender,item.audience.genderType].filter(Boolean).join(" ")
     : item && item.audience;
-  // Seuls les indices explicites de destination masculine valident une fiche ; l'ambiguïté reste exclue.
+  // Les genres déjà calculés par les anciennes versions ne sont pas une preuve ; seuls les champs déclarés ou le texte source comptent.
   const value = clean([
-    item && item.gender,audience,item && item.name,item && item.description,
+    trustDeclaredGender && item && item.gender,audience,item && item.name,item && item.description,
     item && item.category,pageUrl
   ].filter(Boolean).join(" "));
   const women = /(^|[^a-z])(femme|femmes|woman|women|womens|female|girl|girls|ladies|damen|feminin)([^a-z]|$)/.test(value) ||
@@ -364,7 +364,10 @@ export function selectSourceBatch(sources, meta = {}, batchSize = DEFAULT_BATCH_
 export function mergeCatalog(previous,seeds,results,now = new Date(),previousMeta = {}) {
   const products = new Map();
   const identity = item => { try { return new URL(item.url).href.split("?")[0].replace(/\/+$/, "").toLowerCase(); } catch { return item.id; } };
-  (previous || []).filter(p => p && p.sourceType === "public-web" && p.url).forEach(p => products.set(identity(p),{...p}));
+  (previous || []).filter(p => p && p.sourceType === "public-web" && p.url).forEach(p => {
+    const gender = inferCatalogGender(p,p.url,p.genderVerified === true);
+    products.set(identity(p),{...p,gender,genderVerified:gender === "men"});
+  });
   (seeds || []).filter(p => p && p.url).forEach(p => { if (!products.has(identity(p))) products.set(identity(p),p); });
   (results || []).forEach(result => (result.products || []).forEach(p => products.set(identity(p),p)));
   const refreshedMerchants = new Set((results || [])
