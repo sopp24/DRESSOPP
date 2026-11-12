@@ -83,7 +83,7 @@ async function capture(page, viewportName, viewName, fullPage = false) {
 }
 
 async function clickView(page, name, mobile) {
-  const selector = (mobile ? ".mobile-nav " : ".main-nav ") + '[data-view="' + name + '"]';
+  const selector = '.mobile-nav [data-view="' + name + '"]';
   const button = page.locator(selector);
   await button.waitFor({ state:"visible", timeout:12000 });
   await button.click();
