@@ -54,6 +54,7 @@ export function isMenswearPin(pin) {
   if (visual && Number(visual.version) >= 3) {
     return visual.isFashion === true && visual.audience === "men";
   }
+  if (visual && visual.isFashion === false) return false;
   const evidence = clean([pin.title,pin.description,pin.altText,pin.alt_text,...(Array.isArray(pin.tags) ? pin.tags : [])].filter(Boolean).join(" "));
   const female = /(^|[^a-z])(femme|femmes|woman|women|womens|female|girl|girls|ladies|damen)([^a-z]|$)|pour femme|for women|womenswear/.test(evidence);
   const unisex = /(^|[^a-z])(unisexe|unisex|mixte|gender neutral|all genders)([^a-z]|$)/.test(evidence);
