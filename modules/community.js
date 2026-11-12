@@ -36,7 +36,7 @@ export function buildCommunityFeatures(state) {
   const byId = new Map((state.products || []).map(product => [product.id, product]));
   const add = (target, itemTarget, productId) => {
     const product = byId.get(productId);
-    if (!product) return;
+    if (!product || product.gender !== "men" || product.genderVerified !== true) return;
     productFeatures(product).forEach(feature => target.add(feature));
     const itemToken = productCommunityToken(product);
     if (itemToken) itemTarget.add(itemToken);
