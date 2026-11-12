@@ -4,10 +4,1236 @@
   "boardName": "mode",
   "boardId": "780952460324562575",
   "privacy": "PUBLIC",
-  "lastSync": "2026-11-11T18:11:35.849Z",
-  "totalPins": 24,
-  "newPinIds": [],
+  "lastSync": "2026-11-12T09:08:52.662Z",
+  "totalPins": 36,
+  "newPinIds": [
+    "780952391682015452",
+    "780952391682015342",
+    "780952391682015341",
+    "780952391682015323",
+    "780952391682015320",
+    "780952391682015314",
+    "780952391682015313",
+    "780952391682015312",
+    "780952391682015310",
+    "780952391682015308",
+    "780952391682015305",
+    "780952391682015297"
+  ],
   "pins": [
+    {
+      "id": "780952391682015452",
+      "title": "Roy - Noir Intense",
+      "description": "- Mocassins à pampilles\n\n- Fabriqués à la main au Portugal\n\n- Extérieur en cuir (tannerie : Espagne)\n\n- Doublure en cuir\n\n- Semelle crantée en caoutchouc cousue Blake\n\n- Trépointe en cuir",
+      "altText": "",
+      "link": "https://www.bobbies.com/fr/new-category-25/4000785372-roy-noir-intense.html",
+      "pinUrl": "https://www.pinterest.com/pin/780952391682015452/",
+      "imageUrl": "https://i.pinimg.com/1200x/47/75/1c/47751cc8ae531e4e02930c8134f268af.jpg",
+      "dominantColor": "#404149",
+      "createdAt": "2026-11-12T09:00:11",
+      "boardId": "780952460324562575",
+      "visualAnalysis": {
+        "version": 2,
+        "analyzedAt": "2026-11-12T09:05:22.202Z",
+        "sourceImageUrl": "https://i.pinimg.com/1200x/47/75/1c/47751cc8ae531e4e02930c8134f268af.jpg",
+        "model": "@cf/google/gemma-4-26b-a4b-it",
+        "isFashion": true,
+        "summary": "Tenue élégante composée de mocassins à pampilles en cuir noir à semelle épaisse, portés avec des chaussettes blanches et un pantalon noir à coupe droite.",
+        "styleTags": [
+          "Classique",
+          "Smart Casual",
+          "Preppy"
+        ],
+        "colors": [
+          "noir",
+          "blanc"
+        ],
+        "materials": [
+          "cuir"
+        ],
+        "cuts": [
+          "droit"
+        ],
+        "patterns": [
+          "uni"
+        ],
+        "pieces": [
+          {
+            "type": "mocassins",
+            "color": "noir",
+            "material": "cuir",
+            "cut": "regular",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "pantalon",
+            "color": "noir",
+            "material": "",
+            "cut": "droit",
+            "pattern": "uni",
+            "details": []
+          }
+        ],
+        "details": [
+          "semelle épaisse"
+        ],
+        "silhouetteTags": [
+          "équilibrée"
+        ],
+        "seasonTags": [
+          "Automne",
+          "Hiver"
+        ],
+        "occasionTags": [
+          "Travail",
+          "Sortie"
+        ],
+        "paletteTags": [
+          "Contraste fort",
+          "Neutres froids"
+        ],
+        "layering": "Chaussettes visibles sous le pantalon.",
+        "outfitFormula": "pantalon + chaussettes + mocassins",
+        "confidence": 1
+      }
+    },
+    {
+      "id": "780952391682015342",
+      "title": "It’s officially heavy scarf season. 🍂🧣",
+      "description": "\nKeeping the tones dark and minimal with a thick, ribbed chocolate brown knit, faded wide-leg denim, and a classic plaid wool accent. Watch until the end to check out the flat-lay breakdown.\n\nAre we rocking retro Sambas or leather boots with this cozy winter fit?\n Drop your vote below 👇🏾\n#aestheticmenswear #modernprep #streetwearstyle #winterwardrobe",
+      "altText": "",
+      "link": "https://www.instagram.com/reel/DeguJTJhs8g/",
+      "pinUrl": "https://www.pinterest.com/pin/780952391682015342/",
+      "imageUrl": "https://i.pinimg.com/1200x/f6/ef/79/f6ef799e7261598dc49cb56ef04089b2.jpg",
+      "dominantColor": "#6f665e",
+      "createdAt": "2026-11-12T08:48:22",
+      "boardId": "780952460324562575",
+      "visualAnalysis": {
+        "version": 2,
+        "analyzedAt": "2026-11-12T09:05:24.656Z",
+        "sourceImageUrl": "https://i.pinimg.com/1200x/f6/ef/79/f6ef799e7261598dc49cb56ef04089b2.jpg",
+        "model": "@cf/google/gemma-4-26b-a4b-it",
+        "isFashion": true,
+        "summary": "Tenue automnale composée d'un pull en maille marron chocolat à texture côtelée, d'un jean large délavé gris anthracite et d'une écharpe à carreaux beige et marron. La silhouette est ample et superposée.",
+        "styleTags": [
+          "Casual",
+          "Streetwear",
+          "Vintage"
+        ],
+        "colors": [
+          "marron",
+          "chocolat",
+          "beige",
+          "gris",
+          "anthracite"
+        ],
+        "materials": [
+          "maille",
+          "denim"
+        ],
+        "cuts": [
+          "oversized",
+          "large",
+          "jambe large"
+        ],
+        "patterns": [
+          "carreaux",
+          "uni"
+        ],
+        "pieces": [
+          {
+            "type": "pull",
+            "color": "marron",
+            "material": "maille",
+            "cut": "oversized",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "pantalon",
+            "color": "gris",
+            "material": "denim",
+            "cut": "wide leg",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "écharpe",
+            "color": "beige",
+            "material": "maille",
+            "cut": "long",
+            "pattern": "carreaux",
+            "details": []
+          },
+          {
+            "type": "chaussures",
+            "color": "gris",
+            "material": "daim",
+            "cut": "regular",
+            "pattern": "uni",
+            "details": []
+          }
+        ],
+        "details": [
+          "maille texturée",
+          "effet délavé",
+          "superposition"
+        ],
+        "silhouetteTags": [
+          "ample",
+          "oversize",
+          "superposée"
+        ],
+        "seasonTags": [
+          "Automne",
+          "Hiver"
+        ],
+        "occasionTags": [
+          "Quotidien",
+          "Sortie"
+        ],
+        "paletteTags": [
+          "Terreux",
+          "Désaturé"
+        ],
+        "layering": "Superposition d'un pull sur un t-shirt blanc avec une écharpe volumineuse.",
+        "outfitFormula": "pull + pantalon + écharpe + chaussures",
+        "confidence": 0.95
+      }
+    },
+    {
+      "id": "780952391682015341",
+      "title": "Striped Long Sleeve Polo & Cream Shorts | Summer Outfit Inspiration",
+      "description": " Effortless summer styling featuring the G18 Studios Lightweight Striped Long Sleeve Polo paired with our Cotton Twill Pleated Shorts in Cream. A relaxed, oversized fit with soft blue stripes, a contrasting navy collar and neutral tones. Perfect for everyday streetwear, coffee runs and laid-back summer outfits.",
+      "altText": "",
+      "link": "",
+      "pinUrl": "https://www.pinterest.com/pin/780952391682015341/",
+      "imageUrl": "https://i.pinimg.com/1200x/8e/74/61/8e7461e533e010db401f1b3241f96b3a.jpg",
+      "dominantColor": "#9d978f",
+      "createdAt": "2026-11-12T08:48:13",
+      "boardId": "780952460324562575",
+      "visualAnalysis": {
+        "version": 2,
+        "analyzedAt": "2026-11-12T09:05:23.666Z",
+        "sourceImageUrl": "https://i.pinimg.com/1200x/8e/74/61/8e7461e533e010db401f1b3241f96b3a.jpg",
+        "model": "@cf/google/gemma-4-26b-a4b-it",
+        "isFashion": true,
+        "summary": "Tenue d'été décontractée composée d'un polo à manches longues rayé bleu ciel et blanc avec col contrasté marine, porté avec un short en coton crème à pinces.",
+        "styleTags": [
+          "Casual",
+          "Été",
+          "Preppy"
+        ],
+        "colors": [
+          "bleu ciel",
+          "blanc",
+          "marine",
+          "crème"
+        ],
+        "materials": [
+          "coton"
+        ],
+        "cuts": [
+          "relaxed",
+          "ample",
+          "a pinces"
+        ],
+        "patterns": [
+          "rayures",
+          "uni"
+        ],
+        "pieces": [
+          {
+            "type": "polo",
+            "color": "bleu ciel",
+            "material": "coton",
+            "cut": "relaxed",
+            "pattern": "rayures",
+            "details": []
+          },
+          {
+            "type": "short",
+            "color": "crème",
+            "material": "coton",
+            "cut": "ample",
+            "pattern": "uni",
+            "details": []
+          }
+        ],
+        "details": [
+          "col polo",
+          "pinces",
+          "superposition"
+        ],
+        "silhouetteTags": [
+          "ample",
+          "équilibrée"
+        ],
+        "seasonTags": [
+          "Été"
+        ],
+        "occasionTags": [
+          "Quotidien",
+          "Sortie",
+          "Extérieur"
+        ],
+        "paletteTags": [
+          "Contraste doux",
+          "Désaturé"
+        ],
+        "layering": "",
+        "outfitFormula": "polo + short",
+        "confidence": 0.95
+      }
+    },
+    {
+      "id": "780952391682015323",
+      "title": "Men’s Sweaters Outfit Shop now | Stylish Sweater Trends for Men",
+      "description": "Upgrade your wardrobe with the best men’s sweaters and stylish sweater outfit ideas for every occasion. Discover trendy men’s sweater styles, including classic crewneck sweaters, turtleneck sweaters, oversized sweaters, cable-knit sweaters, and casual winter knits. Get inspired by modern men's fashion, learn how to style sweaters with jeans, chinos, and jackets, and create effortlessly stylish outfits for fall and winter. Whether you love minimalist fashion, smart casual looks, or cozy everyday outfits, these men's sweater trends will help you elevate your style. Save this pin for men's fashion inspiration, winter outfit ideas, and the latest sweater trends! \nDisclosure: Some links are affiliate links. I may earn a commission at no extra cost to you.",
+      "altText": "",
+      "link": "https://www.amazon.com/shop/stufftobuy/list/2FXICE0WPQIBX?ref_=aipsflist&tag=stufftobuy048-20&originMarketplaceId=ATVPDKIKX0DER",
+      "pinUrl": "https://www.pinterest.com/pin/780952391682015323/",
+      "imageUrl": "https://i.pinimg.com/1200x/f6/37/ad/f637adf77755e23c1580f40f5b062c21.jpg",
+      "dominantColor": "#69635c",
+      "createdAt": "2026-11-12T08:46:30",
+      "boardId": "780952460324562575",
+      "visualAnalysis": {
+        "version": 2,
+        "analyzedAt": "2026-11-12T09:05:35.183Z",
+        "sourceImageUrl": "https://i.pinimg.com/1200x/f6/37/ad/f637adf77755e23c1580f40f5b062c21.jpg",
+        "model": "@cf/google/gemma-4-26b-a4b-it",
+        "isFashion": true,
+        "summary": "Tenue décontractée composée d'un pull en maille texturée bordeaux à col rond et d'un jean bleu clair à coupe large. La silhouette est ample et relaxée.",
+        "styleTags": [
+          "Casual",
+          "Streetwear"
+        ],
+        "colors": [
+          "bordeaux",
+          "bleu"
+        ],
+        "materials": [
+          "maille",
+          "denim"
+        ],
+        "cuts": [
+          "oversized",
+          "large",
+          "jambe large"
+        ],
+        "patterns": [
+          "uni"
+        ],
+        "pieces": [
+          {
+            "type": "pull",
+            "color": "bordeaux",
+            "material": "maille",
+            "cut": "oversized",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "jean",
+            "color": "bleu",
+            "material": "denim",
+            "cut": "large",
+            "pattern": "uni",
+            "details": []
+          }
+        ],
+        "details": [
+          "maille texturée",
+          "col rond"
+        ],
+        "silhouetteTags": [
+          "ample",
+          "oversize"
+        ],
+        "seasonTags": [
+          "Automne",
+          "Hiver"
+        ],
+        "occasionTags": [
+          "Quotidien"
+        ],
+        "paletteTags": [
+          "Contraste fort"
+        ],
+        "layering": "Un t-shirt blanc est visible sous le pull.",
+        "outfitFormula": "pull + jean",
+        "confidence": 0.95
+      }
+    },
+    {
+      "id": "780952391682015320",
+      "title": "",
+      "description": " ",
+      "altText": "",
+      "link": "",
+      "pinUrl": "https://www.pinterest.com/pin/780952391682015320/",
+      "imageUrl": "https://i.pinimg.com/1200x/07/a1/09/07a1092761f320a313f99e6477665755.jpg",
+      "dominantColor": "#95857c",
+      "createdAt": "2026-11-12T08:46:20",
+      "boardId": "780952460324562575",
+      "visualAnalysis": {
+        "version": 2,
+        "analyzedAt": "2026-11-12T09:05:36.788Z",
+        "sourceImageUrl": "https://i.pinimg.com/1200x/07/a1/09/07a1092761f320a313f99e6477665755.jpg",
+        "model": "@cf/google/gemma-4-26b-a4b-it",
+        "isFashion": true,
+        "summary": "Un cardigan en maille texturée à rayures horizontales bordeaux et rose. La pièce présente une coupe boxy et une fermeture zippée sur le devant.",
+        "styleTags": [
+          "Créatif",
+          "Streetwear",
+          "Vintage"
+        ],
+        "colors": [
+          "bordeaux",
+          "rose"
+        ],
+        "materials": [
+          "maille"
+        ],
+        "cuts": [
+          "boxy",
+          "court"
+        ],
+        "patterns": [
+          "rayures"
+        ],
+        "pieces": [
+          {
+            "type": "cardigan",
+            "color": "",
+            "material": "maille",
+            "cut": "boxy",
+            "pattern": "rayures",
+            "details": []
+          }
+        ],
+        "details": [
+          "fermeture zippée",
+          "maille texturée",
+          "logo apparent"
+        ],
+        "silhouetteTags": [
+          "boxy",
+          "courte"
+        ],
+        "seasonTags": [
+          "Automne",
+          "Hiver"
+        ],
+        "occasionTags": [
+          "Sortie",
+          "Quotidien"
+        ],
+        "paletteTags": [
+          "Contraste fort"
+        ],
+        "layering": "",
+        "outfitFormula": "cardigan",
+        "confidence": 1
+      }
+    },
+    {
+      "id": "780952391682015314",
+      "title": "39 Corduroy Pants Mens Ideas",
+      "description": "Corduroy pants are a classic menswear must‑have that adds texture, warmth and easy style to any look. Corduroy pants work well in streetwear or neat ... \nRead More >\nThe post 39 Corduroy Pants Mens Ideas first appeared on Modern Gentleman.",
+      "altText": "",
+      "link": "https://www.moderngentlemanmagazine.com/39-corduroy-pants-mens-ideas/",
+      "pinUrl": "https://www.pinterest.com/pin/780952391682015314/",
+      "imageUrl": "https://i.pinimg.com/1200x/3e/b6/a8/3eb6a8ed8977c0b2674dbf2b95906c94.jpg",
+      "dominantColor": "#776361",
+      "createdAt": "2026-11-12T08:46:04",
+      "boardId": "780952460324562575",
+      "visualAnalysis": {
+        "version": 2,
+        "analyzedAt": "2026-11-12T09:05:34.269Z",
+        "sourceImageUrl": "https://i.pinimg.com/1200x/3e/b6/a8/3eb6a8ed8977c0b2674dbf2b95906c94.jpg",
+        "model": "@cf/google/gemma-4-26b-a4b-it",
+        "isFashion": true,
+        "summary": "Tenue composée d'une veste bordeaux en cuir à coupe structurée portée sur un t-shirt blanc, avec un pantalon noir large à pinces et un grand sac noir.",
+        "styleTags": [
+          "Smart Casual",
+          "Streetwear",
+          "Classique"
+        ],
+        "colors": [
+          "bordeaux",
+          "blanc",
+          "noir"
+        ],
+        "materials": [
+          "cuir",
+          "coton"
+        ],
+        "cuts": [
+          "oversized",
+          "large",
+          "structurée",
+          "taille haute"
+        ],
+        "patterns": [
+          "uni"
+        ],
+        "pieces": [
+          {
+            "type": "veste",
+            "color": "bordeaux",
+            "material": "cuir",
+            "cut": "structurée",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "t-shirt",
+            "color": "blanc",
+            "material": "coton",
+            "cut": "regular",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "pantalon",
+            "color": "noir",
+            "material": "viscose",
+            "cut": "large",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "sac",
+            "color": "noir",
+            "material": "cuir",
+            "cut": "large",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "ceinture",
+            "color": "noir",
+            "material": "cuir",
+            "cut": "regular",
+            "pattern": "uni",
+            "details": []
+          }
+        ],
+        "details": [
+          "revers",
+          "pinces",
+          "superposition"
+        ],
+        "silhouetteTags": [
+          "ample",
+          "structurée",
+          "superposée"
+        ],
+        "seasonTags": [
+          "Automne"
+        ],
+        "occasionTags": [
+          "Sortie",
+          "Quotidien"
+        ],
+        "paletteTags": [
+          "Contraste fort"
+        ],
+        "layering": "Veste portée sur un t-shirt.",
+        "outfitFormula": "veste + t-shirt + pantalon",
+        "confidence": 0.95
+      }
+    },
+    {
+      "id": "780952391682015313",
+      "title": "",
+      "description": " ",
+      "altText": "",
+      "link": "",
+      "pinUrl": "https://www.pinterest.com/pin/780952391682015313/",
+      "imageUrl": "https://i.pinimg.com/1200x/e1/51/0d/e1510d967fef05077ebc8f20c504b16b.jpg",
+      "dominantColor": "#92747f",
+      "createdAt": "2026-11-12T08:46:00",
+      "boardId": "780952460324562575",
+      "visualAnalysis": {
+        "version": 2,
+        "analyzedAt": "2026-11-12T09:05:47.078Z",
+        "sourceImageUrl": "https://i.pinimg.com/1200x/e1/51/0d/e1510d967fef05077ebc8f20c504b16b.jpg",
+        "model": "@cf/google/gemma-4-26b-a4b-it",
+        "isFashion": true,
+        "summary": "Cardigan à fermeture zippée présentant un dégradé de rose, allant du rose pâle au rose vif. La pièce est confectionnée dans une maille texturée et volumineuse, avec un col polo et des finitions en bord-côte.",
+        "styleTags": [
+          "Créatif",
+          "Vintage"
+        ],
+        "colors": [
+          "rose"
+        ],
+        "materials": [
+          "maille"
+        ],
+        "cuts": [
+          "oversized",
+          "court"
+        ],
+        "patterns": [
+          "uni"
+        ],
+        "pieces": [
+          {
+            "type": "cardigan",
+            "color": "rose",
+            "material": "maille",
+            "cut": "oversized",
+            "pattern": "uni",
+            "details": [
+              "fermeture zippée",
+              "col polo",
+              "maille texturée",
+              "poches plaquées"
+            ]
+          }
+        ],
+        "details": [
+          "fermeture zippée",
+          "col polo",
+          "poches plaquées",
+          "maille texturée",
+          "logo apparent"
+        ],
+        "silhouetteTags": [
+          "oversize",
+          "courte",
+          "ample"
+        ],
+        "seasonTags": [
+          "Automne",
+          "Hiver"
+        ],
+        "occasionTags": [
+          "Sortie"
+        ],
+        "paletteTags": [
+          "Ton sur ton"
+        ],
+        "layering": "",
+        "outfitFormula": "cardigan",
+        "confidence": 1
+      }
+    },
+    {
+      "id": "780952391682015312",
+      "title": "",
+      "description": " ",
+      "altText": "",
+      "link": "",
+      "pinUrl": "https://www.pinterest.com/pin/780952391682015312/",
+      "imageUrl": "https://i.pinimg.com/1200x/23/55/e5/2355e59b2cdd6882104517706bd99555.jpg",
+      "dominantColor": "#604632",
+      "createdAt": "2026-11-12T08:45:55",
+      "boardId": "780952460324562575",
+      "visualAnalysis": {
+        "version": 2,
+        "analyzedAt": "2026-11-12T09:05:53.196Z",
+        "sourceImageUrl": "https://i.pinimg.com/1200x/23/55/e5/2355e59b2cdd6882104517706bd99555.jpg",
+        "model": "@cf/google/gemma-4-26b-a4b-it",
+        "isFashion": true,
+        "summary": "Tenue masculine aux tons terreux composée d'un blouson en cuir marron foncé, d'un cardigan en maille côtelée marron, d'un t-shirt blanc et d'un pantalon large à pinces marron. La silhouette est ample et structurée, jouant sur des superpositions de textures et de nuances de marron.",
+        "styleTags": [
+          "Smart Casual",
+          "Casual",
+          "Heritage"
+        ],
+        "colors": [
+          "marron",
+          "blanc"
+        ],
+        "materials": [
+          "cuir",
+          "maille"
+        ],
+        "cuts": [
+          "oversized",
+          "large",
+          "taille haute",
+          "structurée"
+        ],
+        "patterns": [
+          "uni"
+        ],
+        "pieces": [
+          {
+            "type": "blouson",
+            "color": "marron",
+            "material": "cuir",
+            "cut": "court",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "cardigan",
+            "color": "marron",
+            "material": "maille",
+            "cut": "regular",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "t-shirt",
+            "color": "blanc",
+            "material": "coton",
+            "cut": "regular",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "pantalon",
+            "color": "marron",
+            "material": "coton",
+            "cut": "wide leg",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "chaussures",
+            "color": "marron",
+            "material": "cuir",
+            "cut": "regular",
+            "pattern": "uni",
+            "details": []
+          }
+        ],
+        "details": [
+          "boutonnage",
+          "pinces",
+          "maille texturée",
+          "fermeture zippée",
+          "col montant",
+          "semelle épaisse"
+        ],
+        "silhouetteTags": [
+          "ample",
+          "oversize",
+          "structurée",
+          "longue"
+        ],
+        "seasonTags": [
+          "Automne",
+          "Hiver"
+        ],
+        "occasionTags": [
+          "Quotidien",
+          "Sortie"
+        ],
+        "paletteTags": [
+          "Ton sur ton",
+          "Terreux"
+        ],
+        "layering": "Superposition d'un t-shirt blanc sous un cardigan marron, lui-même porté sous un blouson en cuir.",
+        "outfitFormula": "t-shirt + cardigan + blouson + pantalon + chaussures",
+        "confidence": 0.95
+      }
+    },
+    {
+      "id": "780952391682015310",
+      "title": "",
+      "description": " ",
+      "altText": "",
+      "link": "",
+      "pinUrl": "https://www.pinterest.com/pin/780952391682015310/",
+      "imageUrl": "https://i.pinimg.com/1200x/80/4b/30/804b3063559a8f733ac56a1d30a2713e.jpg",
+      "dominantColor": "#483d3c",
+      "createdAt": "2026-11-12T08:45:52",
+      "boardId": "780952460324562575",
+      "visualAnalysis": {
+        "version": 2,
+        "analyzedAt": "2026-11-12T09:06:01.314Z",
+        "sourceImageUrl": "https://i.pinimg.com/1200x/80/4b/30/804b3063559a8f733ac56a1d30a2713e.jpg",
+        "model": "@cf/google/gemma-4-26b-a4b-it",
+        "isFashion": true,
+        "summary": "Tenue de style smart casual composée d'un pull demi-zip en maille marron sur une chemise blanche et une cravate bordeaux, associée à un pantalon en denim foncé et des chaussures en cuir marron.",
+        "styleTags": [
+          "Smart Casual",
+          "Preppy",
+          "Casual"
+        ],
+        "colors": [
+          "marron",
+          "blanc",
+          "bordeaux",
+          "bleu",
+          "noir"
+        ],
+        "materials": [
+          "maille",
+          "coton",
+          "cuir",
+          "denim"
+        ],
+        "cuts": [
+          "regular",
+          "droit"
+        ],
+        "patterns": [
+          "uni"
+        ],
+        "pieces": [
+          {
+            "type": "pull",
+            "color": "marron",
+            "material": "maille",
+            "cut": "regular",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "chemise",
+            "color": "blanc",
+            "material": "coton",
+            "cut": "regular",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "cravate",
+            "color": "bordeaux",
+            "material": "soie",
+            "cut": "regular",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "pantalon",
+            "color": "bleu",
+            "material": "denim",
+            "cut": "droit",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "chaussures",
+            "color": "marron",
+            "material": "cuir",
+            "cut": "regular",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "casquette",
+            "color": "noir",
+            "material": "coton",
+            "cut": "regular",
+            "pattern": "logo",
+            "details": []
+          },
+          {
+            "type": "lunettes",
+            "color": "noir",
+            "material": "",
+            "cut": "regular",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "bijoux",
+            "color": "",
+            "material": "",
+            "cut": "regular",
+            "pattern": "uni",
+            "details": []
+          }
+        ],
+        "details": [
+          "demi-zip",
+          "col montant",
+          "logo apparent",
+          "superposition"
+        ],
+        "silhouetteTags": [
+          "équilibrée",
+          "droite"
+        ],
+        "seasonTags": [
+          "Automne"
+        ],
+        "occasionTags": [
+          "Quotidien",
+          "Sortie"
+        ],
+        "paletteTags": [
+          "Terreux",
+          "Contraste doux"
+        ],
+        "layering": "Superposition d'un pull demi-zip sur une chemise et une cravate.",
+        "outfitFormula": "casquette + pull + chemise + cravate + pantalon + chaussures",
+        "confidence": 0.95
+      }
+    },
+    {
+      "id": "780952391682015308",
+      "title": "inst - eelxmir",
+      "description": " ",
+      "altText": "",
+      "link": "",
+      "pinUrl": "https://www.pinterest.com/pin/780952391682015308/",
+      "imageUrl": "https://i.pinimg.com/1200x/9e/17/aa/9e17aa76cffec94e36142a8d6e7e3e73.jpg",
+      "dominantColor": "#3d332b",
+      "createdAt": "2026-11-12T08:45:46",
+      "boardId": "780952460324562575",
+      "visualAnalysis": {
+        "version": 2,
+        "analyzedAt": "2026-11-12T09:06:17.960Z",
+        "sourceImageUrl": "https://i.pinimg.com/1200x/9e/17/aa/9e17aa76cffec94e36142a8d6e7e3e73.jpg",
+        "model": "@cf/google/gemma-4-26b-a4b-it",
+        "isFashion": true,
+        "summary": "Tenue composée d'un pull noir sur une chemise blanche à rayures, associée à un pantalon large en laine grise anthracite et des chaussures noires. La silhouette est ample et superposée.",
+        "styleTags": [
+          "Smart Casual",
+          "Classique"
+        ],
+        "colors": [
+          "noir",
+          "blanc",
+          "gris",
+          "anthracite"
+        ],
+        "materials": [
+          "laine",
+          "coton"
+        ],
+        "cuts": [
+          "oversized",
+          "large",
+          "jambe large"
+        ],
+        "patterns": [
+          "rayures",
+          "uni"
+        ],
+        "pieces": [
+          {
+            "type": "pull",
+            "color": "noir",
+            "material": "maille",
+            "cut": "regular",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "chemise",
+            "color": "blanc",
+            "material": "coton",
+            "cut": "regular",
+            "pattern": "rayures",
+            "details": []
+          },
+          {
+            "type": "pantalon",
+            "color": "gris",
+            "material": "laine",
+            "cut": "wide leg",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "chaussures",
+            "color": "noir",
+            "material": "cuir",
+            "cut": "regular",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "ceinture",
+            "color": "noir",
+            "material": "cuir",
+            "cut": "regular",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "bijoux",
+            "color": "",
+            "material": "",
+            "cut": "regular",
+            "pattern": "uni",
+            "details": []
+          }
+        ],
+        "details": [
+          "superposition",
+          "pinces",
+          "boutonnage"
+        ],
+        "silhouetteTags": [
+          "ample",
+          "superposée"
+        ],
+        "seasonTags": [
+          "Automne",
+          "Hiver"
+        ],
+        "occasionTags": [
+          "Sortie",
+          "Travail"
+        ],
+        "paletteTags": [
+          "Neutres froids",
+          "Contraste fort"
+        ],
+        "layering": "Pull noir porté sur une chemise blanche à rayures.",
+        "outfitFormula": "pull + chemise + pantalon + chaussures",
+        "confidence": 0.9
+      }
+    },
+    {
+      "id": "780952391682015305",
+      "title": "Best 12 Men’s Hockey Game Outfit Ideas for 2026",
+      "description": "A men’s hockey game outfit should feel warm enough for a cold arena, comfortable enough for several hours in the stands, and still look intentional before and after the game. An oversized hockey jersey is the obvious starting point, but hoodies, relaxed jeans, cargos, sweatpants, varsity jackets, and simple sneakers can all work just as […]",
+      "altText": "",
+      "link": "https://www.theinspireroom.com/12-mens-hockey-game-outfit-ideas-for-2026/",
+      "pinUrl": "https://www.pinterest.com/pin/780952391682015305/",
+      "imageUrl": "https://i.pinimg.com/1200x/b5/f9/24/b5f92400b47469b4373d7c8a340dffaa.jpg",
+      "dominantColor": "#7e8086",
+      "createdAt": "2026-11-12T08:45:40",
+      "boardId": "780952460324562575",
+      "visualAnalysis": {
+        "version": 2,
+        "analyzedAt": "2026-11-12T09:06:21.351Z",
+        "sourceImageUrl": "https://i.pinimg.com/1200x/b5/f9/24/b5f92400b47469b4373d7c8a340dffaa.jpg",
+        "model": "@cf/google/gemma-4-26b-a4b-it",
+        "isFashion": true,
+        "summary": "Tenue streetwear composée d'une veste en sherpa bicolore crème et olive sur un t-shirt blanc, associée à un pantalon cargo large kaki et des baskets massives.",
+        "styleTags": [
+          "Streetwear",
+          "Casual"
+        ],
+        "colors": [
+          "crème",
+          "olive",
+          "blanc",
+          "kaki",
+          "beige"
+        ],
+        "materials": [
+          "maille",
+          "coton"
+        ],
+        "cuts": [
+          "oversized",
+          "ample",
+          "large"
+        ],
+        "patterns": [
+          "uni"
+        ],
+        "pieces": [
+          {
+            "type": "veste",
+            "color": "crème",
+            "material": "maille",
+            "cut": "oversized",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "t-shirt",
+            "color": "blanc",
+            "material": "coton",
+            "cut": "regular",
+            "pattern": "graphique",
+            "details": []
+          },
+          {
+            "type": "pantalon",
+            "color": "kaki",
+            "material": "coton",
+            "cut": "baggy",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "baskets",
+            "color": "beige",
+            "material": "cuir",
+            "cut": "regular",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "casquette",
+            "color": "noir",
+            "material": "coton",
+            "cut": "regular",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "lunettes",
+            "color": "marron",
+            "material": "",
+            "cut": "regular",
+            "pattern": "uni",
+            "details": []
+          }
+        ],
+        "details": [
+          "fermeture zippée",
+          "poches cargo",
+          "logo apparent",
+          "semelle épaisse",
+          "superposition"
+        ],
+        "silhouetteTags": [
+          "oversize",
+          "ample",
+          "superposée"
+        ],
+        "seasonTags": [
+          "Automne"
+        ],
+        "occasionTags": [
+          "Quotidien",
+          "Sortie",
+          "Extérieur"
+        ],
+        "paletteTags": [
+          "Terreux",
+          "Désaturé"
+        ],
+        "layering": "Superposition d'une veste épaisse sur un t-shirt blanc.",
+        "outfitFormula": "veste + t-shirt + pantalon + baskets",
+        "confidence": 0.95
+      }
+    },
+    {
+      "id": "780952391682015297",
+      "title": "",
+      "description": " ",
+      "altText": "",
+      "link": "",
+      "pinUrl": "https://www.pinterest.com/pin/780952391682015297/",
+      "imageUrl": "https://i.pinimg.com/1200x/bf/7b/b8/bf7bb81d715dfe1029abc1f36743997c.jpg",
+      "dominantColor": "#5f524b",
+      "createdAt": "2026-11-12T08:45:12",
+      "boardId": "780952460324562575",
+      "visualAnalysis": {
+        "version": 2,
+        "analyzedAt": "2026-11-12T09:06:18.622Z",
+        "sourceImageUrl": "https://i.pinimg.com/1200x/bf/7b/b8/bf7bb81d715dfe1029abc1f36743997c.jpg",
+        "model": "@cf/google/gemma-4-26b-a4b-it",
+        "isFashion": true,
+        "summary": "Tenue décontractée élégante composée d'une veste marron à col montant sur une chemise rayée bleue et blanche, portée avec un t-shirt blanc. Le bas est constitué d'un pantalon large écru maintenu par une ceinture noire, complété par des mocassins noirs.",
+        "styleTags": [
+          "Smart Casual",
+          "Casual",
+          "Heritage"
+        ],
+        "colors": [
+          "marron",
+          "bleu",
+          "blanc",
+          "écru",
+          "noir"
+        ],
+        "materials": [
+          "coton"
+        ],
+        "cuts": [
+          "ample",
+          "large",
+          "droit"
+        ],
+        "patterns": [
+          "rayures",
+          "uni"
+        ],
+        "pieces": [
+          {
+            "type": "veste",
+            "color": "marron",
+            "material": "coton",
+            "cut": "regular",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "chemise",
+            "color": "bleu",
+            "material": "coton",
+            "cut": "regular",
+            "pattern": "rayures",
+            "details": []
+          },
+          {
+            "type": "t-shirt",
+            "color": "blanc",
+            "material": "coton",
+            "cut": "regular",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "pantalon",
+            "color": "écru",
+            "material": "coton",
+            "cut": "large",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "ceinture",
+            "color": "noir",
+            "material": "cuir",
+            "cut": "regular",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "mocassins",
+            "color": "noir",
+            "material": "cuir",
+            "cut": "regular",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "bijoux",
+            "color": "",
+            "material": "",
+            "cut": "regular",
+            "pattern": "uni",
+            "details": []
+          }
+        ],
+        "details": [
+          "boutonnage",
+          "revers",
+          "superposition"
+        ],
+        "silhouetteTags": [
+          "ample",
+          "équilibrée"
+        ],
+        "seasonTags": [
+          "Printemps",
+          "Automne"
+        ],
+        "occasionTags": [
+          "Quotidien",
+          "Sortie"
+        ],
+        "paletteTags": [
+          "Terreux",
+          "Contraste doux"
+        ],
+        "layering": "Superposition d'un t-shirt blanc sous une chemise rayée, elle-même sous une veste marron.",
+        "outfitFormula": "veste + chemise + t-shirt + pantalon + mocassins",
+        "confidence": 0.95
+      }
+    },
     {
       "id": "780952391681965140",
       "title": "Slate Blue Monochrome Streetwear Outfit | Luxury Men's Fashion 2026",
@@ -20,16 +1246,15 @@
       "createdAt": "2026-11-09T15:12:35",
       "boardId": "780952460324562575",
       "visualAnalysis": {
-        "version": 1,
-        "analyzedAt": "2026-11-09T21:11:52.625Z",
+        "version": 2,
+        "analyzedAt": "2026-11-12T09:06:37.391Z",
         "sourceImageUrl": "https://i.pinimg.com/1200x/47/8f/73/478f739412ad1d58e911f7ef5e2818bf.jpg",
         "model": "@cf/google/gemma-4-26b-a4b-it",
         "isFashion": true,
-        "summary": "Tenue monochrome bleu ardoise composée d'un hoodie oversize structuré porté sur une chemise avec cravate à motifs, agrémentée de bijoux argentés imposants.",
+        "summary": "Tenue monochrome bleu ardoise composée d'une veste à capuche oversize avec détails métalliques, d'une chemise boutonnée avec cravate à motifs, et d'un pantalon à pinces. L'ensemble présente une silhouette ample et superposée avec des accessoires bijoux imposants.",
         "styleTags": [
           "Streetwear",
-          "Smart Casual",
-          "Créatif"
+          "Smart Casual"
         ],
         "colors": [
           "bleu"
@@ -39,12 +1264,89 @@
         ],
         "cuts": [
           "oversized",
-          "ample"
+          "ample",
+          "taille haute",
+          "a pinces"
         ],
         "patterns": [
+          "uni",
           "graphique"
         ],
-        "confidence": 0.95
+        "pieces": [
+          {
+            "type": "veste",
+            "color": "bleu",
+            "material": "coton",
+            "cut": "oversized",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "chemise",
+            "color": "bleu",
+            "material": "coton",
+            "cut": "regular",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "cravate",
+            "color": "bleu",
+            "material": "soie",
+            "cut": "regular",
+            "pattern": "graphique",
+            "details": []
+          },
+          {
+            "type": "pantalon",
+            "color": "bleu",
+            "material": "coton",
+            "cut": "a pinces",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "ceinture",
+            "color": "bleu",
+            "material": "cuir",
+            "cut": "regular",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "bijoux",
+            "color": "",
+            "material": "",
+            "cut": "regular",
+            "pattern": "uni",
+            "details": []
+          }
+        ],
+        "details": [
+          "fermeture zippée",
+          "boutonnage",
+          "pinces",
+          "logo apparent",
+          "superposition"
+        ],
+        "silhouetteTags": [
+          "oversize",
+          "ample",
+          "superposée"
+        ],
+        "seasonTags": [
+          "Toute saison"
+        ],
+        "occasionTags": [
+          "Sortie"
+        ],
+        "paletteTags": [
+          "Monochrome",
+          "Ton sur ton"
+        ],
+        "layering": "Superposition d'une chemise et d'une cravate sous une veste à capuche oversize.",
+        "outfitFormula": "veste + chemise + cravate + pantalon",
+        "confidence": 0.9
       }
     },
     {
@@ -59,23 +1361,22 @@
       "createdAt": "2026-11-09T15:12:26",
       "boardId": "780952460324562575",
       "visualAnalysis": {
-        "version": 1,
-        "analyzedAt": "2026-11-09T21:11:54.174Z",
+        "version": 2,
+        "analyzedAt": "2026-11-12T09:06:38.853Z",
         "sourceImageUrl": "https://i.pinimg.com/1200x/fe/d1/cc/fed1ccfbdd0e688c46e774a2fbe4dc24.jpg",
         "model": "@cf/google/gemma-4-26b-a4b-it",
         "isFashion": true,
-        "summary": "Une tenue élégante composée d'un polo en maille marron sur une chemise blanche avec cravate, accompagnée d'un pantalon à pinces gris anthracite, de chaussures en cuir marron et d'un grand sac en cuir.",
+        "summary": "Tenue élégante composée d'un polo en maille marron sur une chemise blanche avec cravate, associée à un pantalon à pinces gris anthracite large et des derbies en cuir marron.",
         "styleTags": [
           "Classique",
           "Smart Casual",
-          "Heritage"
+          "Preppy"
         ],
         "colors": [
           "marron",
           "blanc",
           "gris",
-          "anthracite",
-          "chocolat"
+          "anthracite"
         ],
         "materials": [
           "maille",
@@ -84,10 +1385,93 @@
         ],
         "cuts": [
           "large",
-          "a pinces",
+          "droit",
           "regular"
         ],
-        "patterns": [],
+        "patterns": [
+          "uni"
+        ],
+        "pieces": [
+          {
+            "type": "polo",
+            "color": "marron",
+            "material": "maille",
+            "cut": "regular",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "chemise",
+            "color": "blanc",
+            "material": "coton",
+            "cut": "regular",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "cravate",
+            "color": "marron",
+            "material": "soie",
+            "cut": "regular",
+            "pattern": "graphique",
+            "details": []
+          },
+          {
+            "type": "pantalon",
+            "color": "gris",
+            "material": "laine",
+            "cut": "large",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "derbies",
+            "color": "marron",
+            "material": "cuir",
+            "cut": "regular",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "ceinture",
+            "color": "marron",
+            "material": "cuir",
+            "cut": "regular",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "sac",
+            "color": "marron",
+            "material": "cuir",
+            "cut": "large",
+            "pattern": "uni",
+            "details": []
+          }
+        ],
+        "details": [
+          "col polo",
+          "pinces",
+          "lacets",
+          "superposition"
+        ],
+        "silhouetteTags": [
+          "ample",
+          "équilibrée"
+        ],
+        "seasonTags": [
+          "Automne"
+        ],
+        "occasionTags": [
+          "Travail",
+          "Sortie"
+        ],
+        "paletteTags": [
+          "Terreux",
+          "Désaturé"
+        ],
+        "layering": "Superposition d'un polo sur une chemise avec cravate.",
+        "outfitFormula": "polo + chemise + cravate + pantalon + derbies",
         "confidence": 1
       }
     },
@@ -103,12 +1487,12 @@
       "createdAt": "2026-11-04T14:21:49",
       "boardId": "780952460324562575",
       "visualAnalysis": {
-        "version": 1,
-        "analyzedAt": "2026-11-09T13:59:23.057Z",
+        "version": 2,
+        "analyzedAt": "2026-11-12T09:06:34.759Z",
         "sourceImageUrl": "https://i.pinimg.com/1200x/f3/26/09/f32609de15dc419532b3f0b8c66f01bc.jpg",
         "model": "@cf/google/gemma-4-26b-a4b-it",
         "isFashion": true,
-        "summary": "Une tenue décontractée composée d'un cardigan bleu ciel à col blanc, d'un pantalon large blanc et d'une casquette de baseball assortie.",
+        "summary": "Tenue décontractée composée d'un cardigan bleu ciel à col blanc, d'un pantalon blanc à jambe large et d'une casquette blanche. La silhouette est équilibrée entre le haut ajusté et le bas ample.",
         "styleTags": [
           "Smart Casual",
           "Casual",
@@ -116,19 +1500,82 @@
         ],
         "colors": [
           "bleu ciel",
-          "blanc",
-          "marine"
+          "blanc"
         ],
         "materials": [
-          "maille",
-          "coton"
+          "maille"
         ],
         "cuts": [
-          "wide leg",
-          "regular"
+          "large",
+          "jambe large"
         ],
-        "patterns": [],
-        "confidence": 0.95
+        "patterns": [
+          "uni"
+        ],
+        "pieces": [
+          {
+            "type": "cardigan",
+            "color": "bleu ciel",
+            "material": "maille",
+            "cut": "regular",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "pantalon",
+            "color": "blanc",
+            "material": "",
+            "cut": "large",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "casquette",
+            "color": "blanc",
+            "material": "",
+            "cut": "",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "chaussures",
+            "color": "marron",
+            "material": "",
+            "cut": "",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "sac",
+            "color": "bleu",
+            "material": "",
+            "cut": "",
+            "pattern": "uni",
+            "details": []
+          }
+        ],
+        "details": [
+          "col polo",
+          "boutonnage",
+          "logo apparent"
+        ],
+        "silhouetteTags": [
+          "équilibrée",
+          "ample"
+        ],
+        "seasonTags": [
+          "Printemps"
+        ],
+        "occasionTags": [
+          "Quotidien",
+          "Sortie"
+        ],
+        "paletteTags": [
+          "Contraste doux"
+        ],
+        "layering": "Un t-shirt blanc est porté sous le cardigan bleu ciel.",
+        "outfitFormula": "cardigan + pantalon + casquette",
+        "confidence": 0.9
       }
     },
     {
@@ -143,12 +1590,12 @@
       "createdAt": "2026-11-04T14:21:34",
       "boardId": "780952460324562575",
       "visualAnalysis": {
-        "version": 1,
-        "analyzedAt": "2026-11-09T13:59:22.937Z",
+        "version": 2,
+        "analyzedAt": "2026-11-12T09:06:50.268Z",
         "sourceImageUrl": "https://i.pinimg.com/1200x/44/85/33/4485331a6a2c2d6217945409f6053033.jpg",
         "model": "@cf/google/gemma-4-26b-a4b-it",
         "isFashion": true,
-        "summary": "Un pull à col montant zippé à moitié avec des rayures horizontales noires sur un fond gris chiné, porté avec un t-shirt blanc et un jean bleu foncé.",
+        "summary": "Un pull à col montant avec demi-zip et rayures horizontales noires sur fond gris chiné, porté sur un t-shirt blanc avec un jean bleu foncé. La silhouette est décontractée avec une maille texturée.",
         "styleTags": [
           "Casual",
           "Smart Casual"
@@ -160,14 +1607,67 @@
           "bleu"
         ],
         "materials": [
-          "maille"
+          "maille",
+          "coton",
+          "denim"
         ],
         "cuts": [
-          "regular"
+          "relaxed",
+          "droit"
         ],
         "patterns": [
-          "rayures"
+          "rayures",
+          "uni"
         ],
+        "pieces": [
+          {
+            "type": "pull",
+            "color": "gris",
+            "material": "maille",
+            "cut": "relaxed",
+            "pattern": "rayures",
+            "details": []
+          },
+          {
+            "type": "t-shirt",
+            "color": "blanc",
+            "material": "coton",
+            "cut": "regular",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "jean",
+            "color": "bleu",
+            "material": "denim",
+            "cut": "droit",
+            "pattern": "uni",
+            "details": []
+          }
+        ],
+        "details": [
+          "demi-zip",
+          "col montant",
+          "maille texturée"
+        ],
+        "silhouetteTags": [
+          "ample",
+          "superposée"
+        ],
+        "seasonTags": [
+          "Automne",
+          "Hiver"
+        ],
+        "occasionTags": [
+          "Quotidien",
+          "Sortie"
+        ],
+        "paletteTags": [
+          "Désaturé",
+          "Neutres froids"
+        ],
+        "layering": "Un t-shirt blanc porté sous un pull à demi-zip.",
+        "outfitFormula": "t-shirt + pull + jean",
         "confidence": 0.95
       }
     },
@@ -183,16 +1683,15 @@
       "createdAt": "2026-11-04T14:21:15",
       "boardId": "780952460324562575",
       "visualAnalysis": {
-        "version": 1,
-        "analyzedAt": "2026-11-09T13:59:23.515Z",
+        "version": 2,
+        "analyzedAt": "2026-11-12T09:06:57.596Z",
         "sourceImageUrl": "https://i.pinimg.com/1200x/e5/72/95/e572958bf49fc9efb6c99be617f19e6f.jpg",
         "model": "@cf/google/gemma-4-26b-a4b-it",
         "isFashion": true,
-        "summary": "Tenue composée d'un blouson en cuir noir sur un sweat à capuche gris et un t-shirt blanc, associée à un pantalon large noir et des bottines massives.",
+        "summary": "Tenue urbaine composée d'un blouson en cuir noir oversize sur un hoodie gris, un t-shirt blanc et un pantalon large noir en matière texturée, complétée par des chaussures à semelles épaisses.",
         "styleTags": [
           "Streetwear",
-          "Casual",
-          "Smart Casual"
+          "Casual"
         ],
         "colors": [
           "noir",
@@ -201,15 +1700,91 @@
         ],
         "materials": [
           "cuir",
-          "coton",
-          "maille"
+          "coton"
         ],
         "cuts": [
           "oversized",
-          "wide leg",
-          "long"
+          "large",
+          "jambe large"
         ],
-        "patterns": [],
+        "patterns": [
+          "uni"
+        ],
+        "pieces": [
+          {
+            "type": "blouson",
+            "color": "noir",
+            "material": "cuir",
+            "cut": "oversized",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "sweat",
+            "color": "gris",
+            "material": "coton",
+            "cut": "oversized",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "t-shirt",
+            "color": "blanc",
+            "material": "coton",
+            "cut": "regular",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "pantalon",
+            "color": "noir",
+            "material": "laine",
+            "cut": "large",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "chaussures",
+            "color": "noir",
+            "material": "cuir",
+            "cut": "regular",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "sac",
+            "color": "noir",
+            "material": "cuir",
+            "cut": "regular",
+            "pattern": "uni",
+            "details": []
+          }
+        ],
+        "details": [
+          "fermeture zippée",
+          "revers",
+          "semelle épaisse",
+          "superposition"
+        ],
+        "silhouetteTags": [
+          "oversize",
+          "ample",
+          "superposée"
+        ],
+        "seasonTags": [
+          "Automne",
+          "Hiver"
+        ],
+        "occasionTags": [
+          "Quotidien",
+          "Sortie"
+        ],
+        "paletteTags": [
+          "Désaturé",
+          "Neutres froids"
+        ],
+        "layering": "Superposition d'un t-shirt blanc, d'un hoodie gris et d'un blouson en cuir noir.",
+        "outfitFormula": "blouson + sweat + t-shirt + pantalon + chaussures",
         "confidence": 0.95
       }
     },
@@ -225,12 +1800,12 @@
       "createdAt": "2026-11-04T14:21:03",
       "boardId": "780952460324562575",
       "visualAnalysis": {
-        "version": 1,
-        "analyzedAt": "2026-11-09T13:59:26.516Z",
+        "version": 2,
+        "analyzedAt": "2026-11-12T09:06:53.065Z",
         "sourceImageUrl": "https://i.pinimg.com/1200x/02/51/8b/02518b297bdd7ffd14948c048e7d2802.jpg",
         "model": "@cf/google/gemma-4-26b-a4b-it",
         "isFashion": true,
-        "summary": "Tenue composée d'un pull en maille grise et d'un pantalon large marron avec une ceinture noire à boucle argentée.",
+        "summary": "Tenue composée d'un pull en maille grise à col rond et d'un pantalon large marron chocolat. La silhouette est ample et équilibrée, complétée par des chaussures noires et une ceinture à boucle métallique.",
         "styleTags": [
           "Smart Casual",
           "Casual"
@@ -244,10 +1819,86 @@
           "maille"
         ],
         "cuts": [
-          "wide leg",
-          "large"
+          "oversized",
+          "large",
+          "jambe large"
         ],
-        "patterns": [],
+        "patterns": [
+          "uni"
+        ],
+        "pieces": [
+          {
+            "type": "pull",
+            "color": "gris",
+            "material": "maille",
+            "cut": "oversized",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "pantalon",
+            "color": "marron",
+            "material": "",
+            "cut": "large",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "ceinture",
+            "color": "noir",
+            "material": "",
+            "cut": "",
+            "pattern": "",
+            "details": []
+          },
+          {
+            "type": "chaussures",
+            "color": "noir",
+            "material": "",
+            "cut": "",
+            "pattern": "",
+            "details": []
+          },
+          {
+            "type": "lunettes",
+            "color": "noir",
+            "material": "",
+            "cut": "",
+            "pattern": "",
+            "details": []
+          },
+          {
+            "type": "montre",
+            "color": "",
+            "material": "",
+            "cut": "",
+            "pattern": "",
+            "details": []
+          }
+        ],
+        "details": [
+          "col rond",
+          "maille texturée"
+        ],
+        "silhouetteTags": [
+          "ample",
+          "oversize",
+          "équilibrée"
+        ],
+        "seasonTags": [
+          "Automne",
+          "Hiver"
+        ],
+        "occasionTags": [
+          "Sortie",
+          "Quotidien"
+        ],
+        "paletteTags": [
+          "Terreux",
+          "Désaturé"
+        ],
+        "layering": "",
+        "outfitFormula": "pull + pantalon + ceinture",
         "confidence": 0.95
       }
     },
@@ -263,12 +1914,12 @@
       "createdAt": "2026-11-04T14:20:48",
       "boardId": "780952460324562575",
       "visualAnalysis": {
-        "version": 1,
-        "analyzedAt": "2026-11-09T13:59:27.113Z",
+        "version": 2,
+        "analyzedAt": "2026-11-12T09:07:12.181Z",
         "sourceImageUrl": "https://i.pinimg.com/1200x/78/fb/de/78fbde65bcbe6a9778a823c1371e5b86.jpg",
         "model": "@cf/google/gemma-4-26b-a4b-it",
         "isFashion": true,
-        "summary": "Une tenue décontractée composée d'un pull gris à motifs graphiques porté sur une chemise blanche avec cravate noire, associée à un jean large délavé et une casquette noire.",
+        "summary": "Tenue décontractée et superposée composée d'un pull en maille grise à motifs graphiques blancs, porté sur une chemise blanche avec cravate noire, et d'un jean large bleu délavé avec déchirures.",
         "styleTags": [
           "Streetwear",
           "Casual",
@@ -288,13 +1939,80 @@
         ],
         "cuts": [
           "oversized",
-          "wide leg",
-          "ample"
+          "large",
+          "jambe large"
         ],
         "patterns": [
-          "graphique"
+          "graphique",
+          "uni"
         ],
-        "confidence": 0.95
+        "pieces": [
+          {
+            "type": "pull",
+            "color": "gris",
+            "material": "maille",
+            "cut": "oversized",
+            "pattern": "graphique",
+            "details": []
+          },
+          {
+            "type": "chemise",
+            "color": "blanc",
+            "material": "coton",
+            "cut": "regular",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "cravate",
+            "color": "noir",
+            "material": "coton",
+            "cut": "regular",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "pantalon",
+            "color": "bleu",
+            "material": "denim",
+            "cut": "wide leg",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "chaussures",
+            "color": "noir",
+            "material": "cuir",
+            "cut": "regular",
+            "pattern": "uni",
+            "details": []
+          }
+        ],
+        "details": [
+          "superposition",
+          "effet délavé",
+          "logo apparent",
+          "maille texturée"
+        ],
+        "silhouetteTags": [
+          "oversize",
+          "ample",
+          "superposée"
+        ],
+        "seasonTags": [
+          "Automne"
+        ],
+        "occasionTags": [
+          "Quotidien",
+          "Sortie"
+        ],
+        "paletteTags": [
+          "Désaturé",
+          "Neutres froids"
+        ],
+        "layering": "Superposition d'un pull sur une chemise et une cravate.",
+        "outfitFormula": "capette + pull + chemise + cravate + pantalon + chaussures",
+        "confidence": 1
       }
     },
     {
@@ -309,32 +2027,87 @@
       "createdAt": "2026-11-03T14:24:14",
       "boardId": "780952460324562575",
       "visualAnalysis": {
-        "version": 1,
-        "analyzedAt": "2026-11-09T13:59:26.968Z",
+        "version": 2,
+        "analyzedAt": "2026-11-12T09:07:09.521Z",
         "sourceImageUrl": "https://i.pinimg.com/1200x/dc/d7/a3/dcd7a32bffa8e817b714efed7e2a9d7d.jpg",
         "model": "@cf/google/gemma-4-26b-a4b-it",
         "isFashion": true,
-        "summary": "Une tenue décontractée composée d'un pull en maille côtelée crème et d'un pantalon de jogging gris ample, complétée par un bonnet bleu marine et des baskets grises.",
+        "summary": "Tenue décontractée composée d'un pull en maille côtelée écru à coupe oversize, d'un pantalon de jogging gris ample et d'un bonnet bleu marine. L'ensemble mise sur des volumes larges et des textures douces.",
         "styleTags": [
-          "Casual",
-          "Streetwear"
+          "Streetwear",
+          "Casual"
         ],
         "colors": [
-          "crème",
+          "écru",
           "gris",
-          "bleu",
-          "blanc"
+          "marine"
         ],
         "materials": [
-          "maille",
-          "coton"
+          "maille"
         ],
         "cuts": [
           "oversized",
           "ample"
         ],
-        "patterns": [],
-        "confidence": 0.95
+        "patterns": [
+          "uni"
+        ],
+        "pieces": [
+          {
+            "type": "pull",
+            "color": "écru",
+            "material": "maille",
+            "cut": "oversized",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "pantalon",
+            "color": "gris",
+            "material": "coton",
+            "cut": "ample",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "bonnet",
+            "color": "marine",
+            "material": "maille",
+            "cut": "regular",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "baskets",
+            "color": "gris",
+            "material": "cuir",
+            "cut": "regular",
+            "pattern": "uni",
+            "details": []
+          }
+        ],
+        "details": [
+          "maille texturée",
+          "superposition"
+        ],
+        "silhouetteTags": [
+          "oversize",
+          "ample"
+        ],
+        "seasonTags": [
+          "Automne",
+          "Hiver"
+        ],
+        "occasionTags": [
+          "Quotidien"
+        ],
+        "paletteTags": [
+          "Neutres froids",
+          "Contraste doux"
+        ],
+        "layering": "Un pull oversize porté sur un pantalon ample.",
+        "outfitFormula": "bonnet + pull + pantalon + baskets",
+        "confidence": 0.9
       }
     },
     {
@@ -349,31 +2122,107 @@
       "createdAt": "2026-11-03T14:24:06",
       "boardId": "780952460324562575",
       "visualAnalysis": {
-        "version": 1,
-        "analyzedAt": "2026-11-09T13:59:31.105Z",
+        "version": 2,
+        "analyzedAt": "2026-11-12T09:07:27.325Z",
         "sourceImageUrl": "https://i.pinimg.com/1200x/a3/3b/24/a33b24071f3805214db17477f435d4b8.jpg",
         "model": "@cf/google/gemma-4-26b-a4b-it",
         "isFashion": true,
-        "summary": "Une tenue décontractée composée d'un pull en maille vert forêt sur un t-shirt blanc, associée à un jean bleu large et un grand sac en maille texturée.",
+        "summary": "Tenue décontractée composée d'un pull en maille vert forêt à texture douce, porté sur un t-shirt blanc, avec un jean bleu large. L'ensemble est complété par des baskets blanches et un grand sac cabas texturé vert.",
         "styleTags": [
           "Casual",
           "Streetwear"
         ],
         "colors": [
           "vert forêt",
-          "blanc",
-          "bleu"
+          "bleu",
+          "blanc"
         ],
         "materials": [
           "maille",
           "denim",
-          "jean"
+          "coton"
         ],
         "cuts": [
           "oversized",
-          "wide leg"
+          "large",
+          "jambe large"
         ],
-        "patterns": [],
+        "patterns": [
+          "uni"
+        ],
+        "pieces": [
+          {
+            "type": "pull",
+            "color": "vert forêt",
+            "material": "maille",
+            "cut": "oversized",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "t-shirt",
+            "color": "blanc",
+            "material": "coton",
+            "cut": "regular",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "jean",
+            "color": "bleu",
+            "material": "denim",
+            "cut": "wide leg",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "baskets",
+            "color": "blanc",
+            "material": "coton",
+            "cut": "regular",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "sac",
+            "color": "vert forêt",
+            "material": "polyester",
+            "cut": "large",
+            "pattern": "graphique",
+            "details": []
+          },
+          {
+            "type": "bijoux",
+            "color": "",
+            "material": "",
+            "cut": "regular",
+            "pattern": "uni",
+            "details": []
+          }
+        ],
+        "details": [
+          "maille texturée",
+          "superposition",
+          "effet délavé"
+        ],
+        "silhouetteTags": [
+          "ample",
+          "oversize",
+          "superposée"
+        ],
+        "seasonTags": [
+          "Automne"
+        ],
+        "occasionTags": [
+          "Quotidien",
+          "Extérieur"
+        ],
+        "paletteTags": [
+          "Contraste doux",
+          "Terreux"
+        ],
+        "layering": "Un t-shirt blanc est porté sous un pull en maille vert.",
+        "outfitFormula": "pull + t-shirt + jean + baskets",
         "confidence": 0.95
       }
     },
@@ -389,16 +2238,15 @@
       "createdAt": "2026-11-03T14:24:00",
       "boardId": "780952460324562575",
       "visualAnalysis": {
-        "version": 1,
-        "analyzedAt": "2026-11-09T13:59:30.393Z",
+        "version": 2,
+        "analyzedAt": "2026-11-12T09:07:40.025Z",
         "sourceImageUrl": "https://i.pinimg.com/1200x/e1/49/42/e14942729de549878021e89c080e7ce3.jpg",
         "model": "@cf/google/gemma-4-26b-a4b-it",
         "isFashion": true,
-        "summary": "Un ensemble décontracté composé d'un pull en maille à motif damier gris et blanc, d'un pantalon large noir et d'une casquette assortie.",
+        "summary": "Tenue décontractée composée d'un pull en maille à motif damier gris et blanc, porté avec un pantalon large noir et des baskets blanches. Une casquette noire et un sac noir complètent l'ensemble.",
         "styleTags": [
           "Streetwear",
-          "Casual",
-          "Vintage"
+          "Casual"
         ],
         "colors": [
           "gris",
@@ -413,8 +2261,74 @@
           "large"
         ],
         "patterns": [
-          "damier"
+          "damier",
+          "uni"
         ],
+        "pieces": [
+          {
+            "type": "pull",
+            "color": "gris",
+            "material": "maille",
+            "cut": "oversized",
+            "pattern": "damier",
+            "details": []
+          },
+          {
+            "type": "pantalon",
+            "color": "noir",
+            "material": "denim",
+            "cut": "large",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "baskets",
+            "color": "blanc",
+            "material": "cuir",
+            "cut": "regular",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "casquette",
+            "color": "noir",
+            "material": "coton",
+            "cut": "regular",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "sac",
+            "color": "noir",
+            "material": "cuir",
+            "cut": "regular",
+            "pattern": "uni",
+            "details": []
+          }
+        ],
+        "details": [
+          "col rond",
+          "maille texturée",
+          "logo apparent"
+        ],
+        "silhouetteTags": [
+          "oversize",
+          "ample",
+          "superposée"
+        ],
+        "seasonTags": [
+          "Automne"
+        ],
+        "occasionTags": [
+          "Quotidien",
+          "Sortie"
+        ],
+        "paletteTags": [
+          "Désaturé",
+          "Contraste fort"
+        ],
+        "layering": "Pull porté sur un haut non visible.",
+        "outfitFormula": "pull + pantalon + baskets + casquette + sac",
         "confidence": 0.95
       }
     },
@@ -430,21 +2344,19 @@
       "createdAt": "2026-11-03T14:23:54",
       "boardId": "780952460324562575",
       "visualAnalysis": {
-        "version": 1,
-        "analyzedAt": "2026-11-09T13:59:29.917Z",
+        "version": 2,
+        "analyzedAt": "2026-11-12T09:07:43.550Z",
         "sourceImageUrl": "https://i.pinimg.com/1200x/2a/ff/75/2aff75be9e92d2f6f50b007e007ff3d6.jpg",
         "model": "@cf/google/gemma-4-26b-a4b-it",
         "isFashion": true,
-        "summary": "Une tenue décontractée composée d'un pull en maille à motif graphique marron et crème, d'un jean large gris foncé et de mocassins en daim beige.",
+        "summary": "Tenue streetwear composée d'un pull en maille texturée à motif graphique marron et crème, d'un jean large délavé marron et de mocassins en daim beige.",
         "styleTags": [
           "Streetwear",
-          "Casual",
-          "Vintage"
+          "Casual"
         ],
         "colors": [
           "marron",
           "crème",
-          "gris",
           "beige"
         ],
         "materials": [
@@ -454,11 +2366,87 @@
         ],
         "cuts": [
           "oversized",
-          "wide leg"
+          "large",
+          "jambe large"
         ],
         "patterns": [
-          "graphique"
+          "graphique",
+          "uni"
         ],
+        "pieces": [
+          {
+            "type": "pull",
+            "color": "marron",
+            "material": "maille",
+            "cut": "oversized",
+            "pattern": "graphique",
+            "details": []
+          },
+          {
+            "type": "jean",
+            "color": "marron",
+            "material": "denim",
+            "cut": "large",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "chaussures",
+            "color": "beige",
+            "material": "daim",
+            "cut": "regular",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "bonnet",
+            "color": "marron",
+            "material": "maille",
+            "cut": "regular",
+            "pattern": "graphique",
+            "details": []
+          },
+          {
+            "type": "bijoux",
+            "color": "",
+            "material": "",
+            "cut": "",
+            "pattern": "",
+            "details": []
+          },
+          {
+            "type": "ceinture",
+            "color": "noir",
+            "material": "",
+            "cut": "",
+            "pattern": "",
+            "details": []
+          }
+        ],
+        "details": [
+          "maille texturée",
+          "effet délavé",
+          "logo apparent",
+          "superposition"
+        ],
+        "silhouetteTags": [
+          "oversize",
+          "ample"
+        ],
+        "seasonTags": [
+          "Automne",
+          "Hiver"
+        ],
+        "occasionTags": [
+          "Quotidien",
+          "Sortie"
+        ],
+        "paletteTags": [
+          "Terreux",
+          "Ton sur ton"
+        ],
+        "layering": "Un pull épais porté sur un haut non visible.",
+        "outfitFormula": "bonnet + pull + jean + chaussures",
         "confidence": 0.95
       }
     },
@@ -474,20 +2462,22 @@
       "createdAt": "2026-11-03T14:23:49",
       "boardId": "780952460324562575",
       "visualAnalysis": {
-        "version": 1,
-        "analyzedAt": "2026-11-09T13:59:35.503Z",
+        "version": 2,
+        "analyzedAt": "2026-11-12T09:07:43.501Z",
         "sourceImageUrl": "https://i.pinimg.com/1200x/b0/9b/b5/b09bb59a34a8b2c7c95c42a760f673f9.jpg",
         "model": "@cf/google/gemma-4-26b-a4b-it",
         "isFashion": true,
-        "summary": "Tenue décontractée composée d'un sweat à col polo à rayures horizontales roses et marron, d'un pantalon cargo large marron et d'une casquette assortie.",
+        "summary": "Tenue de style streetwear et vintage composée d'un polo à rayures horizontales roses et marron avec col blanc, d'un pantalon cargo marron large en toile et de chaussures roses. La silhouette est ample et décontractée.",
         "styleTags": [
           "Streetwear",
-          "Casual",
-          "Workwear"
+          "Vintage",
+          "Preppy",
+          "Casual"
         ],
         "colors": [
           "rose",
           "marron",
+          "blanc",
           "beige"
         ],
         "materials": [
@@ -495,11 +2485,88 @@
         ],
         "cuts": [
           "oversized",
-          "large"
+          "large",
+          "ample"
         ],
         "patterns": [
-          "rayures"
+          "rayures",
+          "uni"
         ],
+        "pieces": [
+          {
+            "type": "polo",
+            "color": "rose",
+            "material": "coton",
+            "cut": "relaxed",
+            "pattern": "rayures",
+            "details": []
+          },
+          {
+            "type": "pantalon",
+            "color": "marron",
+            "material": "coton",
+            "cut": "wide leg",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "chaussures",
+            "color": "rose",
+            "material": "daim",
+            "cut": "regular",
+            "pattern": "graphique",
+            "details": []
+          },
+          {
+            "type": "casquette",
+            "color": "marron",
+            "material": "coton",
+            "cut": "regular",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "lunettes",
+            "color": "noir",
+            "material": "",
+            "cut": "",
+            "pattern": "",
+            "details": []
+          },
+          {
+            "type": "montre",
+            "color": "noir",
+            "material": "",
+            "cut": "",
+            "pattern": "",
+            "details": []
+          }
+        ],
+        "details": [
+          "col polo",
+          "logo apparent",
+          "poches cargo",
+          "surpiqûres",
+          "superposition"
+        ],
+        "silhouetteTags": [
+          "ample",
+          "oversize",
+          "superposée"
+        ],
+        "seasonTags": [
+          "Automne"
+        ],
+        "occasionTags": [
+          "Quotidien",
+          "Sortie"
+        ],
+        "paletteTags": [
+          "Terreux",
+          "Contraste doux"
+        ],
+        "layering": "Un polo porté sur le haut du corps avec un pantalon large.",
+        "outfitFormula": "polo + pantalon + chaussures + casquette",
         "confidence": 0.95
       }
     },
@@ -515,16 +2582,16 @@
       "createdAt": "2026-11-03T14:23:38",
       "boardId": "780952460324562575",
       "visualAnalysis": {
-        "version": 1,
-        "analyzedAt": "2026-11-09T13:59:34.939Z",
+        "version": 2,
+        "analyzedAt": "2026-11-12T09:07:51.945Z",
         "sourceImageUrl": "https://i.pinimg.com/1200x/69/87/4b/69874bc2ca3b63b0df10eba09e30cd18.jpg",
         "model": "@cf/google/gemma-4-26b-a4b-it",
         "isFashion": true,
-        "summary": "Une tenue décontractée composée d'un pull en maille torsadée noir sur une chemise blanche, associée à un jean large noir et des mocassins vernis.",
+        "summary": "Tenue monochrome noire composée d'un pull en maille texturée à demi-zip porté sur une chemise blanche, associée à un jean large et des mocassins à semelles épaisses.",
         "styleTags": [
           "Smart Casual",
-          "Casual",
-          "Streetwear"
+          "Streetwear",
+          "Vintage"
         ],
         "colors": [
           "noir",
@@ -532,14 +2599,91 @@
         ],
         "materials": [
           "maille",
-          "denim",
-          "cuir"
+          "denim"
         ],
         "cuts": [
-          "wide leg",
-          "large"
+          "oversized",
+          "large",
+          "jambe large"
         ],
-        "patterns": [],
+        "patterns": [
+          "uni"
+        ],
+        "pieces": [
+          {
+            "type": "pull",
+            "color": "noir",
+            "material": "maille",
+            "cut": "regular",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "chemise",
+            "color": "blanc",
+            "material": "coton",
+            "cut": "fitted",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "jean",
+            "color": "noir",
+            "material": "denim",
+            "cut": "wide leg",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "ceinture",
+            "color": "noir",
+            "material": "cuir",
+            "cut": "regular",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "mocassins",
+            "color": "noir",
+            "material": "cuir",
+            "cut": "regular",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "montre",
+            "color": "",
+            "material": "",
+            "cut": "regular",
+            "pattern": "uni",
+            "details": []
+          }
+        ],
+        "details": [
+          "demi-zip",
+          "maille texturée",
+          "semelle épaisse",
+          "superposition"
+        ],
+        "silhouetteTags": [
+          "ample",
+          "superposée",
+          "équilibrée"
+        ],
+        "seasonTags": [
+          "Automne",
+          "Hiver"
+        ],
+        "occasionTags": [
+          "Sortie",
+          "Quotidien"
+        ],
+        "paletteTags": [
+          "Monochrome",
+          "Contraste fort"
+        ],
+        "layering": "Pull demi-zip porté sur une chemise blanche.",
+        "outfitFormula": "pull + chemise + jean + mocassins",
         "confidence": 0.95
       }
     },
@@ -555,16 +2699,15 @@
       "createdAt": "2026-11-03T14:23:30",
       "boardId": "780952460324562575",
       "visualAnalysis": {
-        "version": 1,
-        "analyzedAt": "2026-11-09T13:59:33.147Z",
+        "version": 2,
+        "analyzedAt": "2026-11-12T09:07:55.787Z",
         "sourceImageUrl": "https://i.pinimg.com/1200x/7c/97/92/7c9792aef8534d5e05229f17da497a52.jpg",
         "model": "@cf/google/gemma-4-26b-a4b-it",
         "isFashion": true,
-        "summary": "Tenue composée d'un pull en maille crème à col en V porté sur une chemise blanche, associée à un pantalon marron maintenu par une ceinture en cuir à boucle métallique.",
+        "summary": "Tenue composée d'un pull en maille crème à col en V porté sur une chemise blanche, associée à un pantalon marron et une ceinture en cuir foncé avec boucle métallique. La silhouette est décontractée et équilibrée avec un jeu de textures.",
         "styleTags": [
           "Smart Casual",
-          "Casual",
-          "Heritage"
+          "Casual"
         ],
         "colors": [
           "crème",
@@ -577,9 +2720,76 @@
           "cuir"
         ],
         "cuts": [
-          "regular"
+          "regular",
+          "droit"
         ],
-        "patterns": [],
+        "patterns": [
+          "uni"
+        ],
+        "pieces": [
+          {
+            "type": "pull",
+            "color": "crème",
+            "material": "maille",
+            "cut": "regular",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "chemise",
+            "color": "blanc",
+            "material": "coton",
+            "cut": "regular",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "pantalon",
+            "color": "marron",
+            "material": "coton",
+            "cut": "droit",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "ceinture",
+            "color": "marron",
+            "material": "cuir",
+            "cut": "regular",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "bijoux",
+            "color": "",
+            "material": "",
+            "cut": "regular",
+            "pattern": "uni",
+            "details": []
+          }
+        ],
+        "details": [
+          "col v",
+          "maille texturée",
+          "ceinture visible",
+          "superposition"
+        ],
+        "silhouetteTags": [
+          "équilibrée"
+        ],
+        "seasonTags": [
+          "Automne"
+        ],
+        "occasionTags": [
+          "Quotidien",
+          "Sortie"
+        ],
+        "paletteTags": [
+          "Neutres chauds",
+          "Ton sur ton"
+        ],
+        "layering": "Pull en maille sur une chemise boutonnée.",
+        "outfitFormula": "pull + chemise + pantalon",
         "confidence": 0.95
       }
     },
@@ -595,12 +2805,12 @@
       "createdAt": "2026-11-03T14:22:51",
       "boardId": "780952460324562575",
       "visualAnalysis": {
-        "version": 1,
-        "analyzedAt": "2026-11-09T13:59:38.978Z",
+        "version": 2,
+        "analyzedAt": "2026-11-12T09:07:54.550Z",
         "sourceImageUrl": "https://i.pinimg.com/1200x/47/59/8c/47598c09093f06cf7f1aef20ca8c5827.jpg",
         "model": "@cf/google/gemma-4-26b-a4b-it",
         "isFashion": true,
-        "summary": "Une veste en cuir noir de style streetwear arborant un motif de toile d'araignée embossé et un large emblème d'araignée dans le dos.",
+        "summary": "Veste en cuir noir de coupe courte et structurée, présentant un motif de toile d'araignée en relief sur le dos et les manches, avec un logo d'araignée central embossé. La tenue est complétée par un bonnet noir et un pantalon sombre.",
         "styleTags": [
           "Streetwear",
           "Créatif"
@@ -612,11 +2822,61 @@
           "cuir"
         ],
         "cuts": [
-          "regular"
+          "court",
+          "structurée"
         ],
         "patterns": [
           "graphique"
         ],
+        "pieces": [
+          {
+            "type": "veste",
+            "color": "noir",
+            "material": "cuir",
+            "cut": "court",
+            "pattern": "graphique",
+            "details": []
+          },
+          {
+            "type": "bonnet",
+            "color": "noir",
+            "material": "coton",
+            "cut": "fitted",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "pantalon",
+            "color": "noir",
+            "material": "denim",
+            "cut": "regular",
+            "pattern": "uni",
+            "details": []
+          }
+        ],
+        "details": [
+          "surpiqûres",
+          "logo apparent",
+          "coupe structurée"
+        ],
+        "silhouetteTags": [
+          "structurée",
+          "courte"
+        ],
+        "seasonTags": [
+          "Automne",
+          "Hiver"
+        ],
+        "occasionTags": [
+          "Sortie",
+          "Extérieur"
+        ],
+        "paletteTags": [
+          "Monochrome",
+          "Désaturé"
+        ],
+        "layering": "Superposition d'un bonnet et d'une veste sur un pantalon.",
+        "outfitFormula": "bonnet + veste + pantalon",
         "confidence": 0.95
       }
     },
@@ -632,16 +2892,16 @@
       "createdAt": "2026-11-03T14:22:25",
       "boardId": "780952460324562575",
       "visualAnalysis": {
-        "version": 1,
-        "analyzedAt": "2026-11-09T14:00:27.061Z",
+        "version": 2,
+        "analyzedAt": "2026-11-12T09:08:10.676Z",
         "sourceImageUrl": "https://i.pinimg.com/1200x/d8/64/a2/d864a2e7a576658d19fa762659552e97.jpg",
         "model": "@cf/google/gemma-4-26b-a4b-it",
         "isFashion": true,
-        "summary": "Une tenue décontractée composée d'une veste en cuir bordeaux, d'une chemise à carreaux rouge et blanc sur un t-shirt blanc, complétée par un jean bleu délavé.",
+        "summary": "Tenue décontractée composée d'une veste en cuir bordeaux à coupe structurée, portée sur une chemise à carreaux rouge et blanc et un t-shirt blanc, le tout associé à un jean bleu délavé.",
         "styleTags": [
           "Casual",
-          "Vintage",
-          "Heritage"
+          "Heritage",
+          "Streetwear"
         ],
         "colors": [
           "bordeaux",
@@ -652,16 +2912,75 @@
         "materials": [
           "cuir",
           "coton",
-          "denim",
-          "jean"
+          "denim"
         ],
         "cuts": [
-          "regular",
-          "droit"
+          "structurée",
+          "regular"
         ],
         "patterns": [
-          "carreaux"
+          "carreaux",
+          "uni"
         ],
+        "pieces": [
+          {
+            "type": "veste",
+            "color": "bordeaux",
+            "material": "cuir",
+            "cut": "structurée",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "chemise",
+            "color": "rouge",
+            "material": "coton",
+            "cut": "regular",
+            "pattern": "carreaux",
+            "details": []
+          },
+          {
+            "type": "t-shirt",
+            "color": "blanc",
+            "material": "coton",
+            "cut": "regular",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "jean",
+            "color": "bleu",
+            "material": "denim",
+            "cut": "regular",
+            "pattern": "uni",
+            "details": []
+          }
+        ],
+        "details": [
+          "fermeture zippée",
+          "revers",
+          "boutonnage",
+          "col rond",
+          "effet délavé"
+        ],
+        "silhouetteTags": [
+          "équilibrée",
+          "structurée"
+        ],
+        "seasonTags": [
+          "Automne"
+        ],
+        "occasionTags": [
+          "Quotidien",
+          "Sortie",
+          "Extérieur"
+        ],
+        "paletteTags": [
+          "Contraste fort",
+          "Terreux"
+        ],
+        "layering": "Superposition d'un t-shirt blanc sous une chemise à carreaux, elle-même sous une veste en cuir.",
+        "outfitFormula": "veste + chemise + t-shirt + jean",
         "confidence": 0.95
       }
     },
@@ -677,12 +2996,12 @@
       "createdAt": "2026-11-03T14:22:06",
       "boardId": "780952460324562575",
       "visualAnalysis": {
-        "version": 1,
-        "analyzedAt": "2026-11-09T13:59:43.279Z",
+        "version": 2,
+        "analyzedAt": "2026-11-12T09:08:21.340Z",
         "sourceImageUrl": "https://i.pinimg.com/1200x/e7/f7/9b/e7f79bae0ec4b5c9fc2eea27277f2dba.jpg",
         "model": "@cf/google/gemma-4-26b-a4b-it",
         "isFashion": true,
-        "summary": "Une tenue composée d'une veste en daim olive, d'un pull noir, d'un pantalon large à pinces gris anthracite et de baskets crème, complétée par un grand sac noir.",
+        "summary": "Tenue composée d'une veste courte en daim olive avec col en maille, d'un pull noir à col rond et d'un pantalon gris anthracite à pinces de coupe large. L'ensemble est complété par des baskets blanches et un grand sac noir.",
         "styleTags": [
           "Smart Casual",
           "Casual",
@@ -692,21 +3011,91 @@
           "olive",
           "noir",
           "gris",
-          "anthracite",
-          "crème"
+          "blanc",
+          "marron"
         ],
         "materials": [
           "daim",
           "maille",
-          "laine",
-          "cuir"
+          "laine"
         ],
         "cuts": [
-          "ample",
-          "wide leg",
+          "court",
+          "large",
+          "jambe large",
           "a pinces"
         ],
-        "patterns": [],
+        "patterns": [
+          "uni"
+        ],
+        "pieces": [
+          {
+            "type": "veste",
+            "color": "olive",
+            "material": "daim",
+            "cut": "court",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "pull",
+            "color": "noir",
+            "material": "maille",
+            "cut": "regular",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "pantalon",
+            "color": "gris",
+            "material": "laine",
+            "cut": "wide leg",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "baskets",
+            "color": "blanc",
+            "material": "coton",
+            "cut": "regular",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "sac",
+            "color": "noir",
+            "material": "cuir",
+            "cut": "large",
+            "pattern": "uni",
+            "details": []
+          }
+        ],
+        "details": [
+          "col montant",
+          "fermeture zippée",
+          "col rond",
+          "pinces",
+          "lacets"
+        ],
+        "silhouetteTags": [
+          "ample",
+          "superposée",
+          "équilibrée"
+        ],
+        "seasonTags": [
+          "Automne",
+          "Hiver"
+        ],
+        "occasionTags": [
+          "Sortie",
+          "Quotidien"
+        ],
+        "paletteTags": [
+          "Terreux",
+          "Désaturé"
+        ],
+        "layering": "Superposition d'un pull noir sous une veste courte.",
+        "outfitFormula": "veste + pull + pantalon + baskets + sac",
         "confidence": 0.95
       }
     },
@@ -722,15 +3111,15 @@
       "createdAt": "2026-11-03T14:22:01",
       "boardId": "780952460324562575",
       "visualAnalysis": {
-        "version": 1,
-        "analyzedAt": "2026-11-09T13:59:47.145Z",
+        "version": 2,
+        "analyzedAt": "2026-11-12T09:08:25.161Z",
         "sourceImageUrl": "https://i.pinimg.com/1200x/11/ed/77/11ed7733201338912fd602c09f446f30.jpg",
         "model": "@cf/google/gemma-4-26b-a4b-it",
         "isFashion": true,
-        "summary": "Une tenue élégante composée d'un blouson en cuir bordeaux, d'une chemise blanche à rayures fines et d'un pantalon gris à rayures verticales larges.",
+        "summary": "Tenue composée d'un blouson en cuir bordeaux à coupe structurée, porté sur une chemise blanche à fines rayures, avec un pantalon gris à rayures verticales et une coupe large. L'ensemble présente une silhouette équilibrée entre volumes structurés et amples.",
         "styleTags": [
           "Smart Casual",
-          "Classique",
+          "Créatif",
           "Vintage"
         ],
         "colors": [
@@ -743,13 +3132,86 @@
           "coton"
         ],
         "cuts": [
-          "regular",
+          "structurée",
           "large",
-          "long"
+          "jambe large"
         ],
         "patterns": [
           "rayures"
         ],
+        "pieces": [
+          {
+            "type": "blouson",
+            "color": "bordeaux",
+            "material": "cuir",
+            "cut": "structurée",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "chemise",
+            "color": "blanc",
+            "material": "coton",
+            "cut": "regular",
+            "pattern": "rayures",
+            "details": []
+          },
+          {
+            "type": "pantalon",
+            "color": "gris",
+            "material": "laine",
+            "cut": "large",
+            "pattern": "rayures",
+            "details": []
+          },
+          {
+            "type": "chaussures",
+            "color": "bordeaux",
+            "material": "cuir",
+            "cut": "regular",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "lunettes",
+            "color": "noir",
+            "material": "",
+            "cut": "",
+            "pattern": "",
+            "details": []
+          },
+          {
+            "type": "ceinture",
+            "color": "noir",
+            "material": "cuir",
+            "cut": "",
+            "pattern": "",
+            "details": []
+          }
+        ],
+        "details": [
+          "fermeture zippée",
+          "revers",
+          "boutonnage",
+          "pinces"
+        ],
+        "silhouetteTags": [
+          "structurée",
+          "ample",
+          "équilibrée"
+        ],
+        "seasonTags": [
+          "Automne"
+        ],
+        "occasionTags": [
+          "Sortie",
+          "Quotidien"
+        ],
+        "paletteTags": [
+          "Contraste fort"
+        ],
+        "layering": "Blouson porté sur une chemise boutonnée.",
+        "outfitFormula": "blouson + chemise + pantalon",
         "confidence": 0.95
       }
     },
@@ -765,14 +3227,14 @@
       "createdAt": "2026-11-03T14:21:37",
       "boardId": "780952460324562575",
       "visualAnalysis": {
-        "version": 1,
-        "analyzedAt": "2026-11-09T13:59:46.445Z",
+        "version": 2,
+        "analyzedAt": "2026-11-12T09:08:29.264Z",
         "sourceImageUrl": "https://i.pinimg.com/1200x/0d/15/b2/0d15b2089d17665286743521a3ca884a.jpg",
         "model": "@cf/google/gemma-4-26b-a4b-it",
         "isFashion": true,
-        "summary": "Une montre au cadran argenté de forme irrégulière et organique, dotée de chiffres romains noirs et d'un bracelet en cuir marron foncé.",
+        "summary": "Montre au cadran argenté de forme irrégulière et organique, présentant des chiffres romains noirs et un mécanisme apparent. Elle est montée sur un bracelet en cuir marron foncé.",
         "styleTags": [
-          "Classique",
+          "Créatif",
           "Vintage"
         ],
         "colors": [
@@ -783,8 +3245,43 @@
           "cuir"
         ],
         "cuts": [],
-        "patterns": [],
-        "confidence": 0.95
+        "patterns": [
+          "uni"
+        ],
+        "pieces": [
+          {
+            "type": "montre",
+            "color": "",
+            "material": "cuir",
+            "cut": "",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "bijoux",
+            "color": "marron",
+            "material": "cuir",
+            "cut": "",
+            "pattern": "uni",
+            "details": []
+          }
+        ],
+        "details": [
+          "logo discret"
+        ],
+        "silhouetteTags": [],
+        "seasonTags": [],
+        "occasionTags": [
+          "Quotidien",
+          "Sortie"
+        ],
+        "paletteTags": [
+          "Neutres froids",
+          "Contraste doux"
+        ],
+        "layering": "",
+        "outfitFormula": "montre + bracelet",
+        "confidence": 0.9
       }
     },
     {
@@ -799,19 +3296,18 @@
       "createdAt": "2026-11-03T14:21:07",
       "boardId": "780952460324562575",
       "visualAnalysis": {
-        "version": 1,
-        "analyzedAt": "2026-11-09T13:59:46.475Z",
+        "version": 2,
+        "analyzedAt": "2026-11-12T09:08:37.345Z",
         "sourceImageUrl": "https://i.pinimg.com/1200x/eb/69/b6/eb69b62cc66bbb06a0b3b3ed917368bd.jpg",
         "model": "@cf/google/gemma-4-26b-a4b-it",
         "isFashion": true,
-        "summary": "Un costume deux pièces à rayures verticales porté sur une chemise blanche avec une cravate bordeaux, offrant une silhouette élégante et structurée.",
+        "summary": "Costume deux pièces anthracite à rayures verticales, composé d'une veste structurée et d'un pantalon large. La tenue est complétée par une chemise blanche et une cravate bordeaux, créant une silhouette classique et élégante.",
         "styleTags": [
           "Classique",
-          "Smart Casual",
-          "Classe"
+          "Smart Casual"
         ],
         "colors": [
-          "noir",
+          "anthracite",
           "blanc",
           "bordeaux"
         ],
@@ -819,12 +3315,68 @@
           "laine"
         ],
         "cuts": [
-          "droit",
-          "long"
+          "large",
+          "structurée"
         ],
         "patterns": [
-          "rayures"
+          "rayures",
+          "uni"
         ],
+        "pieces": [
+          {
+            "type": "costume",
+            "color": "anthracite",
+            "material": "laine",
+            "cut": "large",
+            "pattern": "rayures",
+            "details": []
+          },
+          {
+            "type": "chemise",
+            "color": "blanc",
+            "material": "coton",
+            "cut": "regular",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "cravate",
+            "color": "bordeaux",
+            "material": "soie",
+            "cut": "regular",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "lunettes",
+            "color": "noir",
+            "material": "",
+            "cut": "regular",
+            "pattern": "uni",
+            "details": []
+          }
+        ],
+        "details": [
+          "revers",
+          "boutonnage"
+        ],
+        "silhouetteTags": [
+          "ample",
+          "structurée"
+        ],
+        "seasonTags": [
+          "Automne"
+        ],
+        "occasionTags": [
+          "Travail",
+          "Sortie"
+        ],
+        "paletteTags": [
+          "Contraste fort",
+          "Neutres froids"
+        ],
+        "layering": "Superposition d'une chemise, d'une cravate et d'une veste de costume.",
+        "outfitFormula": "costume + chemise + cravate",
         "confidence": 0.95
       }
     },
@@ -840,16 +3392,16 @@
       "createdAt": "2026-11-03T14:20:58",
       "boardId": "780952460324562575",
       "visualAnalysis": {
-        "version": 1,
-        "analyzedAt": "2026-11-09T13:59:50.001Z",
+        "version": 2,
+        "analyzedAt": "2026-11-12T09:08:35.961Z",
         "sourceImageUrl": "https://i.pinimg.com/1200x/26/0d/db/260ddbcdff5a773482755519937b8f3e.jpg",
         "model": "@cf/google/gemma-4-26b-a4b-it",
         "isFashion": true,
-        "summary": "Tenue élégante composée d'un pull vert forêt sur une chemise blanche, d'un pantalon beige à pinces et de mocassins en cuir marron.",
+        "summary": "Tenue élégante composée d'un pull vert forêt en maille sur une chemise blanche, associée à un pantalon beige à pinces et des mocassins marron en cuir. Une veste marron est portée à la main, complétant une silhouette classique et équilibrée.",
         "styleTags": [
           "Classique",
           "Smart Casual",
-          "Heritage"
+          "Preppy"
         ],
         "colors": [
           "vert forêt",
@@ -864,9 +3416,86 @@
         ],
         "cuts": [
           "regular",
-          "a pinces"
+          "droit",
+          "taille haute"
         ],
-        "patterns": [],
+        "patterns": [
+          "uni"
+        ],
+        "pieces": [
+          {
+            "type": "pull",
+            "color": "vert forêt",
+            "material": "maille",
+            "cut": "regular",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "chemise",
+            "color": "blanc",
+            "material": "coton",
+            "cut": "regular",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "pantalon",
+            "color": "beige",
+            "material": "coton",
+            "cut": "droit",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "mocassins",
+            "color": "marron",
+            "material": "cuir",
+            "cut": "regular",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "veste",
+            "color": "marron",
+            "material": "laine",
+            "cut": "regular",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "ceinture",
+            "color": "marron",
+            "material": "cuir",
+            "cut": "regular",
+            "pattern": "uni",
+            "details": []
+          }
+        ],
+        "details": [
+          "col rond",
+          "pinces",
+          "revers",
+          "ceinture visible"
+        ],
+        "silhouetteTags": [
+          "équilibrée",
+          "droite"
+        ],
+        "seasonTags": [
+          "Automne"
+        ],
+        "occasionTags": [
+          "Quotidien",
+          "Travail",
+          "Sortie"
+        ],
+        "paletteTags": [
+          "Terreux",
+          "Contraste doux"
+        ],
+        "layering": "Superposition d'un pull sur une chemise.",
+        "outfitFormula": "pull + chemise + pantalon + mocassins",
         "confidence": 0.95
       }
     },
@@ -882,33 +3511,110 @@
       "createdAt": "2026-11-03T14:20:56",
       "boardId": "780952460324562575",
       "visualAnalysis": {
-        "version": 1,
-        "analyzedAt": "2026-11-09T14:00:26.913Z",
+        "version": 2,
+        "analyzedAt": "2026-11-12T09:08:52.222Z",
         "sourceImageUrl": "https://i.pinimg.com/1200x/0e/57/e0/0e57e0761fce0f36045395b3b2068891.jpg",
         "model": "@cf/google/gemma-4-26b-a4b-it",
         "isFashion": true,
-        "summary": "Une tenue masculine composée d'un blouson en cuir sombre, d'un t-shirt noir et d'un pantalon large à pinces de couleur marron foncé.",
+        "summary": "Tenue masculine composée d'un blouson en cuir marron foncé sur un t-shirt noir, associée à un pantalon large marron à pinces et des chaussures en cuir foncé. La silhouette est ample et structurée avec une palette de tons terreux.",
         "styleTags": [
           "Smart Casual",
           "Streetwear",
           "Classique"
         ],
         "colors": [
-          "noir",
           "marron",
-          "chocolat"
+          "noir"
         ],
         "materials": [
           "cuir",
           "coton"
         ],
         "cuts": [
-          "wide leg",
+          "oversized",
           "large",
-          "long",
-          "a pinces"
+          "taille haute",
+          "droit"
         ],
-        "patterns": [],
+        "patterns": [
+          "uni"
+        ],
+        "pieces": [
+          {
+            "type": "blouson",
+            "color": "marron",
+            "material": "cuir",
+            "cut": "regular",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "t-shirt",
+            "color": "noir",
+            "material": "coton",
+            "cut": "fitted",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "pantalon",
+            "color": "marron",
+            "material": "coton",
+            "cut": "wide leg",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "chaussures",
+            "color": "marron",
+            "material": "cuir",
+            "cut": "droit",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "ceinture",
+            "color": "marron",
+            "material": "cuir",
+            "cut": "regular",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "lunettes",
+            "color": "noir",
+            "material": "polyamide",
+            "cut": "regular",
+            "pattern": "uni",
+            "details": []
+          }
+        ],
+        "details": [
+          "fermeture zippée",
+          "revers",
+          "pinces",
+          "semelle épaisse",
+          "superposition"
+        ],
+        "silhouetteTags": [
+          "ample",
+          "structurée",
+          "longue"
+        ],
+        "seasonTags": [
+          "Automne"
+        ],
+        "occasionTags": [
+          "Sortie",
+          "Quotidien"
+        ],
+        "paletteTags": [
+          "Terreux",
+          "Désaturé",
+          "Contraste doux"
+        ],
+        "layering": "Superposition d'un blouson en cuir ouvert sur un t-shirt noir.",
+        "outfitFormula": "blouson + t-shirt + pantalon + chaussures",
         "confidence": 0.95
       }
     },
@@ -924,34 +3630,111 @@
       "createdAt": "2026-11-03T14:20:53",
       "boardId": "780952460324562575",
       "visualAnalysis": {
-        "version": 1,
-        "analyzedAt": "2026-11-09T13:59:49.513Z",
+        "version": 2,
+        "analyzedAt": "2026-11-12T09:08:42.748Z",
         "sourceImageUrl": "https://i.pinimg.com/1200x/61/00/d3/6100d341e77d80720c77532e4883ab97.jpg",
         "model": "@cf/google/gemma-4-26b-a4b-it",
         "isFashion": true,
-        "summary": "Tenue élégante composée d'une chemise rose, d'un t-shirt blanc, d'un pull bordeaux noué sur les épaules et d'un pantalon large à pinces assorti.",
+        "summary": "Tenue élégante aux tons bordeaux et rose, composée d'une chemise en lin, d'un t-shirt blanc et d'un pantalon large à pinces, avec un pull noué sur les épaules.",
         "styleTags": [
           "Smart Casual",
           "Classique",
-          "Preppy"
+          "Créatif"
         ],
         "colors": [
+          "bordeaux",
           "rose",
           "blanc",
-          "bordeaux",
           "marron"
         ],
         "materials": [
-          "coton",
-          "cuir"
+          "lin",
+          "coton"
         ],
         "cuts": [
           "ample",
-          "wide leg",
-          "a pinces",
-          "long"
+          "large",
+          "taille haute",
+          "droit"
         ],
-        "patterns": [],
+        "patterns": [
+          "uni"
+        ],
+        "pieces": [
+          {
+            "type": "chemise",
+            "color": "rose",
+            "material": "lin",
+            "cut": "regular",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "t-shirt",
+            "color": "blanc",
+            "material": "coton",
+            "cut": "fitted",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "pull",
+            "color": "bordeaux",
+            "material": "maille",
+            "cut": "regular",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "pantalon",
+            "color": "bordeaux",
+            "material": "flanelle",
+            "cut": "large",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "ceinture",
+            "color": "marron",
+            "material": "cuir",
+            "cut": "regular",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "chaussures",
+            "color": "marron",
+            "material": "cuir",
+            "cut": "regular",
+            "pattern": "uni",
+            "details": []
+          }
+        ],
+        "details": [
+          "boutonnage",
+          "col rond",
+          "pinces",
+          "superposition"
+        ],
+        "silhouetteTags": [
+          "ample",
+          "superposée",
+          "équilibrée"
+        ],
+        "seasonTags": [
+          "Printemps",
+          "Automne"
+        ],
+        "occasionTags": [
+          "Sortie",
+          "Travail"
+        ],
+        "paletteTags": [
+          "Ton sur ton",
+          "Désaturé"
+        ],
+        "layering": "Superposition d'un t-shirt blanc sous une chemise rose avec un pull bordeaux noué sur les épaules.",
+        "outfitFormula": "t-shirt + chemise + pantalon",
         "confidence": 0.95
       }
     },
@@ -967,30 +3750,115 @@
       "createdAt": "2026-11-03T14:20:25",
       "boardId": "780952460324562575",
       "visualAnalysis": {
-        "version": 1,
-        "analyzedAt": "2026-11-09T13:59:53.275Z",
+        "version": 2,
+        "analyzedAt": "2026-11-12T09:08:52.663Z",
         "sourceImageUrl": "https://i.pinimg.com/1200x/6c/6a/49/6c6a4931e3ee2c136d51292a750a5366.jpg",
         "model": "@cf/google/gemma-4-26b-a4b-it",
         "isFashion": true,
-        "summary": "Tenue élégante composée d'un blouson en cuir marron, d'une chemise blanche avec cravate et d'un pantalon à pinces assorti.",
+        "summary": "Tenue élégante dans des tons de marron et chocolat, composée d'un blouson en cuir structuré, d'une chemise blanche, d'une cravate foncée et d'un pantalon à pinces large. La silhouette est équilibrée entre le haut ajusté et le bas fluide.",
         "styleTags": [
           "Classique",
           "Smart Casual",
-          "Classe"
+          "Heritage"
         ],
         "colors": [
           "marron",
+          "chocolat",
           "blanc"
         ],
         "materials": [
-          "cuir"
+          "cuir",
+          "coton"
         ],
         "cuts": [
-          "droit",
-          "long",
-          "a pinces"
+          "structurée",
+          "large",
+          "droit"
         ],
-        "patterns": [],
+        "patterns": [
+          "uni"
+        ],
+        "pieces": [
+          {
+            "type": "blouson",
+            "color": "marron",
+            "material": "cuir",
+            "cut": "structurée",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "chemise",
+            "color": "blanc",
+            "material": "coton",
+            "cut": "regular",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "cravate",
+            "color": "marron",
+            "material": "coton",
+            "cut": "regular",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "pantalon",
+            "color": "marron",
+            "material": "coton",
+            "cut": "large",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "ceinture",
+            "color": "marron",
+            "material": "cuir",
+            "cut": "regular",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "chaussures",
+            "color": "marron",
+            "material": "cuir",
+            "cut": "regular",
+            "pattern": "uni",
+            "details": []
+          },
+          {
+            "type": "montre",
+            "color": "marron",
+            "material": "cuir",
+            "cut": "regular",
+            "pattern": "uni",
+            "details": []
+          }
+        ],
+        "details": [
+          "pinces",
+          "fermeture zippée",
+          "superposition"
+        ],
+        "silhouetteTags": [
+          "équilibrée",
+          "structurée",
+          "longue"
+        ],
+        "seasonTags": [
+          "Automne"
+        ],
+        "occasionTags": [
+          "Travail",
+          "Sortie"
+        ],
+        "paletteTags": [
+          "Ton sur ton",
+          "Terreux"
+        ],
+        "layering": "Superposition d'un blouson sur une chemise et une cravate.",
+        "outfitFormula": "blouson + chemise + cravate + pantalon",
         "confidence": 0.95
       }
     }
