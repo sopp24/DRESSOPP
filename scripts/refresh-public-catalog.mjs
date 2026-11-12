@@ -127,6 +127,7 @@ function inferCatalogGender(item,pageUrl) {
   const audience = item && item.audience && typeof item.audience === "object"
     ? [item.audience.name,item.audience.suggestedGender,item.audience.genderType].filter(Boolean).join(" ")
     : item && item.audience;
+  // Seuls les indices explicites de destination masculine valident une fiche ; l'ambiguïté reste exclue.
   const value = clean([
     item && item.gender,audience,item && item.name,item && item.description,
     item && item.category,pageUrl
