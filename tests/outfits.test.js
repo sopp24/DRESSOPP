@@ -5,7 +5,7 @@ import { inferPinterestFeatures, inferPinterestTags, isMenswearPin, productSlot,
 function buildMensOutfitIdeas(pins, wardrobe, catalogue, ...options) {
   const mensPin = pin => Object.assign({},pin,{visualAnalysis:Object.assign({},pin && pin.visualAnalysis || {},{version:3,audience:"men",isFashion:!(pin && pin.visualAnalysis && pin.visualAnalysis.isFashion === false)})});
   const mensProducts = products => (products || []).map(product => Object.assign({gender:"men"},product));
-  return buildMensOutfitIdeas((pins || []).map(mensPin),mensProducts(wardrobe),mensProducts(catalogue),...options);
+  return buildOutfitIdeas((pins || []).map(mensPin),mensProducts(wardrobe),mensProducts(catalogue),...options);
 }
 
 test("Pinterest metadata is classified into style, color and material signals", function() {
