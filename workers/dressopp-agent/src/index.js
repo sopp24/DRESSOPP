@@ -177,7 +177,7 @@ function normalizeVisualPiece(piece) {
 function normalizeVisualAnalysis(raw, imageUrl) {
   const suppliedAudience = clean(raw && raw.audience,20).toLowerCase();
   const audience = ["men","women","unisex"].includes(suppliedAudience) ? suppliedAudience : "unknown";
-  const isFashion = !(raw && (raw.isFashion === false || String(raw.isFashion).toLowerCase() === "false")) && audience === "men";
+  const isFashion = Boolean(raw && raw.isFashion === true && audience === "men");
   const confidence = Number(raw && raw.confidence);
   const pieces = isFashion && Array.isArray(raw && raw.pieces)
     ? raw.pieces.slice(0,8).map(normalizeVisualPiece).filter(Boolean) : [];
