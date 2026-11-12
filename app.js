@@ -1362,7 +1362,8 @@ function openProductForm() {
     '<div class="field" style="grid-column:1/-1"><label for="product-url">Lien marchand *</label><input id="product-url" name="url" type="url" required placeholder="https://…"></div>' +
     '<div class="field"><label for="product-image">URL de l’image</label><input id="product-image" name="imageUrl" type="url" placeholder="https://…"></div>' +
     '<div class="field"><label for="product-file">Ou importer une image</label><input id="product-file" name="imageFile" type="file" accept="image/*"><span class="field-hint">L’image importée reste sur cet appareil.</span></div>' +
-    '<div class="field" style="grid-column:1/-1"><label for="product-description">Description / composition</label><textarea id="product-description" name="description" placeholder="Informations relevées sur le site marchand…"></textarea></div></div>' +
+    '<div class="field" style="grid-column:1/-1"><label for="product-description">Description / composition</label><textarea id="product-description" name="description" placeholder="Informations relevées sur le site marchand…"></textarea></div>' +
+    '<div class="field" style="grid-column:1/-1"><label><input type="checkbox" name="menswear" required> Je confirme que la fiche source classe explicitement cet article dans la collection homme.</label></div></div>' +
     '<div class="form-actions"><button class="button-primary" type="submit">Enregistrer l’article</button><button class="button-quiet" type="button" data-action="close-modal">Annuler</button></div></form></section></div>';
   modalRoot.querySelector(".modal-backdrop").addEventListener("click", function(event) {
     if (event.target.classList.contains("modal-backdrop")) closeModal();
@@ -1405,6 +1406,7 @@ function readJsonFile(file) {
 async function submitProduct(form) {
   const data = new FormData(form);
   const imageFile = data.get("imageFile");
+  if (data.get("menswear") !== "on") throw new Error("Confirme que la fiche source classe explicitement cet article dans la collection homme.");
   const uploadedImage = imageFile && imageFile.size ? await fileToDataUrl(imageFile) : "";
   const product = normalizeProduct({
     name: data.get("name"), brand: data.get("brand"), merchant: data.get("merchant"),
@@ -1415,6 +1417,7 @@ async function submitProduct(form) {
     imageUrl: uploadedImage || data.get("imageUrl"), description: data.get("description"),
     source: data.get("merchant"), gender: "men", genderVerified: true
   });
+  if (product.gender !== "men" || product.genderVerified !== true) throw new Error("Cet article ne présente pas de preuve suffisante de son public masculin.");
   if (!product.name || !product.merchant || !safeExternalUrl(product.url)) throw new Error("Le nom, le marchand et un lien HTTP(S) valide sont obligatoires.");
   const identity = productIdentity(product);
   if (state.products.some(function(item) { return productIdentity(item) === identity; })) {
