@@ -7,7 +7,7 @@ on:
     branches: [main]
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   visual-qa:
@@ -31,6 +31,25 @@ jobs:
         env:
           DRESSOPP_BASE_URL: https://sopp24.github.io/DRESSOPP/
         run: node scripts/visual-qa.mjs
+      - name: Publish the machine-readable report on a separate branch
+        if: always()
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if [ ! -f artifacts/visual-qa/report.json ]; then
+            echo "No report file was generated."
+            exit 0
+          fi
+          mkdir -p /tmp/dressopp-visual-report
+          cp artifacts/visual-qa/report.json /tmp/dressopp-visual-report/report.json
+          cd /tmp/dressopp-visual-report
+          git init --initial-branch=visual-qa-results
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add report.json
+          git commit -m "Visual QA report ${GITHUB_RUN_ID}"
+          git remote add origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          git push --force origin HEAD:visual-qa-results
       - name: Upload screenshots and visual report
         if: always()
         uses: actions/upload-artifact@v4
