@@ -29,10 +29,10 @@ test("AI Worker rejects unknown origins before invoking the model", async () => 
 
 test("AI Worker enforces budget and only returns ids from the provided product list", async () => {
   const products = [
-    {id:"coat-1",name:"Manteau en laine marine",gender:"men",brand:"Example",merchant:"Shop",price:95,objective:"Vêtements",seasonTags:["Hiver"],styleTags:["Preppy"],colors:["Marine"],materials:["Laine"]},
+    {id:"coat-1",name:"Manteau en laine marine",gender:"men",genderVerified:true,brand:"Example",merchant:"Shop",price:95,objective:"Vêtements",seasonTags:["Hiver"],styleTags:["Preppy"],colors:["Marine"],materials:["Laine"]},
     {id:"shirt-2",name:"Chemise hors budget",gender:"men",brand:"Other",merchant:"Shop",price:180,objective:"Vêtements",seasonTags:["Hiver"],styleTags:["Preppy"]},
     {id:"unisex-3",name:"Pull mixte",gender:"unisex",brand:"Other",merchant:"Shop",price:45,objective:"Vêtements"},
-    {id:"unknown-4",name:"Pull sans public précisé",brand:"Other",merchant:"Shop",price:45,objective:"Vêtements"}
+    {id:"unknown-4",name:"Pull sans public précisé",gender:"men",genderVerified:false,brand:"Other",merchant:"Shop",price:45,objective:"Vêtements"}
   ];
   const req = request(payload(products),"198.51.100.11");
   let sentInput = "";
