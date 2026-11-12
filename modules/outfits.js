@@ -22,15 +22,20 @@ const COLOR_ALIASES = {
   "chocolat": ["chocolate"], "crème": ["cream"], "vert forêt": ["forest green"],
   "bleu ciel": ["sky blue", "light blue"], "bordeaux": ["burgundy", "wine"]
 };
-const MATERIAL_HINTS = ["coton","lin","laine","cuir","daim","moumoute","fourrure","suède","suede","denim","jean","maille","velours","soie","nylon"];
-const CUT_HINTS = ["oversized","oversize","ample","baggy","wide leg","large","droit","straight","slim","regular","cropped","court","long","à pinces","a pinces","pleated"]; 
+const MATERIAL_HINTS = ["coton","lin","laine","cachemire","mohair","alpaga","cuir","daim","moumoute","fourrure","suède","suede","denim","jean","maille","velours","velours côtelé","tweed","flanelle","gabardine","soie","nylon","polyester","viscose","polyamide"];
+const CUT_HINTS = ["oversized","oversize","ample","baggy","wide leg","large","droit","straight","slim","regular","cropped","court","long","à pinces","a pinces","pleated","boxy","relaxed","loose","tapered","évasé","fitted","taille haute","taille basse","jambe large","jambe droite","structurée","fluide"]; 
 const PATTERN_HINTS = [
   { value: "rayures", terms: ["rayure", "striped", "stripes"] },
   { value: "carreaux", terms: ["carreau", "checked", "checkered", "plaid"] },
   { value: "damier", terms: ["damier", "checkerboard"] },
   { value: "jacquard", terms: ["jacquard"] },
   { value: "zèbre", terms: ["zèbre", "zebra"] },
-  { value: "graphique", terms: ["graphique", "graphic", "motif graphique"] }
+  { value: "graphique", terms: ["graphique", "graphic", "motif graphique"] },
+  { value: "floral", terms: ["floral", "fleuri", "fleurs"] },
+  { value: "pied-de-poule", terms: ["pied-de-poule", "houndstooth"] },
+  { value: "camouflage", terms: ["camouflage", "camo"] },
+  { value: "uni", terms: ["uni", "solid color", "plain"] },
+  { value: "logo", terms: ["logo", "logotype", "monogramme"] }
 ];
 const SLOT_TERMS = {
   top: ["t-shirt","tee","shirt","chemise","polo","pull","sweat","hoodie","débardeur","top","cardigan","maille"],
@@ -75,14 +80,22 @@ function mergeVisualValues(target, values, allowed) {
 }
 export function inferPinterestFeatures(pin) {
   const visual = pin && pin.visualAnalysis && pin.visualAnalysis.isFashion !== false ? pin.visualAnalysis : null;
-  const source = clean([pinterestText(pin), visual && visual.summary].filter(Boolean).join(" "));
+  const pieces = visual && Array.isArray(visual.pieces) ? visual.pieces : [];
+  const pieceText = pieces.flatMap(function(piece) {
+    return [piece.type,piece.color,piece.material,piece.cut,piece.pattern,...(Array.isArray(piece.details) ? piece.details : [])];
+  });
+  const source = clean([
+    pinterestText(pin),visual && visual.summary,visual && visual.layering,
+    visual && visual.outfitFormula,visual && visual.silhouetteTags,
+    visual && visual.details,pieceText
+  ].flat().filter(Boolean).join(" "));
   const features = classifyPinterestText(source);
   if (visual) {
     features.styleTags = mergeVisualValues(features.styleTags,visual.styleTags,Object.keys(STYLE_HINTS));
-    features.colors = mergeVisualValues(features.colors,visual.colors,COLOR_HINTS);
-    features.materials = mergeVisualValues(features.materials,visual.materials,MATERIAL_HINTS);
-    features.cuts = mergeVisualValues(features.cuts,visual.cuts,CUT_HINTS);
-    features.patterns = mergeVisualValues(features.patterns,visual.patterns,PATTERN_HINTS.map(function(pattern) { return pattern.value; }));
+    features.colors = mergeVisualValues(features.colors,[...(visual.colors || []),...pieces.map(piece => piece.color)],COLOR_HINTS);
+    features.materials = mergeVisualValues(features.materials,[...(visual.materials || []),...pieces.map(piece => piece.material)],MATERIAL_HINTS);
+    features.cuts = mergeVisualValues(features.cuts,[...(visual.cuts || []),...pieces.map(piece => piece.cut)],CUT_HINTS);
+    features.patterns = mergeVisualValues(features.patterns,[...(visual.patterns || []),...pieces.map(piece => piece.pattern)],PATTERN_HINTS.map(function(pattern) { return pattern.value; }));
   }
   return features;
 }
@@ -119,7 +132,13 @@ function productTerms(product) {
 }
 
 function matchScore(product, pin) {
-  const pinText = clean([pinterestText(pin),pin && pin.visualAnalysis && pin.visualAnalysis.isFashion !== false ? pin.visualAnalysis.summary : ""].filter(Boolean).join(" "));
+  const visual = pin && pin.visualAnalysis && pin.visualAnalysis.isFashion !== false ? pin.visualAnalysis : null;
+  const pieces = visual && Array.isArray(visual.pieces) ? visual.pieces : [];
+  const visualText = visual ? [
+    visual.summary,visual.layering,visual.outfitFormula,visual.silhouetteTags,
+    visual.details,pieces.flatMap(piece => [piece.type,piece.color,piece.material,piece.cut,piece.pattern,...(piece.details || [])])
+  ].flat().filter(Boolean) : [];
+  const pinText = clean([pinterestText(pin),...visualText].filter(Boolean).join(" "));
   const features = inferPinterestFeatures(pin);
   const tags = unique([].concat(features.styleTags,features.colors,features.materials,features.cuts,features.patterns)).map(clean);
   const fields = [
@@ -132,6 +151,16 @@ function matchScore(product, pin) {
   const terms = productTerms(product);
   tags.forEach(function(tag) {
     if (tag.length > 2 && terms.includes(tag)) score += 2;
+  });
+  const pieceTypes = unique(pieces.map(piece => clean(piece.type)).filter(Boolean));
+  const matchingPieces = pieceTypes.filter(type => type.length > 2 && terms.includes(type));
+  score += Math.min(12,matchingPieces.length * 3);
+  const details = unique([
+    ...(visual && Array.isArray(visual.details) ? visual.details : []),
+    ...pieces.flatMap(piece => Array.isArray(piece.details) ? piece.details : [])
+  ].map(clean));
+  details.forEach(detail => {
+    if (detail.length > 3 && terms.includes(detail)) score += 1.5;
   });
   (product.colors || []).forEach(function(color) {
     if (pinText.includes(clean(color))) score += 2;
@@ -285,7 +314,9 @@ function pinMatchesOutfitFilters(pin, filters) {
   const season = filters.season || "Toute saison";
   if (clean(season) !== "toute saison") {
     const hints = seasonHintsFor(season);
-    const seasonTags = (pin && pin.seasonTags || []).concat(pin && pin.season ? [pin.season] : []).filter(Boolean);
+    const visualSeasonTags = pin && pin.visualAnalysis && pin.visualAnalysis.isFashion !== false
+      ? pin.visualAnalysis.seasonTags || [] : [];
+    const seasonTags = (pin && pin.seasonTags || []).concat(pin && pin.season ? [pin.season] : [],visualSeasonTags).filter(Boolean);
     if (seasonTags.length) return matchesSeasonValues(seasonTags,hints);
 
     const text = clean([
