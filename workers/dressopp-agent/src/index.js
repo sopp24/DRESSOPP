@@ -27,14 +27,17 @@ function normalizeProduct(item) {
     id:clean(item && item.id,128), name:clean(item && item.name,140), brand:clean(item && item.brand,80), merchant:clean(item && item.merchant,80),
     gender:clean(item && item.gender,20), price:Number.isFinite(Number(item && item.price)) && item.price !== null ? Number(item.price) : null,
     objective:clean(item && item.objective,40), category:clean(item && item.category,60),
-    styleTags:stringList(item && item.styleTags,6), colors:stringList(item && item.colors,5), materials:stringList(item && item.materials,5),
-    cuts:stringList(item && item.cuts,4), patterns:stringList(item && item.patterns,4), seasonTags:stringList(item && item.seasonTags,4), description:clean(item && item.description,240)
+    styleTags:stringList(item && item.styleTags,8), colors:stringList(item && item.colors,8), materials:stringList(item && item.materials,6),
+    cuts:stringList(item && item.cuts,8), patterns:stringList(item && item.patterns,6),
+    details:stringList(item && item.details,10), paletteTags:stringList(item && item.paletteTags,6),
+    seasonTags:stringList(item && item.seasonTags,4), description:clean(item && item.description,360)
   };
 }
 function normalizeFeedback(value) {
   const normalizeItems = items => (Array.isArray(items) ? items : []).slice(-MAX_FEEDBACK_ITEMS).map(item => ({
     name:clean(item && item.name,100), brand:clean(item && item.brand,60), objective:clean(item && item.objective,40),
-    styleTags:stringList(item && item.styleTags,4), colors:stringList(item && item.colors,3), materials:stringList(item && item.materials,3), cuts:stringList(item && item.cuts,3)
+    styleTags:stringList(item && item.styleTags,6), colors:stringList(item && item.colors,6), materials:stringList(item && item.materials,4),
+    cuts:stringList(item && item.cuts,5), patterns:stringList(item && item.patterns,4), details:stringList(item && item.details,6), paletteTags:stringList(item && item.paletteTags,4)
   }));
   return { liked:normalizeItems(value && value.liked), saved:normalizeItems(value && value.saved), disliked:normalizeItems(value && value.disliked) };
 }
@@ -66,7 +69,15 @@ function validatePayload(body) {
       preferredCuts:stringList(profile.preferredCuts,12), excludedCuts:stringList(profile.excludedCuts,12), comfort:clean(profile.comfort,50), fit:clean(profile.fit,50)
     },
     feedback:normalizeFeedback(body.feedback),
-    inspirations:(Array.isArray(body.inspirations) ? body.inspirations : []).slice(0,12).map(item => ({ title:clean(item && item.title,100), tags:stringList(item && item.tags,10) })),
+    inspirations:(Array.isArray(body.inspirations) ? body.inspirations : []).slice(0,12).map(item => ({
+      title:clean(item && item.title,100),tags:stringList(item && item.tags,12),
+      summary:clean(item && item.summary,360),styleTags:stringList(item && item.styleTags,8),
+      colors:stringList(item && item.colors,8),materials:stringList(item && item.materials,6),
+      cuts:stringList(item && item.cuts,8),patterns:stringList(item && item.patterns,6),
+      details:stringList(item && item.details,12),paletteTags:stringList(item && item.paletteTags,6),
+      colorHarmony:clean(item && item.colorHarmony,180),silhouetteProportions:clean(item && item.silhouetteProportions,200),
+      outfitFormula:clean(item && item.outfitFormula,220)
+    })),
     products:filtered.slice(0,MAX_PRODUCTS)
   };
 }
@@ -79,6 +90,11 @@ function buildPrompt(input) {
     "- Respecte en priorité la catégorie, le style, la saison et le budget maximum choisis.",
     "- Réponds uniquement avec un JSON valide contenant recommendations (productId et reason), message et searchHints. Aucun texte hors du JSON.",
     "- Les éléments liked et saved sont positifs. Les éléments disliked sont négatifs : évite les mêmes caractéristiques, sans généraliser abusivement à toute la catégorie.",
+    "- Pinterest est la référence stylistique principale. Croise les couleurs précises, les coupes, volumes, motifs, détails de construction, palettes et associations de pièces des inspirations avec les fiches.",
+    "- Privilégie les candidats qui ressemblent à plusieurs codes visuels concrets des Pins (ex. teinte bordeaux/rose, maille graphique, coupe boxy ou pantalon wide-leg), pas seulement une catégorie générique comme casual ou preppy.",
+    "- Évite de surclasser les basiques blancs/noirs, coupes regular et pièces simplement dites « essentielles » lorsqu'un candidat plus coloré, texturé, graphique ou avec une coupe moderne correspond mieux aux inspirations.",
+    "- N'invente pas d'attribut absent des fiches. Quand les données produits ne décrivent pas la couleur ou la coupe, ne suppose pas qu'elles correspondent au Pinterest.",
+    "- Pinterest est une référence d'esthétique, pas une obligation de reproduire chaque tenue à l'identique : propose des pièces cohérentes et originales dans le même langage visuel.",
     "- Croise le profil, les inspirations, les retours récents et les attributs produits. Cherche une vraie diversité de pièces et de marchands.",
     "- Ne recommande pas deux variantes presque identiques si d’autres choix pertinents existent.",
     "- Les raisons doivent s’appuyer uniquement sur les attributs présents dans les fiches. Si les données sont pauvres, reste prudent.",
