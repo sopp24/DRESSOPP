@@ -22,20 +22,21 @@ export function inferProductGender(source) {
     ? [item.audience.name, item.audience.suggestedGender, item.audience.genderType].filter(Boolean).join(" ")
     : item.audience;
   const evidence = normalizeText([
-    item.gender, audience, item.name, item.title, item.description,
+    audience, item.name, item.title, item.description,
     item.category, item.objective, item.url, item.productUrl
   ].filter(Boolean).join(" "));
+  const declared = normalizeText(item.gender);
   const women = /(^|[^a-z])(femme|femmes|woman|women|womens|female|girl|girls|ladies|damen|feminin)([^a-z]|$)/.test(evidence) ||
-    /pour femme|for women|womenswear|collection femme/.test(evidence);
+    /pour femme|for women|womenswear|collection femme/.test(evidence) || declared === "women";
   const men = /(^|[^a-z])(homme|hommes|man|men|mens|masculin|male)([^a-z]|$)/.test(evidence) ||
-    /pour homme|for men|menswear|collection homme/.test(evidence);
-  if (/(^|[^a-z])(unisexe|unisex|mixte)([^a-z]|$)/.test(evidence) ||
-      /gender.?neutral|tous les genres|all genders/.test(evidence) || (women && men)) return "unisex";
+    /pour homme|for men|menswear|collection homme/.test(evidence) ||
+    (declared === "men" && item.genderVerified === true);
+  const unisex = /(^|[^a-z])(unisexe|unisex|mixte)([^a-z]|$)/.test(evidence) ||
+    /gender.?neutral|tous les genres|all genders/.test(evidence) || declared === "unisex";
+  if (unisex || (women && men)) return "unisex";
   if (women) return "women";
   if (men) return "men";
-  // The merchant directory is intentionally curated for men's and mixed fashion.
-  // Explicit women's department signals above are excluded; neutral product naming remains eligible.
-  return "men";
+  return "unknown";
 }
 
 function hash(value) {
@@ -93,8 +94,10 @@ export function normalizeProduct(raw) {
   const suppliedPrice = source.price === "" || source.price == null ? null : Number(source.price);
   const price = Number.isFinite(suppliedPrice) && suppliedPrice >= 0 ? suppliedPrice : null;
   const id = text(source.id) || "prod-" + hash(identity);
+  const gender = inferProductGender(source);
   return {
-    id: id, name: name, brand: brand, merchant: merchant, url: url, imageUrl: imageUrl, gender: inferProductGender(source),
+    id: id, name: name, brand: brand, merchant: merchant, url: url, imageUrl: imageUrl,
+    gender: gender, genderVerified: gender === "men",
     price: price,
     originalPrice: source.originalPrice == null || source.originalPrice === "" ? null : Number(source.originalPrice),
     objective: text(source.objective || source.category) || "Vêtements",
@@ -338,7 +341,7 @@ export function rankProducts(products, state, options) {
       (product.expiresAt && Date.parse(product.expiresAt) <= Date.now());
     const stale = product.catalogStatus === "stale";
     const unavailable = product.availabilityStatus === "out_of_stock";
-    return product.gender !== "women" && !expired && !stale && !unavailable && sizeMatches(product) &&
+    return product.gender === "men" && product.genderVerified !== false && !expired && !stale && !unavailable && sizeMatches(product) &&
       matchesFilters(product, opts.filters || config) && !seen.has(product.id);
   }).map(function(product) {
     const familiarity = preferenceScore(product, learned) + explicitProfileScore(product, profile);
