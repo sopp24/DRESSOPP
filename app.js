@@ -1873,7 +1873,7 @@ function attachSwipe() {
     const threshold = Math.max(78, Math.min(132, width * .22));
     const accepted = horizontalIntent && (Math.abs(deltaX) >= threshold || (Math.abs(deltaX) > 46 && Math.abs(velocity) > .58));
     const saveThreshold = Math.max(82, Math.min(150, card.getBoundingClientRect().height * .18));
-    const acceptedSave = verticalSaveIntent && deltaY >= saveThreshold;
+    const acceptedSave = !horizontalIntent && deltaY >= saveThreshold && deltaY > Math.abs(deltaX) * 1.08;
     const productId = card.dataset.productId;
     pointerId = null;
     if (accepted || acceptedSave) {
