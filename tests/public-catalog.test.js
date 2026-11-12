@@ -30,6 +30,22 @@ test("rejects non-EUR, out-of-stock and incomplete records", () => {
   assert.deepEqual(extractProductsFromHtml(html,source,"https://example.com/p"),[]);
 });
 
+test("legacy public products need explicit men's evidence before retaining a men's label", () => {
+  const previous = [
+    {id:"legacy-ambiguous",name:"Pull col roulé",description:"Maille douce et chaude",gender:"men",sourceType:"public-web",url:"https://example.com/p/1"},
+    {id:"legacy-explicit",name:"Chemise homme Oxford",gender:"men",sourceType:"public-web",url:"https://example.com/homme/chemise"},
+    {id:"verified",name:"Pull en laine",gender:"men",genderVerified:true,sourceType:"public-web",url:"https://example.com/p/3"}
+  ];
+  const result = mergeCatalog(previous,[],[],new Date("2026-11-12T12:00:00.000Z"));
+  const byId = new Map(result.products.map(item=>[item.id,item]));
+  assert.equal(byId.get("legacy-ambiguous").gender,"unknown");
+  assert.equal(byId.get("legacy-ambiguous").genderVerified,false);
+  assert.equal(byId.get("legacy-explicit").gender,"men");
+  assert.equal(byId.get("legacy-explicit").genderVerified,true);
+  assert.equal(byId.get("verified").gender,"men");
+  assert.equal(byId.get("verified").genderVerified,true);
+});
+
 test("expires old public listings but preserves editorial seeds", () => {
   const old = [{id:"old",url:"https://example.com/old",sourceType:"public-web",verifiedAt:"2026-10-01T00:00:00.000Z",catalogStatus:"active"}];
   const seed = [{id:"seed",url:"https://shop.example/seed",sourceType:"curated"}];
