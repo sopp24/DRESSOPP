@@ -126,6 +126,14 @@ async function runViewport(browser, config) {
         const nextBox = await nextCard.boundingBox();
         const savedBefore = Number(await page.locator("#wardrobe-count").textContent());
         if (nextBox) {
+          await page.evaluate(() => {
+            window.__dressoppGestureQA = [];
+            const card = document.querySelector("#active-product-card");
+            if (!card) return;
+            ["pointerdown","pointermove","pointerup","pointercancel","lostpointercapture"].forEach(type => card.addEventListener(type,event => {
+              window.__dressoppGestureQA.push({type,pointerId:event.pointerId,button:event.button,x:Math.round(event.clientX),y:Math.round(event.clientY),className:card.className});
+            }));
+          });
           // Start the vertical gesture within the product image, not on the source link.
           await page.mouse.move(nextBox.x + nextBox.width * 0.5, nextBox.y + nextBox.height * 0.17);
           await page.mouse.down();
@@ -134,7 +142,13 @@ async function runViewport(browser, config) {
           try {
             await page.waitForFunction(previousCount => Number(document.querySelector("#wardrobe-count").textContent) > previousCount, savedBefore, {timeout:6000});
           } catch {
-results.push({viewport:config.name,view:"swipe-save",productId:nextId,issues:["le glissement vers le bas n'ajoute pas l'article à la liste"]});
+            const diagnostics = await page.evaluate(() => ({
+              events:window.__dressoppGestureQA || [],
+              count:document.querySelector("#wardrobe-count")?.textContent || null,
+              cardClass:document.querySelector("#active-product-card")?.className || null,
+              cardId:document.querySelector("#active-product-card")?.dataset.productId || null
+            }));
+            results.push({viewport:config.name,view:"swipe-save",productId:nextId,diagnostics,issues:["le glissement vers le bas n'ajoute pas l'article à la liste"]});
           }
         }
       }
