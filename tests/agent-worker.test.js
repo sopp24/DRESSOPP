@@ -100,20 +100,23 @@ test("Pinterest image analysis uses the vision model and returns hidden structur
           audience:"men",
           isFashion:true,
           summary:"Veste en cuir noire portée sur un sweat gris, avec un pantalon ample et des baskets.",
-          styleTags:["Streetwear"],colors:["noir","gris"],materials:["cuir"],
-          cuts:["oversized","wide leg"],patterns:[],
+          styleTags:["Créatif","Streetwear","Maille graphique"],colors:["rose vif","bordeaux","blanc"],materials:["maille","cuir"],
+          cuts:["boxy","cropped","wide leg"],patterns:["color block","rayures"],
           pieces:[
-            {type:"veste",color:"noir",material:"cuir",cut:"oversized",details:["fermeture zippée","col montant"]},
-            {type:"pantalon",color:"gris",material:"coton",cut:"wide leg",details:["pinces"]},
+            {type:"cardigan",color:"rose vif",material:"maille",cut:"boxy",pattern:"rayures",details:["zip contrasté","maille texturée"]},
+            {type:"pantalon",color:"bordeaux",material:"coton",cut:"wide leg",pattern:"uni",details:["pinces"]},
             {type:"baskets",color:"blanc",material:"cuir",cut:"regular",details:["semelle épaisse"]}
           ],
-          details:["fermeture zippée","col montant","pinces"],
-          silhouetteTags:["ample","superposée"],
+          details:["zip contrasté","maille texturée","pinces"],
+          designDetails:["broderie","coutures contrastées"],
+          silhouetteTags:["boxy","courte","ample","volumes contrastés"],
+          silhouetteProportions:"Cardigan court et boxy avec un pantalon très large.",
+          colorHarmony:"Rose vif et bordeaux équilibrés par le blanc.",
           seasonTags:["Automne","Hiver"],
-          occasionTags:["Quotidien"],
-          paletteTags:["Monochrome"],
-          layering:"Un sweat gris est porté sous la veste en cuir noire.",
-          outfitFormula:"Veste en cuir + sweat gris + pantalon ample + baskets blanches",
+          occasionTags:["Sortie"],
+          paletteTags:["Color block","Accents colorés"],
+          layering:"Une maille graphique courte portée sur un t-shirt blanc.",
+          outfitFormula:"Cardigan graphique boxy + pantalon wide leg + baskets blanches",
           confidence:0.94
         })};
       }}
@@ -123,14 +126,19 @@ test("Pinterest image analysis uses the vision model and returns hidden structur
     assert.equal(body.ok,true);
     assert.equal(body.analyses[0].id,"pin-vision-1");
     const analysis = body.analyses[0].visualAnalysis;
-    assert.equal(analysis.version,3);
+    assert.equal(analysis.version,4);
     assert.equal(analysis.audience,"men");
-    assert.equal(analysis.styleTags[0],"Streetwear");
-    assert.deepEqual(analysis.colors,["noir","gris"]);
-    assert.deepEqual(analysis.pieces.map(piece => piece.type),["veste","pantalon","baskets"]);
+    assert.deepEqual(analysis.styleTags,["Créatif","Streetwear","Maille graphique"]);
+    assert.deepEqual(analysis.colors,["rose vif","bordeaux","blanc"]);
+    assert.deepEqual(analysis.pieces.map(piece => piece.type),["cardigan","pantalon","baskets"]);
+    assert.deepEqual(analysis.cuts,["boxy","cropped","wide leg"]);
+    assert.deepEqual(analysis.patterns,["color block","rayures"]);
+    assert.deepEqual(analysis.designDetails,["broderie","coutures contrastées"]);
+    assert.equal(analysis.colorHarmony,"Rose vif et bordeaux équilibrés par le blanc.");
+    assert.equal(analysis.silhouetteProportions,"Cardigan court et boxy avec un pantalon très large.");
     assert.deepEqual(analysis.pieces[0].details,["fermeture zippée","col montant"]);
     assert.deepEqual(analysis.seasonTags,["Automne","Hiver"]);
-    assert.deepEqual(analysis.paletteTags,["Monochrome"]);
+    assert.deepEqual(analysis.paletteTags,["Color block","Accents colorés"]);
     assert.match(analysis.outfitFormula,/Veste en cuir/);
     assert.match(modelInput.messages[1].content.find(part => part.type==="text").text,/mode masculine uniquement/);
     assert.match(modelInput.messages[1].content.find(part => part.type==="text").text,/audience/);
