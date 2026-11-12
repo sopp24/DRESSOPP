@@ -281,7 +281,7 @@ test("Pinterest v4 captures precise colors, modern cuts, patterns and design det
   assert.ok(features.cuts.includes("cropped"));
   assert.ok(features.patterns.includes("color block"));
   assert.ok(features.details.includes("zip contrasté"));
-  assert.ok(features.paletteTags.includes("Accents colorés"));
+  assert.ok(features.paletteTags.includes("accents colorés"));
 });
  
 test("Pinterest inspirations are accepted only when their male audience is confirmed", function() {
