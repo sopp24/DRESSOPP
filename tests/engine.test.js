@@ -1,6 +1,10 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { seasonFor, normalizeProduct, matchesFilters, rankProducts, createInitialState, deriveLearnedPreferences } from "../modules/engine.js";
+import { seasonFor, normalizeProduct as normalizeRawProduct, matchesFilters, rankProducts, createInitialState, deriveLearnedPreferences } from "../modules/engine.js";
+
+function normalizeProduct(raw) {
+  return normalizeRawProduct(Object.assign({ gender:"men", genderVerified:true },raw || {}));
+}
 
 test("seasonFor follows northern hemisphere seasons", function() {
   assert.equal(seasonFor(new Date(2026, 0, 15)), "Hiver");
@@ -177,16 +181,19 @@ test("new local state keeps outfit filters and a separate saved outfit collectio
 });
 
 
-test("product gender is limited to men's and mixed items in discovery", function() {
+test("product discovery is limited to confirmed men's pieces", function() {
   const men = normalizeProduct({ id:"men", name:"Chemise homme", price:40 });
-  const unisex = normalizeProduct({ id:"unisex", name:"T-shirt unisexe", price:25 });
-  const women = normalizeProduct({ id:"women", name:"Blouse femme", url:"https://shop.example/femme/blouse", price:30 });
-  const state = createInitialState([men,unisex,women]);
-  const result = rankProducts([women,unisex,men],state,{
+  const unisex = normalizeRawProduct({ id:"unisex", name:"T-shirt unisexe", price:25 });
+  const women = normalizeRawProduct({ id:"women", name:"Blouse femme", url:"https://shop.example/femme/blouse", price:30 });
+  const unknown = normalizeRawProduct({ id:"unknown", name:"Pull en maille", price:32 });
+  const state = createInitialState([men,unisex,women,unknown]);
+  const result = rankProducts([women,unisex,unknown,men],state,{
     includeSeen:true,
     filters:{objective:"Tout",style:"Tous",season:"Toute saison",maxPrice:null}
   });
-  assert.deepEqual(result.map(item=>item.id).sort(),["men","unisex"]);
-  assert.equal(women.gender,"women");
+  assert.deepEqual(result.map(item=>item.id),["men"]);
+  assert.equal(men.gender,"men");
   assert.equal(unisex.gender,"unisex");
+  assert.equal(women.gender,"women");
+  assert.equal(unknown.gender,"unknown");
 });
