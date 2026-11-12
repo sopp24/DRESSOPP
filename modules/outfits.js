@@ -249,7 +249,7 @@ function matchesAny(values, expected) {
   return expected.some(value => source.includes(clean(value)));
 }
 function productIsForMen(product) {
-  return Boolean(product && product.gender === "men" && product.genderVerified !== false);
+  return Boolean(product && product.gender === "men" && product.genderVerified === true);
 }
 function productExcludedByProfile(product, profile) {
   const p = profile || {};
