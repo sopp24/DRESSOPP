@@ -31,6 +31,16 @@ let deckActionPending = false;
 let currentOutfitIdeas = [];
 let discoveryFiltersOpen = false;
 let currentModalProduct = null;
+let modalReturnFocus = null;
+const modalFocusObserver = typeof MutationObserver === "function" ? new MutationObserver(function() {
+  const dialog = modalRoot.querySelector('[role="dialog"]');
+  if (!dialog) return;
+  dialog.setAttribute("tabindex", "-1");
+  const firstField = dialog.querySelector('input:not([type="hidden"]):not([disabled]), select:not([disabled]), textarea:not([disabled])');
+  const firstControl = firstField || dialog.querySelector('button:not([disabled]), a[href], [tabindex]:not([tabindex="-1"])');
+  (firstControl || dialog).focus({ preventScroll: true });
+}) : null;
+if (modalFocusObserver) modalFocusObserver.observe(modalRoot, { childList: true });
 let toastTimer = null;
 let persistPending = false;
 let persistRevision = 0;
@@ -636,13 +646,13 @@ function renderDeckCard(product, training) {
   const originalLink = articleUrl
     ? '<a class="product-original-link" href="' + esc(articleUrl) + '" target="_blank" rel="noopener noreferrer"><span>Voir l’article original</span><i aria-hidden="true">↗</i></a>'
     : '<button class="product-original-link" type="button" data-action="details" data-id="' + esc(product.id) + '"><span>Voir la fiche produit</span><i aria-hidden="true">↗</i></button>';
-  return '<div class="deck-card-wrap"><article class="product-card" id="active-product-card" data-product-id="' + esc(product.id) + '" aria-label="' + esc(product.name) + '">' +
+  return '<div class="deck-card-wrap"><article class="product-card" id="active-product-card" data-product-id="' + esc(product.id) + '" role="group" tabindex="0" aria-labelledby="active-product-title" aria-describedby="deck-keyboard-hint deck-touch-hint" aria-keyshortcuts="ArrowLeft ArrowRight ArrowDown Control+Z Meta+Z">' +
     '<div class="product-visual">' + imageMarkup(product.imageUrl, product.name) + '</div>' +
     '<div class="swipe-tint" aria-hidden="true"></div>' +
     '<div class="swipe-stamp swipe-stamp-nope" aria-hidden="true">NON</div><div class="swipe-stamp swipe-stamp-like" aria-hidden="true">OUI</div><div class="swipe-stamp swipe-stamp-save" aria-hidden="true">AJOUTÉ</div>' +
     '<div class="product-info"><div class="product-copy">' +
       '<span class="swipe-category">' + esc(product.objective || "Sélection DRESSOPP") + '</span>' +
-      '<h2 class="product-title">' + esc(product.name) + '</h2>' +
+      '<h2 class="product-title" id="active-product-title">' + esc(product.name) + '</h2>' +
       '<div class="product-brand-price"><span>' + esc(brand) + '</span><i aria-hidden="true">•</i><strong>' + esc(price) + '</strong></div>' +
     '</div><div class="product-card-links"><button class="product-details-pill" type="button" data-action="details" data-id="' + esc(product.id) + '">Détails <span aria-hidden="true">↗</span></button>' + originalLink + '</div></div>' +
     '<div class="deck-actions" aria-label="Actions sur cet article">' +
@@ -652,6 +662,8 @@ function renderDeckCard(product, training) {
     '<button class="deck-action deck-action-yes" type="button" data-action="vote" data-vote="yes" data-id="' + esc(product.id) + '" aria-label="J’aime" title="J’aime"><img class="deck-action-icon" src="./assets/fav.webp" alt="" aria-hidden="true" draggable="false"></button>' +
     '<button class="deck-action deck-action-share" type="button" data-action="share-product" data-id="' + esc(product.id) + '" aria-label="Partager cet article" title="Partager"><img class="deck-action-icon" src="./assets/share.webp" alt="" aria-hidden="true" draggable="false"></button>' +
     '</div>' +
+    '<p class="deck-hint deck-hint-desktop" id="deck-keyboard-hint">← Passer · ↓ Ajouter à ma liste · → J’aime · Entrée : détails · ⌘/Ctrl + Z : annuler</p>' +
+    '<p class="deck-hint deck-hint-touch" id="deck-touch-hint" aria-hidden="true">Glisse à gauche ou à droite · Vers le bas pour ajouter à ta liste</p>' +
     '</article></div>';
 }
 function renderGridCards(products, options) {
@@ -659,8 +671,8 @@ function renderGridCards(products, options) {
   if (!products.length) return renderEmptyProducts(false);
   return '<div class="product-grid">' + products.map(function(product) {
     const liked = isLiked(product.id);
-    return '<article class="grid-card"><div class="grid-image" role="button" tabindex="0" data-action="details" data-id="' + esc(product.id) + '">' +
-      imageMarkup(product.imageUrl, product.name) + '</div><div class="grid-content"><span class="product-brand">' + esc(product.brand || "Marque non renseignée") + '</span>' +
+    return '<article class="grid-card"><button class="grid-image" type="button" data-action="details" data-id="' + esc(product.id) + '" aria-label="Voir la fiche produit : ' + esc(product.name) + '" title="Voir les détails">' +
+      imageMarkup(product.imageUrl, product.name) + '</button><div class="grid-content"><span class="product-brand">' + esc(product.brand || "Marque non renseignée") + '</span>' +
       '<h3 class="product-title">' + esc(product.name) + '</h3>' + aiAgentReason(product.id) + '<div class="product-meta"><span>' + esc(product.merchant || product.source) + '</span><i class="meta-dot"></i><span>' + esc(product.objective) + '</span></div>' +
       '<div class="grid-bottom"><span class="grid-price">' + esc(formatPrice(product.price)) + '</span><div class="grid-actions">' +
       '<button class="mini-icon-button" type="button" data-action="details" data-id="' + esc(product.id) + '" aria-label="Voir les détails">↗</button>' +
@@ -1086,7 +1098,10 @@ function renderSettings() {
 function render() {
   document.body.classList.toggle("is-discovery-app", currentView === "discover");
   document.querySelectorAll("[data-view]").forEach(function(button) {
-    button.classList.toggle("is-active", button.dataset.view === currentView);
+    const isActive = button.dataset.view === currentView;
+    button.classList.toggle("is-active", isActive);
+    if (isActive) button.setAttribute("aria-current", "page");
+    else button.removeAttribute("aria-current");
   });
   const count = document.querySelector("#wardrobe-count");
   if (count) count.textContent = String(state.likedProducts.length);
@@ -1306,7 +1321,15 @@ function openProductDetails(productId) {
   });
   attachImageFallbacks(modalRoot);
 }
-function closeModal() { modalRoot.innerHTML = ""; currentModalProduct = null; }
+function closeModal() {
+  modalRoot.innerHTML = "";
+  currentModalProduct = null;
+  const returnTarget = modalReturnFocus;
+  modalReturnFocus = null;
+  if (returnTarget && returnTarget.isConnected && typeof returnTarget.focus === "function") {
+    window.requestAnimationFrame(function() { returnTarget.focus({ preventScroll: true }); });
+  }
+}
 function attachImageFallbacks(scope) {
   scope.querySelectorAll("img.product-photo").forEach(function(image) {
     image.addEventListener("error", function() {
@@ -1579,6 +1602,9 @@ function handleClick(event) {
   const actionButton = event.target.closest("[data-action]");
   if (!actionButton) return;
   const action = actionButton.dataset.action;
+  if (["add-product","add-inspiration","details","show-outfit","open-saved-outfit"].includes(action)) {
+    modalReturnFocus = document.activeElement;
+  }
   if (action === "run-ai-agent") runAiAgent(true);
   else if (action === "add-product") openProductForm();
   else if (action === "add-inspiration") openInspirationForm();
@@ -1846,7 +1872,10 @@ function attachSwipe() {
     }
     const wasTap = Math.abs(deltaX) < 10 && Math.abs(deltaY) < 10 && !horizontalIntent && !verticalSaveIntent;
     clearPreview(true);
-    if (wasTap) openProductDetails(productId);
+    if (wasTap) {
+    modalReturnFocus = document.activeElement;
+    openProductDetails(productId);
+  }
   }
 
   card.addEventListener("pointerup", finishSwipe);
@@ -1878,16 +1907,40 @@ window.addEventListener("scroll", function() {
 }, { passive:true });
 document.addEventListener("keydown", function(event) {
   if (modalRoot.innerHTML) {
-    if (event.key === "Escape") closeModal();
+    if (event.key === "Escape") {
+      event.preventDefault();
+      closeModal();
+      return;
+    }
+    if (event.key === "Tab") {
+      const dialog = modalRoot.querySelector('[role="dialog"]');
+      if (!dialog) return;
+      const focusable = Array.from(dialog.querySelectorAll('a[href],button:not([disabled]),input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])'))
+        .filter(function(element) { return element.getClientRects().length > 0; });
+      if (!focusable.length) {
+        event.preventDefault();
+        dialog.focus();
+        return;
+      }
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (event.shiftKey && (document.activeElement === first || !dialog.contains(document.activeElement))) {
+        event.preventDefault(); last.focus();
+      } else if (!event.shiftKey && (document.activeElement === last || !dialog.contains(document.activeElement))) {
+        event.preventDefault(); first.focus();
+      }
+    }
     return;
   }
   if (["INPUT","TEXTAREA","SELECT"].includes(document.activeElement.tagName)) return;
   if (currentView === "discover" || currentView === "training") {
     const card = document.querySelector("#active-product-card");
     if (!card) return;
-    if (event.key === "ArrowRight") animateDeckDecision(card.dataset.productId, "yes");
-    else if (event.key === "ArrowLeft") animateDeckDecision(card.dataset.productId, "no");
-    else if (event.key.toLowerCase() === "z" && (event.metaKey || event.ctrlKey)) undoLast();
+    if (event.key === "ArrowRight") { event.preventDefault(); animateDeckDecision(card.dataset.productId, "yes"); }
+    else if (event.key === "ArrowLeft") { event.preventDefault(); animateDeckDecision(card.dataset.productId, "no"); }
+    else if (event.key === "ArrowDown") { event.preventDefault(); animateDeckDecision(card.dataset.productId, "save"); }
+    else if (event.key === "Enter" && event.target === card) { event.preventDefault(); openProductDetails(card.dataset.productId); }
+    else if (event.key.toLowerCase() === "z" && (event.metaKey || event.ctrlKey)) { event.preventDefault(); undoLast(); }
   }
 });
 async function boot() {
