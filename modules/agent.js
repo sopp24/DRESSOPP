@@ -24,7 +24,7 @@ function savedProducts(state) {
   const products = new Map((state.products || []).map(product => [product.id, product]));
   const saved = Array.isArray(state.likedProducts) ? state.likedProducts : [];
   const seen = new Set();
-  return saved.slice(-MAX_HISTORY).reverse().map(item => { const product = products.get(item.productId); if (!product || seen.has(product.id)) return null; seen.add(product.id); return productSummary(product); }).filter(Boolean);
+  return saved.slice(-MAX_HISTORY).reverse().map(item => { const product = products.get(item.productId); if (!product || product.gender !== "men" || product.genderVerified !== true || seen.has(product.id)) return null; seen.add(product.id); return productSummary(product); }).filter(Boolean);
 }
 export function createAgentPayload(state, candidates, inspirations) {
   const settings = state.settings || {}, profile = state.profile || {};
