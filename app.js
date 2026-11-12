@@ -666,7 +666,7 @@ function renderDeckCard(product, training) {
     '</div>' +
     '<p class="deck-hint deck-hint-desktop" id="deck-keyboard-hint">← Passer · ↓ Ajouter à ma liste · → J’aime · Entrée : détails · ⌘/Ctrl + Z : annuler</p>' +
     '<p class="deck-hint deck-hint-touch" id="deck-touch-hint" aria-hidden="true">Glisse à gauche ou à droite · Vers le bas pour ajouter à ta liste</p>' +
-    '</div>';
+    '</article></div>';
 }
 function renderGridCards(products, options) {
   const opts = options || {};
