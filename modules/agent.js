@@ -68,7 +68,7 @@ function addLocalSignal(weights, field, value, amount) {
   weights.set(key,(weights.get(key) || 0) + amount);
 }
 function localProductSignals(weights, product, amount) {
-  if (!product) return;
+  if (!product || product.gender !== "men" || product.genderVerified !== true) return;
   ["styleTags","colors","materials","cuts","patterns"].forEach(field => {
     localValues(product,field).forEach(value => addLocalSignal(weights,field,value,amount));
   });
