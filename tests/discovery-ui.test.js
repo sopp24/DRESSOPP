@@ -175,11 +175,12 @@ test("swipe cards do not display gesture instructions inside the product card", 
 });
 
 
-test("the restored swipe card keeps its original photo, information, link and actions together", function() {
+test("the restored swipe layout keeps the product card separate from the action row", function() {
   const cardRenderer = app.slice(app.indexOf("function renderDeckCard"),app.indexOf("function renderGridCards"));
   assert.ok(cardRenderer.indexOf("'<div class=\"product-visual\">'") < cardRenderer.indexOf("'<div class=\"product-info\">"));
-  assert.ok(cardRenderer.indexOf("'<div class=\"product-info\">") < cardRenderer.indexOf("'<div class=\"deck-actions\""));
-  assert.ok(cardRenderer.indexOf("'<div class=\"deck-actions\"") < cardRenderer.indexOf("'</article></div>'"));
+  assert.ok(cardRenderer.indexOf("'<div class=\"product-info\">") < cardRenderer.indexOf("'</article>'"));
+  assert.ok(cardRenderer.indexOf("'</article>'") < cardRenderer.indexOf("'<div class=\"deck-actions\""));
+  assert.ok(cardRenderer.endsWith("    '</div>';\n}\n"));
   assert.ok(app.includes("renderProductAttributes(product)"));
   assert.ok(app.includes('const gestureSurface = card.closest(".deck-card-wrap") || card;'));
   assert.ok(app.includes("gestureSurface.setPointerCapture(pointerId)"));
@@ -188,6 +189,7 @@ test("the restored swipe card keeps its original photo, information, link and ac
   assert.ok(css.includes(".product-info {"));
   assert.ok(css.includes(".deck-actions {"));
   assert.ok(css.includes("min-width: 44px"));
+  assert.ok(!css.includes("Maquette DRESSOPP — carte mobile verticale"));
   assert.ok(app.includes("isMenswearPin(pin)"));
   assert.ok(app.includes('gender: "men", genderVerified: true'));
 });
