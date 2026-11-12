@@ -6,22 +6,22 @@ DRESSOPP — « Mode diligente. » — est un personal shopper visuel pour la mo
 
 Site : https://sopp24.github.io/DRESSOPP/
 
-## État vérifié du dépôt — 9 novembre 2026
+## État vérifié du dépôt — 12 novembre 2026
 
 Les éléments ci-dessous ont été comparés aux fichiers réellement présents sur la branche `main`. Les compteurs de catalogue sont un instantané daté, pas une promesse de volume permanent.
 
 | Élément | État constaté |
 |---|---|
-| Répertoire des boutiques | **200 enseignes** ; les neuf catégories et leurs sous-totaux du README correspondent exactement à `data/merchant-directory.json`. Aucun doublon de nom ou de domaine détecté. |
-| Dernier catalogue publié | Généré le **8 novembre 2026 à 14:21:12 UTC** ; statut `partial`. |
-| Fiches du catalogue | **108 au total** : 78 fiches publiques actives, 16 références éditoriales et 14 fiches publiques périmées. |
-| Sources actives du dernier instantané | 78 fiches publiques réparties entre BZB (18), Jules (18), Carhartt WIP (12), Courir (17), Foot Locker (5) et C.P. Company (8). |
-| Dernière collecte | 36 enseignes examinées et 200 pages contrôlées pendant cette exécution. |
-| Pinterest | Tableau `mode` confirmé **PUBLIC** ; **22 Pins synchronisés et 22 analyses visuelles enregistrées** dans `data/pinterest-pins.json`. Dernière synchronisation vérifiée : **9 novembre 2026 à 14:00:27 UTC**. |
-| Analyse visuelle Pinterest | **22/22 images analysées** par Gemma 4 via Cloudflare Workers AI ; styles, couleurs, matières, coupes, motifs et résumé descriptif enregistrés dans `visualAnalysis`. Les signaux sont exploités par le moteur sans être affichés dans l'interface. |
+| Répertoire des boutiques | **200 enseignes** ; les neuf catégories et leurs sous-totaux correspondent à `data/merchant-directory.json`. |
+| Dernier catalogue publié | Généré le **12 novembre 2026 à 16:01:36 UTC** ; statut `partial`. |
+| Fiches du catalogue | **211 au total** : 180 fiches publiques actives, 16 références éditoriales et 15 fiches publiques périmées. Parmi toutes les fiches, **18 références masculines confirmées sont actuellement actives** ; les références femme, mixtes, unisexes ou ambiguës restent exclues de la découverte. |
+| Sources actives du dernier instantané | 12 sources ont fourni des fiches exploitables ; 36 enseignes ont été examinées et 276 pages contrôlées. |
+| Dernière collecte | 36 enseignes examinées et 276 pages contrôlées pendant cette exécution. |
+| Pinterest | Tableau `mode` confirmé **PUBLIC** ; **36 Pins synchronisés**, dont 35 classés masculins et 1 unisexe exclu des inspirations. Dernière synchronisation vérifiée : **12 novembre 2026 à 18:38:51 UTC**. |
+| Analyse visuelle Pinterest | **36/36 images analysées (schéma v3)** par Gemma 4 via Cloudflare Workers AI ; public, pièces, styles, couleurs, matières, coupes, motifs, détails et silhouette sont enregistrés dans `visualAnalysis`. Les signaux alimentent le moteur sans être affichés dans l'interface. |
 | Personal shopper IA | Le mode local est disponible. Le Worker Cloudflare `dressopp-agent` est déployé et son endpoint de santé répond. Les recommandations distantes nécessitent toujours un consentement explicite dans l'application. |
 | Partage communautaire | Désactivé et non configuré dans les fichiers publiés (`enabled: false`, sans identifiants de projet). |
-| Avis | 25 fiches sur 108 comportent une note de **produit** ; aucune ne comporte actuellement de note de **marchand**. |
+| Avis | 43 fiches sur 211 comportent une note de **produit** ; aucune ne comporte actuellement de note de **marchand**. |
 
 Le statut `partial` signifie que la collecte ne produit pas encore des fiches exploitables auprès de toutes les enseignes visées. Le répertoire de 200 boutiques est une liste de cibles, pas 200 flux marchands déjà connectés.
 
@@ -34,7 +34,7 @@ Cette section conserve la demande de référence pour faire évoluer les sources
 3. **Adapter les propositions au style, à la catégorie et au budget.** Les univers prioritaires comprennent les multimarques (Zalando, ASOS, UNIQLO…), l'accessible/casual (BZB, Pull & Bear…), le premium et le luxe (Louis Vuitton, Dior, Lothaire…), les sneakers et le sport (Nike, adidas, Courir…) et les sous-vêtements (Calvin Klein, Undiz…).
 4. **Fiabilité des marchands.** Trustpilot, Google Avis clients, Avis Vérifiés, Trusted Shops et Custplace sont des sources envisagées, pas des connecteurs actuellement intégrés. Le collecteur public ne renseigne pas les notes de marchands ; il peut récupérer une note de produit publiée dans les données structurées Schema.org. Une note produit ne doit jamais être assimilée à la fiabilité du vendeur.
 5. **Publicités mode.** Meta Ad Library est une piste de veille, mais aucun collecteur Meta Ad Library n'est actuellement présent dans le dépôt. Si cette source est ajoutée, elle devra se limiter aux données publiques accessibles par un moyen autorisé. Elle ne donne pas accès au fil Instagram personnalisé de l'utilisateur et ne prouve pas qu'un produit est apprécié personnellement.
-6. **Couverture internationale.** Le répertoire comprend 236 enseignes pour homme ou mixtes, dans les mêmes univers que les références fournies. Les pays, devises, livraison et accès techniques varient selon les enseignes.
+6. **Couverture internationale.** Le répertoire comprend 200 enseignes couvrant plusieurs univers de mode masculine, dans les mêmes univers que les références fournies. Les pays, devises, livraison et accès techniques varient selon les enseignes.
 
 ## Expérience de découverte en flux continu
 
@@ -44,10 +44,10 @@ Cette section conserve la demande de référence pour faire évoluer les sources
 - Le moteur local classe les produits selon les préférences apprises, le profil, les tailles, les marques, les couleurs, matières, coupes, le style, le budget, la saison et la fraîcheur des fiches.
 - Le catalogue est découpé en pages de 120 produits. Le site charge la première page, puis précharge la suivante quand il reste environ huit propositions à découvrir. En mode grille, le prochain lot se charge aussi au défilement.
 - Quand toutes les pages publiées ont été parcourues, le site vérifie périodiquement si un nouveau manifeste est disponible. Une nouvelle collecte peut donc être consommée sans recharger manuellement l'application.
-- Le workflow catalogue explore **36 enseignes par jour** parmi les 236, dont 12 priorités hautes et 24 sources en rotation. Les curseurs de rotation sont conservés dans `data/catalog-meta.json`.
+- Le workflow catalogue explore **36 enseignes par jour** parmi les 200, dont 12 priorités hautes et 24 sources en rotation. Les curseurs de rotation sont conservés dans `data/catalog-meta.json`.
 - Ce fonctionnement supprime la limite artificielle de swipes. Il ne promet pas une infinité mathématique de vêtements : le volume réel dépend des produits que les sources publient, de leurs accès autorisés et de la disponibilité des articles. L'instantané publié le 8 novembre 2026 contient 78 fiches publiques actives ; le statut général de la collecte reste `partial`.
 
-## Le répertoire permanent des 236 enseignes
+## Le répertoire permanent des 200 enseignes
 
 Le fichier de référence et ses métadonnées (domaine, URL, famille, gamme de prix indicative, région, priorité et statut de collecte) sont dans [`data/merchant-directory.json`](./data/merchant-directory.json). La liste est éditoriale, adaptée au brief, et n'est pas un classement mondial par chiffre d'affaires. Sa présence ne garantit ni que la boutique accepte le crawl, ni qu'elle livre dans tous les pays, ni qu'elle expose des fiches exploitables.
 
@@ -120,7 +120,7 @@ L'agent classe au maximum 50 candidats déjà présents dans le catalogue. Il ne
 
 Le tableau `sopppx24/mode` est la référence d'inspiration prioritaire. Le workflow `.github/workflows/pinterest-daily.yml` synchronise le tableau via Pinterest API v5, puis déclenche l'analyse visuelle des images nouvelles, modifiées ou encore dépourvues d'analyse valide. Le flux utilise les autorisations `boards:read` et `pins:read` et le mécanisme Client Credentials pour les ressources publiques ([documentation officielle Pinterest](https://dev.pinterest.com/docs/getting-started/set-up-authentication-and-authorization/)). Le tableau doit être public pour le mécanisme de publication dans ce dépôt public. Les tableaux secrets nécessitent une autorisation utilisateur adaptée et un stockage privé : aucun Pin privé ne doit être publié ici.
 
-**État vérifié au 9 novembre 2026 :** l'API confirme `privacy: PUBLIC` pour le tableau `mode`. Le fichier `data/pinterest-pins.json` contient **22 Pins**, chacun muni d'une analyse visuelle valide (version 1), soit **22/22 images analysées**. La dernière synchronisation enregistrée est `2026-11-09T14:00:27.082Z` (UTC).
+**État vérifié au 12 novembre 2026 :** l'API confirme `privacy: PUBLIC` pour le tableau `mode`. Le fichier `data/pinterest-pins.json` contient **36 Pins**, chacun muni d'une analyse visuelle valide (version 3), soit **36/36 images analysées**. 35 Pins sont classés masculins ; 1 Pin unisexe est écarté. Dernière synchronisation : `2026-11-12T18:38:51.901Z` (UTC).
 
 ### Analyse visuelle automatique
 
