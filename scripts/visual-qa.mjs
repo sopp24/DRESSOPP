@@ -92,6 +92,16 @@ async function clickView(page, name, mobile) {
   await page.waitForTimeout(220);
 }
 
+async function dragTouch(session, start, end, steps = 10) {
+  const point = (x,y) => ({x:Math.round(x),y:Math.round(y),id:1,radiusX:1,radiusY:1,force:1});
+  await session.send("Input.dispatchTouchEvent",{type:"touchStart",touchPoints:[point(start.x,start.y)]});
+  for (let step=1; step<=steps; step++) {
+    const progress=step/steps;
+    await session.send("Input.dispatchTouchEvent",{type:"touchMove",touchPoints:[point(start.x+(end.x-start.x)*progress,start.y+(end.y-start.y)*progress)]});
+  }
+  await session.send("Input.dispatchTouchEvent",{type:"touchEnd",touchPoints:[]});
+}
+
 async function runViewport(browser, config) {
   const context = await browser.newContext({
     viewport:{width:config.width,height:config.height},
@@ -104,14 +114,12 @@ async function runViewport(browser, config) {
   await ensureAppReady(page);
   await capture(page, config.name, "pour-toi");
   if (config.name === "phone-390" && await page.locator("#active-product-card").count()) {
+    const touchSession = await context.newCDPSession(page);
     const card = page.locator("#active-product-card");
     const firstId = await card.getAttribute("data-product-id");
     const firstBox = await card.boundingBox();
     if (firstBox) {
-      await page.mouse.move(firstBox.x + firstBox.width * 0.8, firstBox.y + firstBox.height * 0.45);
-      await page.mouse.down();
-      await page.mouse.move(firstBox.x + firstBox.width * 0.18, firstBox.y + firstBox.height * 0.45, {steps:10});
-      await page.mouse.up();
+      await dragTouch(touchSession,{x:firstBox.x+firstBox.width*0.8,y:firstBox.y+firstBox.height*0.45},{x:firstBox.x+firstBox.width*0.18,y:firstBox.y+firstBox.height*0.45});
       try {
         await page.waitForFunction(previousId => {
           const active = document.querySelector("#active-product-card");
@@ -136,10 +144,7 @@ async function runViewport(browser, config) {
             }));
           });
           // Start the vertical gesture within the product image, not on the source link.
-          await page.mouse.move(nextBox.x + nextBox.width * 0.5, nextBox.y + nextBox.height * 0.17);
-          await page.mouse.down();
-          await page.mouse.move(nextBox.x + nextBox.width * 0.5, nextBox.y + nextBox.height * 0.50, {steps:10});
-          await page.mouse.up();
+          await dragTouch(touchSession,{x:nextBox.x+nextBox.width*0.5,y:nextBox.y+nextBox.height*0.17},{x:nextBox.x+nextBox.width*0.5,y:nextBox.y+nextBox.height*0.50});
           try {
             await page.waitForFunction(previousCount => Number(document.querySelector("#wardrobe-count").textContent) > previousCount, savedBefore, {timeout:6000});
           } catch {
@@ -154,6 +159,7 @@ async function runViewport(browser, config) {
         }
       }
     }
+    await touchSession.detach();
   }
   if (config.name === "desktop-1440" && await page.locator("#active-product-card").count()) {
     const card = page.locator("#active-product-card");
