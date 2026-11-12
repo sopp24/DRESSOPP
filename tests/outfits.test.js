@@ -4,7 +4,7 @@ import { inferPinterestFeatures, inferPinterestTags, isMenswearPin, productSlot,
 
 function buildMensOutfitIdeas(pins, wardrobe, catalogue, ...options) {
   const mensPin = pin => Object.assign({},pin,{visualAnalysis:Object.assign({},pin && pin.visualAnalysis || {},{version:3,audience:"men",isFashion:!(pin && pin.visualAnalysis && pin.visualAnalysis.isFashion === false)})});
-  const mensProducts = products => (products || []).map(product => Object.assign({gender:"men"},product));
+  const mensProducts = products => (products || []).map(product => Object.assign({gender:"men",genderVerified:true},product));
   return buildOutfitIdeas((pins || []).map(mensPin),mensProducts(wardrobe),mensProducts(catalogue),...options);
 }
 
@@ -246,7 +246,7 @@ test("season filters ignore generic style tags and only reject explicit conflict
 test("outfit suggestions exclude products identified for women", function() {
   const pin={id:"pin-gender",title:"Men's minimalist outfit",visualAnalysis:{version:3,audience:"men",isFashion:true}};
   const wardrobe=[
-    {id:"men-top",name:"Chemise homme",gender:"men",objective:"Vêtements",url:"https://shop.example/men/top"},
+    {id:"men-top",name:"Chemise homme",gender:"men",genderVerified:true,objective:"Vêtements",url:"https://shop.example/men/top"},
     {id:"women-top",name:"Chemise femme",gender:"women",objective:"Vêtements",url:"https://shop.example/women/top"}
   ];
   const ideas=buildOutfitIdeas([pin],wardrobe,[],[]);
