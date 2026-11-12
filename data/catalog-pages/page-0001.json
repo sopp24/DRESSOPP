@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "page": 1,
   "pageSize": 120,
-  "totalProducts": 168,
-  "generatedAt": "2026-11-12T11:26:32.818Z",
+  "totalProducts": 187,
+  "generatedAt": "2026-11-12T11:30:08.513Z",
   "products": [
     {
       "id": "web-1jhalm5",
@@ -16,7 +16,8 @@
       "originalPrice": null,
       "objective": "Vêtements",
       "category": "Pull",
-      "gender": "men",
+      "gender": "unknown",
+      "genderVerified": false,
       "styleTags": [
         "Classique"
       ],
@@ -36,11 +37,11 @@
       "source": "BZB",
       "sourceType": "public-web",
       "catalogStatus": "active",
-      "verifiedAt": "2026-11-11T15:16:58.975Z",
-      "syncedAt": "2026-11-11T15:16:58.975Z",
-      "priceUpdatedAt": "2026-11-11T15:16:58.975Z",
-      "stockVerifiedAt": "2026-11-11T15:16:58.975Z",
-      "expiresAt": "2026-11-18T15:16:58.975Z",
+      "verifiedAt": "2026-11-12T11:28:49.191Z",
+      "syncedAt": "2026-11-12T11:28:49.191Z",
+      "priceUpdatedAt": "2026-11-12T11:28:49.191Z",
+      "stockVerifiedAt": "2026-11-12T11:28:49.191Z",
+      "expiresAt": "2026-11-19T11:28:49.191Z",
       "productRating": null,
       "productRatingCount": null,
       "productRatingSource": "",
@@ -61,7 +62,8 @@
       "originalPrice": null,
       "objective": "Vêtements",
       "category": "Pantalon",
-      "gender": "men",
+      "gender": "unknown",
+      "genderVerified": false,
       "styleTags": [],
       "seasonTags": [],
       "colors": [
@@ -79,11 +81,11 @@
       "source": "BZB",
       "sourceType": "public-web",
       "catalogStatus": "active",
-      "verifiedAt": "2026-11-11T15:16:59.768Z",
-      "syncedAt": "2026-11-11T15:16:59.768Z",
-      "priceUpdatedAt": "2026-11-11T15:16:59.768Z",
-      "stockVerifiedAt": "2026-11-11T15:16:59.768Z",
-      "expiresAt": "2026-11-18T15:16:59.768Z",
+      "verifiedAt": "2026-11-12T11:28:49.903Z",
+      "syncedAt": "2026-11-12T11:28:49.903Z",
+      "priceUpdatedAt": "2026-11-12T11:28:49.903Z",
+      "stockVerifiedAt": "2026-11-12T11:28:49.903Z",
+      "expiresAt": "2026-11-19T11:28:49.903Z",
       "productRating": null,
       "productRatingCount": null,
       "productRatingSource": "",
@@ -104,7 +106,8 @@
       "originalPrice": null,
       "objective": "Vêtements",
       "category": "Chemise",
-      "gender": "men",
+      "gender": "unknown",
+      "genderVerified": false,
       "styleTags": [
         "Classique"
       ],
@@ -124,11 +127,11 @@
       "source": "BZB",
       "sourceType": "public-web",
       "catalogStatus": "active",
-      "verifiedAt": "2026-11-11T15:17:00.456Z",
-      "syncedAt": "2026-11-11T15:17:00.456Z",
-      "priceUpdatedAt": "2026-11-11T15:17:00.456Z",
-      "stockVerifiedAt": "2026-11-11T15:17:00.456Z",
-      "expiresAt": "2026-11-18T15:17:00.456Z",
+      "verifiedAt": "2026-11-12T11:28:50.594Z",
+      "syncedAt": "2026-11-12T11:28:50.594Z",
+      "priceUpdatedAt": "2026-11-12T11:28:50.594Z",
+      "stockVerifiedAt": "2026-11-12T11:28:50.594Z",
+      "expiresAt": "2026-11-19T11:28:50.594Z",
       "productRating": null,
       "productRatingCount": null,
       "productRatingSource": "",
@@ -149,7 +152,8 @@
       "originalPrice": null,
       "objective": "Vêtements",
       "category": "Chemise",
-      "gender": "men",
+      "gender": "unknown",
+      "genderVerified": false,
       "styleTags": [
         "Classique"
       ],
@@ -169,11 +173,11 @@
       "source": "BZB",
       "sourceType": "public-web",
       "catalogStatus": "active",
-      "verifiedAt": "2026-11-11T15:17:01.236Z",
-      "syncedAt": "2026-11-11T15:17:01.236Z",
-      "priceUpdatedAt": "2026-11-11T15:17:01.236Z",
-      "stockVerifiedAt": "2026-11-11T15:17:01.236Z",
-      "expiresAt": "2026-11-18T15:17:01.236Z",
+      "verifiedAt": "2026-11-12T11:28:51.288Z",
+      "syncedAt": "2026-11-12T11:28:51.288Z",
+      "priceUpdatedAt": "2026-11-12T11:28:51.288Z",
+      "stockVerifiedAt": "2026-11-12T11:28:51.288Z",
+      "expiresAt": "2026-11-19T11:28:51.288Z",
       "productRating": null,
       "productRatingCount": null,
       "productRatingSource": "",
@@ -194,7 +198,8 @@
       "originalPrice": null,
       "objective": "Vêtements",
       "category": "Chemise",
-      "gender": "men",
+      "gender": "unknown",
+      "genderVerified": false,
       "styleTags": [
         "Classique"
       ],
@@ -214,11 +219,11 @@
       "source": "BZB",
       "sourceType": "public-web",
       "catalogStatus": "active",
-      "verifiedAt": "2026-11-11T15:17:01.868Z",
-      "syncedAt": "2026-11-11T15:17:01.868Z",
-      "priceUpdatedAt": "2026-11-11T15:17:01.868Z",
-      "stockVerifiedAt": "2026-11-11T15:17:01.868Z",
-      "expiresAt": "2026-11-18T15:17:01.868Z",
+      "verifiedAt": "2026-11-12T11:28:52.005Z",
+      "syncedAt": "2026-11-12T11:28:52.005Z",
+      "priceUpdatedAt": "2026-11-12T11:28:52.005Z",
+      "stockVerifiedAt": "2026-11-12T11:28:52.005Z",
+      "expiresAt": "2026-11-19T11:28:52.005Z",
       "productRating": null,
       "productRatingCount": null,
       "productRatingSource": "",
@@ -239,7 +244,8 @@
       "originalPrice": null,
       "objective": "Vêtements",
       "category": "Chemise",
-      "gender": "men",
+      "gender": "unknown",
+      "genderVerified": false,
       "styleTags": [
         "Classique"
       ],
@@ -259,11 +265,11 @@
       "source": "BZB",
       "sourceType": "public-web",
       "catalogStatus": "active",
-      "verifiedAt": "2026-11-11T15:17:02.555Z",
-      "syncedAt": "2026-11-11T15:17:02.555Z",
-      "priceUpdatedAt": "2026-11-11T15:17:02.555Z",
-      "stockVerifiedAt": "2026-11-11T15:17:02.555Z",
-      "expiresAt": "2026-11-18T15:17:02.555Z",
+      "verifiedAt": "2026-11-12T11:28:52.687Z",
+      "syncedAt": "2026-11-12T11:28:52.687Z",
+      "priceUpdatedAt": "2026-11-12T11:28:52.687Z",
+      "stockVerifiedAt": "2026-11-12T11:28:52.687Z",
+      "expiresAt": "2026-11-19T11:28:52.687Z",
       "productRating": null,
       "productRatingCount": null,
       "productRatingSource": "",
@@ -284,7 +290,8 @@
       "originalPrice": null,
       "objective": "Vêtements",
       "category": "Chemise",
-      "gender": "men",
+      "gender": "unknown",
+      "genderVerified": false,
       "styleTags": [
         "Classique"
       ],
@@ -304,11 +311,11 @@
       "source": "BZB",
       "sourceType": "public-web",
       "catalogStatus": "active",
-      "verifiedAt": "2026-11-11T15:17:03.261Z",
-      "syncedAt": "2026-11-11T15:17:03.261Z",
-      "priceUpdatedAt": "2026-11-11T15:17:03.261Z",
-      "stockVerifiedAt": "2026-11-11T15:17:03.261Z",
-      "expiresAt": "2026-11-18T15:17:03.261Z",
+      "verifiedAt": "2026-11-12T11:28:53.392Z",
+      "syncedAt": "2026-11-12T11:28:53.392Z",
+      "priceUpdatedAt": "2026-11-12T11:28:53.392Z",
+      "stockVerifiedAt": "2026-11-12T11:28:53.392Z",
+      "expiresAt": "2026-11-19T11:28:53.392Z",
       "productRating": null,
       "productRatingCount": null,
       "productRatingSource": "",
@@ -329,7 +336,8 @@
       "originalPrice": null,
       "objective": "Vêtements",
       "category": "Chemise",
-      "gender": "men",
+      "gender": "unknown",
+      "genderVerified": false,
       "styleTags": [
         "Classique"
       ],
@@ -349,11 +357,11 @@
       "source": "BZB",
       "sourceType": "public-web",
       "catalogStatus": "active",
-      "verifiedAt": "2026-11-11T15:17:04.035Z",
-      "syncedAt": "2026-11-11T15:17:04.035Z",
-      "priceUpdatedAt": "2026-11-11T15:17:04.035Z",
-      "stockVerifiedAt": "2026-11-11T15:17:04.035Z",
-      "expiresAt": "2026-11-18T15:17:04.035Z",
+      "verifiedAt": "2026-11-12T11:28:53.951Z",
+      "syncedAt": "2026-11-12T11:28:53.951Z",
+      "priceUpdatedAt": "2026-11-12T11:28:53.951Z",
+      "stockVerifiedAt": "2026-11-12T11:28:53.951Z",
+      "expiresAt": "2026-11-19T11:28:53.951Z",
       "productRating": null,
       "productRatingCount": null,
       "productRatingSource": "",
@@ -374,7 +382,8 @@
       "originalPrice": null,
       "objective": "Vêtements",
       "category": "Chemise",
-      "gender": "men",
+      "gender": "unknown",
+      "genderVerified": false,
       "styleTags": [
         "Classique"
       ],
@@ -394,11 +403,11 @@
       "source": "BZB",
       "sourceType": "public-web",
       "catalogStatus": "active",
-      "verifiedAt": "2026-11-11T15:17:04.660Z",
-      "syncedAt": "2026-11-11T15:17:04.660Z",
-      "priceUpdatedAt": "2026-11-11T15:17:04.660Z",
-      "stockVerifiedAt": "2026-11-11T15:17:04.660Z",
-      "expiresAt": "2026-11-18T15:17:04.660Z",
+      "verifiedAt": "2026-11-12T11:28:55.342Z",
+      "syncedAt": "2026-11-12T11:28:55.342Z",
+      "priceUpdatedAt": "2026-11-12T11:28:55.342Z",
+      "stockVerifiedAt": "2026-11-12T11:28:55.342Z",
+      "expiresAt": "2026-11-19T11:28:55.342Z",
       "productRating": null,
       "productRatingCount": null,
       "productRatingSource": "",
@@ -419,7 +428,8 @@
       "originalPrice": null,
       "objective": "Vêtements",
       "category": "Chemise",
-      "gender": "men",
+      "gender": "unknown",
+      "genderVerified": false,
       "styleTags": [
         "Classique"
       ],
@@ -439,11 +449,11 @@
       "source": "BZB",
       "sourceType": "public-web",
       "catalogStatus": "active",
-      "verifiedAt": "2026-11-11T15:17:06.886Z",
-      "syncedAt": "2026-11-11T15:17:06.886Z",
-      "priceUpdatedAt": "2026-11-11T15:17:06.886Z",
-      "stockVerifiedAt": "2026-11-11T15:17:06.886Z",
-      "expiresAt": "2026-11-18T15:17:06.886Z",
+      "verifiedAt": "2026-11-12T11:28:56.732Z",
+      "syncedAt": "2026-11-12T11:28:56.732Z",
+      "priceUpdatedAt": "2026-11-12T11:28:56.732Z",
+      "stockVerifiedAt": "2026-11-12T11:28:56.732Z",
+      "expiresAt": "2026-11-19T11:28:56.732Z",
       "productRating": null,
       "productRatingCount": null,
       "productRatingSource": "",
@@ -464,7 +474,8 @@
       "originalPrice": null,
       "objective": "Vêtements",
       "category": "Chemise",
-      "gender": "men",
+      "gender": "unknown",
+      "genderVerified": false,
       "styleTags": [
         "Classique"
       ],
@@ -484,11 +495,11 @@
       "source": "BZB",
       "sourceType": "public-web",
       "catalogStatus": "active",
-      "verifiedAt": "2026-11-11T15:17:06.995Z",
-      "syncedAt": "2026-11-11T15:17:06.995Z",
-      "priceUpdatedAt": "2026-11-11T15:17:06.995Z",
-      "stockVerifiedAt": "2026-11-11T15:17:06.995Z",
-      "expiresAt": "2026-11-18T15:17:06.995Z",
+      "verifiedAt": "2026-11-12T11:28:57.590Z",
+      "syncedAt": "2026-11-12T11:28:57.590Z",
+      "priceUpdatedAt": "2026-11-12T11:28:57.590Z",
+      "stockVerifiedAt": "2026-11-12T11:28:57.590Z",
+      "expiresAt": "2026-11-19T11:28:57.590Z",
       "productRating": null,
       "productRatingCount": null,
       "productRatingSource": "",
@@ -509,7 +520,8 @@
       "originalPrice": null,
       "objective": "Vêtements",
       "category": "Chemise",
-      "gender": "men",
+      "gender": "unknown",
+      "genderVerified": false,
       "styleTags": [
         "Classique"
       ],
@@ -529,11 +541,11 @@
       "source": "BZB",
       "sourceType": "public-web",
       "catalogStatus": "active",
-      "verifiedAt": "2026-11-11T15:17:07.785Z",
-      "syncedAt": "2026-11-11T15:17:07.785Z",
-      "priceUpdatedAt": "2026-11-11T15:17:07.785Z",
-      "stockVerifiedAt": "2026-11-11T15:17:07.785Z",
-      "expiresAt": "2026-11-18T15:17:07.785Z",
+      "verifiedAt": "2026-11-12T11:28:58.292Z",
+      "syncedAt": "2026-11-12T11:28:58.292Z",
+      "priceUpdatedAt": "2026-11-12T11:28:58.292Z",
+      "stockVerifiedAt": "2026-11-12T11:28:58.292Z",
+      "expiresAt": "2026-11-19T11:28:58.292Z",
       "productRating": null,
       "productRatingCount": null,
       "productRatingSource": "",
@@ -585,7 +597,9 @@
       "merchantRatingCount": null,
       "merchantRatingSource": "",
       "popularityScore": null,
-      "isBestSeller": false
+      "isBestSeller": false,
+      "gender": "unknown",
+      "genderVerified": false
     },
     {
       "id": "web-1qqez5e",
@@ -629,7 +643,9 @@
       "merchantRatingCount": null,
       "merchantRatingSource": "",
       "popularityScore": null,
-      "isBestSeller": false
+      "isBestSeller": false,
+      "gender": "unknown",
+      "genderVerified": false
     },
     {
       "id": "web-1ht28co",
@@ -673,7 +689,9 @@
       "merchantRatingCount": null,
       "merchantRatingSource": "",
       "popularityScore": null,
-      "isBestSeller": false
+      "isBestSeller": false,
+      "gender": "unknown",
+      "genderVerified": false
     },
     {
       "id": "web-r1jsmf",
@@ -718,7 +736,9 @@
       "merchantRatingCount": null,
       "merchantRatingSource": "",
       "popularityScore": null,
-      "isBestSeller": false
+      "isBestSeller": false,
+      "gender": "unknown",
+      "genderVerified": false
     },
     {
       "id": "web-1dkokqh",
@@ -764,7 +784,9 @@
       "merchantRatingCount": null,
       "merchantRatingSource": "",
       "popularityScore": null,
-      "isBestSeller": false
+      "isBestSeller": false,
+      "gender": "unknown",
+      "genderVerified": false
     },
     {
       "id": "web-1w9ds1f",
@@ -808,7 +830,9 @@
       "merchantRatingCount": null,
       "merchantRatingSource": "",
       "popularityScore": null,
-      "isBestSeller": false
+      "isBestSeller": false,
+      "gender": "unknown",
+      "genderVerified": false
     },
     {
       "id": "web-1kxri1m",
@@ -854,7 +878,9 @@
       "merchantRatingCount": null,
       "merchantRatingSource": "",
       "popularityScore": null,
-      "isBestSeller": false
+      "isBestSeller": false,
+      "gender": "unknown",
+      "genderVerified": false
     },
     {
       "id": "web-1gc4uwh",
@@ -899,7 +925,9 @@
       "merchantRatingCount": null,
       "merchantRatingSource": "",
       "popularityScore": null,
-      "isBestSeller": false
+      "isBestSeller": false,
+      "gender": "men",
+      "genderVerified": true
     },
     {
       "id": "web-qzo2u9",
@@ -941,7 +969,9 @@
       "merchantRatingCount": null,
       "merchantRatingSource": "",
       "popularityScore": null,
-      "isBestSeller": false
+      "isBestSeller": false,
+      "gender": "men",
+      "genderVerified": true
     },
     {
       "id": "web-1av4uo0",
@@ -987,7 +1017,9 @@
       "merchantRatingCount": null,
       "merchantRatingSource": "",
       "popularityScore": null,
-      "isBestSeller": false
+      "isBestSeller": false,
+      "gender": "unknown",
+      "genderVerified": false
     },
     {
       "id": "web-lwdhzy",
@@ -1029,7 +1061,9 @@
       "merchantRatingCount": null,
       "merchantRatingSource": "",
       "popularityScore": null,
-      "isBestSeller": false
+      "isBestSeller": false,
+      "gender": "unknown",
+      "genderVerified": false
     },
     {
       "id": "web-1ya1ldp",
@@ -1071,7 +1105,9 @@
       "merchantRatingCount": null,
       "merchantRatingSource": "",
       "popularityScore": null,
-      "isBestSeller": false
+      "isBestSeller": false,
+      "gender": "unknown",
+      "genderVerified": false
     },
     {
       "id": "web-1c6id05",
@@ -1120,7 +1156,9 @@
       "merchantRatingCount": null,
       "merchantRatingSource": "",
       "popularityScore": null,
-      "isBestSeller": false
+      "isBestSeller": false,
+      "gender": "unknown",
+      "genderVerified": false
     },
     {
       "id": "web-gt2lfu",
@@ -1133,7 +1171,7 @@
       "originalPrice": null,
       "objective": "Vêtements",
       "category": "Chemise",
-      "gender": "men",
+      "gender": "unknown",
       "styleTags": [],
       "seasonTags": [],
       "colors": [
@@ -1170,7 +1208,8 @@
       "merchantRatingCount": null,
       "merchantRatingSource": "",
       "popularityScore": null,
-      "isBestSeller": false
+      "isBestSeller": false,
+      "genderVerified": false
     },
     {
       "id": "web-obhmft",
@@ -1183,7 +1222,7 @@
       "originalPrice": null,
       "objective": "Vêtements",
       "category": "Pull",
-      "gender": "men",
+      "gender": "unknown",
       "styleTags": [],
       "seasonTags": [],
       "colors": [
@@ -1220,7 +1259,8 @@
       "merchantRatingCount": null,
       "merchantRatingSource": "",
       "popularityScore": null,
-      "isBestSeller": false
+      "isBestSeller": false,
+      "genderVerified": false
     },
     {
       "id": "web-1bice4n",
@@ -1233,7 +1273,7 @@
       "originalPrice": null,
       "objective": "Vêtements",
       "category": "Veste",
-      "gender": "men",
+      "gender": "unknown",
       "styleTags": [],
       "seasonTags": [],
       "colors": [
@@ -1270,7 +1310,8 @@
       "merchantRatingCount": null,
       "merchantRatingSource": "",
       "popularityScore": null,
-      "isBestSeller": false
+      "isBestSeller": false,
+      "genderVerified": false
     },
     {
       "id": "web-so269m",
@@ -1283,7 +1324,7 @@
       "originalPrice": null,
       "objective": "Vêtements",
       "category": "Vêtements",
-      "gender": "men",
+      "gender": "unknown",
       "styleTags": [],
       "seasonTags": [],
       "colors": [
@@ -1320,7 +1361,8 @@
       "merchantRatingCount": null,
       "merchantRatingSource": "",
       "popularityScore": null,
-      "isBestSeller": false
+      "isBestSeller": false,
+      "genderVerified": false
     },
     {
       "id": "web-1tl75s2",
@@ -1333,7 +1375,7 @@
       "originalPrice": null,
       "objective": "Vêtements",
       "category": "Veste",
-      "gender": "men",
+      "gender": "unknown",
       "styleTags": [],
       "seasonTags": [],
       "colors": [
@@ -1368,7 +1410,8 @@
       "merchantRatingCount": null,
       "merchantRatingSource": "",
       "popularityScore": null,
-      "isBestSeller": false
+      "isBestSeller": false,
+      "genderVerified": false
     },
     {
       "id": "web-j67otf",
@@ -1381,7 +1424,7 @@
       "originalPrice": null,
       "objective": "Vêtements",
       "category": "Veste",
-      "gender": "men",
+      "gender": "unknown",
       "styleTags": [],
       "seasonTags": [],
       "colors": [
@@ -1416,7 +1459,8 @@
       "merchantRatingCount": null,
       "merchantRatingSource": "",
       "popularityScore": null,
-      "isBestSeller": false
+      "isBestSeller": false,
+      "genderVerified": false
     },
     {
       "id": "web-w5ntd7",
@@ -1429,7 +1473,7 @@
       "originalPrice": null,
       "objective": "Vêtements",
       "category": "Vêtements",
-      "gender": "men",
+      "gender": "unknown",
       "styleTags": [],
       "seasonTags": [],
       "colors": [
@@ -1464,7 +1508,8 @@
       "merchantRatingCount": null,
       "merchantRatingSource": "",
       "popularityScore": null,
-      "isBestSeller": false
+      "isBestSeller": false,
+      "genderVerified": false
     },
     {
       "id": "web-14wffk1",
@@ -1477,7 +1522,7 @@
       "originalPrice": null,
       "objective": "Vêtements",
       "category": "Pantalon",
-      "gender": "men",
+      "gender": "unknown",
       "styleTags": [],
       "seasonTags": [],
       "colors": [
@@ -1512,7 +1557,8 @@
       "merchantRatingCount": null,
       "merchantRatingSource": "",
       "popularityScore": null,
-      "isBestSeller": false
+      "isBestSeller": false,
+      "genderVerified": false
     },
     {
       "id": "web-1kh4b02",
@@ -1525,7 +1571,7 @@
       "originalPrice": null,
       "objective": "Vêtements",
       "category": "Pull",
-      "gender": "men",
+      "gender": "unknown",
       "styleTags": [],
       "seasonTags": [],
       "colors": [
@@ -1562,7 +1608,8 @@
       "merchantRatingCount": null,
       "merchantRatingSource": "",
       "popularityScore": null,
-      "isBestSeller": false
+      "isBestSeller": false,
+      "genderVerified": false
     },
     {
       "id": "web-bu1uke",
@@ -1575,7 +1622,7 @@
       "originalPrice": null,
       "objective": "Vêtements",
       "category": "Chemise",
-      "gender": "men",
+      "gender": "unknown",
       "styleTags": [],
       "seasonTags": [],
       "colors": [
@@ -1612,7 +1659,8 @@
       "merchantRatingCount": null,
       "merchantRatingSource": "",
       "popularityScore": null,
-      "isBestSeller": false
+      "isBestSeller": false,
+      "genderVerified": false
     },
     {
       "id": "web-ws30tq",
@@ -1625,7 +1673,7 @@
       "originalPrice": null,
       "objective": "Vêtements",
       "category": "Pull",
-      "gender": "men",
+      "gender": "unknown",
       "styleTags": [],
       "seasonTags": [],
       "colors": [
@@ -1662,7 +1710,8 @@
       "merchantRatingCount": null,
       "merchantRatingSource": "",
       "popularityScore": null,
-      "isBestSeller": false
+      "isBestSeller": false,
+      "genderVerified": false
     },
     {
       "id": "web-1bn4u90",
@@ -1675,7 +1724,7 @@
       "originalPrice": null,
       "objective": "Chaussures",
       "category": "Vêtements",
-      "gender": "women",
+      "gender": "unknown",
       "genderVerified": false,
       "styleTags": [],
       "seasonTags": [],
@@ -1926,7 +1975,7 @@
       "originalPrice": null,
       "objective": "Chaussures",
       "category": "Chaussures",
-      "gender": "women",
+      "gender": "unknown",
       "genderVerified": false,
       "styleTags": [
         "Streetwear"
@@ -2010,7 +2059,7 @@
       "originalPrice": null,
       "objective": "Chaussures",
       "category": "Chaussures",
-      "gender": "women",
+      "gender": "unknown",
       "genderVerified": false,
       "styleTags": [
         "Streetwear"
@@ -2094,7 +2143,7 @@
       "originalPrice": null,
       "objective": "Chaussures",
       "category": "Vêtements",
-      "gender": "women",
+      "gender": "unknown",
       "genderVerified": false,
       "styleTags": [],
       "seasonTags": [],
@@ -2201,7 +2250,9 @@
       "merchantRatingCount": null,
       "merchantRatingSource": "",
       "popularityScore": null,
-      "isBestSeller": false
+      "isBestSeller": false,
+      "gender": "unknown",
+      "genderVerified": false
     },
     {
       "id": "web-1m89kt3",
@@ -2239,7 +2290,9 @@
       "merchantRatingCount": null,
       "merchantRatingSource": "",
       "popularityScore": null,
-      "isBestSeller": false
+      "isBestSeller": false,
+      "gender": "unknown",
+      "genderVerified": false
     },
     {
       "id": "web-5tqpxh",
@@ -2279,7 +2332,9 @@
       "merchantRatingCount": null,
       "merchantRatingSource": "",
       "popularityScore": null,
-      "isBestSeller": false
+      "isBestSeller": false,
+      "gender": "unknown",
+      "genderVerified": false
     },
     {
       "id": "web-s94j3f",
@@ -2319,7 +2374,9 @@
       "merchantRatingCount": null,
       "merchantRatingSource": "",
       "popularityScore": null,
-      "isBestSeller": false
+      "isBestSeller": false,
+      "gender": "unknown",
+      "genderVerified": false
     },
     {
       "id": "web-1p4bezh",
@@ -2359,7 +2416,9 @@
       "merchantRatingCount": null,
       "merchantRatingSource": "",
       "popularityScore": null,
-      "isBestSeller": false
+      "isBestSeller": false,
+      "gender": "unknown",
+      "genderVerified": false
     },
     {
       "id": "web-1go2gya",
@@ -2372,7 +2431,7 @@
       "originalPrice": null,
       "objective": "Vêtements",
       "category": "Vêtements",
-      "gender": "men",
+      "gender": "unknown",
       "styleTags": [],
       "seasonTags": [],
       "colors": [],
@@ -2398,7 +2457,8 @@
       "merchantRatingCount": null,
       "merchantRatingSource": "",
       "popularityScore": null,
-      "isBestSeller": false
+      "isBestSeller": false,
+      "genderVerified": false
     },
     {
       "id": "web-p0zm0",
@@ -2411,7 +2471,7 @@
       "originalPrice": null,
       "objective": "Vêtements",
       "category": "Vêtements",
-      "gender": "men",
+      "gender": "unknown",
       "styleTags": [],
       "seasonTags": [],
       "colors": [],
@@ -2437,7 +2497,8 @@
       "merchantRatingCount": null,
       "merchantRatingSource": "",
       "popularityScore": null,
-      "isBestSeller": false
+      "isBestSeller": false,
+      "genderVerified": false
     },
     {
       "id": "web-duaabs",
@@ -2450,7 +2511,7 @@
       "originalPrice": null,
       "objective": "Vêtements",
       "category": "Vêtements",
-      "gender": "men",
+      "gender": "unknown",
       "styleTags": [],
       "seasonTags": [],
       "colors": [],
@@ -2476,7 +2537,8 @@
       "merchantRatingCount": null,
       "merchantRatingSource": "",
       "popularityScore": null,
-      "isBestSeller": false
+      "isBestSeller": false,
+      "genderVerified": false
     },
     {
       "id": "web-u4fut5",
@@ -2489,7 +2551,7 @@
       "originalPrice": null,
       "objective": "Vêtements",
       "category": "Vêtements",
-      "gender": "men",
+      "gender": "unknown",
       "styleTags": [
         "Smart Casual"
       ],
@@ -2517,7 +2579,8 @@
       "merchantRatingCount": null,
       "merchantRatingSource": "",
       "popularityScore": null,
-      "isBestSeller": false
+      "isBestSeller": false,
+      "genderVerified": false
     },
     {
       "id": "web-2mu8vl",
@@ -2530,7 +2593,7 @@
       "originalPrice": null,
       "objective": "Vêtements",
       "category": "Vêtements",
-      "gender": "men",
+      "gender": "unknown",
       "styleTags": [],
       "seasonTags": [],
       "colors": [],
@@ -2556,7 +2619,8 @@
       "merchantRatingCount": null,
       "merchantRatingSource": "",
       "popularityScore": null,
-      "isBestSeller": false
+      "isBestSeller": false,
+      "genderVerified": false
     },
     {
       "id": "web-1q99tit",
@@ -2569,7 +2633,7 @@
       "originalPrice": null,
       "objective": "Vêtements",
       "category": "Vêtements",
-      "gender": "men",
+      "gender": "unknown",
       "styleTags": [],
       "seasonTags": [],
       "colors": [],
@@ -2595,7 +2659,8 @@
       "merchantRatingCount": null,
       "merchantRatingSource": "",
       "popularityScore": null,
-      "isBestSeller": false
+      "isBestSeller": false,
+      "genderVerified": false
     },
     {
       "id": "web-pdjnk2",
@@ -2608,7 +2673,7 @@
       "originalPrice": null,
       "objective": "Vêtements",
       "category": "Vêtements",
-      "gender": "men",
+      "gender": "unknown",
       "styleTags": [],
       "seasonTags": [],
       "colors": [],
@@ -2634,7 +2699,8 @@
       "merchantRatingCount": null,
       "merchantRatingSource": "",
       "popularityScore": null,
-      "isBestSeller": false
+      "isBestSeller": false,
+      "genderVerified": false
     },
     {
       "id": "web-1fngnm6",
@@ -2647,7 +2713,7 @@
       "originalPrice": null,
       "objective": "Vêtements",
       "category": "Vêtements",
-      "gender": "men",
+      "gender": "unknown",
       "styleTags": [],
       "seasonTags": [],
       "colors": [],
@@ -2673,7 +2739,8 @@
       "merchantRatingCount": null,
       "merchantRatingSource": "",
       "popularityScore": null,
-      "isBestSeller": false
+      "isBestSeller": false,
+      "genderVerified": false
     },
     {
       "id": "web-1r1bnq4",
@@ -2686,7 +2753,7 @@
       "originalPrice": null,
       "objective": "Vêtements",
       "category": "Vêtements",
-      "gender": "men",
+      "gender": "unknown",
       "styleTags": [],
       "seasonTags": [],
       "colors": [],
@@ -2712,7 +2779,8 @@
       "merchantRatingCount": null,
       "merchantRatingSource": "",
       "popularityScore": null,
-      "isBestSeller": false
+      "isBestSeller": false,
+      "genderVerified": false
     },
     {
       "id": "web-35uocn",
@@ -2725,7 +2793,7 @@
       "originalPrice": null,
       "objective": "Vêtements",
       "category": "Vêtements",
-      "gender": "men",
+      "gender": "unknown",
       "styleTags": [],
       "seasonTags": [],
       "colors": [],
@@ -2751,7 +2819,8 @@
       "merchantRatingCount": null,
       "merchantRatingSource": "",
       "popularityScore": null,
-      "isBestSeller": false
+      "isBestSeller": false,
+      "genderVerified": false
     },
     {
       "id": "web-kuzqhy",
@@ -2764,7 +2833,7 @@
       "originalPrice": null,
       "objective": "Vêtements",
       "category": "Vêtements",
-      "gender": "men",
+      "gender": "unknown",
       "styleTags": [],
       "seasonTags": [],
       "colors": [],
@@ -2790,7 +2859,8 @@
       "merchantRatingCount": null,
       "merchantRatingSource": "",
       "popularityScore": null,
-      "isBestSeller": false
+      "isBestSeller": false,
+      "genderVerified": false
     },
     {
       "id": "web-bgf3xq",
@@ -2803,7 +2873,7 @@
       "originalPrice": null,
       "objective": "Vêtements",
       "category": "Vêtements",
-      "gender": "men",
+      "gender": "unknown",
       "styleTags": [],
       "seasonTags": [],
       "colors": [],
@@ -2829,7 +2899,8 @@
       "merchantRatingCount": null,
       "merchantRatingSource": "",
       "popularityScore": null,
-      "isBestSeller": false
+      "isBestSeller": false,
+      "genderVerified": false
     },
     {
       "id": "web-188b6fx",
@@ -2928,7 +2999,8 @@
       "originalPrice": null,
       "objective": "Vêtements",
       "category": "Chemise",
-      "gender": "men",
+      "gender": "unknown",
+      "genderVerified": false,
       "styleTags": [
         "Classique"
       ],
@@ -2948,11 +3020,11 @@
       "source": "BZB",
       "sourceType": "public-web",
       "catalogStatus": "active",
-      "verifiedAt": "2026-11-11T15:17:08.467Z",
-      "syncedAt": "2026-11-11T15:17:08.467Z",
-      "priceUpdatedAt": "2026-11-11T15:17:08.467Z",
-      "stockVerifiedAt": "2026-11-11T15:17:08.467Z",
-      "expiresAt": "2026-11-18T15:17:08.467Z",
+      "verifiedAt": "2026-11-12T11:28:58.834Z",
+      "syncedAt": "2026-11-12T11:28:58.834Z",
+      "priceUpdatedAt": "2026-11-12T11:28:58.834Z",
+      "stockVerifiedAt": "2026-11-12T11:28:58.834Z",
+      "expiresAt": "2026-11-19T11:28:58.834Z",
       "productRating": null,
       "productRatingCount": null,
       "productRatingSource": "",
@@ -2973,7 +3045,8 @@
       "originalPrice": null,
       "objective": "Vêtements",
       "category": "Chemise",
-      "gender": "men",
+      "gender": "unknown",
+      "genderVerified": false,
       "styleTags": [
         "Classique"
       ],
@@ -2993,11 +3066,11 @@
       "source": "BZB",
       "sourceType": "public-web",
       "catalogStatus": "active",
-      "verifiedAt": "2026-11-11T15:17:09.172Z",
-      "syncedAt": "2026-11-11T15:17:09.172Z",
-      "priceUpdatedAt": "2026-11-11T15:17:09.172Z",
-      "stockVerifiedAt": "2026-11-11T15:17:09.172Z",
-      "expiresAt": "2026-11-18T15:17:09.172Z",
+      "verifiedAt": "2026-11-12T11:28:59.538Z",
+      "syncedAt": "2026-11-12T11:28:59.538Z",
+      "priceUpdatedAt": "2026-11-12T11:28:59.538Z",
+      "stockVerifiedAt": "2026-11-12T11:28:59.538Z",
+      "expiresAt": "2026-11-19T11:28:59.538Z",
       "productRating": null,
       "productRatingCount": null,
       "productRatingSource": "",
@@ -3018,7 +3091,8 @@
       "originalPrice": null,
       "objective": "Vêtements",
       "category": "Pantalon",
-      "gender": "men",
+      "gender": "unknown",
+      "genderVerified": false,
       "styleTags": [],
       "seasonTags": [],
       "colors": [
@@ -3036,11 +3110,11 @@
       "source": "BZB",
       "sourceType": "public-web",
       "catalogStatus": "active",
-      "verifiedAt": "2026-11-11T15:17:09.946Z",
-      "syncedAt": "2026-11-11T15:17:09.946Z",
-      "priceUpdatedAt": "2026-11-11T15:17:09.946Z",
-      "stockVerifiedAt": "2026-11-11T15:17:09.946Z",
-      "expiresAt": "2026-11-18T15:17:09.946Z",
+      "verifiedAt": "2026-11-12T11:29:00.239Z",
+      "syncedAt": "2026-11-12T11:29:00.239Z",
+      "priceUpdatedAt": "2026-11-12T11:29:00.239Z",
+      "stockVerifiedAt": "2026-11-12T11:29:00.239Z",
+      "expiresAt": "2026-11-19T11:29:00.239Z",
       "productRating": null,
       "productRatingCount": null,
       "productRatingSource": "",
@@ -3061,7 +3135,8 @@
       "originalPrice": null,
       "objective": "Vêtements",
       "category": "Pantalon",
-      "gender": "men",
+      "gender": "unknown",
+      "genderVerified": false,
       "styleTags": [],
       "seasonTags": [],
       "colors": [
@@ -3079,11 +3154,11 @@
       "source": "BZB",
       "sourceType": "public-web",
       "catalogStatus": "active",
-      "verifiedAt": "2026-11-11T15:17:10.579Z",
-      "syncedAt": "2026-11-11T15:17:10.579Z",
-      "priceUpdatedAt": "2026-11-11T15:17:10.579Z",
-      "stockVerifiedAt": "2026-11-11T15:17:10.579Z",
-      "expiresAt": "2026-11-18T15:17:10.579Z",
+      "verifiedAt": "2026-11-12T11:29:01.093Z",
+      "syncedAt": "2026-11-12T11:29:01.093Z",
+      "priceUpdatedAt": "2026-11-12T11:29:01.093Z",
+      "stockVerifiedAt": "2026-11-12T11:29:01.093Z",
+      "expiresAt": "2026-11-19T11:29:01.093Z",
       "productRating": null,
       "productRatingCount": null,
       "productRatingSource": "",
@@ -3104,7 +3179,7 @@
       "originalPrice": null,
       "objective": "Vêtements",
       "category": "Pull",
-      "gender": "men",
+      "gender": "unknown",
       "styleTags": [
         "Classique"
       ],
@@ -3123,7 +3198,7 @@
       "availabilityStatus": "available",
       "source": "BZB",
       "sourceType": "public-web",
-      "catalogStatus": "active",
+      "catalogStatus": "stale",
       "verifiedAt": "2026-11-11T15:17:11.295Z",
       "syncedAt": "2026-11-11T15:17:11.295Z",
       "priceUpdatedAt": "2026-11-11T15:17:11.295Z",
@@ -3136,7 +3211,8 @@
       "merchantRatingCount": null,
       "merchantRatingSource": "",
       "popularityScore": null,
-      "isBestSeller": false
+      "isBestSeller": false,
+      "genderVerified": false
     },
     {
       "id": "web-14qqb5n",
@@ -3180,7 +3256,9 @@
       "merchantRatingCount": null,
       "merchantRatingSource": "",
       "popularityScore": null,
-      "isBestSeller": false
+      "isBestSeller": false,
+      "gender": "unknown",
+      "genderVerified": false
     },
     {
       "id": "web-kzn6au",
@@ -3193,7 +3271,7 @@
       "originalPrice": null,
       "objective": "Vêtements",
       "category": "Vêtements",
-      "gender": "men",
+      "gender": "unknown",
       "styleTags": [],
       "seasonTags": [],
       "colors": [],
@@ -3219,7 +3297,8 @@
       "merchantRatingCount": null,
       "merchantRatingSource": "",
       "popularityScore": null,
-      "isBestSeller": false
+      "isBestSeller": false,
+      "genderVerified": false
     },
     {
       "id": "web-1psol26",
@@ -3232,7 +3311,7 @@
       "originalPrice": null,
       "objective": "Vêtements",
       "category": "Vêtements",
-      "gender": "men",
+      "gender": "unknown",
       "styleTags": [
         "Smart Casual"
       ],
@@ -3260,7 +3339,8 @@
       "merchantRatingCount": null,
       "merchantRatingSource": "",
       "popularityScore": null,
-      "isBestSeller": false
+      "isBestSeller": false,
+      "genderVerified": false
     },
     {
       "id": "web-la34wk",
@@ -3273,7 +3353,7 @@
       "originalPrice": null,
       "objective": "Vêtements",
       "category": "Vêtements",
-      "gender": "men",
+      "gender": "unknown",
       "styleTags": [],
       "seasonTags": [],
       "colors": [],
@@ -3299,7 +3379,8 @@
       "merchantRatingCount": null,
       "merchantRatingSource": "",
       "popularityScore": null,
-      "isBestSeller": false
+      "isBestSeller": false,
+      "genderVerified": false
     },
     {
       "id": "web-1m0mb97",
@@ -3312,7 +3393,7 @@
       "originalPrice": null,
       "objective": "Vêtements",
       "category": "Vêtements",
-      "gender": "men",
+      "gender": "unknown",
       "styleTags": [],
       "seasonTags": [],
       "colors": [],
@@ -3338,7 +3419,8 @@
       "merchantRatingCount": null,
       "merchantRatingSource": "",
       "popularityScore": null,
-      "isBestSeller": false
+      "isBestSeller": false,
+      "genderVerified": false
     },
     {
       "id": "web-1269tmn",
@@ -3351,7 +3433,7 @@
       "originalPrice": null,
       "objective": "Vêtements",
       "category": "Vêtements",
-      "gender": "men",
+      "gender": "unknown",
       "styleTags": [],
       "seasonTags": [],
       "colors": [],
@@ -3377,7 +3459,8 @@
       "merchantRatingCount": null,
       "merchantRatingSource": "",
       "popularityScore": null,
-      "isBestSeller": false
+      "isBestSeller": false,
+      "genderVerified": false
     },
     {
       "id": "web-1x9bdvb",
@@ -3390,7 +3473,7 @@
       "originalPrice": null,
       "objective": "Vêtements",
       "category": "Vêtements",
-      "gender": "men",
+      "gender": "unknown",
       "styleTags": [],
       "seasonTags": [],
       "colors": [],
@@ -3416,7 +3499,8 @@
       "merchantRatingCount": null,
       "merchantRatingSource": "",
       "popularityScore": null,
-      "isBestSeller": false
+      "isBestSeller": false,
+      "genderVerified": false
     },
     {
       "id": "web-cypgj2",
@@ -3429,7 +3513,7 @@
       "originalPrice": null,
       "objective": "Vêtements",
       "category": "Vêtements",
-      "gender": "men",
+      "gender": "unknown",
       "styleTags": [],
       "seasonTags": [],
       "colors": [
@@ -3466,7 +3550,8 @@
       "merchantRatingCount": null,
       "merchantRatingSource": "",
       "popularityScore": null,
-      "isBestSeller": false
+      "isBestSeller": false,
+      "genderVerified": false
     },
     {
       "id": "web-1k1qeb6",
@@ -3652,6 +3737,8 @@
       "originalPrice": null,
       "objective": "Chaussures",
       "category": "Chaussures",
+      "gender": "unknown",
+      "genderVerified": false,
       "styleTags": [
         "Sport"
       ],
@@ -3667,11 +3754,11 @@
       "source": "C.P. Company",
       "sourceType": "public-web",
       "catalogStatus": "active",
-      "verifiedAt": "2026-11-08T14:20:06.600Z",
-      "syncedAt": "2026-11-08T14:20:06.600Z",
-      "priceUpdatedAt": "2026-11-08T14:20:06.600Z",
-      "stockVerifiedAt": "2026-11-08T14:20:06.600Z",
-      "expiresAt": "2026-11-15T14:20:06.600Z",
+      "verifiedAt": "2026-11-12T11:29:22.730Z",
+      "syncedAt": "2026-11-12T11:29:22.730Z",
+      "priceUpdatedAt": "2026-11-12T11:29:22.730Z",
+      "stockVerifiedAt": "2026-11-12T11:29:22.730Z",
+      "expiresAt": "2026-11-19T11:29:22.730Z",
       "productRating": null,
       "productRatingCount": null,
       "productRatingSource": "",
@@ -3692,6 +3779,8 @@
       "originalPrice": null,
       "objective": "Chaussures",
       "category": "Chaussures",
+      "gender": "unknown",
+      "genderVerified": false,
       "styleTags": [
         "Sport"
       ],
@@ -3707,11 +3796,11 @@
       "source": "C.P. Company",
       "sourceType": "public-web",
       "catalogStatus": "active",
-      "verifiedAt": "2026-11-08T14:20:07.251Z",
-      "syncedAt": "2026-11-08T14:20:07.251Z",
-      "priceUpdatedAt": "2026-11-08T14:20:07.251Z",
-      "stockVerifiedAt": "2026-11-08T14:20:07.251Z",
-      "expiresAt": "2026-11-15T14:20:07.251Z",
+      "verifiedAt": "2026-11-12T11:29:23.406Z",
+      "syncedAt": "2026-11-12T11:29:23.406Z",
+      "priceUpdatedAt": "2026-11-12T11:29:23.406Z",
+      "stockVerifiedAt": "2026-11-12T11:29:23.406Z",
+      "expiresAt": "2026-11-19T11:29:23.406Z",
       "productRating": null,
       "productRatingCount": null,
       "productRatingSource": "",
@@ -3732,6 +3821,8 @@
       "originalPrice": null,
       "objective": "Chaussures",
       "category": "Chaussures",
+      "gender": "unknown",
+      "genderVerified": false,
       "styleTags": [
         "Sport"
       ],
@@ -3747,11 +3838,11 @@
       "source": "C.P. Company",
       "sourceType": "public-web",
       "catalogStatus": "active",
-      "verifiedAt": "2026-11-08T14:20:09.468Z",
-      "syncedAt": "2026-11-08T14:20:09.468Z",
-      "priceUpdatedAt": "2026-11-08T14:20:09.468Z",
-      "stockVerifiedAt": "2026-11-08T14:20:09.468Z",
-      "expiresAt": "2026-11-15T14:20:09.468Z",
+      "verifiedAt": "2026-11-12T11:29:25.571Z",
+      "syncedAt": "2026-11-12T11:29:25.571Z",
+      "priceUpdatedAt": "2026-11-12T11:29:25.571Z",
+      "stockVerifiedAt": "2026-11-12T11:29:25.571Z",
+      "expiresAt": "2026-11-19T11:29:25.571Z",
       "productRating": null,
       "productRatingCount": null,
       "productRatingSource": "",
@@ -3772,6 +3863,8 @@
       "originalPrice": null,
       "objective": "Chaussures",
       "category": "Chaussures",
+      "gender": "unknown",
+      "genderVerified": false,
       "styleTags": [
         "Sport"
       ],
@@ -3787,11 +3880,11 @@
       "source": "C.P. Company",
       "sourceType": "public-web",
       "catalogStatus": "active",
-      "verifiedAt": "2026-11-08T14:20:10.070Z",
-      "syncedAt": "2026-11-08T14:20:10.070Z",
-      "priceUpdatedAt": "2026-11-08T14:20:10.070Z",
-      "stockVerifiedAt": "2026-11-08T14:20:10.070Z",
-      "expiresAt": "2026-11-15T14:20:10.070Z",
+      "verifiedAt": "2026-11-12T11:29:26.249Z",
+      "syncedAt": "2026-11-12T11:29:26.249Z",
+      "priceUpdatedAt": "2026-11-12T11:29:26.249Z",
+      "stockVerifiedAt": "2026-11-12T11:29:26.249Z",
+      "expiresAt": "2026-11-19T11:29:26.249Z",
       "productRating": null,
       "productRatingCount": null,
       "productRatingSource": "",
@@ -3812,6 +3905,8 @@
       "originalPrice": null,
       "objective": "Chaussures",
       "category": "Chaussures",
+      "gender": "unknown",
+      "genderVerified": false,
       "styleTags": [
         "Sport"
       ],
@@ -3827,11 +3922,11 @@
       "source": "C.P. Company",
       "sourceType": "public-web",
       "catalogStatus": "active",
-      "verifiedAt": "2026-11-08T14:20:10.736Z",
-      "syncedAt": "2026-11-08T14:20:10.736Z",
-      "priceUpdatedAt": "2026-11-08T14:20:10.736Z",
-      "stockVerifiedAt": "2026-11-08T14:20:10.736Z",
-      "expiresAt": "2026-11-15T14:20:10.736Z",
+      "verifiedAt": "2026-11-12T11:29:26.894Z",
+      "syncedAt": "2026-11-12T11:29:26.894Z",
+      "priceUpdatedAt": "2026-11-12T11:29:26.894Z",
+      "stockVerifiedAt": "2026-11-12T11:29:26.894Z",
+      "expiresAt": "2026-11-19T11:29:26.894Z",
       "productRating": null,
       "productRatingCount": null,
       "productRatingSource": "",
@@ -3852,6 +3947,8 @@
       "originalPrice": null,
       "objective": "Chaussures",
       "category": "Chaussures",
+      "gender": "unknown",
+      "genderVerified": false,
       "styleTags": [
         "Sport"
       ],
@@ -3867,11 +3964,11 @@
       "source": "C.P. Company",
       "sourceType": "public-web",
       "catalogStatus": "active",
-      "verifiedAt": "2026-11-08T14:20:11.430Z",
-      "syncedAt": "2026-11-08T14:20:11.430Z",
-      "priceUpdatedAt": "2026-11-08T14:20:11.430Z",
-      "stockVerifiedAt": "2026-11-08T14:20:11.430Z",
-      "expiresAt": "2026-11-15T14:20:11.430Z",
+      "verifiedAt": "2026-11-12T11:29:27.606Z",
+      "syncedAt": "2026-11-12T11:29:27.606Z",
+      "priceUpdatedAt": "2026-11-12T11:29:27.606Z",
+      "stockVerifiedAt": "2026-11-12T11:29:27.606Z",
+      "expiresAt": "2026-11-19T11:29:27.606Z",
       "productRating": null,
       "productRatingCount": null,
       "productRatingSource": "",
@@ -3892,6 +3989,8 @@
       "originalPrice": null,
       "objective": "Chaussures",
       "category": "Chaussures",
+      "gender": "unknown",
+      "genderVerified": false,
       "styleTags": [
         "Sport"
       ],
@@ -3907,11 +4006,11 @@
       "source": "C.P. Company",
       "sourceType": "public-web",
       "catalogStatus": "active",
-      "verifiedAt": "2026-11-08T14:20:14.243Z",
-      "syncedAt": "2026-11-08T14:20:14.243Z",
-      "priceUpdatedAt": "2026-11-08T14:20:14.243Z",
-      "stockVerifiedAt": "2026-11-08T14:20:14.243Z",
-      "expiresAt": "2026-11-15T14:20:14.243Z",
+      "verifiedAt": "2026-11-12T11:29:30.422Z",
+      "syncedAt": "2026-11-12T11:29:30.422Z",
+      "priceUpdatedAt": "2026-11-12T11:29:30.422Z",
+      "stockVerifiedAt": "2026-11-12T11:29:30.422Z",
+      "expiresAt": "2026-11-19T11:29:30.422Z",
       "productRating": null,
       "productRatingCount": null,
       "productRatingSource": "",
@@ -3932,6 +4031,8 @@
       "originalPrice": null,
       "objective": "Chaussures",
       "category": "Chaussures",
+      "gender": "unknown",
+      "genderVerified": false,
       "styleTags": [
         "Sport"
       ],
@@ -3947,11 +4048,11 @@
       "source": "C.P. Company",
       "sourceType": "public-web",
       "catalogStatus": "active",
-      "verifiedAt": "2026-11-08T14:20:14.962Z",
-      "syncedAt": "2026-11-08T14:20:14.962Z",
-      "priceUpdatedAt": "2026-11-08T14:20:14.962Z",
-      "stockVerifiedAt": "2026-11-08T14:20:14.962Z",
-      "expiresAt": "2026-11-15T14:20:14.962Z",
+      "verifiedAt": "2026-11-12T11:29:31.089Z",
+      "syncedAt": "2026-11-12T11:29:31.089Z",
+      "priceUpdatedAt": "2026-11-12T11:29:31.089Z",
+      "stockVerifiedAt": "2026-11-12T11:29:31.089Z",
+      "expiresAt": "2026-11-19T11:29:31.089Z",
       "productRating": null,
       "productRatingCount": null,
       "productRatingSource": "",
@@ -3997,7 +4098,9 @@
       "merchantRatingCount": null,
       "merchantRatingSource": "",
       "popularityScore": null,
-      "isBestSeller": false
+      "isBestSeller": false,
+      "gender": "unknown",
+      "genderVerified": false
     },
     {
       "id": "web-vww2ai",
@@ -4035,7 +4138,9 @@
       "merchantRatingCount": null,
       "merchantRatingSource": "",
       "popularityScore": null,
-      "isBestSeller": false
+      "isBestSeller": false,
+      "gender": "unknown",
+      "genderVerified": false
     },
     {
       "id": "web-1g4rikh",
@@ -4073,7 +4178,9 @@
       "merchantRatingCount": null,
       "merchantRatingSource": "",
       "popularityScore": null,
-      "isBestSeller": false
+      "isBestSeller": false,
+      "gender": "unknown",
+      "genderVerified": false
     },
     {
       "id": "web-1os3asy",
@@ -4111,7 +4218,9 @@
       "merchantRatingCount": null,
       "merchantRatingSource": "",
       "popularityScore": null,
-      "isBestSeller": false
+      "isBestSeller": false,
+      "gender": "unknown",
+      "genderVerified": false
     },
     {
       "id": "web-4aex2p",
@@ -4149,7 +4258,9 @@
       "merchantRatingCount": null,
       "merchantRatingSource": "",
       "popularityScore": null,
-      "isBestSeller": false
+      "isBestSeller": false,
+      "gender": "unknown",
+      "genderVerified": false
     },
     {
       "id": "web-o97da7",
@@ -4187,7 +4298,9 @@
       "merchantRatingCount": null,
       "merchantRatingSource": "",
       "popularityScore": null,
-      "isBestSeller": false
+      "isBestSeller": false,
+      "gender": "unknown",
+      "genderVerified": false
     },
     {
       "id": "web-1mjymyh",
@@ -4225,7 +4338,9 @@
       "merchantRatingCount": null,
       "merchantRatingSource": "",
       "popularityScore": null,
-      "isBestSeller": false
+      "isBestSeller": false,
+      "gender": "unknown",
+      "genderVerified": false
     },
     {
       "id": "web-lcqcph",
@@ -4263,7 +4378,9 @@
       "merchantRatingCount": null,
       "merchantRatingSource": "",
       "popularityScore": null,
-      "isBestSeller": false
+      "isBestSeller": false,
+      "gender": "unknown",
+      "genderVerified": false
     },
     {
       "id": "web-19ihxub",
@@ -4301,7 +4418,9 @@
       "merchantRatingCount": null,
       "merchantRatingSource": "",
       "popularityScore": null,
-      "isBestSeller": false
+      "isBestSeller": false,
+      "gender": "unknown",
+      "genderVerified": false
     },
     {
       "id": "web-12d5qby",
@@ -4339,7 +4458,9 @@
       "merchantRatingCount": null,
       "merchantRatingSource": "",
       "popularityScore": null,
-      "isBestSeller": false
+      "isBestSeller": false,
+      "gender": "unknown",
+      "genderVerified": false
     },
     {
       "id": "web-1i75wlo",
@@ -4377,7 +4498,9 @@
       "merchantRatingCount": null,
       "merchantRatingSource": "",
       "popularityScore": null,
-      "isBestSeller": false
+      "isBestSeller": false,
+      "gender": "unknown",
+      "genderVerified": false
     },
     {
       "id": "web-up4au9",
@@ -4415,7 +4538,9 @@
       "merchantRatingCount": null,
       "merchantRatingSource": "",
       "popularityScore": null,
-      "isBestSeller": false
+      "isBestSeller": false,
+      "gender": "unknown",
+      "genderVerified": false
     },
     {
       "id": "web-1c033um",
@@ -4453,7 +4578,9 @@
       "merchantRatingCount": null,
       "merchantRatingSource": "",
       "popularityScore": null,
-      "isBestSeller": false
+      "isBestSeller": false,
+      "gender": "unknown",
+      "genderVerified": false
     },
     {
       "id": "web-l9d08g",
@@ -4491,7 +4618,9 @@
       "merchantRatingCount": null,
       "merchantRatingSource": "",
       "popularityScore": null,
-      "isBestSeller": false
+      "isBestSeller": false,
+      "gender": "unknown",
+      "genderVerified": false
     },
     {
       "id": "web-lyndta",
@@ -4529,7 +4658,9 @@
       "merchantRatingCount": null,
       "merchantRatingSource": "",
       "popularityScore": null,
-      "isBestSeller": false
+      "isBestSeller": false,
+      "gender": "unknown",
+      "genderVerified": false
     },
     {
       "id": "web-7yyqbt",
@@ -4567,7 +4698,9 @@
       "merchantRatingCount": null,
       "merchantRatingSource": "",
       "popularityScore": null,
-      "isBestSeller": false
+      "isBestSeller": false,
+      "gender": "unknown",
+      "genderVerified": false
     },
     {
       "id": "web-z6ynz8",
@@ -4580,7 +4713,8 @@
       "originalPrice": null,
       "objective": "Vêtements",
       "category": "Chemise",
-      "gender": "men",
+      "gender": "unknown",
+      "genderVerified": false,
       "styleTags": [
         "Classique"
       ],
@@ -4600,11 +4734,11 @@
       "source": "BZB",
       "sourceType": "public-web",
       "catalogStatus": "active",
-      "verifiedAt": "2026-11-11T15:17:05.365Z",
-      "syncedAt": "2026-11-11T15:17:05.365Z",
-      "priceUpdatedAt": "2026-11-11T15:17:05.365Z",
-      "stockVerifiedAt": "2026-11-11T15:17:05.365Z",
-      "expiresAt": "2026-11-18T15:17:05.365Z",
+      "verifiedAt": "2026-11-12T11:28:56.189Z",
+      "syncedAt": "2026-11-12T11:28:56.189Z",
+      "priceUpdatedAt": "2026-11-12T11:28:56.189Z",
+      "stockVerifiedAt": "2026-11-12T11:28:56.189Z",
+      "expiresAt": "2026-11-19T11:28:56.189Z",
       "productRating": null,
       "productRatingCount": null,
       "productRatingSource": "",
@@ -4653,7 +4787,8 @@
       "merchantRatingCount": null,
       "merchantRatingSource": "",
       "popularityScore": null,
-      "isBestSeller": false
+      "isBestSeller": false,
+      "genderVerified": true
     },
     {
       "id": "web-1yx0r1u",
@@ -4695,7 +4830,8 @@
       "merchantRatingCount": null,
       "merchantRatingSource": "",
       "popularityScore": null,
-      "isBestSeller": false
+      "isBestSeller": false,
+      "genderVerified": false
     },
     {
       "id": "web-1nuo3we",
@@ -4736,7 +4872,8 @@
       "merchantRatingCount": null,
       "merchantRatingSource": "",
       "popularityScore": null,
-      "isBestSeller": false
+      "isBestSeller": false,
+      "genderVerified": false
     },
     {
       "id": "web-baoobw",
@@ -4777,7 +4914,8 @@
       "merchantRatingCount": null,
       "merchantRatingSource": "",
       "popularityScore": null,
-      "isBestSeller": false
+      "isBestSeller": false,
+      "genderVerified": true
     },
     {
       "id": "web-zv7ad6",
@@ -4818,7 +4956,8 @@
       "merchantRatingCount": null,
       "merchantRatingSource": "",
       "popularityScore": null,
-      "isBestSeller": false
+      "isBestSeller": false,
+      "genderVerified": true
     },
     {
       "id": "web-a4pp9b",
@@ -4860,7 +4999,8 @@
       "merchantRatingCount": null,
       "merchantRatingSource": "",
       "popularityScore": null,
-      "isBestSeller": false
+      "isBestSeller": false,
+      "genderVerified": false
     },
     {
       "id": "web-c2osw7",
@@ -4901,7 +5041,8 @@
       "merchantRatingCount": null,
       "merchantRatingSource": "",
       "popularityScore": null,
-      "isBestSeller": false
+      "isBestSeller": false,
+      "genderVerified": true
     },
     {
       "id": "web-55m4y6",
@@ -4943,7 +5084,8 @@
       "merchantRatingCount": null,
       "merchantRatingSource": "",
       "popularityScore": null,
-      "isBestSeller": false
+      "isBestSeller": false,
+      "genderVerified": false
     },
     {
       "id": "web-y9ztem",
@@ -4984,7 +5126,8 @@
       "merchantRatingCount": null,
       "merchantRatingSource": "",
       "popularityScore": null,
-      "isBestSeller": false
+      "isBestSeller": false,
+      "genderVerified": true
     },
     {
       "id": "web-98r3tg",
@@ -5025,7 +5168,8 @@
       "merchantRatingCount": null,
       "merchantRatingSource": "",
       "popularityScore": null,
-      "isBestSeller": false
+      "isBestSeller": false,
+      "genderVerified": true
     },
     {
       "id": "web-27q2ea",
@@ -5064,7 +5208,8 @@
       "merchantRatingCount": null,
       "merchantRatingSource": "",
       "popularityScore": null,
-      "isBestSeller": false
+      "isBestSeller": false,
+      "genderVerified": true
     }
   ]
 }
