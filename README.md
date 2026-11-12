@@ -34,7 +34,7 @@ Cette section conserve la demande de référence pour faire évoluer les sources
 3. **Adapter les propositions au style, à la catégorie et au budget.** Les univers prioritaires comprennent les multimarques (Zalando, ASOS, UNIQLO…), l'accessible/casual (BZB, Pull & Bear…), le premium et le luxe (Louis Vuitton, Dior, Lothaire…), les sneakers et le sport (Nike, adidas, Courir…) et les sous-vêtements (Calvin Klein, Undiz…).
 4. **Fiabilité des marchands.** Trustpilot, Google Avis clients, Avis Vérifiés, Trusted Shops et Custplace sont des sources envisagées, pas des connecteurs actuellement intégrés. Le collecteur public ne renseigne pas les notes de marchands ; il peut récupérer une note de produit publiée dans les données structurées Schema.org. Une note produit ne doit jamais être assimilée à la fiabilité du vendeur.
 5. **Publicités mode.** Meta Ad Library est une piste de veille, mais aucun collecteur Meta Ad Library n'est actuellement présent dans le dépôt. Si cette source est ajoutée, elle devra se limiter aux données publiques accessibles par un moyen autorisé. Elle ne donne pas accès au fil Instagram personnalisé de l'utilisateur et ne prouve pas qu'un produit est apprécié personnellement.
-6. **Couverture internationale.** Le répertoire comprend 200 enseignes pour homme ou mixtes, dans les mêmes univers que les références fournies. Les pays, devises, livraison et accès techniques varient selon les enseignes.
+6. **Couverture internationale.** Le répertoire comprend 236 enseignes pour homme ou mixtes, dans les mêmes univers que les références fournies. Les pays, devises, livraison et accès techniques varient selon les enseignes.
 
 ## Expérience de découverte en flux continu
 
@@ -44,10 +44,10 @@ Cette section conserve la demande de référence pour faire évoluer les sources
 - Le moteur local classe les produits selon les préférences apprises, le profil, les tailles, les marques, les couleurs, matières, coupes, le style, le budget, la saison et la fraîcheur des fiches.
 - Le catalogue est découpé en pages de 120 produits. Le site charge la première page, puis précharge la suivante quand il reste environ huit propositions à découvrir. En mode grille, le prochain lot se charge aussi au défilement.
 - Quand toutes les pages publiées ont été parcourues, le site vérifie périodiquement si un nouveau manifeste est disponible. Une nouvelle collecte peut donc être consommée sans recharger manuellement l'application.
-- Le workflow catalogue explore **36 enseignes par jour** parmi les 200, dont 12 priorités hautes et 24 sources en rotation. Les curseurs de rotation sont conservés dans `data/catalog-meta.json`.
+- Le workflow catalogue explore **36 enseignes par jour** parmi les 236, dont 12 priorités hautes et 24 sources en rotation. Les curseurs de rotation sont conservés dans `data/catalog-meta.json`.
 - Ce fonctionnement supprime la limite artificielle de swipes. Il ne promet pas une infinité mathématique de vêtements : le volume réel dépend des produits que les sources publient, de leurs accès autorisés et de la disponibilité des articles. L'instantané publié le 8 novembre 2026 contient 78 fiches publiques actives ; le statut général de la collecte reste `partial`.
 
-## Le répertoire permanent des 200 enseignes
+## Le répertoire permanent des 236 enseignes
 
 Le fichier de référence et ses métadonnées (domaine, URL, famille, gamme de prix indicative, région, priorité et statut de collecte) sont dans [`data/merchant-directory.json`](./data/merchant-directory.json). La liste est éditoriale, adaptée au brief, et n'est pas un classement mondial par chiffre d'affaires. Sa présence ne garantit ni que la boutique accepte le crawl, ni qu'elle livre dans tous les pays, ni qu'elle expose des fiches exploitables.
 
@@ -177,7 +177,7 @@ Le dépôt étant public et les workflows utilisant `ubuntu-latest`, les runners
 - `modules/store.js` : stockage local.
 - `scripts/refresh-public-catalog.mjs` : collecte et pagination des produits publics autorisés.
 - `scripts/sync-pinterest.mjs` : synchronisation Pinterest officielle.
-- `data/merchant-directory.json` : répertoire éditorial des 200 enseignes.
+- `data/merchant-directory.json` : répertoire éditorial des 236 enseignes.
 - `data/public-sources.json` : paramètres de rotation (36 enseignes par exécution, dont 12 emplacements prioritaires).
 - `data/catalog-seeds.json` : références produits éditoriales conservées lors des collectes.
 - `data/catalog-manifest.json` et `data/catalog-pages/` : manifeste et pages du catalogue.
