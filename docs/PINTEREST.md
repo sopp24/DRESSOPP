@@ -44,9 +44,11 @@ Les scopes secrets `boards:read_secret` et `pins:read_secret` ne doivent être u
 
 ## Analyse visuelle automatique
 
-Après la synchronisation Pinterest, le workflow transmet les images manquantes ou modifiées au Worker Cloudflare, qui utilise le modèle Gemma 4 déjà configuré avec sa capacité de vision. Les images sont récupérées uniquement depuis `i.pinimg.com`, puis analysées côté serveur. Le résultat structuré contient un résumé interne, les styles, couleurs, matières, coupes et motifs identifiables, ainsi qu’un indicateur de confiance.
+Après la synchronisation Pinterest, le workflow transmet au Worker Cloudflare les images qui n'ont pas encore été analysées avec la version courante du schéma ou dont l'URL a changé. Le Worker utilise le modèle Gemma 4 avec sa capacité de vision. Les images sont récupérées uniquement depuis `i.pinimg.com`, puis analysées côté serveur.
 
-Les analyses sont conservées dans le champ technique `visualAnalysis` de chaque Pin. Elles alimentent le moteur de correspondance des tenues et le personal shopper IA, mais ne sont pas affichées dans les cartes, les tags visibles ou les paramètres de l’application. Les images déjà analysées ne sont pas renvoyées au modèle tant que leur URL ne change pas.
+La version 2 de `visualAnalysis` décrit les styles, couleurs, matières, coupes et motifs, mais aussi les pièces identifiables une par une (type, couleur, matière, coupe, motif et détails), les détails de construction, la silhouette générale, les associations de couleurs, les superpositions, les saisons et les contextes d'usage possibles. Les champs incertains sont laissés vides plutôt que déduits. Un résumé et une formule de tenue synthétisent les éléments visibles.
+
+Ces informations techniques alimentent le moteur de correspondance des tenues : les types de pièces et les détails visibles servent à rapprocher les inspirations des fiches du catalogue, et les saisons explicites peuvent affiner les filtres. Elles ne sont pas affichées dans les cartes, les tags visibles ou les paramètres de l'application. Une hausse de version du schéma déclenche une nouvelle analyse des Pins existants, même lorsque leur image n'a pas changé.
 
 L’analyse est facultative tant que `PINTEREST_SYNC_TOKEN` n’est pas configuré : la synchronisation classique continue et les images non analysées seront retentées lors d’un prochain passage. Une image inaccessible ou non vestimentaire n’interrompt pas le reste du flux.
 
