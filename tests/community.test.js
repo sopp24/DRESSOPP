@@ -11,8 +11,8 @@ test("community sharing is disabled by default", () => {
 test("community payload contains only compact taste features, not personal profile fields", () => {
   const state = {
     products: [
-      { id:"liked", name:"Black streetwear sneaker", objective:"Chaussures", brand:"Nike", styleTags:["Streetwear"], colors:["Noir"], materials:["Cuir"], sourceType:"public-web", url:"https://www.nike.com/fr/air-force" },
-      { id:"disliked", name:"Wool formal shoe", objective:"Chaussures", brand:"Example", styleTags:["Classique"], materials:["Laine"], sourceType:"public-web", url:"https://example.com/formal-shoe" }
+      { id:"liked", name:"Black streetwear sneaker", gender:"men", genderVerified:true, objective:"Chaussures", brand:"Nike", styleTags:["Streetwear"], colors:["Noir"], materials:["Cuir"], sourceType:"public-web", url:"https://www.nike.com/fr/air-force" },
+      { id:"disliked", name:"Wool formal shoe", gender:"men", genderVerified:true, objective:"Chaussures", brand:"Example", styleTags:["Classique"], materials:["Laine"], sourceType:"public-web", url:"https://example.com/formal-shoe" }
     ],
     interactions: { likes:[{productId:"liked"}], dislikes:[{productId:"disliked"}] },
     likedProducts: [],
@@ -41,7 +41,7 @@ test("community payload contains only compact taste features, not personal profi
 test("similar profiles contribute weighted positive and negative taste signals", () => {
   const state = {
     products:[{
-      id:"liked", name:"Black streetwear sneaker", objective:"Chaussures", brand:"Nike",
+      id:"liked", name:"Black streetwear sneaker", gender:"men", genderVerified:true, objective:"Chaussures", brand:"Nike",
       styleTags:["Streetwear"], colors:["Noir"], materials:["Cuir"],
       sourceType:"public-web", url:"https://www.nike.com/fr/air-force"
     }],
