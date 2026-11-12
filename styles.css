@@ -3190,3 +3190,12 @@ button, a { touch-action: manipulation; }
     padding-bottom: 100px;
   }
 }
+
+
+/* Les actions du swipe restent accessibles au tactile dans Entraînement aussi. */
+@media (max-width: 850px) {
+  .discovery-layout--swipe .deck-action {
+    min-width: 44px;
+    min-height: 44px;
+  }
+}
