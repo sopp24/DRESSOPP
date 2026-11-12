@@ -2857,3 +2857,277 @@ body.is-discovery-app .app-footer { display: none; }
   .discovery-page--app .discovery-layout--swipe { min-height: 300px; }
   .discovery-page--app .deck-card-wrap { min-height: 300px; }
 }
+
+
+/* Ergonomie responsive — mêmes codes visuels, zones tactiles et contenus mieux hiérarchisés. */
+:root { --touch-target-size: 44px; }
+button, a, input, select, textarea { -webkit-tap-highlight-color: transparent; }
+button, a { touch-action: manipulation; }
+.field label, .field-label { font-size: 10px; }
+.field input, .field select, .field textarea, .search-input,
+.toolbar select { min-height: var(--touch-target-size); }
+.button-primary, .button-secondary, .button-quiet, .button-danger, .add-button {
+  min-height: var(--touch-target-size);
+}
+.grid-image {
+  display: grid;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  color: inherit;
+  background: #1b1b1b;
+  text-align: left;
+  cursor: pointer;
+}
+.grid-image:focus-visible { outline: 3px solid var(--accent); outline-offset: -3px; }
+.mini-icon-button { min-width: 38px; min-height: 38px; }
+.deck-hint-touch { display: none; }
+.modal-backdrop { overflow-y: auto; overscroll-behavior: contain; }
+.modal { max-height: min(90dvh,900px); overscroll-behavior: contain; scrollbar-gutter: stable; }
+.modal-head { position: sticky; z-index: 3; top: -22px; padding-top: 2px; padding-bottom: 12px; background: #141414; }
+
+/* Ordinateur portable et tablette paysage : header et grilles sans compression. */
+@media (min-width: 851px) and (max-width: 1180px) {
+  .topbar { grid-template-columns: auto minmax(0,1fr) auto; gap: 12px; padding-right: 24px; padding-left: 24px; }
+  .topbar .brand-logo { width: 118px; height: 56px; }
+  .main-nav { justify-content: center; gap: 2px; }
+  .nav-link { min-height: 44px; gap: 6px; padding: 0 10px; font-size: 11px; white-space: nowrap; }
+  .top-actions .footer-legal-link { display: none; }
+  .top-actions { gap: 7px; }
+  .main-content { width: calc(100% - 48px); }
+  .page-heading { gap: 18px; }
+  .page-heading p { max-width: 510px; }
+}
+@media (min-width: 601px) and (max-width: 1100px) {
+  .main-content { padding-top: 32px; }
+  .product-grid { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 13px; }
+  .inspiration-grid { grid-template-columns: repeat(3,minmax(0,1fr)); }
+  .section-panel { padding: 20px; }
+  .toolbar { align-items: flex-start; }
+  .toolbar-left, .toolbar-right { gap: 8px; }
+  .search-input { width: min(300px,38vw); }
+}
+@media (min-width: 851px) {
+  body.is-discovery-app .product-card { touch-action: pan-y; }
+  .discovery-page--app .deck-card-wrap { max-width: min(100%,680px); }
+  .discovery-page--app .deck-column { max-width: 680px; }
+  .discovery-page--app .product-info { bottom: 96px; }
+  .discovery-page--app .deck-actions { bottom: 16px; }
+  .discovery-page--app .deck-hint { bottom: 83px; }
+  .deck-hint-desktop { display: block; }
+}
+
+/* Tablette portrait et petits écrans : la navigation garde ses six destinations lisibles. */
+@media (max-width: 850px) {
+  .top-actions .icon-button { display: none; }
+  .mobile-nav {
+    width: calc(100% - 16px);
+    max-width: calc(100% - 16px);
+    min-height: 58px;
+    right: 8px;
+    left: 8px;
+    bottom: max(8px,env(safe-area-inset-bottom));
+    gap: 2px;
+    padding: 6px 5px;
+  }
+  .mobile-nav button {
+    min-width: 0;
+    min-height: 48px;
+    flex: 1 1 0;
+    padding: 2px 1px;
+    gap: 4px;
+  }
+  .mobile-nav button small {
+    max-width: 100%;
+    font-size: clamp(7px,1.8vw,10px);
+    line-height: 1.15;
+    letter-spacing: 0;
+    text-overflow: clip;
+  }
+  .mobile-nav button span { font-size: 17px; }
+  body:not(.is-discovery-app) .app-shell {
+    padding-bottom: calc(90px + env(safe-area-inset-bottom));
+  }
+  body.is-discovery-app .main-content {
+    padding-bottom: calc(82px + env(safe-area-inset-bottom));
+  }
+  .discovery-page--app .product-card { touch-action: none; }
+  .discovery-page--app .deck-action,
+  .discovery-page--app .deck-action-undo,
+  .discovery-page--app .deck-action-share {
+    min-width: 44px;
+    min-height: 44px;
+    flex: 0 0 44px;
+  }
+  .discovery-page--app .deck-action-no {
+    width: 50px;
+    height: 50px;
+    min-width: 50px;
+    min-height: 50px;
+    flex-basis: 50px;
+  }
+  .discovery-page--app .deck-action-save {
+    width: 48px;
+    height: 48px;
+    min-width: 48px;
+    min-height: 48px;
+    flex-basis: 48px;
+  }
+  .discovery-page--app .deck-action-yes {
+    width: 54px;
+    height: 54px;
+    min-width: 54px;
+    min-height: 54px;
+    flex-basis: 54px;
+  }
+  .discovery-page--app .deck-actions { gap: clamp(3px,1vw,8px); padding-right: 10px; padding-left: 10px; }
+  .discovery-page--app .deck-action-icon { width: 20px; height: 20px; }
+  .discovery-page--app .deck-hint-desktop { display: none; }
+  .discovery-page--app .deck-hint-touch {
+    display: block;
+    bottom: 75px;
+    font-size: clamp(8px,1.5vw,10px);
+    letter-spacing: .025em;
+    text-transform: none;
+  }
+  .filter-menu-trigger { min-height: 44px; }
+  .discovery-view-toggle { width: 44px; height: 44px; flex-basis: 44px; }
+  .modal-backdrop { padding: 12px; }
+  .modal { width: min(720px,100%); max-height: 92dvh; }
+}
+@media (min-width: 601px) and (max-width: 850px) {
+  body.is-discovery-app .topbar { min-height: 62px; padding-right: 20px; padding-left: 20px; }
+  body.is-discovery-app .main-content { padding-right: 18px; padding-left: 18px; }
+  .discovery-page--app .deck-card-wrap { max-width: 590px; }
+  .discovery-page--app .product-info { bottom: 96px; padding-right: 22px; padding-left: 22px; }
+  .discovery-page--app .product-title { font-size: clamp(22px,3.4vw,28px); }
+  .discovery-page--app .deck-hint-touch { bottom: 80px; }
+  .page-heading h1 { font-size: clamp(34px,5.2vw,46px); }
+}
+@media (max-width: 600px) {
+  .main-content { width: calc(100% - 28px); padding: 24px 0 28px; }
+  .page-heading { align-items: flex-start; gap: 12px; margin-bottom: 18px; }
+  .page-heading h1 { font-size: clamp(31px,8vw,39px); line-height: 1; }
+  .page-heading p { max-width: 100%; font-size: 12px; line-height: 1.55; }
+  .heading-actions { width: 100%; }
+  .heading-actions > * { flex: 1 1 auto; }
+  .toolbar { align-items: stretch; gap: 10px; }
+  .toolbar-left { width: 100%; }
+  .toolbar-right {
+    display: grid;
+    width: 100%;
+    grid-template-columns: repeat(2,minmax(0,1fr));
+    gap: 8px;
+  }
+  .toolbar-right > * { min-width: 0; width: 100%; }
+  .search-input { width: 100%; min-height: 44px; }
+  .toolbar select { min-width: 0; min-height: 44px; font-size: 11px; }
+  .result-count { align-self: center; }
+  .product-grid { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 10px; }
+  .grid-card { border-radius: 13px; }
+  .grid-content { padding: 11px; }
+  .grid-content .product-title { font-size: 12px; line-height: 1.3; }
+  .grid-bottom { align-items: center; gap: 6px; }
+  .grid-actions { gap: 5px; }
+  .mini-icon-button { width: 38px; height: 38px; min-width: 38px; min-height: 38px; }
+  .section-panel { padding: 16px; }
+  .section-title { margin-bottom: 14px; line-height: 1.3; }
+  .form-grid, .form-grid.three, .preference-columns { grid-template-columns: minmax(0,1fr); }
+  .form-actions > * { flex: 1 1 auto; }
+  .field { gap: 8px; }
+  .field input, .field select, .field textarea, .search-input { min-height: 44px; font-size: 14px; }
+  .field textarea { min-height: 100px; }
+  .connector-item { grid-template-columns: minmax(0,1fr); }
+  .status-pill { white-space: normal; }
+  .modal-backdrop {
+    align-items: flex-end;
+    padding: max(8px,env(safe-area-inset-top)) 8px max(8px,env(safe-area-inset-bottom));
+  }
+  .modal {
+    width: 100%;
+    max-height: 92dvh;
+    padding: 18px 16px calc(18px + env(safe-area-inset-bottom));
+    border-radius: 20px 20px 14px 14px;
+  }
+  .modal-head { top: -18px; gap: 10px; margin-bottom: 15px; }
+  .modal-head h2 { font-size: 20px; line-height: 1.15; }
+  .close-button { width: 44px; height: 44px; flex-basis: 44px; }
+  .details-layout { grid-template-columns: minmax(0,1fr); gap: 16px; }
+  .details-image { max-height: min(38dvh,320px); }
+  .details-copy h3 { font-size: 20px; line-height: 1.2; }
+  .detail-row { gap: 12px; font-size: 11px; }
+  .detail-row span:first-child { flex: 0 0 38%; }
+  .detail-row span:last-child { min-width: 0; overflow-wrap: anywhere; }
+  .app-footer { width: calc(100% - 28px); }
+  .toast-root { right: 8px; bottom: calc(82px + env(safe-area-inset-bottom)); left: 8px; }
+  .toast { min-width: 0; width: 100%; font-size: 12px; }
+  .discovery-page--app .product-info {
+    bottom: 96px;
+    align-items: flex-end;
+    gap: 8px;
+    padding: 14px 13px 12px;
+  }
+  .discovery-page--app .product-copy { max-width: calc(100% - 94px); }
+  .discovery-page--app .product-title {
+    font-size: clamp(18px,5.2vw,23px);
+    line-height: 1.12;
+    -webkit-line-clamp: 3;
+  }
+  .discovery-page--app .product-brand-price { font-size: 11px; }
+  .discovery-page--app .product-card-links { max-width: 90px; gap: 5px; }
+  .discovery-page--app .product-details-pill,
+  .discovery-page--app .product-card-links .product-original-link {
+    min-height: 36px;
+    padding: 7px 9px;
+    font-size: 9px;
+  }
+  .discovery-page--app .deck-actions {
+    bottom: 12px;
+    gap: 4px;
+    justify-content: space-between;
+    padding-right: 9px;
+    padding-left: 9px;
+  }
+  .discovery-page--app .deck-action,
+  .discovery-page--app .deck-action-undo,
+  .discovery-page--app .deck-action-share {
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    min-height: 44px;
+    flex-basis: 44px;
+  }
+  .discovery-page--app .deck-action-no { width: 49px; height: 49px; min-width: 49px; min-height: 49px; flex-basis: 49px; }
+  .discovery-page--app .deck-action-save { width: 46px; height: 46px; min-width: 46px; min-height: 46px; flex-basis: 46px; }
+  .discovery-page--app .deck-action-yes { width: 52px; height: 52px; min-width: 52px; min-height: 52px; flex-basis: 52px; }
+  .discovery-page--app .deck-hint-touch { bottom: 76px; padding: 0 8px; line-height: 1.25; }
+  .mobile-nav { width: calc(100% - 12px); max-width: calc(100% - 12px); min-height: 58px; padding: 5px 3px; }
+  .mobile-nav button { min-height: 48px; }
+  .mobile-nav button small { font-size: clamp(7px,2.1vw,9px); }
+}
+@media (max-width: 370px) {
+  .discovery-page--app .product-info { bottom: 93px; padding-right: 10px; padding-left: 10px; }
+  .discovery-page--app .product-copy { max-width: calc(100% - 84px); }
+  .discovery-page--app .product-card-links { max-width: 82px; }
+  .discovery-page--app .deck-actions { gap: 2px; padding-right: 6px; padding-left: 6px; }
+  .discovery-page--app .deck-action,
+  .discovery-page--app .deck-action-undo,
+  .discovery-page--app .deck-action-share { width: 44px; height: 44px; min-width: 44px; min-height: 44px; flex-basis: 44px; }
+  .discovery-page--app .deck-action-no { width: 46px; height: 46px; min-width: 46px; min-height: 46px; flex-basis: 46px; }
+  .discovery-page--app .deck-action-save { width: 44px; height: 44px; min-width: 44px; min-height: 44px; flex-basis: 44px; }
+  .discovery-page--app .deck-action-yes { width: 48px; height: 48px; min-width: 48px; min-height: 48px; flex-basis: 48px; }
+  .discovery-page--app .deck-hint-touch { bottom: 75px; font-size: 8px; }
+}
+@media (max-height: 700px) and (max-width: 600px) and (orientation: portrait) {
+  body.is-discovery-app .topbar { min-height: 50px; }
+  body.is-discovery-app .main-content { padding-top: 4px; }
+  .discovery-page--app .product-info { bottom: 88px; }
+  .discovery-page--app .deck-hint-touch { bottom: 69px; }
+}
+@media (orientation: landscape) and (max-height: 600px) and (max-width: 850px) {
+  .discovery-page--app .product-info { bottom: 82px; }
+  .discovery-page--app .deck-actions { bottom: 8px; }
+  .discovery-page--app .deck-hint-touch { bottom: 65px; }
+  .mobile-nav { min-height: 48px; padding-top: 3px; padding-bottom: 3px; }
+  .mobile-nav button { min-height: 40px; }
+}
