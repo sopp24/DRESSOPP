@@ -6,7 +6,7 @@ Le tableau de référence est :
 
 https://fr.pinterest.com/sopppx24/mode/
 
-Pinterest est une source d'inspiration prioritaire, pas un catalogue commercial. Le tableau peut contenir des images d'autres sujets ; le moteur ne retient que les signaux interprétables (styles, couleurs, matières, coupes, motifs et tags) pour construire les préférences. Les Pins ne doivent jamais être convertis automatiquement en fiches marchandes, prix ou liens produit inventés.
+Pinterest est une source d'inspiration prioritaire, pas un catalogue commercial. DRESSOPP ne conserve dans les recommandations que les références de mode masculine confirmées. Les Pins féminins, mixtes/unisexes, ambigus ou non vestimentaires sont exclus des inspirations et des compositions de tenues. Les signaux retenus (styles, couleurs, matières, coupes, motifs et détails) construisent les préférences ; les Pins ne sont jamais convertis automatiquement en fiches marchandes, prix ou liens produit inventés.
 
 Le moteur accorde davantage de poids aux signaux stylistiques Pinterest. Les réponses Oui/Non sur les produits et le feedback sur les tenues peuvent ensuite corriger ou confirmer ces inspirations.
 
