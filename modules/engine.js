@@ -1,6 +1,6 @@
 import { inferPinterestFeatures, isMenswearPin } from "./outfits.js";
 
-const FEATURE_FIELDS = ["styleTags", "colors", "materials", "cuts", "patterns", "categories"];
+const FEATURE_FIELDS = ["styleTags", "colors", "materials", "cuts", "patterns", "details", "paletteTags", "categories"];
 
 function text(value) { return String(value == null ? "" : value).trim(); }
 function normalizeText(value) { return text(value).normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase(); }
@@ -108,6 +108,8 @@ export function normalizeProduct(raw) {
     materials: arrayOf(source.materials || source.material || source.composition),
     cuts: arrayOf(source.cuts || source.fit || source.silhouette),
     patterns: arrayOf(source.patterns || source.pattern),
+    details: arrayOf(source.details || source.designDetails),
+    paletteTags: arrayOf(source.paletteTags || source.colorHarmony),
     description: text(source.description), sizes: arrayOf(source.sizes),
     availability: text(source.availability) || "Information non disponible",
     source: text(source.source) || merchant || "Import manuel",
@@ -162,14 +164,100 @@ export function matchesFilters(product, filters) {
   return true;
 }
 
+function productFeatureValues(product) {
+  const inferred = inferPinterestFeatures({
+    title:product.name,
+    name:product.name,
+    description:product.description,
+    category:product.category,
+    objective:product.objective,
+    styleTags:product.styleTags,
+    colors:product.colors,
+    materials:product.materials,
+    cuts:product.cuts,
+    patterns:product.patterns,
+    details:product.details,
+    paletteTags:product.paletteTags
+  });
+  const result = {};
+  ["styleTags","colors","materials","cuts","patterns","details","paletteTags"].forEach(function(field) {
+    result[field] = Array.from(new Set([...(product[field] || []),...(inferred[field] || [])].map(text).filter(Boolean)));
+  });
+  result.categories = [product.objective || product.category].filter(Boolean);
+  return result;
+}
 function featureTokens(product) {
   const tokens = [];
+  const features = productFeatureValues(product);
   FEATURE_FIELDS.forEach(function(field) {
-    const values = field === "categories" ? [product.objective || product.category] : (product[field] || []);
+    const values = features[field] || [];
     values.forEach(function(value) { if (text(value)) tokens.push(field + ":" + normalizeText(value)); });
   });
   if (product.brand) tokens.push("brand:" + normalizeText(product.brand));
-  return tokens;
+  return Array.from(new Set(tokens));
+}
+const PIN_FEATURE_WEIGHTS = {
+  styleTags:3.4, colors:3.8, materials:2.1, cuts:4.3,
+  patterns:4.2, details:2.8, paletteTags:3.2
+};
+const ACCENT_COLORS = new Set([
+  "rose","rose pale","rose vif","fuchsia","bordeaux","rouge","rouge cerise",
+  "bleu ciel","bleu cobalt","bleu electrique","vert","vert foret","vert sauge",
+  "vert emeraude","olive","jaune","jaune beurre","orange","orange brule","violet","lilas","lavande","prune"
+]);
+const MODERN_CUTS = new Set([
+  "oversized","oversize","boxy","wide leg","jambe large","baggy","barrel leg",
+  "jambe ballon","cropped","court","taille basse","over fit","over-fit","flared","flare","balloon leg"
+]);
+const STATEMENT_STYLES = new Set(["creatif","streetwear","vintage","avant garde","eclectique","sport heritage","retro sport","maille graphique"]);
+function pinterestAffinityScore(product,state) {
+  const productFeatures = productFeatureValues(product);
+  const pins = (state.inspirations || []).concat(state.pinterestPins || []).filter(isMenswearPin);
+  if (!pins.length) return 0;
+  const pinScores = pins.map(function(pin) {
+    const features = inferPinterestFeatures(pin);
+    let score = 0;
+    Object.entries(PIN_FEATURE_WEIGHTS).forEach(function(entry) {
+      const field = entry[0];
+      const pinValues = Array.from(new Set((features[field] || []).map(normalizeText)));
+      const productValues = new Set((productFeatures[field] || []).map(normalizeText));
+      if (!pinValues.length) return;
+      const matches = pinValues.filter(function(value) { return productValues.has(value); });
+      const denominator = Math.min(2,pinValues.length);
+      score += entry[1] * Math.min(1,matches.length / denominator);
+    });
+    return score;
+  }).filter(score => score > 0).sort((a,b) => b-a);
+  if (!pinScores.length) return 0;
+  const best = pinScores[0];
+  const next = pinScores.slice(1,3);
+  const consistency = next.length ? next.reduce((sum,value) => sum + value,0) / next.length : 0;
+  return best * .82 + consistency * .38;
+}
+function pinterestExpressionBoost(product) {
+  const features = productFeatureValues(product);
+  let score = 0;
+  const accent = (features.colors || []).some(value => ACCENT_COLORS.has(normalizeText(value)));
+  const pattern = (features.patterns || []).some(value => normalizeText(value) !== "uni");
+  const modernCut = (features.cuts || []).some(value => MODERN_CUTS.has(normalizeText(value)));
+  const statementStyle = (features.styleTags || []).some(value => STATEMENT_STYLES.has(normalizeText(value)));
+  const designDetail = (features.details || []).length > 0;
+  if (accent) score += 2.2;
+  if (pattern) score += 2.4;
+  if (modernCut) score += 3.0;
+  if (statementStyle) score += 2.0;
+  if (designDetail) score += Math.min(2.0,features.details.length * .6);
+  return Math.min(9,score);
+}
+function basicItemPenalty(product) {
+  const textValue = normalizeText([product.name,product.description].join(" "));
+  if (!/(^|[^a-z])(basique|basic|essentiel|essential)([^a-z]|$)/.test(textValue)) return 0;
+  const features = productFeatureValues(product);
+  const hasVisualInterest = (features.colors || []).some(value => ACCENT_COLORS.has(normalizeText(value))) ||
+    (features.cuts || []).some(value => MODERN_CUTS.has(normalizeText(value))) ||
+    (features.patterns || []).some(value => normalizeText(value) !== "uni") ||
+    (features.details || []).length > 0;
+  return hasVisualInterest ? 0 : -6;
 }
 
 export function deriveLearnedPreferences(state) {
@@ -191,10 +279,14 @@ export function deriveLearnedPreferences(state) {
     const id = String(pin.pinId || pin.id || pin.sourceUrl || pin.pinUrl || "");
     if (id) pinsById.set(id, pin);
     const features = inferPinterestFeatures(pin);
+    const confidence = Number.isFinite(Number(pin.visualAnalysis && pin.visualAnalysis.confidence))
+      ? Math.max(.65,Math.min(1,Number(pin.visualAnalysis.confidence))) : .85;
     Object.entries(features).forEach(function(entry) {
+      const fieldWeight = PIN_FEATURE_WEIGHTS[entry[0]] || 2.5;
       entry[1].forEach(function(value) {
         const token = entry[0] + ":" + normalizeText(value);
-        totals[token] = (totals[token] || 0) + 2.5;
+        const accentMultiplier = entry[0] === "colors" && ACCENT_COLORS.has(normalizeText(value)) ? 1.2 : 1;
+        totals[token] = (totals[token] || 0) + fieldWeight * confidence * accentMultiplier;
       });
     });
     (pin.tags || []).forEach(function(value) {
@@ -227,11 +319,14 @@ export function deriveLearnedPreferences(state) {
 function explicitProfileScore(product, profile) {
   const values = profile || {};
   let score = 0;
+  const features = productFeatureValues(product);
   const comparisons = [
-    [product.colors, values.preferredColors, 10],
-    [product.materials, values.preferredMaterials, 9],
-    [product.cuts, values.preferredCuts, 10],
-    [product.styleTags, values.preferredStyles, 8],
+    [features.colors, values.preferredColors, 10],
+    [features.materials, values.preferredMaterials, 9],
+    [features.cuts, values.preferredCuts, 10],
+    [features.styleTags, values.preferredStyles, 8],
+    [features.patterns, values.preferredPatterns, 8],
+    [features.paletteTags, values.preferredPalettes, 7],
     [[product.brand], values.favoriteBrands, 7]
   ];
   comparisons.forEach(function(entry) {
@@ -240,8 +335,9 @@ function explicitProfileScore(product, profile) {
     if (left.some(function(item) { return right.includes(item); })) score += entry[2];
   });
   const negative = [
-    [product.colors, values.excludedColors], [product.materials, values.excludedMaterials],
-    [product.cuts, values.excludedCuts], [[product.brand], values.excludedBrands]
+    [features.colors, values.excludedColors], [features.materials, values.excludedMaterials],
+    [features.cuts, values.excludedCuts], [features.patterns, values.excludedPatterns],
+    [[product.brand], values.excludedBrands]
   ];
   negative.forEach(function(entry) {
     const left = (entry[0] || []).map(normalizeText);
@@ -347,7 +443,10 @@ export function rankProducts(products, state, options) {
     const familiarity = preferenceScore(product, learned) + explicitProfileScore(product, profile);
     const novelty = noveltyScore(product, learned);
     const baseScore = familiarity * (1 - discovery / 100) + novelty * (discovery / 100) * (training ? 1.25 : 1);
-    const score = baseScore + freshnessBoost(product) + reviewBoost(product) +
+    const PinterestFit = pinterestAffinityScore(product,state);
+    const visualInterest = pinterestExpressionBoost(product);
+    const basicPenalty = basicItemPenalty(product);
+    const score = baseScore + PinterestFit + visualInterest + basicPenalty + freshnessBoost(product) + reviewBoost(product) +
       merchantTrustBoost(product) + popularityBoost(product) + communityBoost(product);
     return { product: product, score: score };
   });
