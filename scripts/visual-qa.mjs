@@ -61,7 +61,7 @@ async function getLayout(page) {
       document:{width:document.documentElement.scrollWidth,height:document.documentElement.scrollHeight},
       horizontalOverflow:document.documentElement.scrollWidth > innerWidth + 1,
       main:rect(main), card:rect(card), mobileNav:visibleNav ? rect(nav) : null,
-      cardOverlapsNav:Boolean(card && visibleNav && card.getBoundingClientRect().bottom > nav.getBoundingClientRect().top + 3),
+      cardOverlapsNav:Boolean(card && visibleNav && document.body.classList.contains("is-discovery-app") && card.getBoundingClientRect().bottom > nav.getBoundingClientRect().top + 3),
       actionSizes
     };
   });
