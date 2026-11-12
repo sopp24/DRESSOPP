@@ -12,7 +12,7 @@ export function selectAgentCandidates(rankedProducts, limit = MAX_CANDIDATES) {
 function clean(value, limit = 140) { return String(value == null ? "" : value).replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim().slice(0, limit); }
 function list(value, max = 10) { return (Array.isArray(value) ? value : []).map(item => clean(item, 48)).filter(Boolean).slice(0, max); }
 function productSummary(product) {
-  return { id:clean(product.id,128), name:clean(product.name), brand:clean(product.brand,80), merchant:clean(product.merchant || product.source,80), price:product.price == null ? null : Number(product.price), objective:clean(product.objective || product.category,40), category:clean(product.category,60), styleTags:list(product.styleTags,6), colors:list(product.colors,5), materials:list(product.materials,5), cuts:list(product.cuts,4), patterns:list(product.patterns,4), seasonTags:list(product.seasonTags,4), description:clean(product.description,240) };
+  return { id:clean(product.id,128), name:clean(product.name), brand:clean(product.brand,80), merchant:clean(product.merchant || product.source,80), gender:clean(product.gender,20), price:product.price == null ? null : Number(product.price), objective:clean(product.objective || product.category,40), category:clean(product.category,60), styleTags:list(product.styleTags,6), colors:list(product.colors,5), materials:list(product.materials,5), cuts:list(product.cuts,4), patterns:list(product.patterns,4), seasonTags:list(product.seasonTags,4), description:clean(product.description,240) };
 }
 function feedbackProducts(state, key) {
   const products = new Map((state.products || []).map(product => [product.id, product]));
