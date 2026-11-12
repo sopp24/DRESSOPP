@@ -126,6 +126,23 @@ async function runViewport(browser, config) {
         const nextBox = await nextCard.boundingBox();
         const savedBefore = Number(await page.locator("#wardrobe-count").textContent());
         if (nextBox) {
+          await page.evaluate(() => {
+            const card = document.querySelector("#active-product-card");
+            const wrapper = card && card.closest(".deck-card-wrap");
+            const events = [];
+            window.__dressoppSwipeDebug = events;
+            ["pointerdown","pointermove","pointerup","pointercancel","lostpointercapture"].forEach(type => {
+              document.addEventListener(type, event => {
+                if (!card || !(card.contains(event.target) || event.target === wrapper)) return;
+                if (events.length < 24) events.push({
+                  type, pointerType:event.pointerType, pointerId:event.pointerId,
+                  target:event.target && (event.target.className || event.target.tagName),
+                  x:Math.round(event.clientX), y:Math.round(event.clientY),
+                  defaultPrevented:event.defaultPrevented
+                });
+              }, true);
+            });
+          });
           await page.mouse.move(nextBox.x + nextBox.width * 0.5, nextBox.y + nextBox.height * 0.38);
           await page.mouse.down();
           await page.mouse.move(nextBox.x + nextBox.width * 0.5, nextBox.y + nextBox.height * 0.68, {steps:10});
@@ -133,7 +150,26 @@ async function runViewport(browser, config) {
           try {
             await page.waitForFunction(previousCount => Number(document.querySelector("#wardrobe-count").textContent) > previousCount, savedBefore, {timeout:6000});
           } catch {
-            results.push({viewport:config.name,view:"swipe-save",productId:nextId,issues:["le glissement vers le bas n'ajoute pas l'article à la liste"]});
+            const debug = await page.evaluate(() => {
+              const card = document.querySelector("#active-product-card");
+              const wrapper = card && card.closest(".deck-card-wrap");
+              const rect = node => {
+                if (!node) return null;
+                const box = node.getBoundingClientRect();
+                return {x:Math.round(box.x),y:Math.round(box.y),width:Math.round(box.width),height:Math.round(box.height),bottom:Math.round(box.bottom)};
+              };
+              return {
+                events:window.__dressoppSwipeDebug || [],
+                activeProductId:card && card.dataset.productId,
+                card:rect(card),wrapper:rect(wrapper),
+                cardClass:card && card.className,
+                cardTransform:card && card.style.transform,
+                touchAction:card && getComputedStyle(card).touchAction,
+                wardrobeCount:document.querySelector("#wardrobe-count") && document.querySelector("#wardrobe-count").textContent,
+                toast:document.querySelector("#toast-root") && document.querySelector("#toast-root").textContent
+              };
+            });
+            results.push({viewport:config.name,view:"swipe-save",productId:nextId,debug,issues:["le glissement vers le bas n'ajoute pas l'article à la liste"]});
           }
         }
       }
