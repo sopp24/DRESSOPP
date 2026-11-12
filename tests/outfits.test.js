@@ -78,6 +78,63 @@ test("visual Pinterest analysis improves matching without changing visible text 
   assert.deepEqual(inferPinterestTags(pin),[]);
 });
 
+test("detailed Pinterest piece analysis improves product matching and seasonal filtering", function() {
+  const pin = {
+    id:"detailed-visual-pin",
+    title:"",
+    description:"",
+    visualAnalysis:{
+      version:2,
+      isFashion:true,
+      summary:"Tenue smart casual avec pantalon beige en laine à pinces.",
+      styleTags:["Smart Casual"],
+      colors:["beige"],
+      materials:["laine"],
+      cuts:["wide leg"],
+      patterns:[],
+      pieces:[{
+        type:"pantalon",color:"beige",material:"laine",cut:"wide leg",
+        details:["pinces"]
+      }],
+      details:["pinces"],
+      silhouetteTags:["ample"],
+      seasonTags:["Automne","Hiver"],
+      occasionTags:["Quotidien"],
+      paletteTags:["Neutres chauds"],
+      layering:"",
+      outfitFormula:"Pull en maille + pantalon beige à pinces + mocassins"
+    }
+  };
+  const features = inferPinterestFeatures(pin);
+  assert.ok(features.colors.includes("beige"));
+  assert.ok(features.materials.includes("laine"));
+  assert.ok(features.cuts.includes("wide leg"));
+
+  const products = [
+    {
+      id:"pleated-wool-trousers",name:"Pantalon en laine beige",objective:"Vêtements",
+      category:"Pantalon à pinces",colors:["Beige"],materials:["Laine"],cuts:["Wide leg"],
+      description:"Pantalon droit en laine beige avec plis et pinces sur le devant.",
+      url:"https://shop.example/pantalon-laine-beige"
+    },
+    {
+      id:"blue-slim-jeans",name:"Jean bleu slim",objective:"Vêtements",
+      category:"Jean",colors:["Bleu"],materials:["Coton"],cuts:["Slim"],
+      description:"Jean en denim bleu à coupe ajustée.",
+      url:"https://shop.example/jean-bleu"
+    }
+  ];
+  const winterIdeas = buildOutfitIdeas([pin],[],products,[]);
+  assert.equal(winterIdeas.length,1);
+  assert.ok(winterIdeas[0].items.some(entry => entry.product.id==="pleated-wool-trousers"));
+  assert.ok(!winterIdeas[0].items.some(entry => entry.product.id==="blue-slim-jeans"));
+
+  const summerIdeas = buildOutfitIdeas([pin],[],products,[],{},{
+    season:"Été",styles:[],profile:{}
+  });
+  assert.equal(summerIdeas.length,0);
+});
+
 test("visual analysis marked as non-fashion does not add style signals", function() {
   const pin = {
     title:"",
