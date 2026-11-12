@@ -55,7 +55,7 @@ jobs:
       - name: Checkout the exact published revision
         uses: actions/checkout@v4
         with:
-          ref: \${{ github.sha }}
+          ref: ${{ github.sha }}
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
@@ -73,7 +73,7 @@ jobs:
       - name: Publish machine-readable report on a separate branch
         if: always()
         env:
-          GITHUB_TOKEN: \${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           if [ ! -f artifacts/visual-qa/report.json ]; then
             echo "No report file was generated."
@@ -84,16 +84,16 @@ jobs:
           cd /tmp/dressopp-visual-report
           git init --initial-branch=visual-qa-results
           git config user.name "github-actions[bot]"
-          git config user.email "41898282+users.noreply.github.com"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add report.json
-          git commit -m "Visual QA report \${GITHUB_RUN_ID}"
-          git remote add origin "https://x-access-token:\${GITHUB_TOKEN}@github.com/\${GITHUB_REPOSITORY}.git"
+          git commit -m "Visual QA report ${GITHUB_RUN_ID}"
+          git remote add origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
           git push --force origin HEAD:visual-qa-results
       - name: Upload screenshots and visual report
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: dressopp-visual-qa-\${{ github.sha }}
+          name: dressopp-visual-qa-${{ github.sha }}
           path: artifacts/visual-qa/
           if-no-files-found: warn
           retention-days: 7
