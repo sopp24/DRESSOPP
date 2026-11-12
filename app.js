@@ -1788,6 +1788,7 @@ function handleSubmit(event) {
 function attachSwipe() {
   const card = document.querySelector("#active-product-card");
   if (!card || card.dataset.swipeBound === "true") return;
+  const gestureSurface = card.closest(".deck-card-wrap") || card;
   card.dataset.swipeBound = "true";
   let startX = 0;
   let startY = 0;
@@ -1810,8 +1811,8 @@ function attachSwipe() {
     if (animateBack) window.setTimeout(function() { card.classList.remove("is-returning"); }, 360);
   }
 
-  card.addEventListener("pointerdown", function(event) {
-    if (deckActionPending || event.button !== 0 || event.target.closest("button, a")) return;
+  gestureSurface.addEventListener("pointerdown", function(event) {
+    if (!card.contains(event.target) || deckActionPending || event.button !== 0 || event.target.closest("button, a")) return;
     startX = event.clientX;
     startY = event.clientY;
     startTime = performance.now();
@@ -1823,10 +1824,10 @@ function attachSwipe() {
     pointerId = event.pointerId;
     card.classList.remove("is-returning");
     card.classList.add("is-dragging");
-    try { card.setPointerCapture(pointerId); } catch (error) {}
+    try { gestureSurface.setPointerCapture(pointerId); } catch (error) {}
   });
 
-  card.addEventListener("pointermove", function(event) {
+  gestureSurface.addEventListener("pointermove", function(event) {
     if (!dragging || event.pointerId !== pointerId) return;
     deltaX = event.clientX - startX;
     deltaY = event.clientY - startY;
@@ -1887,13 +1888,13 @@ function attachSwipe() {
   }
   }
 
-  card.addEventListener("pointerup", finishSwipe);
-  card.addEventListener("pointercancel", function(event) {
+  gestureSurface.addEventListener("pointerup", finishSwipe);
+  gestureSurface.addEventListener("pointercancel", function(event) {
     if (!dragging || (pointerId !== null && event.pointerId !== pointerId)) return;
     pointerId = null;
     clearPreview(true);
   });
-  card.addEventListener("lostpointercapture", function() {
+  gestureSurface.addEventListener("lostpointercapture", function() {
     if (dragging) { pointerId = null; clearPreview(true); }
   });
 }
