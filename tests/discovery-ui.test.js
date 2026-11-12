@@ -182,7 +182,7 @@ test("the restored swipe layout keeps the product card separate from the action 
   assert.ok(cardRenderer.indexOf("'</article>'") < cardRenderer.indexOf("'<div class=\"deck-actions\""));
   assert.ok(cardRenderer.endsWith("    '</div>';\n}\n"));
   assert.ok(app.includes("renderProductAttributes(product)"));
-  assert.ok(app.includes('const gestureSurface = card.closest(".deck-card-wrap") || card;'));
+  assert.ok(app.includes('const gestureSurface = card;'));
   assert.ok(app.includes("gestureSurface.setPointerCapture(pointerId)"));
   assert.ok(css.includes(".product-card {"));
   assert.ok(css.includes(".product-visual img"));
