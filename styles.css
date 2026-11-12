@@ -2926,6 +2926,7 @@ button, a { touch-action: manipulation; }
     min-height: 58px;
     right: 8px;
     left: 8px;
+    transform: none;
     bottom: max(8px,env(safe-area-inset-bottom));
     gap: 2px;
     padding: 6px 5px;
@@ -3101,7 +3102,7 @@ button, a { touch-action: manipulation; }
   .discovery-page--app .deck-action-save { width: 46px; height: 46px; min-width: 46px; min-height: 46px; flex-basis: 46px; }
   .discovery-page--app .deck-action-yes { width: 52px; height: 52px; min-width: 52px; min-height: 52px; flex-basis: 52px; }
   .discovery-page--app .deck-hint-touch { bottom: 76px; padding: 0 8px; line-height: 1.25; }
-  .mobile-nav { width: calc(100% - 12px); max-width: calc(100% - 12px); min-height: 58px; padding: 5px 3px; }
+  .mobile-nav { width: calc(100% - 12px); max-width: calc(100% - 12px); right: 6px; left: 6px; min-height: 58px; padding: 5px 3px; }
   .mobile-nav button { min-height: 48px; }
   .mobile-nav button small { font-size: clamp(7px,2.1vw,9px); }
 }
