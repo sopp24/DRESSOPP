@@ -151,4 +151,19 @@ async function main() {
   if (pageErrors.length || issues.length) process.exitCode = 1;
 }
 
-main().catch(error => { console.error(error); process.exitCode = 1; });
+main().catch(async error => {
+  console.error(error);
+  try {
+    await mkdir(artifactDir, {recursive:true});
+    await writeFile(artifactDir + "/report.json", JSON.stringify({
+      testedUrl:process.env.VISUAL_QA_LOCAL === "1" ? "local source checkout" : baseUrl,
+      testedAt:new Date().toISOString(),
+      fatalError:error && error.stack ? error.stack : String(error),
+      pageErrors,
+      results
+    }, null, 2));
+  } catch (reportError) {
+    console.error("Impossible d'écrire le rapport de secours :", reportError);
+  }
+  process.exitCode = 1;
+});
