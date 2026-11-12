@@ -1939,7 +1939,7 @@ document.addEventListener("keydown", function(event) {
     if (event.key === "ArrowRight") { event.preventDefault(); animateDeckDecision(card.dataset.productId, "yes"); }
     else if (event.key === "ArrowLeft") { event.preventDefault(); animateDeckDecision(card.dataset.productId, "no"); }
     else if (event.key === "ArrowDown") { event.preventDefault(); animateDeckDecision(card.dataset.productId, "save"); }
-    else if (event.key === "Enter" && event.target === card) { event.preventDefault(); openProductDetails(card.dataset.productId); }
+    else if (event.key === "Enter" && event.target === card) { event.preventDefault(); modalReturnFocus = card; openProductDetails(card.dataset.productId); }
     else if (event.key.toLowerCase() === "z" && (event.metaKey || event.ctrlKey)) { event.preventDefault(); undoLast(); }
   }
 });
