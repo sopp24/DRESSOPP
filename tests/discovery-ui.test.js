@@ -178,6 +178,8 @@ test("the mobile swipe card follows the vertical product-card mockup", function(
   const cardRenderer = app.slice(app.indexOf("function renderDeckCard"),app.indexOf("function renderGridCards"));
   assert.ok(cardRenderer.indexOf("'</article>'") < cardRenderer.indexOf("deck-actions"));
   assert.ok(app.includes("renderProductAttributes(product)"));
+  assert.ok(app.includes('const gestureSurface = card.closest(".deck-card-wrap") || card;'));
+  assert.ok(app.includes("gestureSurface.setPointerCapture(pointerId)"));
   assert.ok(css.includes("Maquette DRESSOPP — carte mobile verticale"));
   assert.ok(css.includes("position: static;"));
   assert.ok(css.includes("aspect-ratio: 3 / 4"));
