@@ -17,7 +17,7 @@ Les éléments ci-dessous ont été comparés aux fichiers réellement présents
 | Fiches du catalogue | **211 au total** : 180 fiches publiques actives, 16 références éditoriales et 15 fiches publiques périmées. Parmi toutes les fiches, **18 références masculines confirmées sont actuellement actives** ; les références femme, mixtes, unisexes ou ambiguës restent exclues de la découverte. |
 | Sources actives du dernier instantané | 12 sources ont fourni des fiches exploitables ; 36 enseignes ont été examinées et 276 pages contrôlées. |
 | Dernière collecte | 36 enseignes examinées et 276 pages contrôlées pendant cette exécution. |
-| Pinterest | Tableau `mode` confirmé **PUBLIC** ; **36 Pins synchronisés**, dont 35 classés masculins et 1 unisexe exclu des inspirations. Dernière synchronisation vérifiée : **12 novembre 2026 à 18:38:51 UTC**. |
+| Pinterest | Tableau `mode` confirmé **PUBLIC** ; **36 Pins synchronisés**, dont 34 reconnus comme mode masculine, 1 unisexe et 1 non vestimentaire exclus des inspirations. Dernière synchronisation vérifiée : **12 novembre 2026 à 18:38:51 UTC**. |
 | Analyse visuelle Pinterest | **36/36 images analysées (schéma v3)** par Gemma 4 via Cloudflare Workers AI ; public, pièces, styles, couleurs, matières, coupes, motifs, détails et silhouette sont enregistrés dans `visualAnalysis`. Les signaux alimentent le moteur sans être affichés dans l'interface. |
 | Personal shopper IA | Le mode local est disponible. Le Worker Cloudflare `dressopp-agent` est déployé et son endpoint de santé répond. Les recommandations distantes nécessitent toujours un consentement explicite dans l'application. |
 | Partage communautaire | Désactivé et non configuré dans les fichiers publiés (`enabled: false`, sans identifiants de projet). |
@@ -120,7 +120,7 @@ L'agent classe au maximum 50 candidats déjà présents dans le catalogue. Il ne
 
 Le tableau `sopppx24/mode` est la référence d'inspiration prioritaire. Le workflow `.github/workflows/pinterest-daily.yml` synchronise le tableau via Pinterest API v5, puis déclenche l'analyse visuelle des images nouvelles, modifiées ou encore dépourvues d'analyse valide. Le flux utilise les autorisations `boards:read` et `pins:read` et le mécanisme Client Credentials pour les ressources publiques ([documentation officielle Pinterest](https://dev.pinterest.com/docs/getting-started/set-up-authentication-and-authorization/)). Le tableau doit être public pour le mécanisme de publication dans ce dépôt public. Les tableaux secrets nécessitent une autorisation utilisateur adaptée et un stockage privé : aucun Pin privé ne doit être publié ici.
 
-**État vérifié au 12 novembre 2026 :** l'API confirme `privacy: PUBLIC` pour le tableau `mode`. Le fichier `data/pinterest-pins.json` contient **36 Pins**, chacun muni d'une analyse visuelle valide (version 3), soit **36/36 images analysées**. 35 Pins sont classés masculins ; 1 Pin unisexe est écarté. Dernière synchronisation : `2026-11-12T18:38:51.901Z` (UTC).
+**État vérifié au 12 novembre 2026 :** l'API confirme `privacy: PUBLIC` pour le tableau `mode`. Le fichier `data/pinterest-pins.json` contient **36 Pins**, chacun muni d'une analyse visuelle valide (version 3), soit **36/36 images analysées**. 34 Pins sont reconnus comme mode masculine ; 1 Pin unisexe et 1 Pin non vestimentaire sont écartés. Dernière synchronisation : `2026-11-12T18:38:51.901Z` (UTC).
 
 ### Analyse visuelle automatique
 
