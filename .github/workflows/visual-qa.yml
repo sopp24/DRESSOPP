@@ -1,0 +1,41 @@
+name: DRESSOPP visual QA
+
+on:
+  workflow_run:
+    workflows: ["Deploy DRESSOPP to GitHub Pages"]
+    types: [completed]
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  visual-qa:
+    if: \${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout the deployed revision
+        uses: actions/checkout@v4
+        with:
+          ref: \${{ github.event.workflow_run.head_sha }}
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Install browser test runner
+        run: npm install --no-save --no-package-lock playwright
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Test published experience at six viewport sizes
+        env:
+          DRESSOPP_BASE_URL: https://sopp24.github.io/DRESSOPP/
+        run: node scripts/visual-qa.mjs
+      - name: Upload screenshots and visual report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: dressopp-visual-qa-\${{ github.event.workflow_run.head_sha }}
+          path: artifacts/visual-qa/
+          if-no-files-found: warn
+          retention-days: 7
