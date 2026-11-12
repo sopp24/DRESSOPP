@@ -42,3 +42,58 @@ jobs:
         uses: actions/deploy-pages@v4
         with:
           artifact_name: github-pages-${{ github.run_id }}-${{ github.run_attempt }}
+
+  visual-qa:
+    name: Responsive visual QA
+    needs: test-and-deploy
+    if: needs.test-and-deploy.result == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout the exact published revision
+        uses: actions/checkout@v4
+        with:
+          ref: \${{ github.sha }}
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Check visual QA script
+        run: node --check scripts/visual-qa.mjs
+      - name: Install browser test runner
+        run: npm install --no-save --no-package-lock playwright
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Test six screen formats and key interactions
+        env:
+          VISUAL_QA_LOCAL: "1"
+        run: node scripts/visual-qa.mjs
+      - name: Publish machine-readable report on a separate branch
+        if: always()
+        env:
+          GITHUB_TOKEN: \${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if [ ! -f artifacts/visual-qa/report.json ]; then
+            echo "No report file was generated."
+            exit 0
+          fi
+          mkdir -p /tmp/dressopp-visual-report
+          cp artifacts/visual-qa/report.json /tmp/dressopp-visual-report/report.json
+          cd /tmp/dressopp-visual-report
+          git init --initial-branch=visual-qa-results
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+users.noreply.github.com"
+          git add report.json
+          git commit -m "Visual QA report \${GITHUB_RUN_ID}"
+          git remote add origin "https://x-access-token:\${GITHUB_TOKEN}@github.com/\${GITHUB_REPOSITORY}.git"
+          git push --force origin HEAD:visual-qa-results
+      - name: Upload screenshots and visual report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: dressopp-visual-qa-\${{ github.sha }}
+          path: artifacts/visual-qa/
+          if-no-files-found: warn
+          retention-days: 7
