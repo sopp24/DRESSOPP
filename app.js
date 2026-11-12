@@ -656,6 +656,7 @@ function renderDeckCard(product, training) {
       '<div class="product-brand-price"><span>' + esc(brand) + '</span><i aria-hidden="true">•</i><strong>' + esc(price) + '</strong></div>' +
     '</div>' + renderProductAttributes(product) +
     '<div class="product-card-links">' + originalLink + '</div></div>' +
+    '</article>' +
     '<div class="deck-actions" aria-label="Actions sur cet article">' +
     '<button class="deck-action deck-action-undo" type="button" data-action="undo" ' + (state.interactions.lastAction ? "" : "disabled") + ' aria-label="Annuler la dernière action" title="Annuler la dernière action"><img class="deck-action-icon" src="./assets/rewind.webp" alt="" aria-hidden="true" draggable="false"></button>' +
     '<button class="deck-action deck-action-no" type="button" data-action="vote" data-vote="no" data-id="' + esc(product.id) + '" aria-label="Passer" title="Passer"><img class="deck-action-icon" src="./assets/cross.webp" alt="" aria-hidden="true" draggable="false"></button>' +
@@ -665,7 +666,7 @@ function renderDeckCard(product, training) {
     '</div>' +
     '<p class="deck-hint deck-hint-desktop" id="deck-keyboard-hint">← Passer · ↓ Ajouter à ma liste · → J’aime · Entrée : détails · ⌘/Ctrl + Z : annuler</p>' +
     '<p class="deck-hint deck-hint-touch" id="deck-touch-hint" aria-hidden="true">Glisse à gauche ou à droite · Vers le bas pour ajouter à ta liste</p>' +
-    '</article></div>';
+    '</div>';
 }
 function renderGridCards(products, options) {
   const opts = options || {};
