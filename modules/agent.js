@@ -12,7 +12,7 @@ export function selectAgentCandidates(rankedProducts, limit = MAX_CANDIDATES) {
 function clean(value, limit = 140) { return String(value == null ? "" : value).replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim().slice(0, limit); }
 function list(value, max = 10) { return (Array.isArray(value) ? value : []).map(item => clean(item, 48)).filter(Boolean).slice(0, max); }
 function productSummary(product) {
-  return { id:clean(product.id,128), name:clean(product.name), brand:clean(product.brand,80), merchant:clean(product.merchant || product.source,80), gender:clean(product.gender,20), price:product.price == null ? null : Number(product.price), objective:clean(product.objective || product.category,40), category:clean(product.category,60), styleTags:list(product.styleTags,6), colors:list(product.colors,5), materials:list(product.materials,5), cuts:list(product.cuts,4), patterns:list(product.patterns,4), seasonTags:list(product.seasonTags,4), description:clean(product.description,240) };
+  return { id:clean(product.id,128), name:clean(product.name), brand:clean(product.brand,80), merchant:clean(product.merchant || product.source,80), gender:clean(product.gender,20), price:product.price == null ? null : Number(product.price), objective:clean(product.objective || product.category,40), category:clean(product.category,60), styleTags:list(product.styleTags,8), colors:list(product.colors,8), materials:list(product.materials,6), cuts:list(product.cuts,8), patterns:list(product.patterns,6), details:list(product.details,10), paletteTags:list(product.paletteTags,6), seasonTags:list(product.seasonTags,4), description:clean(product.description,360) };
 }
 function feedbackProducts(state, key) {
   const products = new Map((state.products || []).map(product => [product.id, product]));
@@ -32,7 +32,17 @@ export function createAgentPayload(state, candidates, inspirations) {
     filters:{ objective:settings.objective || "Tout", style:settings.style || "Tous", season:settings.season || "Toute saison", maxPrice:settings.maxPrice == null ? null : Number(settings.maxPrice) },
     profile:{ preferredStyles:list(profile.preferredStyles,12), excludedStyles:list(profile.excludedStyles,12), favoriteBrands:list(profile.favoriteBrands,12), excludedBrands:list(profile.excludedBrands,12), preferredColors:list(profile.preferredColors,12), excludedColors:list(profile.excludedColors,12), preferredMaterials:list(profile.preferredMaterials,12), excludedMaterials:list(profile.excludedMaterials,12), preferredCuts:list(profile.preferredCuts,12), excludedCuts:list(profile.excludedCuts,12), comfort:clean(profile.comfort,50), fit:clean(profile.fit,50) },
     feedback:{ liked:feedbackProducts(state,"likes"), saved:savedProducts(state), disliked:feedbackProducts(state,"dislikes") },
-    inspirations:(Array.isArray(inspirations) ? inspirations : []).slice(0,12).map(item => ({ title:clean(item.title,100), tags:list(item.tags,10) })),
+    inspirations:(Array.isArray(inspirations) ? inspirations : []).slice(0,12).map(item => {
+      const visual = item && item.visualAnalysis || {};
+      return {
+        title:clean(item && item.title,100),tags:list(item && item.tags,12),
+        summary:clean(visual.summary,360),styleTags:list(visual.styleTags,8),colors:list(visual.colors,8),
+        materials:list(visual.materials,6),cuts:list(visual.cuts,8),patterns:list(visual.patterns,6),
+        details:list([...(visual.details || []),...(visual.designDetails || [])],12),
+        paletteTags:list(visual.paletteTags,6),colorHarmony:clean(visual.colorHarmony,180),
+        silhouetteProportions:clean(visual.silhouetteProportions,200),outfitFormula:clean(visual.outfitFormula,220)
+      };
+    }),
     products:(Array.isArray(candidates) ? candidates : []).slice(0,MAX_CANDIDATES).map(productSummary)
   };
 }
@@ -69,14 +79,14 @@ function addLocalSignal(weights, field, value, amount) {
 }
 function localProductSignals(weights, product, amount) {
   if (!product) return;
-  ["styleTags","colors","materials","cuts","patterns"].forEach(field => {
+  ["styleTags","colors","materials","cuts","patterns","details","paletteTags"].forEach(field => {
     localValues(product,field).forEach(value => addLocalSignal(weights,field,value,amount));
   });
   if (product.brand) addLocalSignal(weights,"brand",product.brand,amount);
 }
 function localFeatureNames(product) {
   const result = [];
-  [["styleTags","style"],["colors","couleur"],["materials","matière"],["cuts","coupe"],["patterns","motif"]].forEach(([field,label]) => {
+  [["styleTags","style"],["colors","couleur"],["materials","matière"],["cuts","coupe"],["patterns","motif"],["details","détail"],["paletteTags","palette"]].forEach(([field,label]) => {
     localValues(product,field).forEach(value => result.push({field,label,value}));
   });
   if (product.brand) result.push({field:"brand",label:"marque",value:String(product.brand)});
@@ -118,10 +128,18 @@ export function recommendLocally(state, rankedCandidates, inspirations = [], lim
 
   const pinTokens = new Set();
   (Array.isArray(inspirations) ? inspirations : []).slice(0,40).forEach(pin => {
-    const text = [pin && pin.title,...(Array.isArray(pin && pin.tags) ? pin.tags : [])].join(" ");
-    localNormalize(text).split(/[^a-z0-9]+/).filter(token => token.length > 3).forEach(token => pinTokens.add(token));
-    ["styleTags","colors","materials","cuts","patterns"].forEach(field => {
-      (Array.isArray(pin && pin.tags) ? pin.tags : []).forEach(value => addLocalSignal(weights,field,value,2));
+    const visual = pin && pin.visualAnalysis || pin || {};
+    const values = [
+      pin && pin.title,visual.summary,visual.colorHarmony,visual.silhouetteProportions,visual.layering,
+      visual.outfitFormula,...(Array.isArray(pin && pin.tags) ? pin.tags : []),
+      ...(visual.styleTags || []),...(visual.colors || []),...(visual.materials || []),
+      ...(visual.cuts || []),...(visual.patterns || []),...(visual.details || []),
+      ...(visual.designDetails || []),...(visual.paletteTags || [])
+    ].filter(Boolean);
+    localNormalize(values.join(" ")).split(/[^a-z0-9]+/).filter(token => token.length > 3).forEach(token => pinTokens.add(token));
+    const weightsByField = {styleTags:3.4,colors:3.8,materials:2.1,cuts:4.3,patterns:4.2,details:2.8,paletteTags:3.2};
+    Object.entries(weightsByField).forEach(([field,weight]) => {
+      (Array.isArray(visual[field]) ? visual[field] : []).forEach(value => addLocalSignal(weights,field,value,weight));
     });
   });
 

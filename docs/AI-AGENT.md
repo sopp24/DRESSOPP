@@ -5,7 +5,8 @@ DRESSOPP possède désormais un agent utilisable dès l'ouverture, sans déploye
 ## Mode local — activé par défaut
 
 Le personal shopper local fonctionne directement dans le navigateur :
-- croise les filtres, le profil, les favoris, les réponses Oui/Non et les titres/tags Pinterest disponibles ;
+- traite le tableau Pinterest comme la référence esthétique principale : croise les teintes, coupes et volumes, motifs, détails, palettes, proportions et superpositions avec les produits ;
+- privilégie les correspondances visuelles concrètes (couleurs nuancées, coupes modernes, mailles graphiques, pièces originales) plutôt que les catégories génériques ou les basiques quand de meilleurs candidats existent ;
 - repère les correspondances de style, couleurs, matières, coupes et marques ;
 - classe les produits déjà présents dans le catalogue, avec une pénalité de répétition des mêmes marchands et catégories ;
 - explique brièvement chaque recommandation à partir des attributs réellement présents sur la fiche ;

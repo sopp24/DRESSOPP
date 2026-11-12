@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import { inferPinterestFeatures, inferPinterestTags, isMenswearPin, productSlot, outfitTotalPrice, buildOutfitIdeas } from "../modules/outfits.js";
 
 function buildMensOutfitIdeas(pins, wardrobe, catalogue, ...options) {
-  const mensPin = pin => Object.assign({},pin,{visualAnalysis:Object.assign({},pin && pin.visualAnalysis || {},{version:3,audience:"men",isFashion:!(pin && pin.visualAnalysis && pin.visualAnalysis.isFashion === false)})});
+  const mensPin = pin => Object.assign({},pin,{visualAnalysis:Object.assign({},pin && pin.visualAnalysis || {},{version:4,audience:"men",isFashion:!(pin && pin.visualAnalysis && pin.visualAnalysis.isFashion === false)})});
   const mensProducts = products => (products || []).map(product => Object.assign({gender:"men"},product));
   return buildOutfitIdeas((pins || []).map(mensPin),mensProducts(wardrobe),mensProducts(catalogue),...options);
 }
@@ -244,7 +244,7 @@ test("season filters ignore generic style tags and only reject explicit conflict
 
 
 test("outfit suggestions exclude products identified for women", function() {
-  const pin={id:"pin-gender",title:"Men's minimalist outfit",visualAnalysis:{version:3,audience:"men",isFashion:true}};
+  const pin={id:"pin-gender",title:"Men's minimalist outfit",visualAnalysis:{version:4,audience:"men",isFashion:true}};
   const wardrobe=[
     {id:"men-top",name:"Chemise homme",gender:"men",objective:"Vêtements",url:"https://shop.example/men/top"},
     {id:"women-top",name:"Chemise femme",gender:"women",objective:"Vêtements",url:"https://shop.example/women/top"}
@@ -255,6 +255,35 @@ test("outfit suggestions exclude products identified for women", function() {
 });
 
 
+test("Pinterest v4 captures precise colors, modern cuts, patterns and design details", function() {
+  const pin = {
+    id:"creative-knit-v4",title:"",
+    visualAnalysis:{
+      version:4,audience:"men",isFashion:true,confidence:0.98,
+      summary:"Cardigan court et boxy en maille rose vif à rayures bordeaux.",
+      styleTags:["Créatif","Maille graphique","Streetwear"],
+      colors:["rose vif","bordeaux","blanc"],materials:["maille"],
+      cuts:["boxy","cropped","wide leg"],patterns:["rayures","color block"],
+      details:["zip contrasté","maille texturée"],
+      designDetails:["broderie"],
+      silhouetteTags:["boxy","courte","ample"],
+      silhouetteProportions:"Haut court boxy et pantalon très large.",
+      colorHarmony:"Rose vif et bordeaux contrastés par le blanc.",
+      paletteTags:["Color block","Accents colorés"],
+      pieces:[{type:"cardigan",color:"rose vif",material:"maille",cut:"boxy",pattern:"rayures",details:["zip contrasté"]}]
+    }
+  };
+  const features = inferPinterestFeatures(pin);
+  assert.ok(features.styleTags.includes("Maille graphique"));
+  assert.ok(features.colors.includes("rose vif"));
+  assert.ok(features.colors.includes("bordeaux"));
+  assert.ok(features.cuts.includes("boxy"));
+  assert.ok(features.cuts.includes("cropped"));
+  assert.ok(features.patterns.includes("color block"));
+  assert.ok(features.details.includes("zip contrasté"));
+  assert.ok(features.paletteTags.includes("accents colorés"));
+});
+ 
 test("Pinterest inspirations are accepted only when their male audience is confirmed", function() {
   assert.equal(isMenswearPin({title:"Men's knitwear outfit"}),true);
   assert.equal(isMenswearPin({title:"Unisex knitwear outfit"}),false);

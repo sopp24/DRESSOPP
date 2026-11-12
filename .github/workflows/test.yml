@@ -1,0 +1,25 @@
+name: DRESSOPP — Tests du dépôt
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches:
+      - main
+      - pinterest-style-match-v4
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Récupérer le dépôt
+        uses: actions/checkout@v4
+      - name: Configurer Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Vérifier la syntaxe et exécuter les tests
+        run: npm test
