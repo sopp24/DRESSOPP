@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-11-06",
-  "selection": "Répertoire éditorial de 200 enseignes pertinentes pour la mode homme et les marques mixtes. Il ne s'agit pas d'un classement mondial par chiffre d'affaires.",
+  "updatedAt": "2026-11-12",
+  "selection": "Répertoire éditorial de 236 enseignes pertinentes pour la mode homme et les marques mixtes. Les ajouts sont orientés par les styles, couleurs, matières et coupes extraits du tableau Pinterest sopppx24/mode : casual, smart casual, streetwear, héritage, maille, workwear, silhouettes amples et palettes faciles à associer. Il ne s'agit pas d'un classement mondial par chiffre d'affaires.",
   "note": "La présence d'une enseigne ne garantit pas l'accès technique au catalogue ni la livraison dans tous les pays. Les connecteurs officiels, flux partenaires et collectes publiques autorisées sont testés séparément.",
   "entries": [
     {
@@ -276,6 +276,39 @@
       "type": "multi-brand",
       "priceTier": "mid",
       "region": "International",
+      "priority": 2,
+      "crawl": "candidate"
+    },
+    {
+      "name": "L'Exception",
+      "domain": "lexception.com",
+      "url": "https://lexception.com/",
+      "segment": "Multi-marques & grands magasins",
+      "type": "multi-brand",
+      "priceTier": "premium",
+      "region": "France",
+      "priority": 1,
+      "crawl": "candidate"
+    },
+    {
+      "name": "Beige Habilleur",
+      "domain": "beige-habilleur.com",
+      "url": "https://www.beige-habilleur.com/",
+      "segment": "Multi-marques & grands magasins",
+      "type": "multi-brand",
+      "priceTier": "luxury",
+      "region": "France",
+      "priority": 2,
+      "crawl": "candidate"
+    },
+    {
+      "name": "LYNDI",
+      "domain": "lyndi.fr",
+      "url": "https://lyndi.fr/",
+      "segment": "Multi-marques & grands magasins",
+      "type": "multi-brand",
+      "priceTier": "mid",
+      "region": "France",
       "priority": 2,
       "crawl": "candidate"
     },
@@ -574,6 +607,83 @@
       "priceTier": "budget",
       "region": "International",
       "priority": 3,
+      "crawl": "candidate"
+    },
+    {
+      "name": "Asphalte",
+      "domain": "asphalte.com",
+      "url": "https://www.asphalte.com/",
+      "segment": "Accessible, casual & essentiels",
+      "type": "casual-brand",
+      "priceTier": "mid",
+      "region": "France",
+      "priority": 1,
+      "crawl": "candidate"
+    },
+    {
+      "name": "Octobre Éditions",
+      "domain": "octobre-editions.com",
+      "url": "https://www.octobre-editions.com/",
+      "segment": "Accessible, casual & essentiels",
+      "type": "casual-brand",
+      "priceTier": "mid",
+      "region": "France",
+      "priority": 1,
+      "crawl": "candidate"
+    },
+    {
+      "name": "FAGUO",
+      "domain": "faguo.com",
+      "url": "https://www.faguo.com/",
+      "segment": "Accessible, casual & essentiels",
+      "type": "casual-brand",
+      "priceTier": "mid",
+      "region": "France",
+      "priority": 2,
+      "crawl": "candidate"
+    },
+    {
+      "name": "Olow",
+      "domain": "olow.fr",
+      "url": "https://www.olow.fr/",
+      "segment": "Accessible, casual & essentiels",
+      "type": "casual-brand",
+      "priceTier": "mid",
+      "region": "France",
+      "priority": 2,
+      "crawl": "candidate"
+    },
+    {
+      "name": "LePantalon",
+      "domain": "lepantalon.com",
+      "url": "https://www.lepantalon.com/",
+      "segment": "Accessible, casual & essentiels",
+      "type": "casual-brand",
+      "priceTier": "mid",
+      "region": "France",
+      "priority": 2,
+      "crawl": "candidate"
+    },
+    {
+      "name": "Montlimart",
+      "domain": "montlimart.com",
+      "url": "https://www.montlimart.com/",
+      "segment": "Accessible, casual & essentiels",
+      "type": "casual-brand",
+      "priceTier": "mid",
+      "region": "France",
+      "priority": 2,
+      "crawl": "candidate"
+    },
+    {
+      "name": "Armor Lux",
+      "domain": "armorlux.com",
+      "url": "https://www.armorlux.com/",
+      "segment": "Accessible, casual & essentiels",
+      "type": "casual-brand",
+      "priceTier": "mid",
+      "region": "France",
+      "priority": 2,
       "crawl": "candidate"
     },
     {
@@ -962,6 +1072,171 @@
       "crawl": "candidate"
     },
     {
+      "name": "Asket",
+      "domain": "asket.com",
+      "url": "https://www.asket.com/",
+      "segment": "Premium, heritage & créateurs",
+      "type": "premium-brand",
+      "priceTier": "premium",
+      "region": "Sweden",
+      "priority": 1,
+      "crawl": "candidate"
+    },
+    {
+      "name": "Hast",
+      "domain": "hastparis.com",
+      "url": "https://www.hastparis.com/",
+      "segment": "Premium, heritage & créateurs",
+      "type": "premium-brand",
+      "priceTier": "premium",
+      "region": "France",
+      "priority": 1,
+      "crawl": "candidate"
+    },
+    {
+      "name": "BonneGueule",
+      "domain": "bonnegueule.fr",
+      "url": "https://bonnegueule.fr/",
+      "segment": "Premium, heritage & créateurs",
+      "type": "premium-brand",
+      "priceTier": "premium",
+      "region": "France",
+      "priority": 1,
+      "crawl": "candidate"
+    },
+    {
+      "name": "A Day's March",
+      "domain": "adaysmarch.com",
+      "url": "https://www.adaysmarch.com/",
+      "segment": "Premium, heritage & créateurs",
+      "type": "premium-brand",
+      "priceTier": "premium",
+      "region": "Sweden",
+      "priority": 2,
+      "crawl": "candidate"
+    },
+    {
+      "name": "Homecore",
+      "domain": "homecore.com",
+      "url": "https://www.homecore.com/",
+      "segment": "Premium, heritage & créateurs",
+      "type": "premium-brand",
+      "priceTier": "premium",
+      "region": "France",
+      "priority": 2,
+      "crawl": "candidate"
+    },
+    {
+      "name": "Hircus",
+      "domain": "hircus.fr",
+      "url": "https://www.hircus.fr/",
+      "segment": "Premium, heritage & créateurs",
+      "type": "premium-brand",
+      "priceTier": "premium",
+      "region": "France",
+      "priority": 2,
+      "crawl": "candidate"
+    },
+    {
+      "name": "Officine Générale",
+      "domain": "officinegenerale.com",
+      "url": "https://www.officinegenerale.com/",
+      "segment": "Premium, heritage & créateurs",
+      "type": "premium-brand",
+      "priceTier": "premium",
+      "region": "France",
+      "priority": 2,
+      "crawl": "candidate"
+    },
+    {
+      "name": "Le Mont Saint Michel",
+      "domain": "lemontsaintmichel.fr",
+      "url": "https://www.lemontsaintmichel.fr/",
+      "segment": "Premium, heritage & créateurs",
+      "type": "premium-brand",
+      "priceTier": "premium",
+      "region": "France",
+      "priority": 2,
+      "crawl": "candidate"
+    },
+    {
+      "name": "NN07",
+      "domain": "nn07.com",
+      "url": "https://www.nn07.com/",
+      "segment": "Premium, heritage & créateurs",
+      "type": "premium-brand",
+      "priceTier": "premium",
+      "region": "Denmark",
+      "priority": 2,
+      "crawl": "candidate"
+    },
+    {
+      "name": "Samsøe Samsøe",
+      "domain": "samsoe.com",
+      "url": "https://www.samsoe.com/",
+      "segment": "Premium, heritage & créateurs",
+      "type": "premium-brand",
+      "priceTier": "premium",
+      "region": "Denmark",
+      "priority": 2,
+      "crawl": "candidate"
+    },
+    {
+      "name": "mfpen",
+      "domain": "mfpen.com",
+      "url": "https://mfpen.com/",
+      "segment": "Premium, heritage & créateurs",
+      "type": "premium-brand",
+      "priceTier": "premium",
+      "region": "Denmark",
+      "priority": 2,
+      "crawl": "candidate"
+    },
+    {
+      "name": "Wax London",
+      "domain": "waxlondon.com",
+      "url": "https://waxlondon.com/",
+      "segment": "Premium, heritage & créateurs",
+      "type": "premium-brand",
+      "priceTier": "premium",
+      "region": "UK",
+      "priority": 2,
+      "crawl": "candidate"
+    },
+    {
+      "name": "Kestin",
+      "domain": "kestin.co",
+      "url": "https://kestin.co/",
+      "segment": "Premium, heritage & créateurs",
+      "type": "premium-brand",
+      "priceTier": "premium",
+      "region": "UK",
+      "priority": 2,
+      "crawl": "candidate"
+    },
+    {
+      "name": "John Smedley",
+      "domain": "johnsmedley.com",
+      "url": "https://www.johnsmedley.com/",
+      "segment": "Premium, heritage & créateurs",
+      "type": "premium-brand",
+      "priceTier": "premium",
+      "region": "UK",
+      "priority": 2,
+      "crawl": "candidate"
+    },
+    {
+      "name": "Story MFG",
+      "domain": "storymfg.com",
+      "url": "https://storymfg.com/",
+      "segment": "Premium, heritage & créateurs",
+      "type": "premium-brand",
+      "priceTier": "luxury",
+      "region": "UK",
+      "priority": 2,
+      "crawl": "candidate"
+    },
+    {
       "name": "Louis Vuitton",
       "domain": "louisvuitton.com",
       "url": "https://louisvuitton.com/",
@@ -1233,6 +1508,39 @@
       "type": "luxury-brand",
       "priceTier": "luxury",
       "region": "International",
+      "priority": 2,
+      "crawl": "candidate"
+    },
+    {
+      "name": "Studio Nicholson",
+      "domain": "studionicholson.com",
+      "url": "https://www.studionicholson.com/",
+      "segment": "Luxe & maisons de mode",
+      "type": "luxury-brand",
+      "priceTier": "luxury",
+      "region": "UK",
+      "priority": 2,
+      "crawl": "candidate"
+    },
+    {
+      "name": "LEMAIRE",
+      "domain": "lemaire.fr",
+      "url": "https://www.lemaire.fr/",
+      "segment": "Luxe & maisons de mode",
+      "type": "luxury-brand",
+      "priceTier": "luxury",
+      "region": "France",
+      "priority": 2,
+      "crawl": "candidate"
+    },
+    {
+      "name": "Drake's",
+      "domain": "drakes.com",
+      "url": "https://www.drakes.com/",
+      "segment": "Luxe & maisons de mode",
+      "type": "luxury-brand",
+      "priceTier": "luxury",
+      "region": "UK",
       "priority": 2,
       "crawl": "candidate"
     },
@@ -1509,6 +1817,50 @@
       "priceTier": "mid",
       "region": "International",
       "priority": 3,
+      "crawl": "candidate"
+    },
+    {
+      "name": "Aigle",
+      "domain": "aigle.com",
+      "url": "https://www.aigle.com/",
+      "segment": "Sneakers, chaussures & sport",
+      "type": "sportswear-brand",
+      "priceTier": "mid",
+      "region": "France",
+      "priority": 2,
+      "crawl": "candidate"
+    },
+    {
+      "name": "Gramicci",
+      "domain": "gramicci.com",
+      "url": "https://gramicci.com/",
+      "segment": "Sneakers, chaussures & sport",
+      "type": "sportswear-brand",
+      "priceTier": "mid",
+      "region": "Japan",
+      "priority": 2,
+      "crawl": "candidate"
+    },
+    {
+      "name": "Patagonia",
+      "domain": "patagonia.com",
+      "url": "https://www.patagonia.com/",
+      "segment": "Sneakers, chaussures & sport",
+      "type": "sportswear-brand",
+      "priceTier": "mid",
+      "region": "United States",
+      "priority": 2,
+      "crawl": "candidate"
+    },
+    {
+      "name": "nanamica",
+      "domain": "nanamica.com",
+      "url": "https://www.nanamica.com/",
+      "segment": "Sneakers, chaussures & sport",
+      "type": "sportswear-brand",
+      "priceTier": "premium",
+      "region": "Japan",
+      "priority": 2,
       "crawl": "candidate"
     },
     {
@@ -1905,6 +2257,50 @@
       "priceTier": "premium",
       "region": "International",
       "priority": 3,
+      "crawl": "candidate"
+    },
+    {
+      "name": "Daily Paper",
+      "domain": "dailypaperclothing.com",
+      "url": "https://dailypaperclothing.com/",
+      "segment": "Streetwear & labels asiatiques",
+      "type": "streetwear-brand",
+      "priceTier": "premium",
+      "region": "Netherlands",
+      "priority": 2,
+      "crawl": "candidate"
+    },
+    {
+      "name": "Patta",
+      "domain": "patta.nl",
+      "url": "https://www.patta.nl/",
+      "segment": "Streetwear & labels asiatiques",
+      "type": "streetwear-brand",
+      "priceTier": "premium",
+      "region": "Netherlands",
+      "priority": 2,
+      "crawl": "candidate"
+    },
+    {
+      "name": "Arte Antwerp",
+      "domain": "arte-antwerp.com",
+      "url": "https://arte-antwerp.com/",
+      "segment": "Streetwear & labels asiatiques",
+      "type": "streetwear-brand",
+      "priceTier": "premium",
+      "region": "Belgium",
+      "priority": 2,
+      "crawl": "candidate"
+    },
+    {
+      "name": "Manastash",
+      "domain": "manastash.com",
+      "url": "https://manastash.com/",
+      "segment": "Streetwear & labels asiatiques",
+      "type": "streetwear-brand",
+      "priceTier": "premium",
+      "region": "Japan",
+      "priority": 2,
       "crawl": "candidate"
     },
     {
