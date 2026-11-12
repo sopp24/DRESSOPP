@@ -45,6 +45,7 @@ async function getLayout(page) {
   return page.evaluate(() => {
     const main = document.querySelector("#app-main");
     const card = document.querySelector("#active-product-card");
+    const actions = document.querySelector(".deck-actions");
     const nav = document.querySelector(".mobile-nav");
     const rect = element => {
       if (!element) return null;
@@ -60,8 +61,9 @@ async function getLayout(page) {
       viewport:{width:innerWidth,height:innerHeight},
       document:{width:document.documentElement.scrollWidth,height:document.documentElement.scrollHeight},
       horizontalOverflow:document.documentElement.scrollWidth > innerWidth + 1,
-      main:rect(main), card:rect(card), mobileNav:visibleNav ? rect(nav) : null,
-      cardOverlapsNav:Boolean(card && visibleNav && document.body.classList.contains("is-discovery-app") && card.getBoundingClientRect().bottom > nav.getBoundingClientRect().top + 3),
+      main:rect(main), card:rect(card), actions:rect(actions), mobileNav:visibleNav ? rect(nav) : null,
+      cardOverlapsNav:Boolean((card || actions) && visibleNav && document.body.classList.contains("is-discovery-app") &&
+        Math.max(card ? card.getBoundingClientRect().bottom : 0, actions ? actions.getBoundingClientRect().bottom : 0) > nav.getBoundingClientRect().top + 3),
       actionSizes
     };
   });
