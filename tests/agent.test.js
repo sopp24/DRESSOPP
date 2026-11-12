@@ -25,13 +25,29 @@ test("AI payload contains categories and product feedback but excludes measureme
   state.interactions.likes = [{productId:"like-1"}];
   state.interactions.dislikes = [{productId:"no-1"}];
   state.likedProducts = [{productId:"saved-1",addedAt:"2026-11-06T00:00:00.000Z"}];
-  const payload = createAgentPayload(state,products,[{title:"Look preppy marine",tags:["Preppy","Marine"],sourceUrl:"https://pinterest.com/pin/private"}]);
+  const payload = createAgentPayload(state,products,[{
+    title:"Look maille graphique rose et bordeaux",tags:["Créatif","Maille graphique"],
+    visualAnalysis:{
+      version:4,audience:"men",isFashion:true,
+      summary:"Cardigan court boxy rose vif à rayures bordeaux et pantalon wide leg.",
+      styleTags:["Créatif","Maille graphique"],colors:["rose vif","bordeaux"],
+      materials:["maille"],cuts:["boxy","cropped","wide leg"],patterns:["rayures"],
+      details:["zip contrasté","maille texturée"],paletteTags:["Color block"],
+      colorHarmony:"Rose vif et bordeaux contrastés par le blanc.",
+      silhouetteProportions:"Cardigan court boxy avec pantalon très large.",
+      outfitFormula:"Cardigan graphique + pantalon wide leg"
+    }
+  }]);
   assert.equal(payload.filters.objective,"Vêtements");
   assert.equal(payload.filters.style,"Preppy");
   assert.equal(payload.filters.maxPrice,150);
   assert.equal(payload.feedback.liked[0].name,"Navy merino sweater");
   assert.equal(payload.feedback.disliked[0].name,"Bright orange graphic tee");
   assert.equal(payload.feedback.saved[0].name,"Brown suede loafer");
+  assert.ok(payload.inspirations[0].colors.includes("rose vif"));
+  assert.ok(payload.inspirations[0].cuts.includes("boxy"));
+  assert.ok(payload.inspirations[0].details.includes("zip contrasté"));
+  assert.equal(payload.inspirations[0].colorHarmony,"Rose vif et bordeaux contrastés par le blanc.");
   const serialized = JSON.stringify(payload);
   for (const privateValue of ["42","do not send this private note","https://","sourceUrl","pinterest.com"]) {
     assert.equal(serialized.includes(privateValue),false,privateValue);
