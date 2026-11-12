@@ -12,13 +12,13 @@ export function selectAgentCandidates(rankedProducts, limit = MAX_CANDIDATES) {
 function clean(value, limit = 140) { return String(value == null ? "" : value).replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim().slice(0, limit); }
 function list(value, max = 10) { return (Array.isArray(value) ? value : []).map(item => clean(item, 48)).filter(Boolean).slice(0, max); }
 function productSummary(product) {
-  return { id:clean(product.id,128), name:clean(product.name), brand:clean(product.brand,80), merchant:clean(product.merchant || product.source,80), gender:clean(product.gender,20), price:product.price == null ? null : Number(product.price), objective:clean(product.objective || product.category,40), category:clean(product.category,60), styleTags:list(product.styleTags,6), colors:list(product.colors,5), materials:list(product.materials,5), cuts:list(product.cuts,4), patterns:list(product.patterns,4), seasonTags:list(product.seasonTags,4), description:clean(product.description,240) };
+  return { id:clean(product.id,128), name:clean(product.name), brand:clean(product.brand,80), merchant:clean(product.merchant || product.source,80), gender:clean(product.gender,20), genderVerified:product.genderVerified === true, price:product.price == null ? null : Number(product.price), objective:clean(product.objective || product.category,40), category:clean(product.category,60), styleTags:list(product.styleTags,6), colors:list(product.colors,5), materials:list(product.materials,5), cuts:list(product.cuts,4), patterns:list(product.patterns,4), seasonTags:list(product.seasonTags,4), description:clean(product.description,240) };
 }
 function feedbackProducts(state, key) {
   const products = new Map((state.products || []).map(product => [product.id, product]));
   const events = Array.isArray(state.interactions && state.interactions[key]) ? state.interactions[key] : [];
   const seen = new Set();
-  return events.slice(-MAX_HISTORY).reverse().map(event => { const product = products.get(event.productId); if (!product || seen.has(product.id)) return null; seen.add(product.id); return productSummary(product); }).filter(Boolean);
+  return events.slice(-MAX_HISTORY).reverse().map(event => { const product = products.get(event.productId); if (!product || product.gender !== "men" || product.genderVerified !== true || seen.has(product.id)) return null; seen.add(product.id); return productSummary(product); }).filter(Boolean);
 }
 function savedProducts(state) {
   const products = new Map((state.products || []).map(product => [product.id, product]));
@@ -33,7 +33,7 @@ export function createAgentPayload(state, candidates, inspirations) {
     profile:{ preferredStyles:list(profile.preferredStyles,12), excludedStyles:list(profile.excludedStyles,12), favoriteBrands:list(profile.favoriteBrands,12), excludedBrands:list(profile.excludedBrands,12), preferredColors:list(profile.preferredColors,12), excludedColors:list(profile.excludedColors,12), preferredMaterials:list(profile.preferredMaterials,12), excludedMaterials:list(profile.excludedMaterials,12), preferredCuts:list(profile.preferredCuts,12), excludedCuts:list(profile.excludedCuts,12), comfort:clean(profile.comfort,50), fit:clean(profile.fit,50) },
     feedback:{ liked:feedbackProducts(state,"likes"), saved:savedProducts(state), disliked:feedbackProducts(state,"dislikes") },
     inspirations:(Array.isArray(inspirations) ? inspirations : []).slice(0,12).map(item => ({ title:clean(item.title,100), tags:list(item.tags,10) })),
-    products:(Array.isArray(candidates) ? candidates : []).slice(0,MAX_CANDIDATES).map(productSummary)
+    products:(Array.isArray(candidates) ? candidates : []).filter(product => product && product.gender === "men" && product.genderVerified === true).slice(0,MAX_CANDIDATES).map(productSummary)
   };
 }
 export async function requestAgentRecommendations(endpoint, state, candidates, inspirations, options = {}) {
@@ -90,7 +90,7 @@ function localFeatureNames(product) {
  */
 export function recommendLocally(state, rankedCandidates, inspirations = [], limit = 14) {
   const source = state || {};
-  const candidates = Array.isArray(rankedCandidates) ? rankedCandidates.filter(Boolean) : [];
+  const candidates = Array.isArray(rankedCandidates) ? rankedCandidates.filter(product => product && product.gender === "men" && product.genderVerified === true) : [];
   if (!candidates.length) return { recommendations:[], message:"Aucun article candidat à classer.", searchHints:[], candidateCount:0, provider:"local" };
 
   const weights = new Map();
