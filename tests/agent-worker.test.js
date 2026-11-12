@@ -29,8 +29,10 @@ test("AI Worker rejects unknown origins before invoking the model", async () => 
 
 test("AI Worker enforces budget and only returns ids from the provided product list", async () => {
   const products = [
-    {id:"coat-1",name:"Manteau en laine marine",brand:"Example",merchant:"Shop",price:95,objective:"Vêtements",seasonTags:["Hiver"],styleTags:["Preppy"],colors:["Marine"],materials:["Laine"]},
-    {id:"shirt-2",name:"Chemise hors budget",brand:"Other",merchant:"Shop",price:180,objective:"Vêtements",seasonTags:["Hiver"],styleTags:["Preppy"]}
+    {id:"coat-1",name:"Manteau en laine marine",gender:"men",brand:"Example",merchant:"Shop",price:95,objective:"Vêtements",seasonTags:["Hiver"],styleTags:["Preppy"],colors:["Marine"],materials:["Laine"]},
+    {id:"shirt-2",name:"Chemise hors budget",gender:"men",brand:"Other",merchant:"Shop",price:180,objective:"Vêtements",seasonTags:["Hiver"],styleTags:["Preppy"]},
+    {id:"unisex-3",name:"Pull mixte",gender:"unisex",brand:"Other",merchant:"Shop",price:45,objective:"Vêtements"},
+    {id:"unknown-4",name:"Pull sans public précisé",brand:"Other",merchant:"Shop",price:45,objective:"Vêtements"}
   ];
   const req = request(payload(products),"198.51.100.11");
   let sentInput = "";
@@ -95,6 +97,7 @@ test("Pinterest image analysis uses the vision model and returns hidden structur
       AI:{run:async(model,input)=>{
         modelName=model; modelInput=input;
         return {response:JSON.stringify({
+          audience:"men",
           isFashion:true,
           summary:"Veste en cuir noire portée sur un sweat gris, avec un pantalon ample et des baskets.",
           styleTags:["Streetwear"],colors:["noir","gris"],materials:["cuir"],
@@ -120,7 +123,8 @@ test("Pinterest image analysis uses the vision model and returns hidden structur
     assert.equal(body.ok,true);
     assert.equal(body.analyses[0].id,"pin-vision-1");
     const analysis = body.analyses[0].visualAnalysis;
-    assert.equal(analysis.version,2);
+    assert.equal(analysis.version,3);
+    assert.equal(analysis.audience,"men");
     assert.equal(analysis.styleTags[0],"Streetwear");
     assert.deepEqual(analysis.colors,["noir","gris"]);
     assert.deepEqual(analysis.pieces.map(piece => piece.type),["veste","pantalon","baskets"]);
@@ -128,7 +132,8 @@ test("Pinterest image analysis uses the vision model and returns hidden structur
     assert.deepEqual(analysis.seasonTags,["Automne","Hiver"]);
     assert.deepEqual(analysis.paletteTags,["Monochrome"]);
     assert.match(analysis.outfitFormula,/Veste en cuir/);
-    assert.match(modelInput.messages[1].content.find(part => part.type==="text").text,/chaque vêtement, chaussure et accessoire/);
+    assert.match(modelInput.messages[1].content.find(part => part.type==="text").text,/mode masculine uniquement/);
+    assert.match(modelInput.messages[1].content.find(part => part.type==="text").text,/audience/);
     assert.equal(modelName,"@cf/google/gemma-4-26b-a4b-it");
     const imagePart = modelInput.messages[1].content.find(part => part.type==="image_url");
     assert.match(imagePart.image_url.url,/^data:image\/jpeg;base64,/);
