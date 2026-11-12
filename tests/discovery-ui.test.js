@@ -20,6 +20,8 @@ test("the discovery deck exposes the five Tinder-style actions", function() {
 
 test("the product card includes the product details and original merchant link", function() {
   assert.ok(app.includes("product-brand-price"));
+  assert.ok(app.includes("renderProductAttributes(product)"));
+  assert.ok(!app.includes('class="product-details-pill" type="button" data-action="details"'));
   assert.ok(app.includes("product-attributes"));
   assert.ok(app.includes("product-original-link"));
   assert.ok(app.includes("Voir l’article original"));
@@ -158,7 +160,7 @@ test("the final mobile UX layer reserves space for the swipe deck and prevents n
 });
 
 
-test("stored catalogue products are re-normalized for men's and mixed gender filtering", function() {
+test("stored products are re-normalized before strict men's-only discovery", function() {
   assert.ok(app.includes("state.products = (Array.isArray(state.products) ? state.products : []).map(normalizeProduct)"));
 });
 
@@ -169,4 +171,17 @@ test("swipe cards do not display gesture instructions inside the product card", 
   assert.ok(app.includes('data-vote="no"'));
   assert.ok(app.includes('data-vote="yes"'));
   assert.ok(app.includes('data-action="save-list"'));
+});
+
+
+test("the mobile swipe card follows the vertical product-card mockup", function() {
+  assert.ok(app.includes("renderProductAttributes(product)"));
+  assert.ok(css.includes("Maquette DRESSOPP — carte mobile verticale"));
+  assert.ok(css.includes("position: static;"));
+  assert.ok(css.includes("aspect-ratio: 3 / 4"));
+  assert.ok(css.includes("product-brand-price"));
+  assert.ok(css.includes("product-original-link"));
+  assert.ok(css.includes("min-width: 44px"));
+  assert.ok(app.includes("isMenswearPin(pin)"));
+  assert.ok(app.includes('gender: "men", genderVerified: true'));
 });
