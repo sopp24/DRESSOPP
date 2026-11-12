@@ -25,7 +25,7 @@ function stringList(value, maxItems = 8, maxLength = 48) { return (Array.isArray
 function normalizeProduct(item) {
   return {
     id:clean(item && item.id,128), name:clean(item && item.name,140), brand:clean(item && item.brand,80), merchant:clean(item && item.merchant,80),
-    gender:clean(item && item.gender,20), price:Number.isFinite(Number(item && item.price)) && item.price !== null ? Number(item.price) : null,
+    gender:clean(item && item.gender,20), genderVerified:Boolean(item && item.genderVerified === true), price:Number.isFinite(Number(item && item.price)) && item.price !== null ? Number(item.price) : null,
     objective:clean(item && item.objective,40), category:clean(item && item.category,60),
     styleTags:stringList(item && item.styleTags,6), colors:stringList(item && item.colors,5), materials:stringList(item && item.materials,5),
     cuts:stringList(item && item.cuts,4), patterns:stringList(item && item.patterns,4), seasonTags:stringList(item && item.seasonTags,4), description:clean(item && item.description,240)
@@ -49,7 +49,7 @@ function validatePayload(body) {
   if (!["Tout","Vêtements","Chaussures","Sous-vêtements","Accessoires"].includes(objective)) throw new Error("Catégorie non reconnue.");
   if (maxPrice !== null && (!Number.isFinite(maxPrice) || maxPrice < 0)) throw new Error("Budget invalide.");
   const filtered = products.filter(product => {
-    if (product.gender !== "men") return false;
+    if (product.gender !== "men" || product.genderVerified !== true) return false;
     if (objective !== "Tout" && product.objective !== objective) return false;
     if (maxPrice !== null && (product.price === null || product.price > maxPrice)) return false;
     if (style !== "Tous" && product.styleTags.length && !product.styleTags.some(tag => tag.toLowerCase() === style.toLowerCase())) return false;
