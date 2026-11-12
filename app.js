@@ -127,7 +127,8 @@ function formatPrice(value) {
   return new Intl.NumberFormat("fr-FR", { style: "currency", currency: "EUR", maximumFractionDigits: 2 }).format(Number(value));
 }
 function productById(id) {
-  return state.products.find(function(product) { return product.id === id; }) || null;
+  const product = state.products.find(function(item) { return item.id === id; }) || null;
+  return product && product.gender === "men" && product.genderVerified !== false ? product : null;
 }
 function isLiked(id) {
   return state.likedProducts.some(function(item) { return item.productId === id; });
@@ -848,7 +849,9 @@ function renderOutfitProposalCard(idea) {
     '</div></article>';
 }
 function renderSavedOutfitCard(saved, pinsById) {
-  const pin = pinsById.get(saved.pinId) || saved.reference || {};
+  const referencePin = pinsById.get(saved.pinId) || (isMenswearPin(saved.reference) ? saved.reference : null);
+  if (!referencePin) return "";
+  const pin = referencePin;
   const products = (saved.productIds || []).map(productById).filter(Boolean);
   return '<article class="panel outfit-proposal-card outfit-saved-card">' +
     '<button class="outfit-proposal-open" type="button" data-action="open-saved-outfit" data-id="' + esc(saved.pinId) + '">' +
@@ -876,7 +879,9 @@ function renderOutfits() {
       return Number(outfitPinKey(b.pin) === selected) - Number(outfitPinKey(a.pin) === selected);
     });
   }
-  const savedOutfits = Array.isArray(state.savedOutfits) ? state.savedOutfits : [];
+  const savedOutfits = (Array.isArray(state.savedOutfits) ? state.savedOutfits : []).filter(function(saved) {
+    return pinsById.has(String(saved.pinId || "")) || isMenswearPin(saved.reference);
+  });
   const savedView = state.settings.outfitLibraryView === "saved";
   const feedbackValues = Object.values(feedbacks);
   const approvedCount = feedbackValues.filter(function(item) { return item && item.vote === "yes"; }).length;
@@ -1511,7 +1516,7 @@ async function importCatalogFile(file) {
   let added = 0;
   input.forEach(function(item) {
     const product = normalizeProduct(item);
-    if (!product.name || !safeExternalUrl(product.url)) return;
+    if (!product.name || !safeExternalUrl(product.url) || product.gender !== "men" || product.genderVerified !== true) return;
     const identity = productIdentity(product);
     if (state.products.some(function(existing) { return productIdentity(existing) === identity; })) return;
     state.products.push(product);
@@ -1537,7 +1542,7 @@ async function importBackupFile(file) {
   state.settings.outfitFilters = Object.assign(base.settings.outfitFilters,state.settings.outfitFilters || {});
   state.inspirations = Array.isArray(imported.inspirations) ? imported.inspirations : [];
   state.outfitFeedback = imported.outfitFeedback && typeof imported.outfitFeedback === "object" && !Array.isArray(imported.outfitFeedback) ? imported.outfitFeedback : {};
-  state.products = imported.products.map(normalizeProduct);
+  state.products = imported.products.map(normalizeProduct).filter(function(product) { return product.gender === "men" && product.genderVerified !== false; });
   state.learnedPreferences = deriveLearnedPreferences(state);
   await persist();
   currentView = "discover";
@@ -1964,7 +1969,7 @@ async function boot() {
         const response = await fetch("./data/" + catalogManifest.pages[first].file.replace(/^data\//, ""), { cache:"no-store" });
         if (response.ok) {
           const payload = await response.json();
-          catalog = (payload.products || []).map(normalizeProduct);
+          catalog = (payload.products || []).map(normalizeProduct).filter(function(product) { return product.gender === "men" && product.genderVerified !== false; });
           catalogLoadedPages.add(catalogManifest.pages[first].file);
           catalogLoaded = true;
         }
@@ -1974,7 +1979,7 @@ async function boot() {
       const response = await fetch("./data/catalog.json", { cache:"no-store" });
       if (response.ok) {
         const payload = await response.json();
-        catalog = (payload.products || []).map(normalizeProduct);
+        catalog = (payload.products || []).map(normalizeProduct).filter(function(product) { return product.gender === "men" && product.genderVerified !== false; });
         catalogLoaded = true;
       }
     }
@@ -2002,7 +2007,7 @@ async function boot() {
   const base = createInitialState(catalog);
   state = stored ? Object.assign(base, stored) : base;
   // Migrate older local catalogues so legacy products receive the men's/mixed gender classification.
-  state.products = (Array.isArray(state.products) ? state.products : []).map(normalizeProduct);
+  state.products = (Array.isArray(state.products) ? state.products : []).map(normalizeProduct).filter(function(product) { return product.gender === "men" && product.genderVerified !== false; });
   state.profile = Object.assign(base.profile, state.profile || {});
   state.profile.sizes = Object.assign(base.profile.sizes, state.profile.sizes || {});
   state.settings = Object.assign(base.settings, state.settings || {});
@@ -2058,9 +2063,9 @@ async function boot() {
     savedWithdrawn.forEach(function(product) { if (!merged.has(productIdentity(product))) merged.set(productIdentity(product), product); });
     state.products = Array.from(merged.values());
   }
-  state.inspirations = Array.isArray(state.inspirations) ? state.inspirations.filter(function(item) { return item.source === "Pinterest"; }) : [];
+  state.inspirations = Array.isArray(state.inspirations) ? state.inspirations.filter(function(item) { return item.source === "Pinterest" && isMenswearPin(item); }) : [];
   state.seenPinterestPins = Array.isArray(state.seenPinterestPins) ? state.seenPinterestPins : [];
-  state.pinterestPins = (pinterestFeed.pins || []).slice();
+  state.pinterestPins = (pinterestFeed.pins || []).filter(isMenswearPin);
   state.learnedPreferences = deriveLearnedPreferences(state);
   aiAgentLastActionCount = aiAgentActionCount();
   render();
