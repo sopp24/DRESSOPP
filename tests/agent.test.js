@@ -11,9 +11,9 @@ test("AI agent is disabled and has no data-sharing consent by default", () => {
 
 test("AI payload contains categories and product feedback but excludes measurements, notes and URLs", () => {
   const products = [
-    normalizeProduct({id:"like-1",name:"Navy merino sweater",brand:"Example",merchant:"Shop",price:90,objective:"Vêtements",styleTags:["Preppy"],colors:["Marine"],materials:["Laine"],url:"https://shop.example/sweater",sourceType:"public-web"}),
-    normalizeProduct({id:"no-1",name:"Bright orange graphic tee",brand:"Other",merchant:"Shop",price:35,objective:"Vêtements",styleTags:["Streetwear"],colors:["Orange"],materials:["Coton"],url:"https://shop.example/tee",sourceType:"public-web"}),
-    normalizeProduct({id:"saved-1",name:"Brown suede loafer",brand:"Maker",merchant:"Shoes",price:110,objective:"Chaussures",styleTags:["Heritage"],colors:["Marron"],materials:["Daim"],url:"https://shoes.example/loafer",sourceType:"public-web"})
+    normalizeProduct({gender:"men",genderVerified:true,id:"like-1",name:"Navy merino sweater",brand:"Example",merchant:"Shop",price:90,objective:"Vêtements",styleTags:["Preppy"],colors:["Marine"],materials:["Laine"],url:"https://shop.example/sweater",sourceType:"public-web"}),
+    normalizeProduct({gender:"men",genderVerified:true,id:"no-1",name:"Bright orange graphic tee",brand:"Other",merchant:"Shop",price:35,objective:"Vêtements",styleTags:["Streetwear"],colors:["Orange"],materials:["Coton"],url:"https://shop.example/tee",sourceType:"public-web"}),
+    normalizeProduct({gender:"men",genderVerified:true,id:"saved-1",name:"Brown suede loafer",brand:"Maker",merchant:"Shoes",price:110,objective:"Chaussures",styleTags:["Heritage"],colors:["Marron"],materials:["Daim"],url:"https://shoes.example/loafer",sourceType:"public-web"})
   ];
   const state = createInitialState(products);
   state.settings.objective = "Vêtements";
@@ -41,7 +41,7 @@ test("AI payload contains categories and product feedback but excludes measureme
 });
 
 test("AI candidate payload is capped at 50 products", () => {
-  const products = Array.from({length:70},(_,index)=>normalizeProduct({id:"p-"+index,name:"Product "+index,price:20,objective:"Vêtements",url:"https://shop.example/p-"+index,sourceType:"public-web"}));
+  const products = Array.from({length:70},(_,index)=>normalizeProduct({gender:"men",genderVerified:true,id:"p-"+index,name:"Product "+index,price:20,objective:"Vêtements",url:"https://shop.example/p-"+index,sourceType:"public-web"}));
   const payload = createAgentPayload(createInitialState(products),products,[]);
   assert.equal(payload.products.length,50);
 });
@@ -65,8 +65,8 @@ test("AI candidate selection reserves space for curated product references", () 
 
 test("the local personal shopper is usable without a remote endpoint or data sharing", () => {
   const products = [
-    normalizeProduct({id:"plain",name:"T-shirt coton",brand:"Basics",merchant:"Shop A",price:25,objective:"Vêtements",styleTags:["Casual"],colors:["Blanc"],materials:["Coton"]}),
-    normalizeProduct({id:"match",name:"Pull beige en lin",brand:"Atelier",merchant:"Shop B",price:65,objective:"Vêtements",styleTags:["Minimaliste"],colors:["Beige"],materials:["Lin"],cuts:["Oversize"]})
+    normalizeProduct({gender:"men",genderVerified:true,id:"plain",name:"T-shirt coton",brand:"Basics",merchant:"Shop A",price:25,objective:"Vêtements",styleTags:["Casual"],colors:["Blanc"],materials:["Coton"]}),
+    normalizeProduct({gender:"men",genderVerified:true,id:"match",name:"Pull beige en lin",brand:"Atelier",merchant:"Shop B",price:65,objective:"Vêtements",styleTags:["Minimaliste"],colors:["Beige"],materials:["Lin"],cuts:["Oversize"]})
   ];
   const state = createInitialState(products);
   state.profile.preferredStyles = ["Minimaliste"];
@@ -82,8 +82,8 @@ test("the local personal shopper is usable without a remote endpoint or data sha
 
 test("the local personal shopper penalizes a product that repeats disliked features", () => {
   const products = [
-    normalizeProduct({id:"disliked",name:"Sweat orange",objective:"Vêtements",colors:["Orange"],styleTags:["Logotypé"]}),
-    normalizeProduct({id:"preferred",name:"Surchemise marine",objective:"Vêtements",colors:["Marine"],styleTags:["Minimaliste"]})
+    normalizeProduct({gender:"men",genderVerified:true,id:"disliked",name:"Sweat orange",objective:"Vêtements",colors:["Orange"],styleTags:["Logotypé"]}),
+    normalizeProduct({gender:"men",genderVerified:true,id:"preferred",name:"Surchemise marine",objective:"Vêtements",colors:["Marine"],styleTags:["Minimaliste"]})
   ];
   const state = createInitialState(products);
   state.profile.preferredColors = ["Marine"];
