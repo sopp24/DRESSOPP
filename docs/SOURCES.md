@@ -4,7 +4,7 @@
 
 Le répertoire éditorial de **236 enseignes** est conservé dans [`data/merchant-directory.json`](../data/merchant-directory.json). Il couvre les multimarques, le casual accessible, le premium, le luxe, le sport et les sneakers, les sous-vêtements, le streetwear asiatique, la seconde main et des marchés internationaux.
 
-Chaque entrée comporte le nom, le domaine officiel, l'URL, la famille, le niveau de prix indicatif, la région et une priorité de collecte. Les 236 entrées sont des cibles de sourcing, pas la promesse que les 200 publient des fiches récupérables. L'existence d'un lien boutique ne signifie pas qu'un flux API ou un accès robot est autorisé.
+Chaque entrée comporte le nom, le domaine officiel, l'URL, la famille, le niveau de prix indicatif, la région et une priorité de collecte. Les 236 entrées sont des cibles de sourcing, pas la promesse que toutes publient des fiches récupérables. L'existence d'un lien boutique ne signifie pas qu'un flux API ou un accès robot est autorisé.
 
 Les paramètres de rotation sont dans `data/public-sources.json`. La liste `sources` est vide par défaut : le collecteur lit donc les 236 entrées de `data/merchant-directory.json`.
 
