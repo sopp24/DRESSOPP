@@ -6,7 +6,7 @@ Le tableau de référence est :
 
 https://fr.pinterest.com/sopppx24/mode/
 
-Pinterest est une source d'inspiration prioritaire, pas un catalogue commercial. DRESSOPP ne conserve dans les recommandations que les références de mode masculine confirmées. Les Pins féminins, mixtes/unisexes, ambigus ou non vestimentaires sont exclus des inspirations et des compositions de tenues. Les signaux retenus (styles, couleurs, matières, coupes, motifs et détails) construisent les préférences ; les Pins ne sont jamais convertis automatiquement en fiches marchandes, prix ou liens produit inventés.
+Pinterest est une source d'inspiration prioritaire, pas un catalogue commercial. DRESSOPP ne conserve dans les recommandations que les références de mode masculine confirmées. Les Pins féminins, mixtes/unisexes, ambigus ou non vestimentaires sont exclus des inspirations et des compositions de tenues. Les signaux retenus (styles précis, teintes nuancées, matières, coupes et volumes, motifs, détails de construction, harmonie des couleurs et proportions des silhouettes) construisent les préférences ; les Pins ne sont jamais convertis automatiquement en fiches marchandes, prix ou liens produit inventés.
 
 Le moteur accorde davantage de poids aux signaux stylistiques Pinterest. Les réponses Oui/Non sur les produits et le feedback sur les tenues peuvent ensuite corriger ou confirmer ces inspirations.
 
@@ -46,7 +46,7 @@ Les scopes secrets `boards:read_secret` et `pins:read_secret` ne doivent être u
 
 Après la synchronisation Pinterest, le workflow transmet au Worker Cloudflare les images qui n'ont pas encore été analysées avec la version courante du schéma ou dont l'URL a changé. Le Worker utilise le modèle Gemma 4 avec sa capacité de vision. Les images sont récupérées uniquement depuis `i.pinimg.com`, puis analysées côté serveur.
 
-La version 2 de `visualAnalysis` décrit les styles, couleurs, matières, coupes et motifs, mais aussi les pièces identifiables une par une (type, couleur, matière, coupe, motif et détails), les détails de construction, la silhouette générale, les associations de couleurs, les superpositions, les saisons et les contextes d'usage possibles. Les champs incertains sont laissés vides plutôt que déduits. Un résumé et une formule de tenue synthétisent les éléments visibles.
+La version 4 de `visualAnalysis` décrit les styles créatifs, teintes précises, matières, coupes et volumes modernes, motifs, détails de construction, harmonie des couleurs, proportions et pièces identifiables une par une (type, couleur, matière, coupe, motif et détails), les détails de construction, la silhouette générale, les associations de couleurs, les superpositions, les saisons et les contextes d'usage possibles. Les champs incertains sont laissés vides plutôt que déduits. Un résumé et une formule de tenue synthétisent les éléments visibles.
 
 Ces informations techniques alimentent le moteur de correspondance des tenues : les types de pièces et les détails visibles servent à rapprocher les inspirations des fiches du catalogue, et les saisons explicites peuvent affiner les filtres. Elles ne sont pas affichées dans les cartes, les tags visibles ou les paramètres de l'application. Une hausse de version du schéma déclenche une nouvelle analyse des Pins existants, même lorsque leur image n'a pas changé.
 
