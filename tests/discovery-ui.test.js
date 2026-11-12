@@ -130,7 +130,7 @@ test("Pinterest is the sole inspiration source and the old local lookbook is abs
 
 test("swiping down on the discovery card saves it to the list", function() {
   assert.ok(app.includes("verticalSaveIntent"));
-  assert.ok(app.includes("const acceptedSave = verticalSaveIntent && deltaY >= saveThreshold"));
+  assert.ok(app.includes("const acceptedSave = !horizontalIntent && deltaY >= saveThreshold && deltaY > Math.abs(deltaX) * 1.08"));
   assert.ok(app.includes('animateDeckDecision(productId, acceptedSave ? "save"'));
   assert.ok(css.includes(".product-card.is-committing.is-save .swipe-tint"));
 });
