@@ -191,5 +191,7 @@ test("the restored swipe layout keeps the product card separate from the action 
   assert.ok(css.includes("min-width: 44px"));
   assert.ok(!css.includes("Maquette DRESSOPP — carte mobile verticale"));
   assert.ok(app.includes("isMenswearPin(pin)"));
+  assert.ok(app.includes('name="menswear" required'));
+  assert.ok(app.includes('if (data.get("menswear") !== "on") throw new Error("Confirme que la fiche source classe explicitement cet article dans la collection homme.")'));
   assert.ok(app.includes('gender: "men", genderVerified: true'));
 });
