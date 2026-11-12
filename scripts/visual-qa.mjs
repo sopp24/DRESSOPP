@@ -36,7 +36,7 @@ async function ensureAppReady(page) {
   await page.waitForFunction(() => {
     const main = document.querySelector("#app-main");
     return main && (main.querySelector("#active-product-card") || main.querySelector(".empty-state") || main.querySelector(".discovery-page"));
-  }, { timeout: 45000 });
+  }, null, { timeout: 45000 });
   await page.evaluate(() => document.fonts && document.fonts.ready);
   await page.waitForTimeout(450);
 }
