@@ -341,7 +341,7 @@ export function rankProducts(products, state, options) {
       (product.expiresAt && Date.parse(product.expiresAt) <= Date.now());
     const stale = product.catalogStatus === "stale";
     const unavailable = product.availabilityStatus === "out_of_stock";
-    return product.gender === "men" && product.genderVerified !== false && !expired && !stale && !unavailable && sizeMatches(product) &&
+    return product.gender === "men" && product.genderVerified === true && !expired && !stale && !unavailable && sizeMatches(product) &&
       matchesFilters(product, opts.filters || config) && !seen.has(product.id);
   }).map(function(product) {
     const familiarity = preferenceScore(product, learned) + explicitProfileScore(product, profile);
