@@ -156,3 +156,32 @@ test("Pinterest image analysis refuses image URLs outside Pinterest CDN", async 
   assert.match(body.analyses[0].error,/i.pinimg.com/);
   assert.equal(modelCalled,false);
 });
+
+
+test("Pinterest image analysis excludes unisex references from men's inspirations", async () => {
+  const req = new Request("https://dressopp-agent.example.workers.dev/analyze-pins", {
+    method:"POST",
+    headers:{"content-type":"application/json","authorization":"Bearer sync-secret"},
+    body:JSON.stringify({pins:[{id:"pin-unisex",title:"",description:"",imageUrl:"https://i.pinimg.com/1200x/test.jpg"}]})
+  });
+  const originalFetch = globalThis.fetch;
+  globalThis.fetch = async () => new Response(new Uint8Array([255,216,255,217]),{headers:{"content-type":"image/jpeg","content-length":"4"}});
+  try {
+    const response = await worker.fetch(req,{
+      PINTEREST_SYNC_TOKEN:"sync-secret",
+      AI:{run:async()=>({response:JSON.stringify({
+        audience:"unisex",isFashion:true,summary:"Pull en maille mixte.",
+        styleTags:["Casual"],colors:["beige"],materials:["laine"],cuts:["regular"],
+        patterns:[],pieces:[],details:[],seasonTags:["Hiver"],confidence:0.9
+      })})}
+    });
+    const body = await response.json();
+    const analysis = body.analyses[0].visualAnalysis;
+    assert.equal(response.status,200);
+    assert.equal(analysis.audience,"unisex");
+    assert.equal(analysis.isFashion,false);
+    assert.equal(analysis.summary,"");
+    assert.deepEqual(analysis.styleTags,[]);
+    assert.deepEqual(analysis.colors,[]);
+  } finally { globalThis.fetch = originalFetch; }
+});
