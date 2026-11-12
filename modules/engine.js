@@ -178,11 +178,11 @@ export function deriveLearnedPreferences(state) {
   const interactions = source.interactions || { likes: [], dislikes: [] };
   (interactions.likes || []).forEach(function(item) {
     const product = (source.products || []).find(function(candidate) { return candidate.id === item.productId; });
-    if (product) featureTokens(product).forEach(function(token) { totals[token] = (totals[token] || 0) + 3; });
+    if (product && product.gender === "men" && product.genderVerified === true) featureTokens(product).forEach(function(token) { totals[token] = (totals[token] || 0) + 3; });
   });
   (interactions.dislikes || []).forEach(function(item) {
     const product = (source.products || []).find(function(candidate) { return candidate.id === item.productId; });
-    if (product) featureTokens(product).forEach(function(token) { totals[token] = (totals[token] || 0) - 4; });
+    if (product && product.gender === "men" && product.genderVerified === true) featureTokens(product).forEach(function(token) { totals[token] = (totals[token] || 0) - 4; });
   });
 
   const pins = (source.inspirations || []).concat(source.pinterestPins || []).filter(isMenswearPin);
