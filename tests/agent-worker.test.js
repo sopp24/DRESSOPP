@@ -95,9 +95,23 @@ test("Pinterest image analysis uses the vision model and returns hidden structur
       AI:{run:async(model,input)=>{
         modelName=model; modelInput=input;
         return {response:JSON.stringify({
-          isFashion:true,summary:"Veste en cuir noire portée sur un sweat gris.",
+          isFashion:true,
+          summary:"Veste en cuir noire portée sur un sweat gris, avec un pantalon ample et des baskets.",
           styleTags:["Streetwear"],colors:["noir","gris"],materials:["cuir"],
-          cuts:["oversized"],patterns:[],confidence:0.94
+          cuts:["oversized","wide leg"],patterns:[],
+          pieces:[
+            {type:"veste",color:"noir",material:"cuir",cut:"oversized",details:["fermeture zippée","col montant"]},
+            {type:"pantalon",color:"gris",material:"coton",cut:"wide leg",details:["pinces"]},
+            {type:"baskets",color:"blanc",material:"cuir",cut:"regular",details:["semelle épaisse"]}
+          ],
+          details:["fermeture zippée","col montant","pinces"],
+          silhouetteTags:["ample","superposée"],
+          seasonTags:["Automne","Hiver"],
+          occasionTags:["Quotidien"],
+          paletteTags:["Monochrome"],
+          layering:"Un sweat gris est porté sous la veste en cuir noire.",
+          outfitFormula:"Veste en cuir + sweat gris + pantalon ample + baskets blanches",
+          confidence:0.94
         })};
       }}
     });
@@ -105,8 +119,16 @@ test("Pinterest image analysis uses the vision model and returns hidden structur
     assert.equal(response.status,200);
     assert.equal(body.ok,true);
     assert.equal(body.analyses[0].id,"pin-vision-1");
-    assert.equal(body.analyses[0].visualAnalysis.styleTags[0],"Streetwear");
-    assert.deepEqual(body.analyses[0].visualAnalysis.colors,["noir","gris"]);
+    const analysis = body.analyses[0].visualAnalysis;
+    assert.equal(analysis.version,2);
+    assert.equal(analysis.styleTags[0],"Streetwear");
+    assert.deepEqual(analysis.colors,["noir","gris"]);
+    assert.deepEqual(analysis.pieces.map(piece => piece.type),["veste","pantalon","baskets"]);
+    assert.deepEqual(analysis.pieces[0].details,["fermeture zippée","col montant"]);
+    assert.deepEqual(analysis.seasonTags,["Automne","Hiver"]);
+    assert.deepEqual(analysis.paletteTags,["Monochrome"]);
+    assert.match(analysis.outfitFormula,/Veste en cuir/);
+    assert.match(modelInput.messages[1].content.find(part => part.type==="text").text,/chaque vêtement, chaussure et accessoire/);
     assert.equal(modelName,"@cf/google/gemma-4-26b-a4b-it");
     const imagePart = modelInput.messages[1].content.find(part => part.type==="image_url");
     assert.match(imagePart.image_url.url,/^data:image\/jpeg;base64,/);
