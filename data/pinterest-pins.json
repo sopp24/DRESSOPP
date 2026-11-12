@@ -4,7 +4,7 @@
   "boardName": "mode",
   "boardId": "780952460324562575",
   "privacy": "PUBLIC",
-  "lastSync": "2026-11-12T13:47:28.246Z",
+  "lastSync": "2026-11-12T18:38:51.901Z",
   "totalPins": 36,
   "newPinIds": [],
   "pins": [
@@ -1186,15 +1186,16 @@
       "createdAt": "2026-11-09T15:12:35",
       "boardId": "780952460324562575",
       "visualAnalysis": {
-        "version": 2,
-        "analyzedAt": "2026-11-12T09:06:37.391Z",
+        "version": 3,
+        "audience": "men",
+        "analyzedAt": "2026-11-12T18:38:51.881Z",
         "sourceImageUrl": "https://i.pinimg.com/1200x/47/8f/73/478f739412ad1d58e911f7ef5e2818bf.jpg",
         "model": "@cf/google/gemma-4-26b-a4b-it",
         "isFashion": true,
-        "summary": "Tenue monochrome bleu ardoise composée d'une veste à capuche oversize avec détails métalliques, d'une chemise boutonnée avec cravate à motifs, et d'un pantalon à pinces. L'ensemble présente une silhouette ample et superposée avec des accessoires bijoux imposants.",
+        "summary": "Tenue streetwear monochrome bleu ardoise composée d'un hoodie oversize à capuche et d'une chemise boutonnée avec cravate à motifs. La silhouette est ample et superposée, agrémentée de bijoux argentés imposants.",
         "styleTags": [
           "Streetwear",
-          "Smart Casual"
+          "Casual"
         ],
         "colors": [
           "bleu"
@@ -1204,9 +1205,7 @@
         ],
         "cuts": [
           "oversized",
-          "ample",
-          "taille haute",
-          "a pinces"
+          "ample"
         ],
         "patterns": [
           "uni",
@@ -1214,11 +1213,11 @@
         ],
         "pieces": [
           {
-            "type": "veste",
+            "type": "hoodie",
             "color": "bleu",
             "material": "coton",
             "cut": "oversized",
-            "pattern": "uni",
+            "pattern": "",
             "details": []
           },
           {
@@ -1226,7 +1225,7 @@
             "color": "bleu",
             "material": "coton",
             "cut": "regular",
-            "pattern": "uni",
+            "pattern": "",
             "details": []
           },
           {
@@ -1234,40 +1233,39 @@
             "color": "bleu",
             "material": "soie",
             "cut": "regular",
-            "pattern": "graphique",
+            "pattern": "",
             "details": []
           },
           {
             "type": "pantalon",
             "color": "bleu",
             "material": "coton",
-            "cut": "a pinces",
-            "pattern": "uni",
-            "details": []
-          },
-          {
-            "type": "ceinture",
-            "color": "bleu",
-            "material": "cuir",
-            "cut": "regular",
-            "pattern": "uni",
+            "cut": "droit",
+            "pattern": "",
             "details": []
           },
           {
             "type": "bijoux",
             "color": "",
             "material": "",
-            "cut": "regular",
-            "pattern": "uni",
+            "cut": "",
+            "pattern": "",
+            "details": []
+          },
+          {
+            "type": "ceinture",
+            "color": "bleu",
+            "material": "cuir",
+            "cut": "",
+            "pattern": "",
             "details": []
           }
         ],
         "details": [
-          "fermeture zippée",
+          "superposition",
           "boutonnage",
           "pinces",
-          "logo apparent",
-          "superposition"
+          "logo apparent"
         ],
         "silhouetteTags": [
           "oversize",
@@ -1278,14 +1276,15 @@
           "Toute saison"
         ],
         "occasionTags": [
+          "Quotidien",
           "Sortie"
         ],
         "paletteTags": [
           "Monochrome",
           "Ton sur ton"
         ],
-        "layering": "Superposition d'une chemise et d'une cravate sous une veste à capuche oversize.",
-        "outfitFormula": "veste + chemise + cravate + pantalon",
+        "layering": "Superposition d'un hoodie oversize sur une chemise et une cravate.",
+        "outfitFormula": "hoodie + chemise + cravate + pantalon",
         "confidence": 0.9
       }
     },
