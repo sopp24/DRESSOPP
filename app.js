@@ -128,7 +128,7 @@ function formatPrice(value) {
 }
 function productById(id) {
   const product = state.products.find(function(item) { return item.id === id; }) || null;
-  return product && product.gender === "men" && product.genderVerified !== false ? product : null;
+  return product && product.gender === "men" && product.genderVerified === true ? product : null;
 }
 function isLiked(id) {
   return state.likedProducts.some(function(item) { return item.productId === id; });
@@ -719,7 +719,7 @@ function renderDiscover(training) {
 function renderWardrobe() {
   const heading = renderPageHeading("Tes pièces retenues", "Ma garde-robe", "Tous tes coups de cœur au même endroit. Retirer un favori ne crée pas de rejet dans ton profil de style.", '<button class="button-primary" type="button" data-action="add-product">＋ Ajouter un article</button>');
   const wardrobeFilters = state.settings.wardrobeFilters || { objective: "Tout", style: "Tous", season: "Toute saison", maxPrice: null };
-  const favorites = state.likedProducts.map(function(item) { return productById(item.productId); }).filter(Boolean).filter(function(product) { return product.gender === "men" && product.genderVerified !== false && matchesFilters(product, wardrobeFilters); });
+  const favorites = state.likedProducts.map(function(item) { return productById(item.productId); }).filter(Boolean).filter(function(product) { return product.gender === "men" && product.genderVerified === true && matchesFilters(product, wardrobeFilters); });
   const sorted = favorites.slice().sort(function(a, b) {
     const sort = state.settings.wardrobeSort || "recent";
     if (sort === "price-asc") return (a.price == null ? Infinity : a.price) - (b.price == null ? Infinity : b.price);
@@ -1543,7 +1543,7 @@ async function importBackupFile(file) {
   state.settings.outfitFilters = Object.assign(base.settings.outfitFilters,state.settings.outfitFilters || {});
   state.inspirations = Array.isArray(imported.inspirations) ? imported.inspirations : [];
   state.outfitFeedback = imported.outfitFeedback && typeof imported.outfitFeedback === "object" && !Array.isArray(imported.outfitFeedback) ? imported.outfitFeedback : {};
-  state.products = imported.products.map(normalizeProduct).filter(function(product) { return product.gender === "men" && product.genderVerified !== false; });
+  state.products = imported.products.map(normalizeProduct).filter(function(product) { return product.gender === "men" && product.genderVerified === true; });
   state.learnedPreferences = deriveLearnedPreferences(state);
   await persist();
   currentView = "discover";
@@ -1971,7 +1971,7 @@ async function boot() {
         const response = await fetch("./data/" + catalogManifest.pages[first].file.replace(/^data\//, ""), { cache:"no-store" });
         if (response.ok) {
           const payload = await response.json();
-          catalog = (payload.products || []).map(normalizeProduct).filter(function(product) { return product.gender === "men" && product.genderVerified !== false; });
+          catalog = (payload.products || []).map(normalizeProduct).filter(function(product) { return product.gender === "men" && product.genderVerified === true; });
           catalogLoadedPages.add(catalogManifest.pages[first].file);
           catalogLoaded = true;
         }
@@ -1981,7 +1981,7 @@ async function boot() {
       const response = await fetch("./data/catalog.json", { cache:"no-store" });
       if (response.ok) {
         const payload = await response.json();
-        catalog = (payload.products || []).map(normalizeProduct).filter(function(product) { return product.gender === "men" && product.genderVerified !== false; });
+        catalog = (payload.products || []).map(normalizeProduct).filter(function(product) { return product.gender === "men" && product.genderVerified === true; });
         catalogLoaded = true;
       }
     }
@@ -2009,7 +2009,7 @@ async function boot() {
   const base = createInitialState(catalog);
   state = stored ? Object.assign(base, stored) : base;
   // Keep only products with explicit men's evidence or a confirmed men's-only manual entry.
-  state.products = (Array.isArray(state.products) ? state.products : []).map(normalizeProduct).filter(function(product) { return product.gender === "men" && product.genderVerified !== false; });
+  state.products = (Array.isArray(state.products) ? state.products : []).map(normalizeProduct).filter(function(product) { return product.gender === "men" && product.genderVerified === true; });
   state.profile = Object.assign(base.profile, state.profile || {});
   state.profile.sizes = Object.assign(base.profile.sizes, state.profile.sizes || {});
   state.settings = Object.assign(base.settings, state.settings || {});
