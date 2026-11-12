@@ -59,7 +59,7 @@ test("rankProducts excludes already rated products and respects price cap", func
 test("Pinterest board metadata contributes positive learned style signals", function() {
   const state = createInitialState([]);
   state.pinterestPins = [
-    { title: "Minimalist beige linen oversized outfit", description: "Clean summer streetwear", visualAnalysis:{version:3,audience:"men",isFashion:true} }
+    { title: "Minimalist beige linen oversized outfit", description: "Clean summer streetwear", visualAnalysis:{version:4,audience:"men",isFashion:true,confidence:1} }
   ];
   const learned = deriveLearnedPreferences(state);
   assert.ok(learned["styleTags:classique"] > 0);
@@ -167,9 +167,9 @@ test("Pinterest style signals receive a strong baseline weight", function() {
   const state = createInitialState([]);
   state.pinterestPins = [{ title:"Minimalist beige linen oversized outfit",visualAnalysis:{version:3,audience:"men",isFashion:true} }];
   const learned = deriveLearnedPreferences(state);
-  assert.equal(learned["colors:beige"], 2.5);
-  assert.equal(learned["materials:lin"], 2.5);
-  assert.equal(learned["cuts:oversized"], 2.5);
+  assert.equal(learned["colors:beige"], 3.8);
+  assert.equal(learned["materials:lin"], 2.1);
+  assert.equal(learned["cuts:oversized"], 4.3);
 });
 
 
@@ -196,4 +196,40 @@ test("product discovery is limited to confirmed men's pieces", function() {
   assert.equal(unisex.gender,"unisex");
   assert.equal(women.gender,"women");
   assert.equal(unknown.gender,"unknown");
+});
+
+
+test("rankProducts prioritizes modern colorful Pinterest matches over generic basics", function() {
+  const state = createInitialState([]);
+  state.pinterestPins = [{
+    id:"bold-knit-reference",
+    title:"Men's creative graphic knit outfit",
+    visualAnalysis:{
+      version:4,audience:"men",isFashion:true,confidence:1,
+      styleTags:["Créatif","Streetwear","Maille graphique"],
+      colors:["rose vif","bordeaux","blanc"],materials:["maille"],
+      cuts:["boxy","cropped","wide leg"],patterns:["color block","rayures"],
+      details:["zip contrasté","maille texturée"],paletteTags:["Color block","Accents colorés"],
+      colorHarmony:"Rose vif et bordeaux équilibrés par le blanc.",
+      silhouetteProportions:"Cardigan court et boxy avec un pantalon très large."
+    }
+  }];
+  const statement = normalizeProduct({
+    id:"statement-knit",name:"Cardigan homme boxy cropped en maille rose vif et bordeaux à rayures",
+    description:"Maille graphique avec zip contrasté et coupe courte boxy.",
+    objective:"Vêtements",price:95,styleTags:["Créatif","Streetwear","Maille graphique"],
+    colors:["Rose vif","Bordeaux","Blanc"],materials:["Maille"],
+    cuts:["Boxy","Cropped"],patterns:["Color block","Rayures"],details:["Zip contrasté","Maille texturée"],
+    url:"https://shop.example/statement-knit"
+  });
+  const basic = normalizeProduct({
+    id:"basic-tee",name:"T-shirt basique blanc regular",description:"Essentiel uni en coton, coupe regular.",
+    objective:"Vêtements",price:15,styleTags:["Classique"],colors:["Blanc"],materials:["Coton"],
+    cuts:["Regular"],patterns:["Uni"],url:"https://shop.example/basic-tee"
+  });
+  const result = rankProducts([basic,statement],state,{
+    includeSeen:true,
+    filters:{objective:"Tout",style:"Tous",season:"Toute saison",maxPrice:null}
+  });
+  assert.equal(result[0].id,"statement-knit");
 });
