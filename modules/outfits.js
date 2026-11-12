@@ -1,42 +1,66 @@
 const STYLE_HINTS = {
-  "Classique": ["classique", "minimal", "minimaliste", "basique", "timeless", "clean"],
-  "Créatif": ["creative", "créatif", "original", "statement", "graphic", "imprimé"],
-  "Classe": ["tailoring", "tailleur", "élégant", "elegant", "smart", "chic", "costume", "old money"],
+  "Classique": ["classique", "minimal", "minimaliste", "timeless", "clean"],
+  "Créatif": ["creative", "créatif", "original", "statement", "graphic", "imprimé", "pièce forte"],
+  "Classe": ["tailoring", "tailleur", "élégant", "elegant", "chic", "costume", "old money"],
   "Sport": ["sport", "sportswear", "athleisure", "sneaker", "running", "training"],
   "Été": ["summer", "été", "vacances", "beach", "linen", "lin", "estival"],
   "Streetwear": ["streetwear", "street", "skate", "urban", "urbain", "oversized", "baggy"],
   "Vintage": ["vintage", "retro", "rétro", "90s", "2000s", "y2k"],
   "Workwear": ["workwear", "utility", "cargo", "denim", "work jacket"],
-  "Preppy": ["preppy", "ivy", "rugby", "cravate", "col v", "polo"],
+  "Preppy": ["preppy", "ivy", "cravate", "col v", "polo"],
   "Smart Casual": ["smart casual", "tailoring", "tailleur", "loafer", "loafers", "mocassin", "mocassins", "derby", "derbies", "old money", "quiet luxury", "pantalon a pinces"],
   "Casual": ["casual", "cosy", "hoodie", "jogging", "sneakers"],
-  "Heritage": ["heritage", "patine", "vieilli", "classic menswear"]
+  "Heritage": ["heritage", "patine", "vieilli", "classic menswear"],
+  "Sport Heritage": ["sport heritage", "rugby", "varsity", "college", "hockey", "football shirt", "maillot"],
+  "Rétro sport": ["retro sport", "rétro sport", "retro sportswear", "veste de survêtement", "track jacket"],
+  "Avant-garde": ["avant-garde", "experimental", "expérimental", "deconstructed", "déconstruit", "sculptural", "asymétrique"],
+  "Éclectique": ["eclectic", "éclectique", "mix and match", "unexpected combination", "association inattendue"],
+  "Maille graphique": ["graphic knit", "graphic sweater", "intarsia", "jacquard knit", "maille graphique", "pull graphique"]
 };
-const COLOR_HINTS = ["noir","blanc","écru","crème","beige","gris","anthracite","marron","chocolat","camel","kaki","vert","vert forêt","olive","bleu","bleu ciel","marine","bordeaux","rouge","rose","jaune","orange","violet","prune"];
+const COLOR_HINTS = ["noir","blanc","écru","crème","beige","gris","gris chiné","anthracite","marron","chocolat","taupe","camel","kaki","vert","vert forêt","vert sauge","vert émeraude","olive","bleu","bleu ciel","bleu glacier","bleu ardoise","bleu cobalt","bleu électrique","marine","bordeaux","rouge","rouge cerise","rose","rose pâle","rose vif","fuchsia","jaune","jaune beurre","orange","orange brûlé","violet","lilas","lavande","prune"];
 const COLOR_ALIASES = {
   "noir": ["black"], "blanc": ["white"], "écru": ["cream","off white"],
-  "beige": ["sand"], "gris": ["grey","gray"], "marron": ["brown"],
-  "marine": ["navy"], "vert": ["green"], "bleu": ["blue"],
-  "rouge": ["red"], "rose": ["pink"], "jaune": ["yellow"],
-  "orange": ["orange"], "violet": ["purple"], "prune": ["plum"],
-  "chocolat": ["chocolate"], "crème": ["cream"], "vert forêt": ["forest green"],
-  "bleu ciel": ["sky blue", "light blue"], "bordeaux": ["burgundy", "wine"]
+  "beige": ["sand"], "gris": ["grey","gray"], "gris chiné": ["grey marl","heather grey"],
+  "marron": ["brown"], "taupe": ["taupe"], "marine": ["navy"],
+  "vert": ["green"], "vert forêt": ["forest green"], "vert sauge": ["sage green"],
+  "vert émeraude": ["emerald green"], "olive": ["olive green"],
+  "bleu": ["blue"], "bleu ciel": ["sky blue","light blue"], "bleu glacier": ["ice blue"],
+  "bleu ardoise": ["slate blue"], "bleu cobalt": ["cobalt blue"], "bleu électrique": ["electric blue"],
+  "rouge": ["red"], "rouge cerise": ["cherry red"], "rose": ["pink"],
+  "rose pâle": ["pale pink","baby pink"], "rose vif": ["hot pink"], "fuchsia": ["fuchsia"],
+  "jaune": ["yellow"], "jaune beurre": ["butter yellow"], "orange": ["orange"],
+  "orange brûlé": ["burnt orange"], "violet": ["purple"], "lilas": ["lilac"],
+  "lavande": ["lavender"], "prune": ["plum"], "chocolat": ["chocolate"],
+  "crème": ["cream"], "bordeaux": ["burgundy","wine"], "camel": ["camel"]
 };
-const MATERIAL_HINTS = ["coton","lin","laine","cachemire","mohair","alpaga","cuir","daim","moumoute","fourrure","suède","suede","denim","jean","maille","velours","velours côtelé","tweed","flanelle","gabardine","soie","nylon","polyester","viscose","polyamide"];
-const CUT_HINTS = ["oversized","oversize","ample","baggy","wide leg","large","droit","straight","slim","regular","cropped","court","long","à pinces","a pinces","pleated","boxy","relaxed","loose","tapered","évasé","fitted","taille haute","taille basse","jambe large","jambe droite","structurée","fluide"]; 
+const MATERIAL_HINTS = ["coton","lin","laine","cachemire","mohair","alpaga","cuir","daim","moumoute","fourrure","suède","suede","denim","jean","maille","velours","velours côtelé","tweed","flanelle","gabardine","soie","nylon","polyester","viscose","polyamide","cuir patiné","toile"];
+const CUT_HINTS = ["oversized","oversize","ample","baggy","wide leg","wide-leg","super wide leg","large","droit","straight","slim","regular","cropped","court","long","à pinces","a pinces","pleated","boxy","relaxed","loose","tapered","évasé","fitted","taille haute","taille basse","jambe large","jambe droite","jambe ballon","barrel leg","balloon leg","barrel","flared","flare","stacked","draped","fluide","structurée","taille basse","drop shoulder","épaule tombante","coupe ballon","cropped boxy","court et ample","over-fit","over fit","décontractée"];
 const PATTERN_HINTS = [
   { value: "rayures", terms: ["rayure", "striped", "stripes"] },
   { value: "carreaux", terms: ["carreau", "checked", "checkered", "plaid"] },
   { value: "damier", terms: ["damier", "checkerboard"] },
   { value: "jacquard", terms: ["jacquard"] },
   { value: "zèbre", terms: ["zèbre", "zebra"] },
-  { value: "graphique", terms: ["graphique", "graphic", "motif graphique"] },
+  { value: "graphique", terms: ["graphique", "graphic", "motif graphique", "intarsia"] },
+  { value: "color block", terms: ["color block", "colorblock", "colour block", "bicolore"] },
+  { value: "dégradé", terms: ["dégradé", "gradient", "ombre"] },
+  { value: "patchwork", terms: ["patchwork"] },
+  { value: "motif abstrait", terms: ["abstrait", "abstract"] },
   { value: "floral", terms: ["floral", "fleuri", "fleurs"] },
   { value: "pied-de-poule", terms: ["pied-de-poule", "houndstooth"] },
   { value: "camouflage", terms: ["camouflage", "camo"] },
   { value: "uni", terms: ["uni", "solid color", "plain"] },
   { value: "logo", terms: ["logo", "logotype", "monogramme"] }
 ];
+const DETAIL_HINTS = [
+  "demi-zip","fermeture zippée","zip contrasté","col polo","col montant","col roulé","col v","col rond",
+  "pinces","double pli","poches cargo","poches plaquées","surpiqûres","coutures contrastées","broderie",
+  "maille texturée","maille torsadée","jacquard","intarsia","logo apparent","logo discret","imprimé graphique",
+  "motif placé","dégradé","patchwork","finitions côtelées","revers","boutonnage","épaule tombante",
+  "semelle épaisse","contraste de matières","effet délavé","effet patiné","fermeture asymétrique"
+];
+const PALETTE_HINTS = ["monochrome","ton sur ton","color block","contraste doux","contraste fort","accents colorés","couleurs saturées","tons pastel","tons terreux","neutres froids","neutres chauds","tons froids avec accent chaud","tons chauds avec accent froid"];
+
 const SLOT_TERMS = {
   top: ["t-shirt","tee","shirt","chemise","polo","pull","sweat","hoodie","débardeur","top","cardigan","maille"],
   bottom: ["pantalon","jean","jeans","trouser","trousers","short","bermuda","cargo","chino"],
@@ -65,11 +89,15 @@ function unique(values) {
   return Array.from(new Set(values.filter(Boolean)));
 }
 export function pinterestText(pin) {
-  return [pin.title, pin.description, pin.altText, pin.alt_text, ...(pin.tags || [])].filter(Boolean).join(" ");
+  return [
+    pin.title,pin.name,pin.description,pin.altText,pin.alt_text,pin.category,pin.objective,
+    ...(pin.tags || []),...(pin.styleTags || []),...(pin.colors || []),...(pin.materials || []),
+    ...(pin.cuts || []),...(pin.patterns || []),...(pin.details || [])
+  ].filter(Boolean).join(" ");
 }
 
 function classifyPinterestText(source) {
-  const features = { styleTags: [], colors: [], materials: [], cuts: [], patterns: [] };
+  const features = { styleTags: [], colors: [], materials: [], cuts: [], patterns: [], details: [], paletteTags: [] };
   Object.entries(STYLE_HINTS).forEach(function(entry) {
     if (entry[1].some(function(term) { return source.includes(clean(term)); })) features.styleTags.push(entry[0]);
   });
@@ -82,6 +110,8 @@ function classifyPinterestText(source) {
   PATTERN_HINTS.forEach(function(pattern) {
     if (pattern.terms.some(function(term) { return source.includes(clean(term)); })) features.patterns.push(pattern.value);
   });
+  DETAIL_HINTS.forEach(function(term) { if (source.includes(clean(term))) features.details.push(term); });
+  PALETTE_HINTS.forEach(function(term) { if (source.includes(clean(term))) features.paletteTags.push(term); });
   Object.keys(features).forEach(function(key) { features[key] = unique(features[key]); });
   return features;
 }
@@ -100,7 +130,8 @@ export function inferPinterestFeatures(pin) {
   const source = clean([
     pinterestText(pin),visual && visual.summary,visual && visual.layering,
     visual && visual.outfitFormula,visual && visual.silhouetteTags,
-    visual && visual.details,pieceText
+    visual && visual.details,visual && visual.designDetails,
+    visual && visual.colorHarmony,visual && visual.silhouetteProportions,pieceText
   ].flat().filter(Boolean).join(" "));
   const features = classifyPinterestText(source);
   if (visual) {
@@ -109,6 +140,8 @@ export function inferPinterestFeatures(pin) {
     features.materials = mergeVisualValues(features.materials,[...(visual.materials || []),...pieces.map(piece => piece.material)],MATERIAL_HINTS);
     features.cuts = mergeVisualValues(features.cuts,[...(visual.cuts || []),...pieces.map(piece => piece.cut)],CUT_HINTS);
     features.patterns = mergeVisualValues(features.patterns,[...(visual.patterns || []),...pieces.map(piece => piece.pattern)],PATTERN_HINTS.map(function(pattern) { return pattern.value; }));
+    features.details = mergeVisualValues(features.details,[...(visual.details || []),...(visual.designDetails || []),...pieces.flatMap(piece => piece.details || [])],DETAIL_HINTS);
+    features.paletteTags = mergeVisualValues(features.paletteTags,visual.paletteTags,PALETTE_HINTS);
   }
   return features;
 }
@@ -116,7 +149,7 @@ export function inferPinterestTags(pin) {
   // Les étiquettes visibles restent fondées sur les seuls textes Pinterest.
   // Les signaux visuels sont réservés au moteur de recommandation.
   const features = classifyPinterestText(clean(pinterestText(pin)));
-  return unique([].concat(features.styleTags, features.colors, features.materials, features.cuts, features.patterns));
+  return unique([].concat(features.styleTags, features.colors, features.materials, features.cuts, features.patterns, features.details, features.paletteTags));
 }
 
 export function productSlot(product) {
@@ -140,7 +173,7 @@ function productTerms(product) {
   return clean([
     product.name, product.description, product.brand, product.objective, product.category,
     ...(product.styleTags || []), ...(product.colors || []), ...(product.materials || []),
-    ...(product.cuts || []), ...(product.patterns || [])
+    ...(product.cuts || []), ...(product.patterns || []), ...(product.details || []), ...(product.paletteTags || [])
   ].join(" "));
 }
 
@@ -154,13 +187,15 @@ function matchScore(product, pin) {
   const pinText = clean([pinterestText(pin),...visualText].filter(Boolean).join(" "));
   const features = inferPinterestFeatures(pin);
   const tags = unique([].concat(features.styleTags,features.colors,features.materials,features.cuts,features.patterns)).map(clean);
-  const fields = [
-    ...(product.styleTags || []), ...(product.colors || []),
-    ...(product.materials || []), ...(product.cuts || []), ...(product.patterns || [])
-  ].map(clean);
-  let score = fields.reduce(function(total, field) {
-    return total + (tags.includes(field) ? 4 : 0);
-  }, 0);
+  const productFeatures = inferPinterestFeatures(product);
+  const weights = {styleTags:4,colors:6,materials:2,cuts:7,patterns:5,details:3,paletteTags:3};
+  let score = 0;
+  Object.entries(weights).forEach(function(entry) {
+    const pinValues = (features[entry[0]] || []).map(clean);
+    const productValues = new Set((productFeatures[entry[0]] || []).map(clean));
+    const shared = pinValues.filter(value => productValues.has(value));
+    score += Math.min(2,shared.length) * entry[1];
+  });
   const terms = productTerms(product);
   tags.forEach(function(tag) {
     if (tag.length > 2 && terms.includes(tag)) score += 2;
@@ -170,6 +205,7 @@ function matchScore(product, pin) {
   score += Math.min(12,matchingPieces.length * 3);
   const details = unique([
     ...(visual && Array.isArray(visual.details) ? visual.details : []),
+    ...(visual && Array.isArray(visual.designDetails) ? visual.designDetails : []),
     ...pieces.flatMap(piece => Array.isArray(piece.details) ? piece.details : [])
   ].map(clean));
   details.forEach(detail => {
@@ -414,7 +450,7 @@ export function buildOutfitIdeas(pins, wardrobe, catalogue, dislikedIds, outfitF
     const matchAverage = items.length ? items.reduce((sum,entry) => sum + entry.score,0) / items.length : 0;
     ideas.push({
       pin,
-      tags: Array.from(new Set([].concat(featureSet.styleTags,featureSet.colors,featureSet.materials,featureSet.cuts,featureSet.patterns))),
+      tags: Array.from(new Set([].concat(featureSet.styleTags,featureSet.colors,featureSet.materials,featureSet.cuts,featureSet.patterns,featureSet.details,featureSet.paletteTags))),
       pieces,
       suggestions,
       items,
