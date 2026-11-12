@@ -1,7 +1,7 @@
 import { loadState, saveState, clearState } from "./modules/store.js";
 import { createInitialState, normalizeProduct, productIdentity, seasonFor, rankProducts, deriveLearnedPreferences, matchesFilters } from "./modules/engine.js";
 import { INTEGRATIONS, getPersistenceNotice, PINTEREST_BOARD_URL } from "./modules/integrations.js";
-import { inferPinterestTags, inferPinterestFeatures, buildOutfitIdeas, productSlot, outfitTotalPrice } from "./modules/outfits.js";
+import { inferPinterestTags, inferPinterestFeatures, isMenswearPin, buildOutfitIdeas, productSlot, outfitTotalPrice } from "./modules/outfits.js";
 import { syncCommunityProfile, deleteCommunityProfile, buildCommunitySignals } from "./modules/community.js";
 import { requestAgentRecommendations, orderProductsByAgent, selectAgentCandidates, recommendLocally } from "./modules/agent.js";
 
@@ -651,10 +651,10 @@ function renderDeckCard(product, training) {
     '<div class="swipe-tint" aria-hidden="true"></div>' +
     '<div class="swipe-stamp swipe-stamp-nope" aria-hidden="true">NON</div><div class="swipe-stamp swipe-stamp-like" aria-hidden="true">OUI</div><div class="swipe-stamp swipe-stamp-save" aria-hidden="true">AJOUTÉ</div>' +
     '<div class="product-info"><div class="product-copy">' +
-      '<span class="swipe-category">' + esc(product.objective || "Sélection DRESSOPP") + '</span>' +
       '<h2 class="product-title" id="active-product-title">' + esc(product.name) + '</h2>' +
       '<div class="product-brand-price"><span>' + esc(brand) + '</span><i aria-hidden="true">•</i><strong>' + esc(price) + '</strong></div>' +
-    '</div><div class="product-card-links"><button class="product-details-pill" type="button" data-action="details" data-id="' + esc(product.id) + '">Détails <span aria-hidden="true">↗</span></button>' + originalLink + '</div></div>' +
+    '</div>' + renderProductAttributes(product) +
+    '<div class="product-card-links">' + originalLink + '</div></div>' +
     '<div class="deck-actions" aria-label="Actions sur cet article">' +
     '<button class="deck-action deck-action-undo" type="button" data-action="undo" ' + (state.interactions.lastAction ? "" : "disabled") + ' aria-label="Annuler la dernière action" title="Annuler la dernière action"><img class="deck-action-icon" src="./assets/rewind.webp" alt="" aria-hidden="true" draggable="false"></button>' +
     '<button class="deck-action deck-action-no" type="button" data-action="vote" data-vote="no" data-id="' + esc(product.id) + '" aria-label="Passer" title="Passer"><img class="deck-action-icon" src="./assets/cross.webp" alt="" aria-hidden="true" draggable="false"></button>' +
@@ -717,7 +717,7 @@ function renderDiscover(training) {
 function renderWardrobe() {
   const heading = renderPageHeading("Tes pièces retenues", "Ma garde-robe", "Tous tes coups de cœur au même endroit. Retirer un favori ne crée pas de rejet dans ton profil de style.", '<button class="button-primary" type="button" data-action="add-product">＋ Ajouter un article</button>');
   const wardrobeFilters = state.settings.wardrobeFilters || { objective: "Tout", style: "Tous", season: "Toute saison", maxPrice: null };
-  const favorites = state.likedProducts.map(function(item) { return productById(item.productId); }).filter(Boolean).filter(function(product) { return matchesFilters(product, wardrobeFilters); });
+  const favorites = state.likedProducts.map(function(item) { return productById(item.productId); }).filter(Boolean).filter(function(product) { return product.gender === "men" && product.genderVerified !== false && matchesFilters(product, wardrobeFilters); });
   const sorted = favorites.slice().sort(function(a, b) {
     const sort = state.settings.wardrobeSort || "recent";
     if (sort === "price-asc") return (a.price == null ? Infinity : a.price) - (b.price == null ? Infinity : b.price);
@@ -739,7 +739,7 @@ function renderWardrobe() {
     '<div id="wardrobe-grid">' + (favorites.length ? cards : '<div class="empty-state"><div class="empty-mark">♡</div><h2>Ta garde-robe est encore vide</h2><p>Les articles que tu ajoutes à ta liste dans Découvrir apparaîtront ici. Tu peux aussi ajouter un produit manuellement.</p><div class="empty-actions"><button class="button-primary" type="button" data-view="discover">Commencer à découvrir</button><button class="button-secondary" type="button" data-action="add-product">Ajouter un article</button></div></div>') + '</div>';
 }
 function pinterestPinCards() {
-  const remote = (pinterestFeed.pins || []).map(function(pin) {
+  const remote = (pinterestFeed.pins || []).filter(isMenswearPin).map(function(pin) {
     const id = String(pin.id);
     return {
       id: id, pinId: id, title: pin.title || pin.description || pin.altText || "Épingle Pinterest",
@@ -749,7 +749,7 @@ function pinterestPinCards() {
       fromFeed: true, origin: "Pinterest", kind: "outfit"
     };
   });
-  const local = (state.inspirations || []).filter(function(pin) { return pin.source === "Pinterest"; }).map(function(pin) {
+  const local = (state.inspirations || []).filter(function(pin) { return pin.source === "Pinterest" && isMenswearPin(pin); }).map(function(pin) {
     return Object.assign({ origin: "Pinterest", kind: "outfit" }, pin);
   });
   const seen = new Set();
@@ -1342,7 +1342,7 @@ function attachImageFallbacks(scope) {
 }
 function openProductForm() {
   modalRoot.innerHTML = '<div class="modal-backdrop"><section class="modal" role="dialog" aria-modal="true" aria-labelledby="add-product-title" data-modal-content>' +
-    '<div class="modal-head"><div><span class="eyebrow">Catalogue personnel</span><h2 id="add-product-title">Ajouter un article</h2><p>Renseigne les informations connues depuis la page du marchand. DRESSOPP ne devine pas les prix ni les compositions.</p></div><button class="close-button" type="button" data-action="close-modal" aria-label="Fermer">×</button></div>' +
+    '<div class="modal-head"><div><span class="eyebrow">Catalogue masculin</span><h2 id="add-product-title">Ajouter un article homme</h2><p>Ajoute uniquement une pièce du vestiaire masculin. Les produits mixtes ou sans public masculin confirmé ne seront pas proposés.</p></div><button class="close-button" type="button" data-action="close-modal" aria-label="Fermer">×</button></div>' +
     '<form id="product-form"><div class="form-grid"><div class="field"><label for="product-name">Nom du produit *</label><input id="product-name" name="name" required placeholder="Ex. Chemise en popeline"></div>' +
     '<div class="field"><label for="product-brand">Marque</label><input id="product-brand" name="brand" placeholder="Marque"></div>' +
     '<div class="field"><label for="product-merchant">Marchand *</label><input id="product-merchant" name="merchant" required placeholder="Boutique ou enseigne"></div>' +
@@ -1364,10 +1364,11 @@ function openProductForm() {
 }
 function openInspirationForm() {
   modalRoot.innerHTML = '<div class="modal-backdrop"><section class="modal" role="dialog" aria-modal="true" aria-labelledby="add-inspiration-title" data-modal-content>' +
-    '<div class="modal-head"><div><span class="eyebrow">Pinterest uniquement</span><h2 id="add-inspiration-title">Ajouter un Pin</h2><p>Ajoute une épingle de ton tableau ou une référence Pinterest. Les tags manuels aident à relier la tenue à tes pièces.</p></div><button class="close-button" type="button" data-action="close-modal" aria-label="Fermer">×</button></div>' +
+    '<div class="modal-head"><div><span class="eyebrow">Pinterest · Mode masculine</span><h2 id="add-inspiration-title">Ajouter un Pin</h2><p>Ajoute uniquement une inspiration dédiée au vestiaire masculin. Les épingles mixtes ou ambiguës sont exclues.</p></div><button class="close-button" type="button" data-action="close-modal" aria-label="Fermer">×</button></div>' +
     '<form id="inspiration-form"><div class="form-grid"><div class="field" style="grid-column:1/-1"><label for="inspiration-url">Lien du Pin Pinterest *</label><input id="inspiration-url" name="sourceUrl" type="url" required placeholder="https://www.pinterest.com/pin/…"></div>' +
     '<div class="field" style="grid-column:1/-1"><label for="inspiration-title">Titre (facultatif)</label><input id="inspiration-title" name="title" placeholder="Une silhouette, une ambiance…"></div>' +
-    '<div class="field" style="grid-column:1/-1"><label for="inspiration-tags">Tags esthétiques (facultatif)</label><input id="inspiration-tags" name="tags" placeholder="Oversized, tons neutres, tailoring…"></div></div>' +
+    '<div class="field" style="grid-column:1/-1"><label for="inspiration-tags">Tags esthétiques (facultatif)</label><input id="inspiration-tags" name="tags" placeholder="Oversized, tons neutres, tailoring…"></div>' +
+    '<div class="field" style="grid-column:1/-1"><label><input type="checkbox" name="menswear" required> Je confirme que cette épingle présente uniquement de la mode masculine.</label></div></div>' +
     '<div class="form-actions"><button class="button-primary" type="submit">Enregistrer le Pin</button><button class="button-quiet" type="button" data-action="close-modal">Annuler</button></div></form></section></div>';
   modalRoot.querySelector(".modal-backdrop").addEventListener("click", function(event) {
     if (event.target.classList.contains("modal-backdrop")) closeModal();
@@ -1406,7 +1407,7 @@ async function submitProduct(form) {
     colors: normalizeWords(data.get("colors")), materials: normalizeWords(data.get("materials")),
     cuts: normalizeWords(data.get("cuts")), url: data.get("url"),
     imageUrl: uploadedImage || data.get("imageUrl"), description: data.get("description"),
-    source: data.get("merchant")
+    source: data.get("merchant"), gender: "men", genderVerified: true
   });
   if (!product.name || !product.merchant || !safeExternalUrl(product.url)) throw new Error("Le nom, le marchand et un lien HTTP(S) valide sont obligatoires.");
   const identity = productIdentity(product);
@@ -1425,6 +1426,7 @@ async function submitProduct(form) {
 async function submitInspiration(form) {
   const data = new FormData(form);
   const sourceUrl = safeExternalUrl(data.get("sourceUrl"));
+  if (data.get("menswear") !== "on") throw new Error("Confirme que cette épingle concerne exclusivement la mode masculine.");
   let host = "";
   try { host = new URL(sourceUrl).hostname.toLowerCase(); } catch (error) {}
   if (!sourceUrl || !(host === "pinterest.com" || host.endsWith(".pinterest.com") || host === "pin.it")) {
@@ -1445,6 +1447,7 @@ async function submitInspiration(form) {
     sourceUrl: sourceUrl,
     imageUrl: "",
     tags: normalizeWords(data.get("tags")),
+    visualAnalysis: { version: 3, audience: "men", isFashion: true, summary: "", styleTags: [], colors: [], materials: [], cuts: [], patterns: [], pieces: [], details: [], silhouetteTags: [], seasonTags: [], occasionTags: [], paletteTags: [], layering: "", outfitFormula: "", confidence: null },
     importedAt: new Date().toISOString()
   };
   state.inspirations.unshift(item);
