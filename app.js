@@ -515,7 +515,7 @@ function mergeCatalogPageProducts(items) {
   let added = 0;
   (items || []).forEach(function(raw) {
     const product = normalizeProduct(raw);
-    if (!product.id || !product.name || !product.url) return;
+    if (!product.id || !product.name || !product.url || product.gender !== "men" || product.genderVerified === false) return;
     const identity = productIdentity(product);
     const existing = byIdentity.get(identity);
     if (existing && existing.sourceType !== "public-web") return;
