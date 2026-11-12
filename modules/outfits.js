@@ -48,6 +48,18 @@ const SLOT_TERMS = {
 function clean(value) {
   return String(value == null ? "" : value).normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
 }
+export function isMenswearPin(pin) {
+  if (!pin) return false;
+  const visual = pin.visualAnalysis;
+  if (visual && Number(visual.version) >= 3) {
+    return visual.isFashion === true && visual.audience === "men";
+  }
+  const evidence = clean([pin.title,pin.description,pin.altText,pin.alt_text,...(Array.isArray(pin.tags) ? pin.tags : [])].filter(Boolean).join(" "));
+  const female = /(^|[^a-z])(femme|femmes|woman|women|womens|female|girl|girls|ladies|damen)([^a-z]|$)|pour femme|for women|womenswear/.test(evidence);
+  const unisex = /(^|[^a-z])(unisexe|unisex|mixte|gender neutral|all genders)([^a-z]|$)/.test(evidence);
+  const male = /(^|[^a-z])(homme|hommes|man|men|mens|menswear|male)([^a-z]|$)|men's|pour homme|for men/.test(evidence);
+  return male && !female && !unisex;
+}
 function unique(values) {
   return Array.from(new Set(values.filter(Boolean)));
 }
@@ -235,14 +247,8 @@ function matchesAny(values, expected) {
   const source = (Array.isArray(values) ? values : []).map(clean);
   return expected.some(value => source.includes(clean(value)));
 }
-function productIsForWomen(product) {
-  const evidence = clean([
-    product && product.gender, product && product.name, product && product.description,
-    product && product.category, product && product.objective, product && product.url
-  ].filter(Boolean).join(" "));
-  return clean(product && product.gender) === "women" ||
-    /(^|[^a-z])(femme|femmes|woman|women|womens|female|girl|girls|ladies|damen|feminin)([^a-z]|$)/.test(evidence) ||
-    /pour femme|for women|womenswear|collection femme/.test(evidence);
+function productIsForMen(product) {
+  return Boolean(product && product.gender === "men" && product.genderVerified !== false);
 }
 function productExcludedByProfile(product, profile) {
   const p = profile || {};
@@ -358,13 +364,13 @@ export function buildOutfitIdeas(pins, wardrobe, catalogue, dislikedIds, outfitF
   });
   const candidates = Array.from(productMap.values()).filter(product => {
     const expired = product.catalogStatus === "expired" || (product.expiresAt && Date.parse(product.expiresAt) <= Date.now());
-    return !productIsForWomen(product) && !expired && product.catalogStatus !== "stale" && product.availabilityStatus !== "out_of_stock" &&
+    return productIsForMen(product) && !expired && product.catalogStatus !== "stale" && product.availabilityStatus !== "out_of_stock" &&
       !disliked.has(product.id) && (savedIds.has(product.id) || /^https?:\/\//i.test(String(product.url || ""))) && !productExcludedByProfile(product,profile) &&
       productMatchesOutfitSeason(product,season) && productSizeMatches(product,profile);
   });
   const ideas = [];
 
-  (pins || []).filter(pin => pin && pin.kind !== "detail" && pinMatchesOutfitFilters(pin,options)).forEach(pin => {
+  (pins || []).filter(pin => pin && isMenswearPin(pin) && pin.kind !== "detail" && pinMatchesOutfitFilters(pin,options)).forEach(pin => {
     const featureSet = inferPinterestFeatures(pin);
     const ranked = candidates.map(product => {
       const slot = productSlot(product);
