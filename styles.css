@@ -3140,3 +3140,45 @@ button, a { touch-action: manipulation; }
   .mobile-nav { min-height: 48px; padding-top: 3px; padding-bottom: 3px; }
   .mobile-nav button { min-height: 40px; }
 }
+
+
+/* Petit écran en paysage : la carte et ses commandes restent dans la zone visible. */
+@media (orientation: landscape) and (max-height: 600px) and (max-width: 850px) {
+  body.is-discovery-app,
+  body.is-discovery-app .app-shell {
+    width: 100%;
+    height: 100dvh;
+    min-height: 100svh;
+    overflow: hidden;
+  }
+  body.is-discovery-app .app-shell {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+  }
+  body.is-discovery-app .main-content {
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    flex: 1 1 auto;
+    overflow: hidden;
+    padding: 4px 8px calc(58px + env(safe-area-inset-bottom));
+  }
+  .discovery-page--app,
+  .discovery-page--app .discovery-layout--swipe,
+  .discovery-page--app .deck-card-wrap {
+    min-height: 0;
+  }
+  .discovery-page--app .product-info { bottom: 70px; }
+  .discovery-page--app .deck-actions { bottom: 6px; }
+  .discovery-page--app .deck-hint-touch { bottom: 53px; }
+  .mobile-nav {
+    min-height: 44px;
+    bottom: max(3px,env(safe-area-inset-bottom));
+    padding-top: 2px;
+    padding-bottom: 2px;
+  }
+  .mobile-nav button { min-height: 40px; }
+  .mobile-nav button span { font-size: 14px; }
+  .mobile-nav button small { font-size: 7px; }
+}
