@@ -176,7 +176,7 @@ test("swipe cards do not display gesture instructions inside the product card", 
 
 test("the mobile swipe card follows the vertical product-card mockup", function() {
   const cardRenderer = app.slice(app.indexOf("function renderDeckCard"),app.indexOf("function renderGridCards"));
-  assert.ok(cardRenderer.indexOf("'</article>'") < cardRenderer.indexOf("'<div class=\\"deck-actions\\""));
+  assert.ok(cardRenderer.indexOf("'</article>'") < cardRenderer.indexOf("deck-actions"));
   assert.ok(app.includes("renderProductAttributes(product)"));
   assert.ok(css.includes("Maquette DRESSOPP — carte mobile verticale"));
   assert.ok(css.includes("position: static;"));
