@@ -1791,7 +1791,7 @@ function handleSubmit(event) {
 function attachSwipe() {
   const card = document.querySelector("#active-product-card");
   if (!card || card.dataset.swipeBound === "true") return;
-  const gestureSurface = card;
+  const gestureSurface = card.closest(".deck-card-wrap") || card;
   card.dataset.swipeBound = "true";
   let startX = 0;
   let startY = 0;
@@ -1815,7 +1815,7 @@ function attachSwipe() {
   }
 
   gestureSurface.addEventListener("pointerdown", function(event) {
-    if (deckActionPending || event.button !== 0 || event.isPrimary === false || event.target.closest("button, a")) return;
+    if (!card.contains(event.target) || deckActionPending || event.button !== 0 || event.isPrimary === false || event.target.closest("button, a")) return;
     startX = event.clientX;
     startY = event.clientY;
     startTime = performance.now();
