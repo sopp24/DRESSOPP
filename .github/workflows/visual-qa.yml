@@ -29,7 +29,7 @@ jobs:
         run: npx playwright install --with-deps chromium
       - name: Test published experience at six viewport sizes
         env:
-          DRESSOPP_BASE_URL: https://sopp24.github.io/DRESSOPP/
+          VISUAL_QA_LOCAL: "1"
         run: node scripts/visual-qa.mjs
       - name: Publish the machine-readable report on a separate branch
         if: always()
