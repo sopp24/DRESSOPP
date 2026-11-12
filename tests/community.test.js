@@ -62,8 +62,8 @@ test("similar profiles contribute weighted positive and negative taste signals",
 
 test("the community ranker boosts a product appreciated by similar users", () => {
   const state = createInitialState([
-    { id:"same", name:"Sneaker populaire", objective:"Chaussures", brand:"Nike", sourceType:"public-web", url:"https://www.nike.com/fr/air-force", price:100 },
-    { id:"other", name:"Sneaker différente", objective:"Chaussures", brand:"Nike", sourceType:"public-web", url:"https://www.nike.com/fr/other-shoe", price:100 }
+    { id:"same", name:"Sneaker populaire", gender:"men", genderVerified:true, objective:"Chaussures", brand:"Nike", sourceType:"public-web", url:"https://www.nike.com/fr/air-force", price:100 },
+    { id:"other", name:"Sneaker différente", gender:"men", genderVerified:true, objective:"Chaussures", brand:"Nike", sourceType:"public-web", url:"https://www.nike.com/fr/other-shoe", price:100 }
   ].map(normalizeProduct));
   state.settings.objective = "Tout";
   const token = productCommunityToken(state.products[0]);
