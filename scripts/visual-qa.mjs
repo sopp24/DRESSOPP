@@ -75,7 +75,7 @@ async function capture(page, viewportName, viewName, fullPage = false) {
   if (layout.horizontalOverflow) issues.push("débordement horizontal (" + layout.document.width + "px pour " + layout.viewport.width + "px)");
   if (layout.cardOverlapsNav) issues.push("la carte de swipe passe sous la navigation basse");
   if (layout.viewport.width <= 850) {
-    const undersized = layout.actionSizes.filter(item => item.width < 43 || item.height < 43);
+    const undersized = layout.actionSizes.filter(item => item.width < 44 || item.height < 44);
     if (undersized.length) issues.push("actions tactiles trop petites : " + undersized.map(item => item.label + " " + item.width + "×" + item.height).join(", "));
     if (layout.mobileNav && layout.mobileNav.height < 44) issues.push("navigation tactile trop basse");
   }
