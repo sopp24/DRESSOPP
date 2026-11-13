@@ -205,37 +205,51 @@ test("the restored swipe layout keeps the product card separate from the action 
 });
 
 test("voter ou ajouter à la liste ne déclenche aucune notification de confirmation", function() {
-  assert.ok(!app.includes('showToast("Réponse Oui enregistrée'));
-  assert.ok(!app.includes('showToast("Réponse Non enregistrée'));
-  assert.ok(!app.includes('showToast("Article ajouté à ta liste'));
+  const voteHandler = app.slice(app.indexOf("function vote(productId, value)"), app.indexOf("function saveToList(productId)"));
+  const saveHandler = app.slice(app.indexOf("function saveToList(productId)"), app.indexOf("async function shareProduct(productId)"));
+  assert.ok(!voteHandler.includes("showToast("), "Un vote ne doit afficher aucune confirmation.");
+  assert.ok(!saveHandler.includes("showToast("), "Un ajout à la liste ne doit afficher aucune confirmation.");
   assert.ok(app.includes("state.interactions.likes.push(event)"));
   assert.ok(app.includes("state.interactions.dislikes.push(event)"));
   assert.ok(app.includes("state.likedProducts.push({ productId: productId, addedAt: createdAt })"));
 });
 
-test("la photo de la carte active est chargée en priorité et les attributs inconnus restent masqués", function() {
-  assert.ok(app.includes('imageMarkup(productImageUrl, product.name, {eager:true})'));
-  assert.ok(app.includes("catalogProduct && catalogProduct.imageUrl || product.imageUrl ||"));
+test("la photo de la carte active utilise le catalogue courant et une source de secours", function() {
+  assert.ok(app.includes("let catalogProducts = [];"));
+  assert.ok(app.includes("function productImageCandidates(product)"));
+  assert.ok(app.includes('imageMarkup(productImageUrl, product.name, {eager:true,fallbackUrls:productImages.slice(1)})'));
+  assert.ok(app.includes('data-fallback-srcs="'));
+  assert.ok(app.includes("fallbackIndex++"));
   assert.ok(app.includes('fetchpriority="high"'));
-  assert.ok(app.includes('if (image.complete && image.naturalWidth === 0) replaceWithFallback();'));
   assert.ok(app.includes("attachImageFallbacks(main);"));
-  assert.ok(!app.includes('small>Image indisponible</small>'));
   assert.ok(app.includes('if (!colors.length && !materials.length) return "";'));
   assert.ok(visualQA.includes("la photo principale du produit ne s'est pas chargée"));
-  assert.ok(visualQA.includes("les zones photo, informations et commandes se chevauchent"));
 });
 
-test("la carte de découverte sépare la photo, la fiche et les commandes", function() {
-  assert.ok(css.includes("DRESSOPP card layout — photo, fiche et commandes"));
-  assert.ok(css.includes("grid-template-rows: minmax(0,1fr) auto auto;"));
-  assert.ok(!css.slice(css.indexOf("DRESSOPP card layout — photo, fiche et commandes")).includes("body.is-discovery-app .discovery-page--app"));
-  assert.ok(css.includes("object-fit: contain;"));
+test("la carte de découverte sépare physiquement photo, fiche et commandes", function() {
+  const layer = css.slice(css.indexOf("DRESSOPP responsive card layout"));
+  assert.ok(layer.includes("grid-template-rows:minmax(280px,1fr) auto auto;"));
+  assert.ok(layer.includes("grid-template-rows:minmax(0,1fr) auto;"));
+  assert.ok(layer.includes(".discovery-page--app .deck-actions {"));
+  assert.ok(layer.includes("position:relative;"));
+  assert.ok(layer.includes("object-fit:contain;"));
 });
 // Responsive QA guardrails: keep this suite attached to the current PR revision.
 
-test("the product card uses its grid row height instead of overflowing below it", function() {
-  assert.ok(css.includes("height: auto;"));
-  assert.ok(css.includes("align-self: stretch;"));
-  assert.ok(css.includes("grid-template-rows: minmax(0,1fr) auto auto;"));
+test("the product card, action row and touch targets stay in separate layout rows", function() {
+  const layer = css.slice(css.indexOf("DRESSOPP responsive card layout"));
+  assert.ok(layer.includes("height:100%;"));
+  assert.ok(layer.includes("grid-template-rows:minmax(0,1fr) auto;"));
+  assert.ok(layer.includes("min-width:44px;"));
+  assert.ok(visualQA.includes("cardSectionsOverlap"));
   assert.ok(visualQA.includes("requestedSrc"));
+});
+
+
+test("les gestes tactiles sont capturés au document et ne dépendent pas d'un pointerup retargeté", function() {
+  assert.ok(app.includes('document.addEventListener("pointermove"'));
+  assert.ok(app.includes('document.addEventListener("pointerup"'));
+  assert.ok(app.includes('document.addEventListener("touchmove"'));
+  assert.ok(app.includes('document.addEventListener("touchend"'));
+  assert.ok(app.includes("activeSwipeCleanup"));
 });
