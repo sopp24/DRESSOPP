@@ -142,7 +142,7 @@ function inferCatalogGender(item,pageUrl,trustDeclaredGender = true) {
   if (men) return "men";
   return "unknown";
 }
-function productRecord(item,source,pageUrl,checkedAt) {
+function productRecord(item,source,pageUrl,checkedAt,html) {
   const offers = list(item.offers).flatMap(offer => offer && Array.isArray(offer.offers) ? offer.offers : [offer]).filter(Boolean);
   const offer = offers.find(value => value.price != null || value.lowPrice != null || value.priceSpecification) || {};
   const spec = offer.priceSpecification || {};
@@ -218,7 +218,7 @@ export function extractProductsFromHtml(html,source,pageUrl,checkedAt = new Date
   const products = [], scripts = String(html || "").match(/<script\b[^>]*type\s*=\s*["']application\/ld\+json["'][^>]*>[\s\S]*?<\/script>/gi) || [];
   for (const block of scripts) {
     const raw = block.replace(/^<script\b[^>]*>/i,"").replace(/<\/script>$/i,"").trim();
-    try { for (const item of flattenProducts(JSON.parse(raw))) { const product = productRecord(item,source,pageUrl,checkedAt); if (product) products.push(product); } }
+    try { for (const item of flattenProducts(JSON.parse(raw))) { const product = productRecord(item,source,pageUrl,checkedAt,html); if (product) products.push(product); } }
     catch { /* Passer les blocs structurés mal formés. */ }
   }
   if (products.length) return products;
