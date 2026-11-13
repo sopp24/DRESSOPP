@@ -87,9 +87,11 @@ async function getLayout(page) {
       infoPosition:info ? getComputedStyle(info).position : null,
       actionsPosition:actions ? getComputedStyle(actions).position : null
     } : null;
+    const cardBottom = card ? card.getBoundingClientRect().bottom : 0;
     const cardSectionsOverlap = Boolean(visual && info && actions &&
       (visual.getBoundingClientRect().bottom > info.getBoundingClientRect().top + 2 ||
-       info.getBoundingClientRect().bottom > actions.getBoundingClientRect().top + 2));
+       info.getBoundingClientRect().bottom > cardBottom + 2 ||
+       actions.getBoundingClientRect().top < cardBottom + 1));
     const actionSizes = Array.from(document.querySelectorAll(".deck-action")).map(button => {
       const box = button.getBoundingClientRect();
       return { label:button.getAttribute("aria-label"), width:Math.round(box.width), height:Math.round(box.height) };
