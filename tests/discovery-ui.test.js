@@ -284,7 +284,10 @@ test("all product-card thumbnails use catalogue photo resolution and fallbacks",
   assert.ok(app.includes("function productImageMarkup(product, label, options)"));
   assert.ok(grid.includes("productImageMarkup(product, product.name)"));
   assert.ok(app.includes("productImageMarkup(entry.product,entry.product.name)"));
-  assert.ok(app.includes('referrerpolicy="no-referrer"'));
+  assert.ok(app.includes('referrerpolicy="strict-origin-when-cross-origin"'));
+  assert.ok(app.includes("./assets/product-images/"));
+  assert.ok(app.includes("imageFallbackUrl"));
+  assert.ok(app.includes("await loadCatalogPage(pageIndex)"));
   assert.ok(app.includes("function productImageCandidates(product)"));
   assert.ok(app.includes("fallbackUrls: lookup.urls.slice(1).concat(extraFallbacks)"));
 });
