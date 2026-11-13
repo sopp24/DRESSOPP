@@ -245,6 +245,7 @@ test("default discovery interleaves merchants and balances style and price bands
 });
 
 
+// A marketplace with multiple sellers must not count as several distinct boutiques.
 test("merchant diversity treats seller labels on one marketplace as the same shop", function() {
   const products = [
     normalizeProduct({id:"z1",name:"Pull OVS",merchant:"Zalando · OVS Group",brand:"OVS",price:50,category:"Pull",seasonTags:["Toute saison"]}),
