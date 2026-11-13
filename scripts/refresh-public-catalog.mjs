@@ -441,7 +441,11 @@ export async function cacheProductImages(items, options = {}) {
     product.imageFallbackUrl = remoteUrl;
     try {
       const response = await fetcher(remoteUrl,{
-        headers:{ "user-agent":UA, "accept":"image/avif,image/webp,image/png,image/jpeg,*/*;q=0.5" },
+        headers:{
+          "user-agent":UA,
+          "accept":"image/avif,image/webp,image/png,image/jpeg,*/*;q=0.5",
+          "referer":String(product.url || "https://sopp24.github.io/DRESSOPP/")
+        },
         signal:typeof AbortSignal !== "undefined" && AbortSignal.timeout ? AbortSignal.timeout(12000) : undefined
       });
       if (!response || !response.ok) throw new Error("Image HTTP " + (response && response.status));
