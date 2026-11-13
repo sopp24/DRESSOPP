@@ -1,0 +1,48 @@
+name: Responsive QA (pre-merge)
+
+on:
+  push:
+    branches: [fix/mobile-swipe-responsive-qa]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: dressopp-responsive-qa-${{ github.event.pull_request.head.ref || github.ref_name }}
+  cancel-in-progress: true
+
+jobs:
+  responsive-qa:
+    name: Responsive visual and interaction QA
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout candidate revision
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Run unit and syntax tests
+        run: npm test
+      - name: Check visual QA script
+        run: node --check scripts/visual-qa.mjs
+      - name: Install browser test runner
+        run: npm install --no-save --no-package-lock playwright
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Test all responsive formats and interactions
+        env:
+          VISUAL_QA_LOCAL: "1"
+        run: node scripts/visual-qa.mjs
+      - name: Upload visual report and screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: dressopp-responsive-qa-${{ github.sha }}
+          path: artifacts/visual-qa/
+          if-no-files-found: warn
+          retention-days: 7

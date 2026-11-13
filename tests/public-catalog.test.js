@@ -22,6 +22,14 @@ test("imports official EUR products and keeps product ratings separate from merc
   assert.equal(products[0].sourceType,"public-web");
 });
 
+test("prefers the current product-page Open Graph image over a stale structured-data URL", () => {
+  const html = '<meta property="og:image" content="https://cdn.example.com/current-product.jpg">' +
+    '<script type="application/ld+json">{"@type":"Product","name":"Pull marin homme","url":"https://example.com/pull","image":"https://example.com/products/files/old-product.jpg","offers":{"price":"149","priceCurrency":"EUR","availability":"https://schema.org/InStock"}}</script>';
+  const products = extractProductsFromHtml(html,source,"https://example.com/pull","2026-11-13T08:00:00.000Z");
+  assert.equal(products.length,1);
+  assert.equal(products[0].imageUrl,"https://cdn.example.com/current-product.jpg");
+});
+
 test("rejects non-EUR, out-of-stock and incomplete records", () => {
   const html = '<script type="application/ld+json">[' +
     '{"@type":"Product","name":"USD","image":"https://cdn.example.com/a.jpg","offers":{"price":"90","priceCurrency":"USD"}},' +

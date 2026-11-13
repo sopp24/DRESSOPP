@@ -142,7 +142,7 @@ function inferCatalogGender(item,pageUrl,trustDeclaredGender = true) {
   if (men) return "men";
   return "unknown";
 }
-function productRecord(item,source,pageUrl,checkedAt) {
+function productRecord(item,source,pageUrl,checkedAt,html) {
   const offers = list(item.offers).flatMap(offer => offer && Array.isArray(offer.offers) ? offer.offers : [offer]).filter(Boolean);
   const offer = offers.find(value => value.price != null || value.lowPrice != null || value.priceSpecification) || {};
   const spec = offer.priceSpecification || {};
@@ -152,7 +152,10 @@ function productRecord(item,source,pageUrl,checkedAt) {
   if (!item.name || currency !== "EUR" || !Number.isFinite(price) || price <= 0 || /outofstock|soldout|discontinued/.test(availability)) return null;
   const page = safePage(item.url || pageUrl,pageUrl,source.domain);
   const imageValue = list(item.image)[0];
-  const image = safeImage(typeof imageValue === "string" ? imageValue : imageValue && (imageValue.url || imageValue.contentUrl),pageUrl);
+  const structuredImage = safeImage(typeof imageValue === "string" ? imageValue : imageValue && (imageValue.url || imageValue.contentUrl),pageUrl);
+  // Certaines boutiques conservent une URL JSON-LD historique : og:image correspond à la galerie active.
+  const socialImage = safeImage(meta(html,"og:image"),pageUrl);
+  const image = socialImage || structuredImage;
   if (!page || !image) return null;
   const name = clean(item.name); if (!name || name.length > 220) return null;
   const brand = clean(item.brand && item.brand.name || item.brand || source.name);
@@ -215,7 +218,7 @@ export function extractProductsFromHtml(html,source,pageUrl,checkedAt = new Date
   const products = [], scripts = String(html || "").match(/<script\b[^>]*type\s*=\s*["']application\/ld\+json["'][^>]*>[\s\S]*?<\/script>/gi) || [];
   for (const block of scripts) {
     const raw = block.replace(/^<script\b[^>]*>/i,"").replace(/<\/script>$/i,"").trim();
-    try { for (const item of flattenProducts(JSON.parse(raw))) { const product = productRecord(item,source,pageUrl,checkedAt); if (product) products.push(product); } }
+    try { for (const item of flattenProducts(JSON.parse(raw))) { const product = productRecord(item,source,pageUrl,checkedAt,html); if (product) products.push(product); } }
     catch { /* Passer les blocs structurés mal formés. */ }
   }
   if (products.length) return products;

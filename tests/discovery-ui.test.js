@@ -6,6 +6,7 @@ const app = readFileSync(new URL("../app.js", import.meta.url), "utf8");
 const css = readFileSync(new URL("../styles.css", import.meta.url), "utf8");
 const index = readFileSync(new URL("../index.html", import.meta.url), "utf8");
 const sw = readFileSync(new URL("../sw.js", import.meta.url), "utf8");
+const visualQA = readFileSync(new URL("../scripts/visual-qa.mjs", import.meta.url), "utf8");
 const root = new URL("../", import.meta.url);
 
 test("the discovery deck exposes the five Tinder-style actions", function() {
@@ -73,7 +74,7 @@ test("all local files referenced by the application shell exist", function() {
 });
 
 test("the PWA refreshes its cache and preloads the app icons and first catalogue page", function() {
-  assert.ok(sw.includes('dressopp-static-v15'));
+  assert.ok(sw.includes('dressopp-static-v17'));
   for (const path of [
     "./assets/logo-horizontal.png",
     "./assets/logo-square.png",
@@ -128,11 +129,18 @@ test("Pinterest is the sole inspiration source and the old local lookbook is abs
 });
 
 
-test("swiping down on the discovery card saves it to the list", function() {
+test("swiping down on the discovery card saves it reliably on touch devices", function() {
   assert.ok(app.includes("verticalSaveIntent"));
-  assert.ok(app.includes("const acceptedSave = !horizontalIntent && deltaY >= saveThreshold && deltaY > Math.abs(deltaX) * 1.08"));
-  assert.ok(app.includes('animateDeckDecision(productId, acceptedSave ? "save"'));
-  assert.ok(css.includes(".product-card.is-committing.is-save .swipe-tint"));
+  assert.ok(app.includes("const acceptedSave=!horizontalIntent && deltaY>=saveThreshold"));
+  assert.ok(app.includes('animateDeckDecision(productId,acceptedSave?"save"'));
+  assert.ok(app.includes('surface.addEventListener("touchstart"'));
+  assert.ok(app.includes('document.addEventListener("touchmove"'));
+  assert.ok(app.includes('document.addEventListener("touchend"'));
+  assert.ok(app.includes("deltaY=y-startY"));
+  assert.ok(css.includes("#active-product-card"));
+  assert.ok(css.includes("touch-action: none;"));
+  assert.ok(visualQA.includes("await frame();"));
+  assert.ok(visualQA.includes("swipe-save-failure.png"));
 });
 
 test("Pinterest pins are inside Training and no standalone Pins navigation remains", function() {
@@ -182,8 +190,8 @@ test("the restored swipe layout keeps the product card separate from the action 
   assert.ok(cardRenderer.indexOf("'</article>'") < cardRenderer.indexOf("'<div class=\"deck-actions\""));
   assert.ok(cardRenderer.endsWith("    '</div>';\n}\n"));
   assert.ok(app.includes("renderProductAttributes(product)"));
-  assert.ok(app.includes('const gestureSurface = card.closest(".deck-card-wrap") || card;'));
-  assert.ok(app.includes("gestureSurface.setPointerCapture(pointerId)"));
+  assert.ok(app.includes('const surface = card.closest(".deck-card-wrap") || card;'));
+  assert.ok(app.includes("surface.setPointerCapture(event.pointerId)"));
   assert.ok(css.includes(".product-card {"));
   assert.ok(css.includes(".product-visual img"));
   assert.ok(css.includes(".product-info {"));
@@ -194,4 +202,74 @@ test("the restored swipe layout keeps the product card separate from the action 
   assert.ok(app.includes('name="menswear" required'));
   assert.ok(app.includes('if (data.get("menswear") !== "on") throw new Error("Confirme que la fiche source classe explicitement cet article dans la collection homme.")'));
   assert.ok(app.includes('gender: "men", genderVerified: true'));
+});
+
+test("voter ou ajouter à la liste ne déclenche aucune notification de confirmation", function() {
+  const voteHandler = app.slice(app.indexOf("function vote(productId, value)"), app.indexOf("function saveToList(productId)"));
+  const saveHandler = app.slice(app.indexOf("function saveToList(productId)"), app.indexOf("async function shareProduct(productId)"));
+  assert.ok(!voteHandler.includes("showToast("), "Un vote ne doit afficher aucune confirmation.");
+  assert.ok(!saveHandler.includes("showToast("), "Un ajout à la liste ne doit afficher aucune confirmation.");
+  assert.ok(app.includes("state.interactions.likes.push(event)"));
+  assert.ok(app.includes("state.interactions.dislikes.push(event)"));
+  assert.ok(app.includes("state.likedProducts.push({ productId: productId, addedAt: createdAt })"));
+});
+
+test("la photo active recherche sa source dans le catalogue courant et expose un diagnostic", function() {
+  assert.ok(app.includes("let catalogProducts = [];"));
+  assert.ok(app.includes("function productImageCandidates(product)"));
+  assert.ok(app.includes("matchFound: Boolean(catalogProduct)"));
+  assert.ok(app.includes("data-image-debug=\"' + imageDebug + '\""));
+  assert.ok(app.includes('imageMarkup(productImageUrl, product.name, {eager:true,fallbackUrls:productImages.slice(1)})'));
+  assert.ok(app.includes('data-fallback-srcs="'));
+  assert.ok(app.includes("fallbackIndex++"));
+  assert.ok(app.includes('fetchpriority="high"'));
+  assert.ok(app.includes("attachImageFallbacks(main);"));
+  assert.ok(visualQA.includes("imageDebug"));
+  assert.ok(visualQA.includes("la photo principale du produit ne s'est pas chargée"));
+});
+
+test("la carte de découverte sépare physiquement photo, fiche et commandes", function() {
+  assert.ok(css.includes("#active-product-wrap {"));
+  assert.ok(css.includes("#active-product-card > .product-visual {"));
+  assert.ok(css.includes("#active-product-card > .product-info {"));
+  assert.ok(css.includes("grid-template-rows: minmax(0,1fr) auto !important;"));
+  assert.ok(css.includes("object-fit: contain !important;"));
+});
+// Responsive QA guardrails: keep this suite attached to the current PR revision.
+
+test("the product card, action row and touch targets stay in separate layout rows", function() {
+  assert.ok(css.includes("#active-product-wrap > .deck-actions"));
+  assert.ok(css.includes("grid-row: 3 !important;"));
+  assert.ok(css.includes("min-width: 44px;"));
+  assert.ok(visualQA.includes("cardSectionsOverlap"));
+  assert.ok(visualQA.includes("requestedSrc"));
+  assert.ok(visualQA.includes("ensureAppReady(page, targetUrl)"));
+  assert.ok(visualQA.includes("page.goto(targetUrl || baseUrl"));
+  assert.ok(visualQA.includes("runViewport(browser, viewport, target)"));
+});
+
+test("la fiche produit reste distincte de la photo en paysage", function() {
+  const landscape = css.slice(css.lastIndexOf("@media (orientation: landscape) and (max-height: 600px) and (max-width: 850px)"));
+  assert.ok(landscape.includes('grid-template-areas: "copy links" !important;'));
+  assert.ok(landscape.includes("min-height: 160px !important;"));
+  assert.ok(landscape.includes("grid-template-rows: minmax(204px,1fr) 44px 0 !important;"));
+  assert.ok(landscape.includes("height: 42px !important;"));
+  assert.ok(landscape.includes("max-height: 42px !important;"));
+  assert.ok(landscape.includes("grid-template-columns: minmax(0,1fr) auto !important;"));
+  assert.ok(landscape.includes("white-space: nowrap !important;"));
+  assert.ok(landscape.includes("height: 30px !important;"));
+  assert.ok(landscape.includes("display: none !important;"));
+  assert.ok(landscape.includes("min-width: 44px !important;"));
+  assert.ok(visualQA.includes("cardSectionsOverlap"));
+});
+
+
+test("les gestes tactiles et les gestes souris utilisent des flux distincts", function() {
+  assert.ok(app.includes('surface.addEventListener("touchstart"'));
+  assert.ok(app.includes('document.addEventListener("touchmove"'));
+  assert.ok(app.includes('document.addEventListener("touchend"'));
+  assert.ok(app.includes('event.pointerType==="touch"'));
+  assert.ok(app.includes('document.addEventListener("pointermove"'));
+  assert.ok(app.includes('document.addEventListener("pointerup"'));
+  assert.ok(app.includes("activeSwipeCleanup"));
 });

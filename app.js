@@ -62,6 +62,8 @@ let aiAgentPending = false;
 let aiAgentLastActionCount = 0;
 let aiAgentController = null;
 let catalogManifest = null;
+let catalogProducts = [];
+let activeSwipeCleanup = null;
 let catalogDirectory = [];
 let catalogLoadedPages = new Set();
 let catalogPagePending = false;
@@ -141,6 +143,30 @@ function safeExternalUrl(value) {
     const url = new URL(value);
     return url.protocol === "https:" || url.protocol === "http:" ? url.href : "";
   } catch (error) { return ""; }
+}
+function safeImageUrl(value) {
+  if (typeof value !== "string" || !value.trim()) return "";
+  const candidate = value.trim();
+  if (/^data:image\/(?:png|jpe?g|webp|gif|avif);base64,/i.test(candidate)) return candidate;
+  return safeExternalUrl(candidate);
+}
+function productImageCandidates(product) {
+  const item = product || {};
+  const catalogProduct = catalogProducts.find(entry => String(entry.id) === String(item.id)) ||
+    catalogProducts.find(entry => entry.url && item.url && safeExternalUrl(entry.url) === safeExternalUrl(item.url)) ||
+    catalogProducts.find(entry => productIdentity(entry) === productIdentity(item)) || null;
+  const rawCandidates = [catalogProduct && catalogProduct.imageUrl,item.imageUrl,item.image,item.photo];
+  return {
+    urls: Array.from(new Set(rawCandidates.map(safeImageUrl).filter(Boolean))),
+    debug: {
+      catalogCount: catalogProducts.length,
+      requestedId: String(item.id || ""),
+      matchFound: Boolean(catalogProduct),
+      matchedId: String(catalogProduct && catalogProduct.id || ""),
+      matchedImage: String(catalogProduct && catalogProduct.imageUrl || ""),
+      itemImage: String(item.imageUrl || item.image || item.photo || "")
+    }
+  };
 }
 function updateSaveStatus(message, status) {
   if (!saveStatus) return;
@@ -373,8 +399,17 @@ function persist() {
   })();
   return persistPromise;
 }
-function imageMarkup(url, label) {
-  if (url) return '<img class="product-photo" src="' + esc(url) + '" alt="' + esc(label || "Photo du produit") + '" loading="lazy">';
+function imageMarkup(url, label, options) {
+  const opts = options || {};
+  const primary = safeImageUrl(url);
+  if (primary) {
+    const priority = opts.eager ? ' loading="eager" fetchpriority="high"' : ' loading="lazy"';
+    const fallbacks = Array.isArray(opts.fallbackUrls)
+      ? Array.from(new Set(opts.fallbackUrls.map(safeImageUrl).filter(candidate => candidate && candidate !== primary)))
+      : [];
+    const fallbackAttribute = fallbacks.length ? ' data-fallback-srcs="' + esc(JSON.stringify(fallbacks)) + '"' : "";
+    return '<img class="product-photo" src="' + esc(primary) + '" alt="' + esc(label || "Photo du produit") + '"' + priority + fallbackAttribute + ' decoding="async">';
+  }
   return '<div class="image-fallback"><span class="hanger" aria-hidden="true">⌁</span><small>Photo non renseignée</small></div>';
 }
 function renderPageHeading(eyebrow, title, description, actions) {
@@ -438,6 +473,7 @@ function productColorSwatch(value) {
 function renderProductAttributes(product) {
   const colors = Array.isArray(product.colors) ? product.colors.filter(Boolean).slice(0, 4) : [];
   const materials = Array.isArray(product.materials) ? product.materials.filter(Boolean).slice(0, 4) : [];
+  if (!colors.length && !materials.length) return "";
   const colorValues = colors.length
     ? colors.map(function(color) {
         return '<span class="product-color-value"><i aria-hidden="true" style="background:' + productColorSwatch(color) + '"></i>' + esc(color) + '</span>';
@@ -508,14 +544,19 @@ async function refreshCatalogManifest(force) {
   return catalogManifest;
 }
 function mergeCatalogPageProducts(items) {
+  const normalizedItems = (items || []).map(normalizeProduct).filter(function(product) {
+    return product.id && product.name && product.url && product.gender === "men" && product.genderVerified === true;
+  });
+  const catalogById = new Map((catalogProducts || []).map(product => [product.id, product]));
+  normalizedItems.forEach(product => catalogById.set(product.id, product));
+  catalogProducts = Array.from(catalogById.values());
+
   const byIdentity = new Map();
   (state.products || []).forEach(function(product) {
     byIdentity.set(productIdentity(product), product);
   });
   let added = 0;
-  (items || []).forEach(function(raw) {
-    const product = normalizeProduct(raw);
-    if (!product.id || !product.name || !product.url || product.gender !== "men" || product.genderVerified !== true) return;
+  normalizedItems.forEach(function(product) {
     const identity = productIdentity(product);
     const existing = byIdentity.get(identity);
     if (existing && existing.sourceType !== "public-web") return;
@@ -640,6 +681,10 @@ function renderRetailerDirectory() {
     '<p class="retailer-disclaimer">La Meta Ad Library donne accès à des publicités publiques, pas à ton fil publicitaire Instagram personnalisé. Les avis d’article ne sont pas assimilés à une note de fiabilité du marchand.</p></section>';
 }
 function renderDeckCard(product, training) {
+  const imageLookup = productImageCandidates(product);
+  const productImages = imageLookup.urls;
+  const productImageUrl = productImages[0] || "";
+  const imageDebug = esc(JSON.stringify(imageLookup.debug));
   const brand = product.brand || product.merchant || product.source || "Marque non renseignée";
   const price = formatPrice(product.price);
   const articleUrl = safeExternalUrl(product.url);
@@ -647,8 +692,8 @@ function renderDeckCard(product, training) {
   const originalLink = articleUrl
     ? '<a class="product-original-link" href="' + esc(articleUrl) + '" target="_blank" rel="noopener noreferrer"><span>Voir l’article original</span><i aria-hidden="true">↗</i></a>'
     : '<button class="product-original-link" type="button" data-action="details" data-id="' + esc(product.id) + '"><span>Voir la fiche produit</span><i aria-hidden="true">↗</i></button>';
-  return '<div class="deck-card-wrap"><article class="product-card" id="active-product-card" data-product-id="' + esc(product.id) + '" role="group" tabindex="0" aria-labelledby="active-product-title" aria-describedby="deck-keyboard-hint deck-touch-hint" aria-keyshortcuts="ArrowLeft ArrowRight ArrowDown Control+Z Meta+Z">' +
-    '<div class="product-visual">' + imageMarkup(product.imageUrl, product.name) + '</div>' +
+  return '<div class="deck-card-wrap" id="active-product-wrap"><article class="product-card" id="active-product-card" data-product-id="' + esc(product.id) + '" data-image-url="' + esc(productImageUrl) + '" data-image-debug="' + imageDebug + '" role="group" tabindex="0" aria-labelledby="active-product-title" aria-describedby="deck-keyboard-hint deck-touch-hint" aria-keyshortcuts="ArrowLeft ArrowRight ArrowDown Control+Z Meta+Z">' +
+    '<div class="product-visual">' + imageMarkup(productImageUrl, product.name, {eager:true,fallbackUrls:productImages.slice(1)}) + '</div>' +
     '<div class="swipe-tint" aria-hidden="true"></div>' +
     '<div class="swipe-stamp swipe-stamp-nope" aria-hidden="true">NON</div><div class="swipe-stamp swipe-stamp-like" aria-hidden="true">OUI</div><div class="swipe-stamp swipe-stamp-save" aria-hidden="true">AJOUTÉ</div>' +
     '<div class="product-info"><div class="product-copy">' +
@@ -1121,6 +1166,7 @@ function render() {
   else if (currentView === "profile") main.innerHTML = renderProfile();
   else if (currentView === "settings") main.innerHTML = renderSettings();
   else main.innerHTML = renderDiscover(false);
+  attachImageFallbacks(main);
   attachSwipe();
   maybePrefetchCatalog();
   main.querySelectorAll("[data-mark-seen-on-open]").forEach(function(link) {
@@ -1132,14 +1178,6 @@ function render() {
         persist();
       }
     });
-  });
-  main.querySelectorAll("img.product-photo").forEach(function(image) {
-    image.addEventListener("error", function() {
-      const fallback = document.createElement("div");
-      fallback.className = "image-fallback";
-      fallback.innerHTML = '<span class="hanger" aria-hidden="true">⌁</span><small>Image indisponible</small>';
-      image.replaceWith(fallback);
-    }, { once: true });
   });
   if (state && state.settings.aiAgentAutoRefresh && !aiAgentPending &&
       (currentView === "discover" || currentView === "training")) {
@@ -1184,10 +1222,8 @@ function vote(productId, value) {
   const event = { productId: productId, createdAt: new Date().toISOString(), view: currentView };
   if (value === "yes" || value === "like") {
     state.interactions.likes.push(event);
-    showToast("Réponse Oui enregistrée : tes préférences sont affinées", true);
   } else {
     state.interactions.dislikes.push(event);
-    showToast("Réponse Non enregistrée : cette piste sera moins proposée", true);
   }
   state.interactions.lastAction = { productId: productId, action: value, createdAt: event.createdAt };
   state.learnedPreferences = deriveLearnedPreferences(state);
@@ -1205,7 +1241,6 @@ function saveToList(productId) {
   state.interactions.lastAction = { productId: productId, action: "save", createdAt: createdAt };
   persist();
   render();
-  showToast("Article ajouté à ta liste", true);
 }
 async function shareProduct(productId) {
   const product = productById(productId);
@@ -1338,12 +1373,25 @@ function closeModal() {
 }
 function attachImageFallbacks(scope) {
   scope.querySelectorAll("img.product-photo").forEach(function(image) {
-    image.addEventListener("error", function() {
+    let fallbacks = [];
+    try { fallbacks = JSON.parse(image.getAttribute("data-fallback-srcs") || "[]"); } catch (error) {}
+    let fallbackIndex = 0;
+    function replaceWithFallback() {
+      if (!image.isConnected || image.dataset.fallbackApplied === "true") return;
+      const next = fallbacks[fallbackIndex++];
+      if (next && next !== image.src) {
+        image.src = next;
+        return;
+      }
+      image.dataset.fallbackApplied = "true";
       const fallback = document.createElement("div");
       fallback.className = "image-fallback";
-      fallback.innerHTML = '<span class="hanger" aria-hidden="true">⌁</span><small>Image indisponible</small>';
+      fallback.dataset.imageUrl = image.currentSrc || image.src || "";
+      fallback.innerHTML = '<span class="hanger" aria-hidden="true">⌁</span><small>Photo momentanément indisponible</small>';
       image.replaceWith(fallback);
-    }, { once: true });
+    }
+    image.addEventListener("error", replaceWithFallback);
+    if (image.complete && image.naturalWidth === 0) replaceWithFallback();
   });
 }
 function openProductForm() {
@@ -1789,117 +1837,127 @@ function handleSubmit(event) {
   }
 }
 function attachSwipe() {
+  if (activeSwipeCleanup) {
+    activeSwipeCleanup();
+    activeSwipeCleanup = null;
+  }
   const card = document.querySelector("#active-product-card");
-  if (!card || card.dataset.swipeBound === "true") return;
-  const gestureSurface = card.closest(".deck-card-wrap") || card;
+  if (!card) return;
+  const surface = card.closest(".deck-card-wrap") || card;
+  if (card.dataset.swipeBound === "true") return;
   card.dataset.swipeBound = "true";
-  let startX = 0;
-  let startY = 0;
-  let startTime = 0;
-  let deltaX = 0;
-  let deltaY = 0;
-  let dragging = false;
-  let horizontalIntent = false;
-  let verticalSaveIntent = false;
-  let pointerId = null;
 
-  function clearPreview(animateBack) {
-    dragging = false;
-    horizontalIntent = false;
-    card.classList.remove("is-dragging", "swipe-preview-like", "swipe-preview-nope", "swipe-preview-save");
+  const controller = new AbortController();
+  const signal = controller.signal;
+  activeSwipeCleanup = function() { controller.abort(); };
+
+  let dragging = false, inputMode = "", activeTouchId = null, pointerId = null;
+  let startX = 0, startY = 0, startTime = 0, deltaX = 0, deltaY = 0;
+  let horizontalIntent = false, verticalSaveIntent = false;
+
+  function begin(x,y,mode,id) {
+    if (deckActionPending) return;
+    startX=x; startY=y; startTime=performance.now(); deltaX=0; deltaY=0;
+    inputMode=mode; activeTouchId=mode==="touch"?id:null; pointerId=mode==="pointer"?id:null;
+    horizontalIntent=false; verticalSaveIntent=false; dragging=true;
+    card.classList.remove("is-returning");
+    card.classList.add("is-dragging");
+  }
+  function clear(animateBack) {
+    dragging=false; inputMode=""; activeTouchId=null; pointerId=null;
+    horizontalIntent=false; verticalSaveIntent=false;
+    card.classList.remove("is-dragging","swipe-preview-like","swipe-preview-nope","swipe-preview-save");
     card.style.removeProperty("--swipe-tint-opacity");
     card.style.removeProperty("border-color");
     if (animateBack) card.classList.add("is-returning");
     card.style.removeProperty("transform");
-    if (animateBack) window.setTimeout(function() { card.classList.remove("is-returning"); }, 360);
+    if (animateBack) window.setTimeout(function(){card.classList.remove("is-returning");},360);
   }
-
-  gestureSurface.addEventListener("pointerdown", function(event) {
-    if (!card.contains(event.target) || deckActionPending || event.button !== 0 || event.isPrimary === false || event.target.closest("button, a")) return;
-    startX = event.clientX;
-    startY = event.clientY;
-    startTime = performance.now();
-    deltaX = 0;
-    deltaY = 0;
-    horizontalIntent = false;
-    verticalSaveIntent = false;
-    dragging = true;
-    pointerId = event.pointerId;
-    card.classList.remove("is-returning");
-    card.classList.add("is-dragging");
-    try { gestureSurface.setPointerCapture(pointerId); } catch (error) {}
-  });
-
-  gestureSurface.addEventListener("pointermove", function(event) {
-    if (!dragging || event.pointerId !== pointerId) return;
-    deltaX = event.clientX - startX;
-    deltaY = event.clientY - startY;
+  function move(x,y,event) {
+    if (!dragging) return;
+    deltaX=x-startX; deltaY=y-startY;
     if (!horizontalIntent && !verticalSaveIntent) {
-      if (deltaY > 14 && deltaY > Math.abs(deltaX) * 1.08) verticalSaveIntent = true;
-      else if (Math.abs(deltaY) > 14 && Math.abs(deltaY) > Math.abs(deltaX) * 1.08) {
-        dragging = false;
-        clearPreview(false);
-        return;
-      }
-      else if (Math.abs(deltaX) > 8 && Math.abs(deltaX) > Math.abs(deltaY) * 1.12) horizontalIntent = true;
+      if (deltaY>14 && deltaY>Math.abs(deltaX)*1.08) verticalSaveIntent=true;
+      else if (deltaY < -14 && Math.abs(deltaY)>Math.abs(deltaX)*1.08) { clear(false); return; }
+      else if (Math.abs(deltaX)>8 && Math.abs(deltaX)>Math.abs(deltaY)*1.12) horizontalIntent=true;
       else return;
     }
-    if (event.cancelable) event.preventDefault();
-    const width = Math.max(1, card.getBoundingClientRect().width);
-    const progress = Math.min(1, Math.abs(deltaX) / (width * .42));
-    const rotation = Math.max(-15, Math.min(15, deltaX / width * 19));
-    const lift = Math.min(9, Math.abs(deltaX) / width * 10);
-    card.style.transform = "translate3d(" + deltaX.toFixed(1) + "px," + (-lift).toFixed(1) + "px,0) rotate(" + rotation.toFixed(2) + "deg)";
-    card.style.setProperty("--swipe-tint-opacity", (progress * .58).toFixed(3));
-    card.classList.toggle("swipe-preview-like", horizontalIntent && deltaX > 0);
-    card.classList.toggle("swipe-preview-nope", horizontalIntent && deltaX < 0);
-    card.classList.toggle("swipe-preview-save", verticalSaveIntent);
+    if (event && event.cancelable) event.preventDefault();
+    const width=Math.max(1,card.getBoundingClientRect().width), height=Math.max(1,card.getBoundingClientRect().height);
+    const progress=Math.min(1,Math.abs(deltaX)/(width*.42));
+    const rotation=Math.max(-15,Math.min(15,deltaX/width*19));
+    const lift=Math.min(9,Math.abs(deltaX)/width*10);
+    card.style.transform="translate3d("+deltaX.toFixed(1)+"px,"+(-lift).toFixed(1)+"px,0) rotate("+rotation.toFixed(2)+"deg)";
+    card.style.setProperty("--swipe-tint-opacity",(progress*.58).toFixed(3));
+    card.classList.toggle("swipe-preview-like",horizontalIntent && deltaX>0);
+    card.classList.toggle("swipe-preview-nope",horizontalIntent && deltaX<0);
+    card.classList.toggle("swipe-preview-save",verticalSaveIntent);
     if (verticalSaveIntent) {
-      const saveProgress = Math.min(1, Math.max(0, deltaY) / Math.max(1, card.getBoundingClientRect().height * .35));
-      card.style.setProperty("--swipe-tint-opacity", (saveProgress * .72).toFixed(3));
-      card.style.borderColor = "rgba(255,203,37," + (saveProgress * .9).toFixed(2) + ")";
-      card.style.transform = "translate3d(0," + Math.min(70,deltaY * .35).toFixed(1) + "px,0)";
+      const saveProgress=Math.min(1,Math.max(0,deltaY)/Math.max(1,height*.35));
+      card.style.setProperty("--swipe-tint-opacity",(saveProgress*.72).toFixed(3));
+      card.style.borderColor="rgba(255,203,37,"+(saveProgress*.9).toFixed(2)+")";
+      card.style.transform="translate3d(0,"+Math.min(70,deltaY*.35).toFixed(1)+"px,0)";
     } else {
-      card.style.borderColor = deltaX > 0 ? "rgba(255,55,75," + (progress * .92).toFixed(2) + ")" : "rgba(255,255,255," + (progress * .8).toFixed(2) + ")";
+      card.style.borderColor=deltaX>0?"rgba(255,55,75,"+(progress*.92).toFixed(2)+")":"rgba(255,255,255,"+(progress*.8).toFixed(2)+")";
     }
-  });
-
-  function finishSwipe(event) {
-    if (!dragging || event.pointerId !== pointerId) return;
-    dragging = false;
-    const width = Math.max(1, card.getBoundingClientRect().width);
-    const elapsed = Math.max(1, performance.now() - startTime);
-    const velocity = deltaX / elapsed;
-    const threshold = Math.max(78, Math.min(132, width * .22));
-    const accepted = horizontalIntent && (Math.abs(deltaX) >= threshold || (Math.abs(deltaX) > 46 && Math.abs(velocity) > .58));
-    const saveThreshold = Math.max(82, Math.min(150, card.getBoundingClientRect().height * .18));
-    const acceptedSave = !horizontalIntent && deltaY >= saveThreshold && deltaY > Math.abs(deltaX) * 1.08;
-    const productId = card.dataset.productId;
-    pointerId = null;
-    if (accepted || acceptedSave) {
-      card.classList.remove("is-dragging", "swipe-preview-like", "swipe-preview-nope", "swipe-preview-save");
-      card.style.removeProperty("--swipe-tint-opacity");
-      card.style.removeProperty("border-color");
-      animateDeckDecision(productId, acceptedSave ? "save" : (deltaX > 0 ? "yes" : "no"));
+  }
+  function finish(x,y,mode,id,event) {
+    if (!dragging || mode!==inputMode || (mode==="touch" && id!==activeTouchId) || (mode==="pointer" && id!==pointerId)) return;
+    if (Number.isFinite(x) && Number.isFinite(y)) move(x,y,event);
+    if (!dragging) return;
+    const width=Math.max(1,card.getBoundingClientRect().width), height=Math.max(1,card.getBoundingClientRect().height);
+    const elapsed=Math.max(1,performance.now()-startTime);
+    const hVelocity=deltaX/elapsed, vVelocity=deltaY/elapsed;
+    const hThreshold=Math.max(78,Math.min(132,width*.22));
+    const acceptedHorizontal=horizontalIntent && (Math.abs(deltaX)>=hThreshold || (Math.abs(deltaX)>46 && Math.abs(hVelocity)>.58));
+    const saveThreshold=Math.max(76,Math.min(150,height*.17));
+    const acceptedSave=!horizontalIntent && deltaY>=saveThreshold && deltaY>Math.abs(deltaX)*1.08 && (verticalSaveIntent || vVelocity>.25);
+    const productId=card.dataset.productId;
+    if (acceptedHorizontal || acceptedSave) {
+      dragging=false; inputMode=""; activeTouchId=null; pointerId=null;
+      card.classList.remove("is-dragging","swipe-preview-like","swipe-preview-nope","swipe-preview-save");
+      card.style.removeProperty("--swipe-tint-opacity"); card.style.removeProperty("border-color");
+      animateDeckDecision(productId,acceptedSave?"save":(deltaX>0?"yes":"no"));
       return;
     }
-    const wasTap = Math.abs(deltaX) < 10 && Math.abs(deltaY) < 10 && !horizontalIntent && !verticalSaveIntent;
-    clearPreview(true);
-    if (wasTap) {
-    modalReturnFocus = document.activeElement;
-    openProductDetails(productId);
+    const wasTap=Math.abs(deltaX)<10 && Math.abs(deltaY)<10 && !horizontalIntent && !verticalSaveIntent;
+    clear(true);
+    if (wasTap) { modalReturnFocus=document.activeElement; openProductDetails(productId); }
   }
-  }
+  function isGestureTarget(event) { return card.contains(event.target) && !event.target.closest("button, a"); }
 
-  gestureSurface.addEventListener("pointerup", finishSwipe);
-  gestureSurface.addEventListener("pointercancel", function(event) {
-    if (!dragging || (pointerId !== null && event.pointerId !== pointerId)) return;
-    pointerId = null;
-    clearPreview(true);
-  });
-  gestureSurface.addEventListener("lostpointercapture", function() {
-    if (dragging) { pointerId = null; clearPreview(true); }
-  });
+  // Touch contacts use the touch event stream only; no pointer capture for fingers.
+  surface.addEventListener("touchstart",function(event){
+    if (!event.changedTouches || !event.changedTouches.length || !isGestureTarget(event)) return;
+    const t=event.changedTouches[0]; begin(t.clientX,t.clientY,"touch",t.identifier);
+  },{passive:true,signal});
+  document.addEventListener("touchmove",function(event){
+    if (!dragging || inputMode!=="touch" || !event.changedTouches) return;
+    const t=Array.from(event.changedTouches).find(item=>item.identifier===activeTouchId);
+    if(t) move(t.clientX,t.clientY,event);
+  },{capture:true,passive:false,signal});
+  document.addEventListener("touchend",function(event){
+    if (!dragging || inputMode!=="touch" || !event.changedTouches) return;
+    const t=Array.from(event.changedTouches).find(item=>item.identifier===activeTouchId);
+    if(t) finish(t.clientX,t.clientY,"touch",t.identifier,event);
+  },{capture:true,passive:true,signal});
+  document.addEventListener("touchcancel",function(){ if(dragging && inputMode==="touch") clear(true); },{capture:true,passive:true,signal});
+
+  // Mouse and stylus only; ignore pointer events generated by touch input.
+  surface.addEventListener("pointerdown",function(event){
+    if(event.pointerType==="touch" || !isGestureTarget(event) || event.button!==0 || event.isPrimary===false) return;
+    begin(event.clientX,event.clientY,"pointer",event.pointerId);
+    try { surface.setPointerCapture(event.pointerId); } catch(error) {}
+  },{signal});
+  document.addEventListener("pointermove",function(event){
+    if(dragging && inputMode==="pointer" && event.pointerId===pointerId) move(event.clientX,event.clientY,event);
+  },{capture:true,signal});
+  document.addEventListener("pointerup",function(event){
+    if(dragging && inputMode==="pointer" && event.pointerId===pointerId) finish(event.clientX,event.clientY,"pointer",event.pointerId,event);
+  },{capture:true,signal});
+  document.addEventListener("pointercancel",function(event){
+    if(dragging && inputMode==="pointer" && event.pointerId===pointerId) clear(true);
+  },{capture:true,signal});
 }
 document.addEventListener("click", handleClick);
 document.addEventListener("change", handleChange);
@@ -1957,7 +2015,7 @@ document.addEventListener("keydown", function(event) {
   }
 });
 async function boot() {
-  let catalog = [];
+  catalogProducts = [];
   let catalogLoaded = false;
   try {
     const pinResponse = await fetch("./data/pinterest-pins.json", { cache: "no-store" });
@@ -1974,7 +2032,7 @@ async function boot() {
         const response = await fetch("./data/" + catalogManifest.pages[first].file.replace(/^data\//, ""), { cache:"no-store" });
         if (response.ok) {
           const payload = await response.json();
-          catalog = (payload.products || []).map(normalizeProduct).filter(function(product) { return product.gender === "men" && product.genderVerified === true; });
+          catalogProducts = (payload.products || []).map(normalizeProduct).filter(function(product) { return product.gender === "men" && product.genderVerified === true; });
           catalogLoadedPages.add(catalogManifest.pages[first].file);
           catalogLoaded = true;
         }
@@ -1984,7 +2042,7 @@ async function boot() {
       const response = await fetch("./data/catalog.json", { cache:"no-store" });
       if (response.ok) {
         const payload = await response.json();
-        catalog = (payload.products || []).map(normalizeProduct).filter(function(product) { return product.gender === "men" && product.genderVerified === true; });
+        catalogProducts = (payload.products || []).map(normalizeProduct).filter(function(product) { return product.gender === "men" && product.genderVerified === true; });
         catalogLoaded = true;
       }
     }
@@ -2009,7 +2067,7 @@ async function boot() {
     if (response.ok) aiAgentConfig = await response.json();
   } catch (error) { console.warn("Configuration du personal shopper IA non chargée.", error); }
   const stored = await loadState();
-  const base = createInitialState(catalog);
+  const base = createInitialState(catalogProducts);
   state = stored ? Object.assign(base, stored) : base;
   // Keep only products with explicit men's evidence or a confirmed men's-only manual entry.
   state.products = (Array.isArray(state.products) ? state.products : []).map(normalizeProduct).filter(function(product) { return product.gender === "men" && product.genderVerified === true; });
@@ -2034,10 +2092,10 @@ async function boot() {
   state.outfitFeedback = state.outfitFeedback && typeof state.outfitFeedback === "object" && !Array.isArray(state.outfitFeedback) ? state.outfitFeedback : {};
   const localProducts = Array.isArray(state.products) ? state.products.map(normalizeProduct) : [];
   if (!catalogLoaded) {
-    state.products = localProducts.length ? localProducts : catalog;
+    state.products = localProducts.length ? localProducts : catalogProducts;
   } else {
-    const currentIds = new Set(catalog.map(function(product) { return product.id; }));
-    const currentIdentities = new Set(catalog.map(productIdentity));
+    const currentIds = new Set(catalogProducts.map(function(product) { return product.id; }));
+    const currentIdentities = new Set(catalogProducts.map(productIdentity));
     const savedIds = new Set((state.likedProducts || []).map(function(item) { return item.productId; }));
     (state.interactions.likes || []).concat(state.interactions.dislikes || [], state.interactions.saves || []).forEach(function(item) { savedIds.add(item.productId); });
     const localManual = localProducts.filter(function(product) {
@@ -2062,7 +2120,7 @@ async function boot() {
       });
     });
     const merged = new Map();
-    catalog.forEach(function(product) { merged.set(productIdentity(product), product); });
+    catalogProducts.forEach(function(product) { merged.set(productIdentity(product), product); });
     cachedFeed.forEach(function(product) { if (!merged.has(productIdentity(product))) merged.set(productIdentity(product), product); });
     localManual.forEach(function(product) { if (!merged.has(productIdentity(product))) merged.set(productIdentity(product), product); });
     savedWithdrawn.forEach(function(product) { if (!merged.has(productIdentity(product))) merged.set(productIdentity(product), product); });
