@@ -152,7 +152,10 @@ function productRecord(item,source,pageUrl,checkedAt) {
   if (!item.name || currency !== "EUR" || !Number.isFinite(price) || price <= 0 || /outofstock|soldout|discontinued/.test(availability)) return null;
   const page = safePage(item.url || pageUrl,pageUrl,source.domain);
   const imageValue = list(item.image)[0];
-  const image = safeImage(typeof imageValue === "string" ? imageValue : imageValue && (imageValue.url || imageValue.contentUrl),pageUrl);
+  const structuredImage = safeImage(typeof imageValue === "string" ? imageValue : imageValue && (imageValue.url || imageValue.contentUrl),pageUrl);
+  // Certaines boutiques conservent une URL JSON-LD historique : og:image correspond à la galerie active.
+  const socialImage = safeImage(meta(html,"og:image"),pageUrl);
+  const image = socialImage || structuredImage;
   if (!page || !image) return null;
   const name = clean(item.name); if (!name || name.length > 220) return null;
   const brand = clean(item.brand && item.brand.name || item.brand || source.name);
