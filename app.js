@@ -1126,6 +1126,7 @@ function render() {
   else if (currentView === "profile") main.innerHTML = renderProfile();
   else if (currentView === "settings") main.innerHTML = renderSettings();
   else main.innerHTML = renderDiscover(false);
+  attachImageFallbacks(main);
   attachSwipe();
   maybePrefetchCatalog();
   main.querySelectorAll("[data-mark-seen-on-open]").forEach(function(link) {
@@ -1137,14 +1138,6 @@ function render() {
         persist();
       }
     });
-  });
-  main.querySelectorAll("img.product-photo").forEach(function(image) {
-    image.addEventListener("error", function() {
-      const fallback = document.createElement("div");
-      fallback.className = "image-fallback";
-      fallback.innerHTML = '<span class="hanger" aria-hidden="true">⌁</span><small>Image indisponible</small>';
-      image.replaceWith(fallback);
-    }, { once: true });
   });
   if (state && state.settings.aiAgentAutoRefresh && !aiAgentPending &&
       (currentView === "discover" || currentView === "training")) {
@@ -1814,6 +1807,7 @@ function attachSwipe() {
   function clearPreview(animateBack) {
     dragging = false;
     horizontalIntent = false;
+    verticalSaveIntent = false;
     card.classList.remove("is-dragging", "swipe-preview-like", "swipe-preview-nope", "swipe-preview-save");
     card.style.removeProperty("--swipe-tint-opacity");
     card.style.removeProperty("border-color");
@@ -1838,10 +1832,10 @@ function attachSwipe() {
     try { gestureSurface.setPointerCapture(pointerId); } catch (error) {}
   });
 
-  gestureSurface.addEventListener("pointermove", function(event) {
-    if (!dragging || event.pointerId !== pointerId) return;
-    deltaX = event.clientX - startX;
-    deltaY = event.clientY - startY;
+  function updateGesturePosition(clientX,clientY,event) {
+    if (!dragging) return;
+    deltaX = clientX - startX;
+    deltaY = clientY - startY;
     if (!horizontalIntent && !verticalSaveIntent) {
       if (deltaY > 14 && deltaY > Math.abs(deltaX) * 1.08) verticalSaveIntent = true;
       else if (Math.abs(deltaY) > 14 && Math.abs(deltaY) > Math.abs(deltaX) * 1.08) {
@@ -1852,7 +1846,7 @@ function attachSwipe() {
       else if (Math.abs(deltaX) > 8 && Math.abs(deltaX) > Math.abs(deltaY) * 1.12) horizontalIntent = true;
       else return;
     }
-    if (event.cancelable) event.preventDefault();
+    if (event && event.cancelable) event.preventDefault();
     const width = Math.max(1, card.getBoundingClientRect().width);
     const progress = Math.min(1, Math.abs(deltaX) / (width * .42));
     const rotation = Math.max(-15, Math.min(15, deltaX / width * 19));
@@ -1870,7 +1864,19 @@ function attachSwipe() {
     } else {
       card.style.borderColor = deltaX > 0 ? "rgba(255,55,75," + (progress * .92).toFixed(2) + ")" : "rgba(255,255,255," + (progress * .8).toFixed(2) + ")";
     }
+  }
+
+  gestureSurface.addEventListener("pointermove", function(event) {
+    if (!dragging || event.pointerId !== pointerId) return;
+    updateGesturePosition(event.clientX,event.clientY,event);
   });
+  // Touch Events are processed explicitly too: some mobile Chromium builds emit
+  // touchmove without pointermove even when a pointer was captured on pointerdown.
+  gestureSurface.addEventListener("touchmove", function(event) {
+    if (!dragging || !event.changedTouches || !event.changedTouches.length) return;
+    const touch = event.changedTouches[0];
+    updateGesturePosition(touch.clientX,touch.clientY,event);
+  }, { passive:false });
 
   function finishSwipe(event) {
     if (!dragging || (event.pointerId !== undefined && event.pointerId !== pointerId)) return;
@@ -1903,12 +1909,13 @@ function attachSwipe() {
   }
 
   gestureSurface.addEventListener("pointerup", finishSwipe);
-  // Repli pour les navigateurs qui ne livrent pas pointerup après la capture tactile.
+  // Capture phase prevents another touch handler from swallowing the final position.
   gestureSurface.addEventListener("touchend", function(event) {
     if (!dragging || !event.changedTouches || !event.changedTouches.length) return;
     const touch = event.changedTouches[0];
+    updateGesturePosition(touch.clientX,touch.clientY,null);
     finishSwipe({ pointerId:pointerId, clientX:touch.clientX, clientY:touch.clientY });
-  }, { passive:true });
+  }, { capture:true, passive:true });
   gestureSurface.addEventListener("touchcancel", function() {
     if (!dragging) return;
     pointerId = null;
