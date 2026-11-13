@@ -38,7 +38,12 @@ async function ensureAppReady(page) {
     return main && (main.querySelector("#active-product-card") || main.querySelector(".empty-state") || main.querySelector(".discovery-page"));
   }, null, { timeout: 45000 });
   await page.evaluate(() => document.fonts && document.fonts.ready);
-  await page.waitForTimeout(450);
+  await page.waitForFunction(() => {
+    const card = document.querySelector("#active-product-card");
+    const image = card && card.querySelector("img.product-photo");
+    return !image || image.complete;
+  }, null, { timeout:15000 }).catch(() => {});
+  await page.waitForTimeout(250);
 }
 
 async function getLayout(page) {
@@ -53,6 +58,23 @@ async function getLayout(page) {
       return { x:Math.round(box.x), y:Math.round(box.y), width:Math.round(box.width), height:Math.round(box.height), top:Math.round(box.top), right:Math.round(box.right), bottom:Math.round(box.bottom) };
     };
     const visibleNav = nav && getComputedStyle(nav).display !== "none";
+    const visual = card && card.querySelector(".product-visual");
+    const info = card && card.querySelector(".product-info");
+    const photo = visual && visual.querySelector("img.product-photo");
+    const fallback = visual && visual.querySelector(".image-fallback");
+    const imageRect = rect(visual);
+    const infoRect = rect(info);
+    const productImage = card ? {
+      loaded:Boolean(photo && photo.complete && photo.naturalWidth > 0),
+      fallback:Boolean(fallback),
+      url:photo ? (photo.currentSrc || photo.src) : fallback && fallback.dataset.imageUrl || null,
+      naturalWidth:photo ? photo.naturalWidth : 0,
+      visual:imageRect,
+      info:infoRect
+    } : null;
+    const cardSectionsOverlap = Boolean(visual && info && actions &&
+      (visual.getBoundingClientRect().bottom > info.getBoundingClientRect().top + 2 ||
+       info.getBoundingClientRect().bottom > actions.getBoundingClientRect().top + 2));
     const actionSizes = Array.from(document.querySelectorAll(".deck-action")).map(button => {
       const box = button.getBoundingClientRect();
       return { label:button.getAttribute("aria-label"), width:Math.round(box.width), height:Math.round(box.height) };
@@ -62,6 +84,7 @@ async function getLayout(page) {
       document:{width:document.documentElement.scrollWidth,height:document.documentElement.scrollHeight},
       horizontalOverflow:document.documentElement.scrollWidth > innerWidth + 1,
       main:rect(main), card:rect(card), actions:rect(actions), mobileNav:visibleNav ? rect(nav) : null,
+      productImage, cardSectionsOverlap,
       cardOverlapsNav:Boolean((card || actions) && visibleNav && document.body.classList.contains("is-discovery-app") &&
         Math.max(card ? card.getBoundingClientRect().bottom : 0, actions ? actions.getBoundingClientRect().bottom : 0) > nav.getBoundingClientRect().top + 3),
       actionSizes
@@ -75,7 +98,12 @@ async function capture(page, viewportName, viewName, fullPage = false) {
   const layout = await getLayout(page);
   const issues = [];
   if (layout.horizontalOverflow) issues.push("débordement horizontal (" + layout.document.width + "px pour " + layout.viewport.width + "px)");
-  if (layout.cardOverlapsNav) issues.push("la carte de swipe passe sous la navigation basse");
+  if (layout.cardOverlapsNav) issues.push("la carte ou les commandes passent sous la navigation basse");
+  if (viewName === "pour-toi" && layout.productImage) {
+    if (!layout.productImage.loaded) issues.push("la photo principale du produit ne s'est pas chargée : " + (layout.productImage.url || "URL absente"));
+    if (layout.productImage.visual && layout.productImage.visual.height < 120) issues.push("la zone photo du produit est trop petite (" + layout.productImage.visual.height + "px)");
+    if (layout.cardSectionsOverlap) issues.push("les zones photo, informations et commandes se chevauchent");
+  }
   if (layout.viewport.width <= 850) {
     const undersized = layout.actionSizes.filter(item => item.width < 44 || item.height < 44);
     if (undersized.length) issues.push("actions tactiles trop petites : " + undersized.map(item => item.label + " " + item.width + "×" + item.height).join(", "));
