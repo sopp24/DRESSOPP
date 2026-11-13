@@ -197,3 +197,69 @@ test("product discovery is limited to confirmed men's pieces", function() {
   assert.equal(women.gender,"women");
   assert.equal(unknown.gender,"unknown");
 });
+
+
+test("normalizeProduct accepts only safe repository-local cached photo paths", function() {
+  const product = normalizeProduct({
+    imageUrl:"./assets/product-images/abc123.webp",
+    imageFallbackUrl:"https://cdn.example.com/product.webp"
+  });
+  assert.equal(product.imageUrl,"./assets/product-images/abc123.webp");
+  assert.equal(product.imageFallbackUrl,"https://cdn.example.com/product.webp");
+  const unsafe = normalizeProduct({ imageUrl:"../private/photo.jpg" });
+  assert.equal(unsafe.imageUrl,"");
+});
+
+test("curated men's references remain discoverable after their editorial TTL", function() {
+  const product = normalizeProduct({
+    id:"curated-expired",name:"Pull en laine homme",merchant:"Atelier",price:79,
+    objective:"Vêtements",category:"Pull",styleTags:["Heritage"],seasonTags:["Toute saison"],
+    sourceType:"curated",catalogStatus:"active",expiresAt:"2020-01-01T00:00:00.000Z"
+  });
+  const state = createInitialState([product]);
+  const result = rankProducts([product],state,{
+    includeSeen:true,
+    filters:{objective:"Vêtements",style:"Tous",season:"Toute saison",maxPrice:null}
+  });
+  assert.deepEqual(result.map(item=>item.id),["curated-expired"]);
+});
+
+test("default discovery interleaves merchants and balances style and price bands", function() {
+  const products = [
+    normalizeProduct({id:"a1",name:"Pull preppy 1",merchant:"Boutique A",brand:"A",price:24,category:"Pull",styleTags:["Preppy"],seasonTags:["Toute saison"]}),
+    normalizeProduct({id:"a2",name:"Pull preppy 2",merchant:"Boutique A",brand:"A",price:29,category:"Pull",styleTags:["Preppy"],seasonTags:["Toute saison"]}),
+    normalizeProduct({id:"a3",name:"Pull preppy 3",merchant:"Boutique A",brand:"A",price:35,category:"Pull",styleTags:["Preppy"],seasonTags:["Toute saison"]}),
+    normalizeProduct({id:"b1",name:"Veste streetwear",merchant:"Boutique B",brand:"B",price:75,category:"Veste",styleTags:["Streetwear"],seasonTags:["Toute saison"]}),
+    normalizeProduct({id:"c1",name:"Derbies heritage",merchant:"Boutique C",brand:"C",price:160,objective:"Chaussures",category:"Derbies",styleTags:["Heritage"],seasonTags:["Toute saison"]}),
+    normalizeProduct({id:"d1",name:"Chemise workwear",merchant:"Boutique D",brand:"D",price:49,category:"Chemise",styleTags:["Workwear"],seasonTags:["Toute saison"]})
+  ];
+  const state = createInitialState(products);
+  const result = rankProducts(products,state,{
+    includeSeen:true,
+    filters:{objective:"Tout",style:"Tous",season:"Toute saison",maxPrice:null}
+  });
+  const firstFour = result.slice(0,4);
+  assert.equal(new Set(firstFour.map(item=>item.merchant)).size,4);
+  assert.ok(new Set(firstFour.map(item=>item.styleTags[0])).size >= 3);
+  assert.ok(new Set(firstFour.map(item=>item.price < 40 ? "budget" : item.price < 100 ? "mid" : "premium")).size >= 3);
+});
+
+
+// A marketplace with multiple sellers must not count as several distinct boutiques.
+test("merchant diversity treats seller labels on one marketplace as the same shop", function() {
+  const products = [
+    normalizeProduct({id:"z1",name:"Pull OVS",merchant:"Zalando · OVS Group",brand:"OVS",price:50,category:"Pull",seasonTags:["Toute saison"]}),
+    normalizeProduct({id:"z2",name:"Jean OVS",merchant:"Zalando · OVS Group",brand:"OVS",price:65,category:"Pantalon",seasonTags:["Toute saison"]}),
+    normalizeProduct({id:"z3",name:"Pull Massimo",merchant:"Zalando · Massimo Dutti",brand:"Massimo Dutti",price:85,category:"Pull",seasonTags:["Toute saison"]}),
+    normalizeProduct({id:"c1",name:"Veste COS",merchant:"COS",brand:"COS",price:190,category:"Veste",seasonTags:["Toute saison"]}),
+    normalizeProduct({id:"s1",name:"Sneakers SNIPES",merchant:"SNIPES",brand:"Nike",price:110,objective:"Chaussures",category:"Chaussures",seasonTags:["Toute saison"]}),
+    normalizeProduct({id:"u1",name:"Pantalon UNIQLO",merchant:"UNIQLO",brand:"UNIQLO",price:49,category:"Pantalon",seasonTags:["Toute saison"]})
+  ];
+  const state = createInitialState(products);
+  const result = rankProducts(products,state,{
+    includeSeen:true,
+    filters:{objective:"Tout",style:"Tous",season:"Toute saison",maxPrice:null}
+  });
+  const firstFour = result.slice(0,4).map(item=>String(item.merchant).split(" · ")[0]);
+  assert.equal(new Set(firstFour).size,4);
+});

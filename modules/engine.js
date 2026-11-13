@@ -16,6 +16,12 @@ function safeHttpUrl(value) {
     return url.protocol === "http:" || url.protocol === "https:" ? url.href : "";
   } catch (error) { return ""; }
 }
+function safeImageUrl(value) {
+  const candidate = text(value);
+  if (/^data:image\/(?:png|jpe?g|webp|gif|avif);base64,/i.test(candidate)) return candidate;
+  if (/^\.\/assets\/product-images\/[a-z0-9_-]+\.(?:jpe?g|png|webp|avif)$/i.test(candidate)) return candidate;
+  return safeHttpUrl(candidate);
+}
 export function inferProductGender(source) {
   const item = source || {};
   const audience = item.audience && typeof item.audience === "object"
@@ -88,7 +94,8 @@ export function normalizeProduct(raw) {
   const merchant = text(source.merchant || source.shop || source.store);
   const url = safeHttpUrl(source.url || source.productUrl || source.link);
   const imageValue = text(source.imageUrl || source.image || source.photo);
-  const imageUrl = imageValue.startsWith("data:image/") ? imageValue : safeHttpUrl(imageValue);
+  const imageUrl = safeImageUrl(imageValue);
+  const imageFallbackUrl = safeImageUrl(source.imageFallbackUrl);
   const canonical = url ? url.split("#")[0].replace(/\/+$/, "").toLowerCase() : "";
   const identity = canonical || [normalizeText(name), normalizeText(brand), normalizeText(merchant)].join("|");
   const suppliedPrice = source.price === "" || source.price == null ? null : Number(source.price);
@@ -96,7 +103,7 @@ export function normalizeProduct(raw) {
   const id = text(source.id) || "prod-" + hash(identity);
   const gender = inferProductGender(source);
   return {
-    id: id, name: name, brand: brand, merchant: merchant, url: url, imageUrl: imageUrl,
+    id: id, name: name, brand: brand, merchant: merchant, url: url, imageUrl: imageUrl, imageFallbackUrl: imageFallbackUrl,
     gender: gender, genderVerified: gender === "men",
     price: price,
     originalPrice: source.originalPrice == null || source.originalPrice === "" ? null : Number(source.originalPrice),
@@ -260,6 +267,65 @@ function noveltyScore(product, learned) {
   return 100 - (known / tokens.length) * 100;
 }
 
+export function diversifyScoredProducts(entries, limit) {
+  const remaining = (Array.isArray(entries) ? entries : []).map((entry,index) => ({
+    entry,index,product:entry && entry.product ? entry.product : entry,
+    score:Number(entry && entry.score) || 0
+  }));
+  const merchantKey = product => normalizeText(product && (product.merchant || product.source || product.brand) || "sans boutique")
+    .split(" · ")[0].trim();
+  const brandKey = product => normalizeText(product && product.brand || "");
+  const categoryKey = product => normalizeText(product && (product.category || product.objective) || "autre");
+  const priceBand = product => {
+    const price = Number(product && product.price);
+    if (!Number.isFinite(price)) return "unknown";
+    return price < 40 ? "budget" : price < 100 ? "mid" : "premium";
+  };
+  const styles = product => (Array.isArray(product && product.styleTags) ? product.styleTags : [])
+    .map(normalizeText).filter(Boolean);
+  const distinctMerchants = new Set(remaining.map(item => merchantKey(item.product)));
+  const firstPass = Math.min(8,distinctMerchants.size);
+  const cap = Number.isFinite(Number(limit)) ? Math.max(0,Math.floor(Number(limit))) : remaining.length;
+  const selected = [];
+  const merchantCounts = new Map(), brandCounts = new Map(), categoryCounts = new Map();
+  const priceCounts = new Map(), styleCounts = new Map();
+
+  while (selected.length < cap && remaining.length) {
+    const unusedMerchants = remaining.filter(item => !merchantCounts.has(merchantKey(item.product)));
+    const pool = selected.length < firstPass && unusedMerchants.length ? unusedMerchants : remaining;
+    let best = pool[0], bestScore = -Infinity;
+    for (const item of pool) {
+      const product = item.product;
+      const merchant = merchantKey(product), brand = brandKey(product);
+      const category = categoryKey(product), price = priceBand(product);
+      const productStyles = styles(product);
+      const stylePressure = productStyles.reduce((max,style) => Math.max(max,styleCounts.get(style) || 0),0);
+      const penalty =
+        (merchantCounts.get(merchant) || 0) * 16 +
+        (brand ? (brandCounts.get(brand) || 0) * 3 : 0) +
+        (categoryCounts.get(category) || 0) * 2.2 +
+        (priceCounts.get(price) || 0) * 2.5 +
+        stylePressure * 1.8;
+      const adjusted = item.score - penalty;
+      if (adjusted > bestScore || (adjusted === bestScore && item.index < best.index)) {
+        best = item; bestScore = adjusted;
+      }
+    }
+    const index = remaining.indexOf(best);
+    remaining.splice(index,1);
+    selected.push(best.entry);
+    const product = best.product;
+    const merchant = merchantKey(product), brand = brandKey(product);
+    const category = categoryKey(product), price = priceBand(product);
+    merchantCounts.set(merchant,(merchantCounts.get(merchant) || 0)+1);
+    if (brand) brandCounts.set(brand,(brandCounts.get(brand) || 0)+1);
+    categoryCounts.set(category,(categoryCounts.get(category) || 0)+1);
+    priceCounts.set(price,(priceCounts.get(price) || 0)+1);
+    styles(product).forEach(style => styleCounts.set(style,(styleCounts.get(style) || 0)+1));
+  }
+  return selected;
+}
+
 export function rankProducts(products, state, options) {
   const opts = options || {};
   const config = state.settings || {};
@@ -338,7 +404,7 @@ export function rankProducts(products, state, options) {
   }
   const scored = (products || []).filter(function(product) {
     const expired = product.catalogStatus === "expired" ||
-      (product.expiresAt && Date.parse(product.expiresAt) <= Date.now());
+      (product.sourceType !== "curated" && product.expiresAt && Date.parse(product.expiresAt) <= Date.now());
     const stale = product.catalogStatus === "stale";
     const unavailable = product.availabilityStatus === "out_of_stock";
     return product.gender === "men" && product.genderVerified === true && !expired && !stale && !unavailable && sizeMatches(product) &&
@@ -352,15 +418,5 @@ export function rankProducts(products, state, options) {
     return { product: product, score: score };
   });
   scored.sort(function(a, b) { return b.score - a.score; });
-  const result = [];
-  const brandCounts = new Map();
-  scored.forEach(function(entry) {
-    const brand = normalizeText(entry.product.brand || entry.product.merchant || "sans marque");
-    const count = brandCounts.get(brand) || 0;
-    if (count < 2) { result.push(entry.product); brandCounts.set(brand, count + 1); }
-  });
-  scored.forEach(function(entry) {
-    if (!result.some(function(product) { return product.id === entry.product.id; })) result.push(entry.product);
-  });
-  return result;
+  return diversifyScoredProducts(scored).map(function(entry) { return entry.product; });
 }

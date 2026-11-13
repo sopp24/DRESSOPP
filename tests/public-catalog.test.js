@@ -1,6 +1,9 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { extractProductsFromHtml, mergeCatalog, parseRobots, robotsAllows, selectSourceBatch } from "../scripts/refresh-public-catalog.mjs";
+import { extractProductsFromHtml, mergeCatalog, parseRobots, robotsAllows, selectSourceBatch, cacheProductImages } from "../scripts/refresh-public-catalog.mjs";
+import { mkdtemp, readFile, rm } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import { resolve } from "node:path";
 
 const source = { name:"Boutique test", domain:"example.com" };
 
@@ -132,3 +135,29 @@ test("catalogue extraction labels men's, mixed and women's product departments",
   assert.deepEqual(products.map(item=>item.gender),["men","unisex","women","unknown"]);
   assert.deepEqual(products.map(item=>item.genderVerified),[true,false,false,false]);
 });
+
+
+test("caches confirmed men's product photos on the same origin and keeps the CDN fallback", async () => {
+  const directory = await mkdtemp(resolve(tmpdir(),"dressopp-product-images-"));
+  try {
+    const product = {
+      id:"cache-test",gender:"men",genderVerified:true,
+      imageUrl:"https://cdn.example.com/look.jpg"
+    };
+    const result = await cacheProductImages([product],{
+      directory,
+      fetcher:async () => new Response(new Uint8Array([255,216,255]),{
+        status:200,headers:{"content-type":"image/jpeg"}
+      })
+    });
+    assert.equal(result.cached,1);
+    assert.equal(result.failed,0);
+    assert.match(product.imageUrl,/^\.\/assets\/product-images\/[a-z0-9]+\.jpg$/);
+    assert.equal(product.imageFallbackUrl,"https://cdn.example.com/look.jpg");
+    const filename=product.imageUrl.split("/").pop();
+    assert.deepEqual(Array.from(await readFile(resolve(directory,filename))),[255,216,255]);
+  } finally {
+    await rm(directory,{recursive:true,force:true});
+  }
+});
+

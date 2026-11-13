@@ -148,6 +148,7 @@ function safeImageUrl(value) {
   if (typeof value !== "string" || !value.trim()) return "";
   const candidate = value.trim();
   if (/^data:image\/(?:png|jpe?g|webp|gif|avif);base64,/i.test(candidate)) return candidate;
+  if (/^\.\/assets\/product-images\/[a-z0-9_-]+\.(?:jpe?g|png|webp|avif)$/i.test(candidate)) return candidate;
   return safeExternalUrl(candidate);
 }
 function productImageCandidates(product) {
@@ -155,7 +156,11 @@ function productImageCandidates(product) {
   const catalogProduct = catalogProducts.find(entry => String(entry.id) === String(item.id)) ||
     catalogProducts.find(entry => entry.url && item.url && safeExternalUrl(entry.url) === safeExternalUrl(item.url)) ||
     catalogProducts.find(entry => productIdentity(entry) === productIdentity(item)) || null;
-  const rawCandidates = [catalogProduct && catalogProduct.imageUrl,item.imageUrl,item.image,item.photo];
+  const rawCandidates = [
+    catalogProduct && catalogProduct.imageUrl,item.imageUrl,
+    catalogProduct && catalogProduct.imageFallbackUrl,item.imageFallbackUrl,
+    item.image,item.photo
+  ];
   return {
     urls: Array.from(new Set(rawCandidates.map(safeImageUrl).filter(Boolean))),
     debug: {
@@ -430,7 +435,7 @@ function imageMarkup(url, label, options) {
       ? Array.from(new Set(opts.fallbackUrls.map(safeImageUrl).filter(candidate => candidate && candidate !== primary)))
       : [];
     const fallbackAttribute = fallbacks.length ? ' data-fallback-srcs="' + esc(JSON.stringify(fallbacks)) + '"' : "";
-    return '<img class="product-photo" src="' + esc(primary) + '" alt="' + esc(label || "Photo du produit") + '"' + priority + fallbackAttribute + ' referrerpolicy="no-referrer" decoding="async">';
+    return '<img class="product-photo" src="' + esc(primary) + '" alt="' + esc(label || "Photo du produit") + '"' + priority + fallbackAttribute + ' referrerpolicy="strict-origin-when-cross-origin" decoding="async">';
   }
   return '<div class="image-fallback"><span class="hanger" aria-hidden="true">⌁</span><small>Photo non renseignée</small></div>';
 }
@@ -2167,6 +2172,14 @@ async function boot() {
   state.seenPinterestPins = Array.isArray(state.seenPinterestPins) ? state.seenPinterestPins : [];
   state.pinterestPins = (pinterestFeed.pins || []).filter(isMenswearPin);
   state.learnedPreferences = deriveLearnedPreferences(state);
+  // Charger aussi les pages suivantes avant la première recommandation :
+  // sinon le premier lot peut masquer les autres boutiques et les pièces éditoriales.
+  if (catalogManifest && Array.isArray(catalogManifest.pages)) {
+    for (let pageIndex = 0; pageIndex < catalogManifest.pages.length; pageIndex += 1) {
+      const page = catalogManifest.pages[pageIndex];
+      if (page && !catalogLoadedPages.has(page.file)) await loadCatalogPage(pageIndex);
+    }
+  }
   aiAgentLastActionCount = aiAgentActionCount();
   render();
   updateSaveStatus("Stockage local prêt", "ok");
