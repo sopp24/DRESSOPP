@@ -9,6 +9,7 @@ const CATALOG = resolve(ROOT, "data/catalog.json");
 const META = resolve(ROOT, "data/catalog-meta.json");
 const MANIFEST = resolve(ROOT, "data/catalog-manifest.json");
 const PAGE_DIR = resolve(ROOT, "data/catalog-pages");
+const PRODUCT_IMAGE_DIR = resolve(ROOT, "assets/product-images");
 const SEEDS = resolve(ROOT, "data/catalog-seeds.json");
 const BOT = "DRESSOPPBot";
 const UA = "DRESSOPPBot/1.0 (+https://sopp24.github.io/DRESSOPP/)";
@@ -426,7 +427,44 @@ export function mergeCatalog(previous,seeds,results,now = new Date(),previousMet
   };
 }
 
+export async function cacheProductImages(items, options = {}) {
+  const directory = resolve(options.directory || PRODUCT_IMAGE_DIR);
+  const fetcher = options.fetcher || globalThis.fetch;
+  const maxBytes = Number(options.maxBytes) || 1200000;
+  await mkdir(directory,{recursive:true});
+  let cached = 0, failed = 0;
+  for (const product of (Array.isArray(items) ? items : [])) {
+    if (!product || product.gender !== "men" || product.genderVerified !== true) continue;
+    const remoteUrl = String(product.imageFallbackUrl || product.imageUrl || "").trim();
+    if (!/^https:\/\//i.test(remoteUrl)) continue;
+    if (/^\.\/assets\/product-images\//i.test(String(product.imageUrl || ""))) continue;
+    product.imageFallbackUrl = remoteUrl;
+    try {
+      const response = await fetcher(remoteUrl,{
+        headers:{ "user-agent":UA, "accept":"image/avif,image/webp,image/png,image/jpeg,*/*;q=0.5" },
+        signal:typeof AbortSignal !== "undefined" && AbortSignal.timeout ? AbortSignal.timeout(12000) : undefined
+      });
+      if (!response || !response.ok) throw new Error("Image HTTP " + (response && response.status));
+      const contentType = String(response.headers && response.headers.get("content-type") || "").split(";")[0].trim().toLowerCase();
+      const extensions = { "image/jpeg":"jpg","image/png":"png","image/webp":"webp","image/avif":"avif" };
+      const extension = extensions[contentType];
+      if (!extension) throw new Error("Format image non pris en charge : " + contentType);
+      const bytes = Buffer.from(await response.arrayBuffer());
+      if (!bytes.length || bytes.length > maxBytes) throw new Error("Image vide ou trop volumineuse");
+      const filename = hash(product.id || product.url) + "." + extension;
+      await writeFile(resolve(directory,filename),bytes);
+      product.imageUrl = "./assets/product-images/" + filename;
+      cached += 1;
+    } catch (error) {
+      failed += 1;
+      console.warn("[DRESSOPP] Photo conservée en URL distante pour " + (product.id || product.name) + " : " + error.message);
+    }
+  }
+  return { cached,failed };
+}
+
 async function writeCatalogPages(items,generatedAt) {
+  await cacheProductImages(items);
   await mkdir(PAGE_DIR,{recursive:true});
   const pageNames = [];
   for (let offset = 0; offset < items.length; offset += PAGE_SIZE) {
