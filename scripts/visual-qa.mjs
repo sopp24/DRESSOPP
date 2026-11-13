@@ -66,13 +66,26 @@ async function getLayout(page) {
     const infoRect = rect(info);
     const productImage = card ? {
       productId:card.dataset.productId || null,
+      url:card.dataset.imageUrl || null,
       loaded:Boolean(photo && photo.complete && photo.naturalWidth > 0),
       fallback:Boolean(fallback),
-      url:photo ? (photo.currentSrc || photo.src) : fallback && fallback.dataset.imageUrl || null,
-      requestedSrc:photo ? (photo.getAttribute("src") || null) : null,
+      requestedSrc:photo ? (photo.currentSrc || photo.src || photo.getAttribute("src")) : null,
       naturalWidth:photo ? photo.naturalWidth : 0,
       visual:imageRect,
       info:infoRect
+    } : null;
+    const wrapper = card && card.closest(".deck-card-wrap");
+    const cardStyles = card ? {
+      bodyApp:document.body.classList.contains("is-discovery-app"),
+      appPage:Boolean(document.querySelector(".discovery-page--app")),
+      wrapperDisplay:wrapper ? getComputedStyle(wrapper).display : null,
+      wrapperRows:wrapper ? getComputedStyle(wrapper).gridTemplateRows : null,
+      cardHeight:getComputedStyle(card).height,
+      cardPosition:getComputedStyle(card).position,
+      visualPosition:visual ? getComputedStyle(visual).position : null,
+      visualMinHeight:visual ? getComputedStyle(visual).minHeight : null,
+      infoPosition:info ? getComputedStyle(info).position : null,
+      actionsPosition:actions ? getComputedStyle(actions).position : null
     } : null;
     const cardSectionsOverlap = Boolean(visual && info && actions &&
       (visual.getBoundingClientRect().bottom > info.getBoundingClientRect().top + 2 ||
@@ -86,7 +99,7 @@ async function getLayout(page) {
       document:{width:document.documentElement.scrollWidth,height:document.documentElement.scrollHeight},
       horizontalOverflow:document.documentElement.scrollWidth > innerWidth + 1,
       main:rect(main), card:rect(card), actions:rect(actions), mobileNav:visibleNav ? rect(nav) : null,
-      productImage, cardSectionsOverlap,
+      productImage, cardStyles, cardSectionsOverlap,
       cardOverlapsNav:Boolean((card || actions) && visibleNav && document.body.classList.contains("is-discovery-app") &&
         Math.max(card ? card.getBoundingClientRect().bottom : 0, actions ? actions.getBoundingClientRect().bottom : 0) > nav.getBoundingClientRect().top + 3),
       actionSizes
@@ -111,7 +124,7 @@ async function capture(page, viewportName, viewName, fullPage = false) {
     if (undersized.length) issues.push("actions tactiles trop petites : " + undersized.map(item => item.label + " " + item.width + "×" + item.height).join(", "));
     if (layout.mobileNav && layout.mobileNav.height < 44) issues.push("navigation tactile trop basse");
   }
-  results.push({ viewport:viewportName, view:viewName, screenshot:path, ...layout, issues });
+  results.push({ ...layout, viewport:viewportName, viewportSize:layout.viewport, view:viewName, screenshot:path, issues });
 }
 
 async function clickView(page, name, mobile) {
