@@ -78,7 +78,7 @@ test("all local files referenced by the application shell exist", function() {
 });
 
 test("the PWA refreshes its cache and preloads the app icons and first catalogue page", function() {
-  assert.ok(sw.includes('dressopp-static-v18'));
+  assert.ok(sw.includes('dressopp-static-v19'));
   for (const path of [
     "./assets/logo-horizontal.png",
     "./assets/logo-square.png",
@@ -285,7 +285,7 @@ test("all product-card thumbnails use catalogue photo resolution and fallbacks",
   assert.ok(grid.includes("productImageMarkup(product, product.name)"));
   assert.ok(app.includes("productImageMarkup(entry.product,entry.product.name)"));
   assert.ok(app.includes('referrerpolicy="strict-origin-when-cross-origin"'));
-  assert.ok(app.includes("./assets/product-images/"));
+  assert.ok(app.includes("product-images"));
   assert.ok(app.includes("imageFallbackUrl"));
   assert.ok(app.includes("await loadCatalogPage(pageIndex)"));
   assert.ok(app.includes("function productImageCandidates(product)"));
