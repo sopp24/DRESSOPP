@@ -91,3 +91,19 @@ test("the local personal shopper penalizes a product that repeats disliked featu
   const result = recommendLocally(state,products,[]);
   assert.equal(result.recommendations[0].productId,"preferred");
 });
+
+
+test("local recommendations interleave shops instead of presenting merchant batches", () => {
+  const products = [
+    normalizeProduct({gender:"men",genderVerified:true,id:"a1",name:"Pull preppy 1",merchant:"Boutique A",brand:"A",price:25,styleTags:["Preppy"]}),
+    normalizeProduct({gender:"men",genderVerified:true,id:"a2",name:"Pull preppy 2",merchant:"Boutique A",brand:"A",price:29,styleTags:["Preppy"]}),
+    normalizeProduct({gender:"men",genderVerified:true,id:"a3",name:"Pull preppy 3",merchant:"Boutique A",brand:"A",price:35,styleTags:["Preppy"]}),
+    normalizeProduct({gender:"men",genderVerified:true,id:"b1",name:"Veste streetwear",merchant:"Boutique B",brand:"B",price:75,styleTags:["Streetwear"]}),
+    normalizeProduct({gender:"men",genderVerified:true,id:"c1",name:"Derbies heritage",merchant:"Boutique C",brand:"C",price:160,objective:"Chaussures",styleTags:["Heritage"]}),
+    normalizeProduct({gender:"men",genderVerified:true,id:"d1",name:"Chemise workwear",merchant:"Boutique D",brand:"D",price:49,styleTags:["Workwear"]})
+  ];
+  const result = recommendLocally(createInitialState(products),products,[],4);
+  const firstFour = result.recommendations.map(item=>products.find(product=>product.id===item.productId));
+  assert.equal(new Set(firstFour.map(item=>item.merchant)).size,4);
+});
+
