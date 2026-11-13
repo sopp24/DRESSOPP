@@ -171,7 +171,7 @@ test("caches a fresh gallery image after both stored product-image URLs return 4
   const freshUrl = "https://www.armorlux.com/cdn/shop/files/current.jpg";
   const html = '<meta property="og:image" content="' + staleUrl + '">' +
     '<script type="application/ld+json">{"@type":"Product","name":"Pull marin homme","image":"' + staleUrl + '","offers":{"price":"149","priceCurrency":"EUR"}}</script>' +
-    '<img alt="Pull marin homme - Armor-lux - 1" src="' + freshUrl + '">';
+    '<img alt="Pull marin homme - Armor-lux - 1" srcset="' + freshUrl + ' 400w, https://www.armorlux.com/cdn/shop/files/current-large.jpg 800w">';
   try {
     const product = {
       id:"armor-lux-recovery",name:"Pull marin homme",gender:"men",genderVerified:true,
