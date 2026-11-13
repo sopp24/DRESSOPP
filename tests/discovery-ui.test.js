@@ -248,6 +248,14 @@ test("the product card, action row and touch targets stay in separate layout row
   assert.ok(visualQA.includes("runViewport(browser, viewport, target)"));
 });
 
+test("la fiche produit reste distincte de la photo en paysage", function() {
+  const landscape = css.slice(css.lastIndexOf("@media (orientation: landscape) and (max-height: 600px) and (max-width: 850px)"));
+  assert.ok(landscape.includes('grid-template-areas: "copy links" !important;'));
+  assert.ok(landscape.includes("min-height: 130px !important;"));
+  assert.ok(landscape.includes("min-height: 34px !important;"));
+  assert.ok(visualQA.includes("cardSectionsOverlap"));
+});
+
 
 test("les gestes tactiles et les gestes souris utilisent des flux distincts", function() {
   assert.ok(app.includes('surface.addEventListener("touchstart"'));
