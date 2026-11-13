@@ -225,3 +225,4 @@ test("la carte de découverte sépare la photo, la fiche et les commandes", func
   assert.ok(css.includes("grid-template-rows: minmax(0,1fr) auto auto;"));
   assert.ok(css.includes("object-fit: contain;"));
 });
+// Responsive QA guardrails: keep this suite attached to the current PR revision.
