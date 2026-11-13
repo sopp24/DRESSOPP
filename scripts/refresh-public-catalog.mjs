@@ -134,8 +134,10 @@ function galleryImageCandidates(html,pageUrl,productName) {
     const alt = clean((tag.match(/\balt\s*=\s*["']([^"']*)["']/i) || [])[1] || "").toLowerCase()
       .normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/g," ").trim();
     const srcValues = ["src","data-src","data-original","data-lazy-src","data-zoom-image","srcset","data-srcset"]
-      .map(name => (tag.match(new RegExp("\\b"+name+"\\s*=\\s*[\"']([^\"']*)[\"']","i")) || [])[1] || "")
-      .flatMap(value => /srcset/i.test(value) ? value.split(",").map(part => part.trim().split(/\s+/)[0]) : [value]);
+      .flatMap(name => {
+        const value = (tag.match(new RegExp("\\b"+name+"\\s*=\\s*[\"']([^\"']*)[\"']","i")) || [])[1] || "";
+        return /srcset/i.test(name) ? value.split(",").map(part => part.trim().split(/\s+/)[0]) : [value];
+      });
     const relevant = normalizedName && (alt.includes(normalizedName) ||
       (words.length >= 2 && words.filter(word => alt.includes(word)).length >= Math.min(3,words.length)));
     if (!relevant) continue;
