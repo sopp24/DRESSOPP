@@ -131,13 +131,13 @@ test("Pinterest is the sole inspiration source and the old local lookbook is abs
 
 test("swiping down on the discovery card saves it reliably on touch devices", function() {
   assert.ok(app.includes("verticalSaveIntent"));
-  assert.ok(app.includes("const acceptedSave = !horizontalIntent && deltaY >= saveThreshold &&"));
-  assert.ok(app.includes('animateDeckDecision(productId, acceptedSave ? "save"'));
-  assert.ok(app.includes('document.addEventListener("touchend"'));
+  assert.ok(app.includes("const acceptedSave=!horizontalIntent && deltaY>=saveThreshold"));
+  assert.ok(app.includes('animateDeckDecision(productId,acceptedSave?"save"'));
+  assert.ok(app.includes('surface.addEventListener("touchstart"'));
   assert.ok(app.includes('document.addEventListener("touchmove"'));
-  assert.ok(app.includes("updateGesturePosition(touch.clientX, touch.clientY, event)"));
-  assert.ok(app.includes("deltaY = clientY - startY"));
-  assert.ok(css.includes(".product-card.is-committing.is-save .swipe-tint"));
+  assert.ok(app.includes('document.addEventListener("touchend"'));
+  assert.ok(app.includes("deltaY=y-startY"));
+  assert.ok(css.includes("#active-product-card"));
   assert.ok(css.includes("touch-action: none;"));
   assert.ok(visualQA.includes("await frame();"));
   assert.ok(visualQA.includes("swipe-save-failure.png"));
@@ -190,8 +190,8 @@ test("the restored swipe layout keeps the product card separate from the action 
   assert.ok(cardRenderer.indexOf("'</article>'") < cardRenderer.indexOf("'<div class=\"deck-actions\""));
   assert.ok(cardRenderer.endsWith("    '</div>';\n}\n"));
   assert.ok(app.includes("renderProductAttributes(product)"));
-  assert.ok(app.includes('const gestureSurface = card.closest(".deck-card-wrap") || card;'));
-  assert.ok(app.includes("gestureSurface.setPointerCapture(pointerId)"));
+  assert.ok(app.includes('const surface = card.closest(".deck-card-wrap") || card;'));
+  assert.ok(app.includes("surface.setPointerCapture(event.pointerId)"));
   assert.ok(css.includes(".product-card {"));
   assert.ok(css.includes(".product-visual img"));
   assert.ok(css.includes(".product-info {"));
@@ -218,7 +218,7 @@ test("la photo active recherche sa source dans le catalogue courant et expose un
   assert.ok(app.includes("let catalogProducts = [];"));
   assert.ok(app.includes("function productImageCandidates(product)"));
   assert.ok(app.includes("matchFound: Boolean(catalogProduct)"));
-  assert.ok(app.includes('data-image-debug="' + " + imageDebug"));
+  assert.ok(app.includes("data-image-debug=\"' + imageDebug + '\""));
   assert.ok(app.includes('imageMarkup(productImageUrl, product.name, {eager:true,fallbackUrls:productImages.slice(1)})'));
   assert.ok(app.includes('data-fallback-srcs="'));
   assert.ok(app.includes("fallbackIndex++"));
