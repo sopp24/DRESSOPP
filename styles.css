@@ -3670,22 +3670,27 @@ button, a { touch-action: manipulation; }
 }
 @media (orientation: landscape) and (max-height: 600px) and (max-width: 850px) {
   #active-product-wrap {
-    grid-template-rows: minmax(198px,1fr) 44px 0 !important;
-    gap: 3px !important;
+    grid-template-rows: minmax(204px,1fr) 44px 0 !important;
+    gap: 2px !important;
   }
   #active-product-card { grid-template-rows: minmax(0,1fr) auto !important; }
   #active-product-card > .product-visual { min-height: 160px !important; }
   #active-product-card > .product-info {
+    height: 42px !important;
+    min-height: 42px !important;
+    max-height: 42px !important;
     grid-template-rows: minmax(0,auto) !important;
     grid-template-areas: "copy links" !important;
-    gap: 2px 7px !important;
-    padding: 2px 8px !important;
+    gap: 1px 7px !important;
+    padding: 1px 8px !important;
+    overflow: hidden !important;
   }
   #active-product-card .product-copy {
     display: grid !important;
+    min-width: 0 !important;
     grid-template-columns: minmax(0,1fr) auto !important;
     align-items: center !important;
-    gap: 2px 7px !important;
+    gap: 1px 5px !important;
   }
   #active-product-card .product-title {
     display: block !important;
@@ -3705,10 +3710,10 @@ button, a { touch-action: manipulation; }
   #active-product-card .product-attributes { display: none !important; }
   #active-product-card .product-card-links { max-width: 88px !important; }
   #active-product-card .product-card-links .product-original-link {
-    height: 32px !important;
-    min-height: 32px !important;
-    padding: 2px 5px !important;
-    font-size: 8px !important;
+    height: 30px !important;
+    min-height: 30px !important;
+    padding: 1px 4px !important;
+    font-size: 7px !important;
     line-height: 1 !important;
   }
   #active-product-wrap > .deck-actions {
