@@ -257,7 +257,7 @@ test("la fiche produit reste distincte de la photo en paysage", function() {
   assert.ok(landscape.includes("max-height: 42px !important;"));
   assert.ok(landscape.includes("grid-template-columns: minmax(0,1fr) auto !important;"));
   assert.ok(landscape.includes("white-space: nowrap !important;"));
-  assert.ok(landscape.includes("height: 32px !important;"));
+  assert.ok(landscape.includes("height: 30px !important;"));
   assert.ok(landscape.includes("display: none !important;"));
   assert.ok(landscape.includes("min-width: 44px !important;"));
   assert.ok(visualQA.includes("cardSectionsOverlap"));
