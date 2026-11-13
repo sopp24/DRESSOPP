@@ -3671,7 +3671,7 @@ button, a { touch-action: manipulation; }
 @media (orientation: landscape) and (max-height: 600px) and (max-width: 850px) {
   #active-product-wrap { grid-template-rows: minmax(178px,1fr) auto auto !important; gap: 5px !important; }
   #active-product-card { grid-template-rows: minmax(0,1fr) auto !important; }
-  #active-product-card > .product-visual { min-height: 130px !important; }
+  #active-product-card > .product-visual { min-height: 110px !important; }
   #active-product-card > .product-info {
     grid-template-rows: minmax(0,auto) !important;
     grid-template-areas: "copy links" !important;
