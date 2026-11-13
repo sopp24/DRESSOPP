@@ -134,6 +134,8 @@ test("swiping down on the discovery card saves it reliably on touch devices", fu
   assert.ok(app.includes("const acceptedSave = !horizontalIntent && deltaY >= saveThreshold && deltaY > Math.abs(deltaX) * 1.08"));
   assert.ok(app.includes('animateDeckDecision(productId, acceptedSave ? "save"'));
   assert.ok(app.includes('gestureSurface.addEventListener("touchend"'));
+  assert.ok(app.includes('gestureSurface.addEventListener("touchmove"'));
+  assert.ok(app.includes("updateGesturePosition(touch.clientX,touch.clientY,event)"));
   assert.ok(app.includes("deltaY = event.clientY - startY"));
   assert.ok(css.includes(".product-card.is-committing.is-save .swipe-tint"));
   assert.ok(css.includes("touch-action: none;"));
@@ -215,6 +217,8 @@ test("la photo de la carte active est chargée en priorité et les attributs inc
   assert.ok(app.includes('imageMarkup(product.imageUrl, product.name, {eager:true})'));
   assert.ok(app.includes('fetchpriority="high"'));
   assert.ok(app.includes('if (image.complete && image.naturalWidth === 0) replaceWithFallback();'));
+  assert.ok(app.includes("attachImageFallbacks(main);"));
+  assert.ok(!app.includes('small>Image indisponible</small>'));
   assert.ok(app.includes('if (!colors.length && !materials.length) return "";'));
   assert.ok(visualQA.includes("la photo principale du produit ne s'est pas chargée"));
   assert.ok(visualQA.includes("les zones photo, informations et commandes se chevauchent"));
@@ -226,3 +230,9 @@ test("la carte de découverte sépare la photo, la fiche et les commandes", func
   assert.ok(css.includes("object-fit: contain;"));
 });
 // Responsive QA guardrails: keep this suite attached to the current PR revision.
+
+test("the product card uses its grid row height instead of overflowing below it", function() {
+  assert.ok(css.includes("height: auto; min-width: 0; min-height: 0; flex: 0 1 auto; align-self: stretch;"));
+  assert.ok(css.includes("grid-template-rows: minmax(0,1fr) auto auto;"));
+  assert.ok(visualQA.includes("requestedSrc"));
+});
