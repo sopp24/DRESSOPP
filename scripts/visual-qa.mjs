@@ -92,14 +92,18 @@ async function clickView(page, name, mobile) {
   await page.waitForTimeout(220);
 }
 
-async function dragTouch(session, start, end, steps = 10) {
+async function dragTouch(session, start, end, steps = 12) {
   const point = (x,y) => ({x:Math.round(x),y:Math.round(y),id:1,radiusX:1,radiusY:1,force:1});
+  const frame = () => new Promise(resolve => setTimeout(resolve,16));
   await session.send("Input.dispatchTouchEvent",{type:"touchStart",touchPoints:[point(start.x,start.y)]});
+  await frame();
   for (let step=1; step<=steps; step++) {
     const progress=step/steps;
     await session.send("Input.dispatchTouchEvent",{type:"touchMove",touchPoints:[point(start.x+(end.x-start.x)*progress,start.y+(end.y-start.y)*progress)]});
+    await frame();
   }
   await session.send("Input.dispatchTouchEvent",{type:"touchEnd",touchPoints:[]});
+  await frame();
 }
 
 async function runViewport(browser, config) {
@@ -134,13 +138,23 @@ async function runViewport(browser, config) {
         const nextBox = await nextCard.boundingBox();
         const savedBefore = Number(await page.locator("#wardrobe-count").textContent());
         if (nextBox) {
+          const touchAction = await nextCard.evaluate(element => getComputedStyle(element).touchAction);
+          if (touchAction !== "none") {
+            results.push({viewport:config.name,view:"swipe-save-touch-action",touchAction,issues:["la carte interactive doit conserver touch-action: none"]});
+          }
           await page.evaluate(() => {
             window.__dressoppGestureQA = [];
             const card = document.querySelector("#active-product-card");
             const surface = card && (card.closest(".deck-card-wrap") || card);
             if (!surface) return;
-            ["pointerdown","pointermove","pointerup","pointercancel","lostpointercapture"].forEach(type => surface.addEventListener(type,event => {
-              window.__dressoppGestureQA.push({type,pointerId:event.pointerId,button:event.button,x:Math.round(event.clientX),y:Math.round(event.clientY),className:card.className});
+            ["pointerdown","pointermove","pointerup","pointercancel","lostpointercapture","touchstart","touchmove","touchend","touchcancel"].forEach(type => surface.addEventListener(type,event => {
+              const touch = event.changedTouches && event.changedTouches[0];
+              window.__dressoppGestureQA.push({
+                type,pointerId:event.pointerId,button:event.button,
+                x:Math.round(Number.isFinite(event.clientX) ? event.clientX : touch ? touch.clientX : 0),
+                y:Math.round(Number.isFinite(event.clientY) ? event.clientY : touch ? touch.clientY : 0),
+                className:card.className
+              });
             }));
           });
           // Start the vertical gesture within the product image, not on the source link.
@@ -152,9 +166,12 @@ async function runViewport(browser, config) {
               events:window.__dressoppGestureQA || [],
               count:document.querySelector("#wardrobe-count")?.textContent || null,
               cardClass:document.querySelector("#active-product-card")?.className || null,
-              cardId:document.querySelector("#active-product-card")?.dataset.productId || null
+              cardId:document.querySelector("#active-product-card")?.dataset.productId || null,
+              touchAction:document.querySelector("#active-product-card") ? getComputedStyle(document.querySelector("#active-product-card")).touchAction : null
             }));
-            results.push({viewport:config.name,view:"swipe-save",productId:nextId,diagnostics,issues:["le glissement vers le bas n'ajoute pas l'article à la liste"]});
+            const screenshot = artifactDir + "/" + config.name + "-swipe-save-failure.png";
+            await page.screenshot({path:screenshot,animations:"disabled"});
+            results.push({viewport:config.name,view:"swipe-save",productId:nextId,diagnostics,screenshot,issues:["le glissement vers le bas n'ajoute pas l'article à la liste"]});
           }
         }
       }
@@ -205,7 +222,8 @@ async function main() {
     if (server) await new Promise(resolve => server.close(resolve));
   }
   const issues = results.flatMap(entry => (entry.issues || []).map(issue => entry.viewport + "/" + entry.view + ": " + issue));
-  const report = { testedUrl:target, testedAt:new Date().toISOString(), viewports:6, screenshots:results.length, pageErrors, issues, results };
+  const screenshotCount = results.filter(entry => Boolean(entry.screenshot)).length;
+  const report = { testedUrl:target, testedAt:new Date().toISOString(), viewports:6, screenshots:screenshotCount, pageErrors, issues, results };
   await writeFile(artifactDir + "/report.json", JSON.stringify(report, null, 2));
   console.log(JSON.stringify(report, null, 2));
   if (pageErrors.length || issues.length) process.exitCode = 1;
