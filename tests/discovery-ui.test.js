@@ -214,42 +214,44 @@ test("voter ou ajouter à la liste ne déclenche aucune notification de confirma
   assert.ok(app.includes("state.likedProducts.push({ productId: productId, addedAt: createdAt })"));
 });
 
-test("la photo de la carte active utilise le catalogue courant et une source de secours", function() {
+test("la photo active recherche sa source dans le catalogue courant et expose un diagnostic", function() {
   assert.ok(app.includes("let catalogProducts = [];"));
   assert.ok(app.includes("function productImageCandidates(product)"));
+  assert.ok(app.includes("matchFound: Boolean(catalogProduct)"));
+  assert.ok(app.includes('data-image-debug="' + " + imageDebug"));
   assert.ok(app.includes('imageMarkup(productImageUrl, product.name, {eager:true,fallbackUrls:productImages.slice(1)})'));
   assert.ok(app.includes('data-fallback-srcs="'));
   assert.ok(app.includes("fallbackIndex++"));
   assert.ok(app.includes('fetchpriority="high"'));
   assert.ok(app.includes("attachImageFallbacks(main);"));
-  assert.ok(app.includes('if (!colors.length && !materials.length) return "";'));
+  assert.ok(visualQA.includes("imageDebug"));
   assert.ok(visualQA.includes("la photo principale du produit ne s'est pas chargée"));
 });
 
 test("la carte de découverte sépare physiquement photo, fiche et commandes", function() {
-  const layer = css.slice(css.indexOf("DRESSOPP responsive card layout"));
-  assert.ok(layer.includes("grid-template-rows: minmax(280px,1fr) auto auto;"));
-  assert.ok(layer.includes("grid-template-rows: minmax(0,1fr) auto;"));
-  assert.ok(layer.includes(".discovery-page--app .deck-actions {"));
-  assert.ok(layer.includes("position: relative;"));
-  assert.ok(layer.includes("object-fit: contain;"));
+  assert.ok(css.includes("#active-product-wrap {"));
+  assert.ok(css.includes("#active-product-card > .product-visual {"));
+  assert.ok(css.includes("#active-product-card > .product-info {"));
+  assert.ok(css.includes("grid-template-rows: minmax(0,1fr) auto !important;"));
+  assert.ok(css.includes("object-fit: contain !important;"));
 });
 // Responsive QA guardrails: keep this suite attached to the current PR revision.
 
 test("the product card, action row and touch targets stay in separate layout rows", function() {
-  const layer = css.slice(css.indexOf("DRESSOPP responsive card layout"));
-  assert.ok(layer.includes("height: 100%;"));
-  assert.ok(layer.includes("grid-template-rows: minmax(0,1fr) auto;"));
-  assert.ok(layer.includes("min-width: 44px;"));
+  assert.ok(css.includes("#active-product-wrap > .deck-actions"));
+  assert.ok(css.includes("grid-row: 3 !important;"));
+  assert.ok(css.includes("min-width: 44px;"));
   assert.ok(visualQA.includes("cardSectionsOverlap"));
   assert.ok(visualQA.includes("requestedSrc"));
 });
 
 
-test("les gestes tactiles sont capturés au document et ne dépendent pas d'un pointerup retargeté", function() {
-  assert.ok(app.includes('document.addEventListener("pointermove"'));
-  assert.ok(app.includes('document.addEventListener("pointerup"'));
+test("les gestes tactiles et les gestes souris utilisent des flux distincts", function() {
+  assert.ok(app.includes('surface.addEventListener("touchstart"'));
   assert.ok(app.includes('document.addEventListener("touchmove"'));
   assert.ok(app.includes('document.addEventListener("touchend"'));
+  assert.ok(app.includes('event.pointerType==="touch"'));
+  assert.ok(app.includes('document.addEventListener("pointermove"'));
+  assert.ok(app.includes('document.addEventListener("pointerup"'));
   assert.ok(app.includes("activeSwipeCleanup"));
 });
