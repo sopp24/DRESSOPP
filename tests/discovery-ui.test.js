@@ -3,6 +3,10 @@ import assert from "node:assert/strict";
 import { readFileSync, existsSync } from "node:fs";
 
 const app = readFileSync(new URL("../app.js", import.meta.url), "utf8");
+const agent = readFileSync(new URL("../modules/agent.js", import.meta.url), "utf8");
+const outfits = readFileSync(new URL("../modules/outfits.js", import.meta.url), "utf8");
+const visionWorker = readFileSync(new URL("../workers/dressopp-agent/src/index.js", import.meta.url), "utf8");
+const pinterestSync = readFileSync(new URL("../scripts/sync-pinterest.mjs", import.meta.url), "utf8");
 const css = readFileSync(new URL("../styles.css", import.meta.url), "utf8");
 const index = readFileSync(new URL("../index.html", import.meta.url), "utf8");
 const sw = readFileSync(new URL("../sw.js", import.meta.url), "utf8");
@@ -74,7 +78,7 @@ test("all local files referenced by the application shell exist", function() {
 });
 
 test("the PWA refreshes its cache and preloads the app icons and first catalogue page", function() {
-  assert.ok(sw.includes('dressopp-static-v17'));
+  assert.ok(sw.includes('dressopp-static-v18'));
   for (const path of [
     "./assets/logo-horizontal.png",
     "./assets/logo-square.png",
@@ -272,4 +276,44 @@ test("les gestes tactiles et les gestes souris utilisent des flux distincts", fu
   assert.ok(app.includes('document.addEventListener("pointermove"'));
   assert.ok(app.includes('document.addEventListener("pointerup"'));
   assert.ok(app.includes("activeSwipeCleanup"));
+});
+
+
+test("all product-card thumbnails use catalogue photo resolution and fallbacks", function() {
+  const grid = app.slice(app.indexOf("function renderGridCards"),app.indexOf("function renderDiscover"));
+  assert.ok(app.includes("function productImageMarkup(product, label, options)"));
+  assert.ok(grid.includes("productImageMarkup(product, product.name)"));
+  assert.ok(app.includes("productImageMarkup(entry.product,entry.product.name)"));
+  assert.ok(app.includes('referrerpolicy="no-referrer"'));
+  assert.ok(app.includes("function productImageCandidates(product)"));
+  assert.ok(app.includes("fallbackUrls: lookup.urls.slice(1).concat(extraFallbacks)"));
+});
+
+test("Pinterest inspiration cards expose a separate inventory of visible outfit pieces", function() {
+  assert.ok(app.includes("function renderPinterestPieceAnalysis(pin)"));
+  assert.ok(app.includes("Pièces repérées dans la photo"));
+  assert.ok(app.includes("renderPinterestPieceAnalysis(item)"));
+  assert.ok(app.includes("pieces:(Array.isArray(visual.pieces) ? visual.pieces : []).slice(0,12)"));
+  assert.ok(app.includes("slot:piece.slot || productSlot({name:piece.type || \"\"})"));
+});
+
+test("local and Cloudflare recommendation agents receive the full structured Pinterest outfit", function() {
+  assert.ok(agent.includes("summary:clean(item.summary,320)"));
+  assert.ok(agent.includes("pieces:(Array.isArray(item.pieces) ? item.pieces : []).slice(0,12)"));
+  assert.ok(agent.includes("pin && pin.summary"));
+  assert.ok(agent.includes("piece.slot"));
+  assert.ok(visionWorker.includes("normalizeInspirations(body.inspirations)"));
+  assert.ok(visionWorker.includes("inventaire pièce par pièce"));
+});
+
+test("Pinterest vision analyses each visible garment in its own outfit slot", function() {
+  assert.ok(visionWorker.includes('const PIECE_SLOT_VALUES = ["outerwear","top","bottom","shoes","accessory"]'));
+  assert.ok(visionWorker.includes("function inferVisualPieceSlot(type)"));
+  assert.ok(visionWorker.includes("version:4"));
+  assert.ok(visionWorker.includes("raw.pieces.slice(0,12)"));
+  assert.ok(visionWorker.includes("jusqu’à 12 pièces séparées"));
+  assert.ok(pinterestSync.includes("const ANALYSIS_VERSION = 4"));
+  assert.ok(outfits.includes("function visualPieceSlot(piece)"));
+  assert.ok(outfits.includes("const productCategory = productSlot(product)"));
+  assert.ok(outfits.includes("const expectedSlots = visibleSlots.length ? visibleSlots : coreSlots"));
 });

@@ -38,7 +38,7 @@ const PATTERN_HINTS = [
   { value: "logo", terms: ["logo", "logotype", "monogramme"] }
 ];
 const SLOT_TERMS = {
-  top: ["t-shirt","tee","shirt","chemise","polo","pull","sweat","hoodie","débardeur","top","cardigan","maille"],
+  top: ["t-shirt","tee","shirt","chemise","polo","pull","sweat","hoodie","débardeur","top","cardigan","maille","gilet"],
   bottom: ["pantalon","jean","jeans","trouser","trousers","short","bermuda","cargo","chino"],
   shoes: ["chaussure","sneaker","basket","boot","boots","mocassin","loafer","sandale","shoe","shoes"],
   outerwear: ["veste","manteau","blouson","doudoune","anorak","coat","jacket","parka","surchemise","trench"],
@@ -136,6 +136,12 @@ export function productSlot(product) {
   return "other";
 }
 
+function visualPieceSlot(piece) {
+  const explicit = clean(piece && piece.slot);
+  if (["top","bottom","shoes","outerwear","accessory"].includes(explicit)) return explicit;
+  return productSlot({name:piece && piece.type || ""});
+}
+
 function productTerms(product) {
   return clean([
     product.name, product.description, product.brand, product.objective, product.category,
@@ -174,6 +180,24 @@ function matchScore(product, pin) {
   ].map(clean));
   details.forEach(detail => {
     if (detail.length > 3 && terms.includes(detail)) score += 1.5;
+  });
+
+  // Match garment attributes inside their own slot, not across the whole look.
+  const productCategory = productSlot(product);
+  pieces.filter(piece => visualPieceSlot(piece) === productCategory).forEach(piece => {
+    const type = clean(piece.type);
+    if (type.length > 2 && terms.includes(type)) score += 3.5;
+    [["colors","color"],["materials","material"],["cuts","cut"],["patterns","pattern"]].forEach(([field,key]) => {
+      const value = clean(piece[key]);
+      if (!value) return;
+      const productValues = (product[field] || []).map(clean);
+      if (productValues.includes(value)) score += 3;
+      else if (terms.includes(value)) score += 1.25;
+    });
+    (Array.isArray(piece.details) ? piece.details : []).forEach(detail => {
+      const value = clean(detail);
+      if (value.length > 3 && terms.includes(value)) score += 1;
+    });
   });
   (product.colors || []).forEach(function(color) {
     if (pinText.includes(clean(color))) score += 2;
@@ -409,7 +433,10 @@ export function buildOutfitIdeas(pins, wardrobe, catalogue, dislikedIds, outfitF
 
     const pieces = items.filter(entry => entry.isSaved);
     const suggestions = items.filter(entry => !entry.isSaved);
-    const missingSlots = coreSlots.filter(slot => !items.some(entry => entry.slot === slot));
+    const visibleSlots = unique((pin.visualAnalysis && Array.isArray(pin.visualAnalysis.pieces) ? pin.visualAnalysis.pieces : [])
+      .map(visualPieceSlot).filter(slot => ["top","bottom","shoes","outerwear","accessory"].includes(slot)));
+    const expectedSlots = visibleSlots.length ? visibleSlots : coreSlots;
+    const missingSlots = expectedSlots.filter(slot => !items.some(entry => entry.slot === slot));
     const totalPrice = outfitTotalPrice(items);
     const matchAverage = items.length ? items.reduce((sum,entry) => sum + entry.score,0) / items.length : 0;
     ideas.push({

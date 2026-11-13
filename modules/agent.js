@@ -32,7 +32,17 @@ export function createAgentPayload(state, candidates, inspirations) {
     filters:{ objective:settings.objective || "Tout", style:settings.style || "Tous", season:settings.season || "Toute saison", maxPrice:settings.maxPrice == null ? null : Number(settings.maxPrice) },
     profile:{ preferredStyles:list(profile.preferredStyles,12), excludedStyles:list(profile.excludedStyles,12), favoriteBrands:list(profile.favoriteBrands,12), excludedBrands:list(profile.excludedBrands,12), preferredColors:list(profile.preferredColors,12), excludedColors:list(profile.excludedColors,12), preferredMaterials:list(profile.preferredMaterials,12), excludedMaterials:list(profile.excludedMaterials,12), preferredCuts:list(profile.preferredCuts,12), excludedCuts:list(profile.excludedCuts,12), comfort:clean(profile.comfort,50), fit:clean(profile.fit,50) },
     feedback:{ liked:feedbackProducts(state,"likes"), saved:savedProducts(state), disliked:feedbackProducts(state,"dislikes") },
-    inspirations:(Array.isArray(inspirations) ? inspirations : []).slice(0,12).map(item => ({ title:clean(item.title,100), tags:list(item.tags,10) })),
+    inspirations:(Array.isArray(inspirations) ? inspirations : []).slice(0,12).map(item => ({
+      title:clean(item.title,100), summary:clean(item.summary,320), layering:clean(item.layering,180),
+      outfitFormula:clean(item.outfitFormula,220), tags:list(item.tags,18),
+      styleTags:list(item.styleTags,8), colors:list(item.colors,8), materials:list(item.materials,8),
+      cuts:list(item.cuts,8), patterns:list(item.patterns,8),
+      pieces:(Array.isArray(item.pieces) ? item.pieces : []).slice(0,12).map(piece => ({
+        type:clean(piece.type,48), slot:clean(piece.slot,20), color:clean(piece.color,32),
+        material:clean(piece.material,32), cut:clean(piece.cut,40), pattern:clean(piece.pattern,32),
+        details:list(piece.details,6)
+      }))
+    })),
     products:(Array.isArray(candidates) ? candidates : []).filter(product => product && product.gender === "men" && product.genderVerified === true).slice(0,MAX_CANDIDATES).map(productSummary)
   };
 }
@@ -118,10 +128,22 @@ export function recommendLocally(state, rankedCandidates, inspirations = [], lim
 
   const pinTokens = new Set();
   (Array.isArray(inspirations) ? inspirations : []).slice(0,40).forEach(pin => {
-    const text = [pin && pin.title,...(Array.isArray(pin && pin.tags) ? pin.tags : [])].join(" ");
+    const pieces = Array.isArray(pin && pin.pieces) ? pin.pieces.slice(0,12) : [];
+    const pieceText = pieces.flatMap(piece => [piece.type,piece.slot,piece.color,piece.material,piece.cut,piece.pattern,...(Array.isArray(piece.details) ? piece.details : [])]);
+    const text = [pin && pin.title,pin && pin.summary,pin && pin.layering,pin && pin.outfitFormula,
+      ...(Array.isArray(pin && pin.tags) ? pin.tags : []),...(Array.isArray(pin && pin.styleTags) ? pin.styleTags : []),
+      ...(Array.isArray(pin && pin.colors) ? pin.colors : []),...(Array.isArray(pin && pin.materials) ? pin.materials : []),
+      ...(Array.isArray(pin && pin.cuts) ? pin.cuts : []),...(Array.isArray(pin && pin.patterns) ? pin.patterns : []),...pieceText
+    ].filter(Boolean).join(" ");
     localNormalize(text).split(/[^a-z0-9]+/).filter(token => token.length > 3).forEach(token => pinTokens.add(token));
     ["styleTags","colors","materials","cuts","patterns"].forEach(field => {
-      (Array.isArray(pin && pin.tags) ? pin.tags : []).forEach(value => addLocalSignal(weights,field,value,2));
+      (Array.isArray(pin && pin[field]) ? pin[field] : []).forEach(value => addLocalSignal(weights,field,value,2.5));
+    });
+    pieces.forEach(piece => {
+      if (piece.color) addLocalSignal(weights,"colors",piece.color,2.5);
+      if (piece.material) addLocalSignal(weights,"materials",piece.material,2.5);
+      if (piece.cut) addLocalSignal(weights,"cuts",piece.cut,2.5);
+      if (piece.pattern) addLocalSignal(weights,"patterns",piece.pattern,2.5);
     });
   });
 

@@ -168,6 +168,15 @@ function productImageCandidates(product) {
     }
   };
 }
+function productImageMarkup(product, label, options) {
+  const lookup = productImageCandidates(product);
+  const opts = options || {};
+  const extraFallbacks = Array.isArray(opts.fallbackUrls) ? opts.fallbackUrls : [];
+  return imageMarkup(lookup.urls[0] || "", label || (product && product.name) || "Photo du produit", {
+    eager: opts.eager === true,
+    fallbackUrls: lookup.urls.slice(1).concat(extraFallbacks)
+  });
+}
 function updateSaveStatus(message, status) {
   if (!saveStatus) return;
   saveStatus.classList.toggle("is-saving", status === "saving");
@@ -220,9 +229,22 @@ function aiAgentActionCount() {
 }
 function aiAgentInspirations() {
   return pinterestPinCards().slice(0,12).map(function(pin) {
+    const visual = pin.visualAnalysis && pin.visualAnalysis.isFashion !== false ? pin.visualAnalysis : {};
     const visualFeatures = inferPinterestFeatures(pin);
     const hiddenSignals = Object.values(visualFeatures).flat();
-    return { title:pin.title || "", tags:Array.from(new Set([...(Array.isArray(pin.tags) ? pin.tags : []),...hiddenSignals])) };
+    const pieces = (Array.isArray(visual.pieces) ? visual.pieces : []).slice(0,12).map(function(piece) {
+      return { type:piece.type || "", slot:piece.slot || productSlot({name:piece.type || ""}),
+        color:piece.color || "", material:piece.material || "", cut:piece.cut || "",
+        pattern:piece.pattern || "", details:Array.isArray(piece.details) ? piece.details.slice(0,6) : [] };
+    });
+    return { title:pin.title || "", summary:visual.summary || "", layering:visual.layering || "",
+      outfitFormula:visual.outfitFormula || "",
+      tags:Array.from(new Set([...(Array.isArray(pin.tags) ? pin.tags : []),...hiddenSignals])),
+      styleTags:Array.isArray(visual.styleTags) ? visual.styleTags : visualFeatures.styleTags,
+      colors:Array.isArray(visual.colors) ? visual.colors : visualFeatures.colors,
+      materials:Array.isArray(visual.materials) ? visual.materials : visualFeatures.materials,
+      cuts:Array.isArray(visual.cuts) ? visual.cuts : visualFeatures.cuts,
+      patterns:Array.isArray(visual.patterns) ? visual.patterns : visualFeatures.patterns, pieces };
   });
 }
 function aiAgentContextSignature(training) {
@@ -408,7 +430,7 @@ function imageMarkup(url, label, options) {
       ? Array.from(new Set(opts.fallbackUrls.map(safeImageUrl).filter(candidate => candidate && candidate !== primary)))
       : [];
     const fallbackAttribute = fallbacks.length ? ' data-fallback-srcs="' + esc(JSON.stringify(fallbacks)) + '"' : "";
-    return '<img class="product-photo" src="' + esc(primary) + '" alt="' + esc(label || "Photo du produit") + '"' + priority + fallbackAttribute + ' decoding="async">';
+    return '<img class="product-photo" src="' + esc(primary) + '" alt="' + esc(label || "Photo du produit") + '"' + priority + fallbackAttribute + ' referrerpolicy="no-referrer" decoding="async">';
   }
   return '<div class="image-fallback"><span class="hanger" aria-hidden="true">⌁</span><small>Photo non renseignée</small></div>';
 }
@@ -719,7 +741,7 @@ function renderGridCards(products, options) {
   return '<div class="product-grid">' + products.map(function(product) {
     const liked = isLiked(product.id);
     return '<article class="grid-card"><button class="grid-image" type="button" data-action="details" data-id="' + esc(product.id) + '" aria-label="Voir la fiche produit : ' + esc(product.name) + '" title="Voir les détails">' +
-      imageMarkup(product.imageUrl, product.name) + '</button><div class="grid-content"><span class="product-brand">' + esc(product.brand || "Marque non renseignée") + '</span>' +
+      productImageMarkup(product, product.name) + '</button><div class="grid-content"><span class="product-brand">' + esc(product.brand || "Marque non renseignée") + '</span>' +
       '<h3 class="product-title">' + esc(product.name) + '</h3>' + aiAgentReason(product.id) + '<div class="product-meta"><span>' + esc(product.merchant || product.source) + '</span><i class="meta-dot"></i><span>' + esc(product.objective) + '</span></div>' +
       '<div class="grid-bottom"><span class="grid-price">' + esc(formatPrice(product.price)) + '</span><div class="grid-actions">' +
       '<button class="mini-icon-button" type="button" data-action="details" data-id="' + esc(product.id) + '" aria-label="Voir les détails">↗</button>' +
@@ -807,6 +829,20 @@ function pinterestPinCards() {
     return true;
   });
 }
+function renderPinterestPieceAnalysis(pin) {
+  const visual = pin && pin.visualAnalysis;
+  const pieces = visual && Array.isArray(visual.pieces) ? visual.pieces.slice(0,12) : [];
+  if (!pieces.length) return "";
+  const labels = {outerwear:"Veste / manteau",top:"Haut",bottom:"Bas",shoes:"Chaussures",accessory:"Accessoire"};
+  const rows = pieces.map(function(piece) {
+    const slot = piece.slot || productSlot({name:piece.type || ""});
+    const attributes = [piece.type,piece.color,piece.material,piece.cut,piece.pattern]
+      .concat(Array.isArray(piece.details) ? piece.details : []).filter(Boolean);
+    const description = Array.from(new Set(attributes)).join(" · ");
+    return '<span><strong>' + esc(labels[slot] || "Pièce") + ' :</strong> ' + esc(description || piece.type || "Détail visible") + '</span>';
+  });
+  return '<div class="inspiration-piece-analysis"><small>Pièces repérées dans la photo</small><div class="inspiration-tags">' + rows.join("") + '</div></div>';
+}
 function renderInspirations() {
   const items = pinterestPinCards().slice(0,80);
   const unseen = items.filter(function(item) {
@@ -824,6 +860,7 @@ function renderInspirations() {
       : '<span class="button-quiet button-small">Pin ajouté manuellement</span>';
     return '<article class="inspiration-card"><div class="inspiration-image">' + imageMarkup(item.imageUrl,item.title) + newBadge + '</div><div class="inspiration-copy"><strong>' + esc(item.title || "Inspiration Pinterest") + '</strong><small>' + esc(sourceLabel) + '</small>' +
       '<div class="inspiration-tags">' + (item.tags || []).slice(0,8).map(function(tag) { return '<span>' + esc(tag) + '</span>'; }).join("") + '</div>' +
+      renderPinterestPieceAnalysis(item) +
       '<div class="grid-bottom">' + link +
       (item.fromFeed && !seen ? '<button class="button-secondary button-small" type="button" data-action="mark-pin-seen" data-id="' + esc(item.pinId) + '">Marquer vu</button>' : '') +
       (item.kind !== "detail" ? '<button class="mini-icon-button" type="button" data-action="use-pin-outfit" data-id="' + esc(item.pinId || item.id) + '" aria-label="Composer une tenue depuis cette référence">✦</button>' : '') +
@@ -874,7 +911,7 @@ function renderOutfitProposalCard(idea) {
   const feedback = state.outfitFeedback && state.outfitFeedback[pinId] && state.outfitFeedback[pinId].vote || "";
   const summary = pin.visualAnalysis && pin.visualAnalysis.summary || pin.description || "";
   const productPreviews = idea.items.slice(0,3).map(function(entry) {
-    return '<div class="outfit-proposal-piece">' + imageMarkup(entry.product.imageUrl,entry.product.name) + '</div>';
+    return '<div class="outfit-proposal-piece">' + productImageMarkup(entry.product,entry.product.name) + '</div>';
   }).join("");
   const tags = idea.tags.slice(0,5).map(function(tag) { return '<span>' + esc(tag) + '</span>'; }).join("");
   const missingLabels = (idea.missingSlots || []).map(outfitSlotLabel).join(", ");
@@ -903,7 +940,7 @@ function renderSavedOutfitCard(saved, pinsById) {
     '<button class="outfit-proposal-open" type="button" data-action="open-saved-outfit" data-id="' + esc(saved.pinId) + '">' +
     '<div class="outfit-proposal-image">' + imageMarkup(pin.imageUrl || saved.imageUrl,pin.title || saved.title || "Tenue enregistrée") + '<span class="outfit-source-pill">Favori</span><span class="outfit-piece-count">' + products.length + ' pièces</span></div>' +
     '<div class="outfit-proposal-copy"><span class="eyebrow">Enregistrée le ' + esc(saved.savedAt ? new Date(saved.savedAt).toLocaleDateString("fr-FR") : "—") + '</span><h2>' + esc(pin.title || saved.title || "Ma tenue") + '</h2>' +
-    '<div class="outfit-proposal-preview">' + products.slice(0,3).map(function(product) { return '<div class="outfit-proposal-piece">' + imageMarkup(product.imageUrl,product.name) + '</div>'; }).join("") + '</div>' +
+    '<div class="outfit-proposal-preview">' + products.slice(0,3).map(function(product) { return '<div class="outfit-proposal-piece">' + productImageMarkup(product,product.name) + '</div>'; }).join("") + '</div>' +
     '<div class="outfit-proposal-meta"><strong>' + esc(products.length + " articles dans ta garde-robe") + '</strong><span>Tenue sauvegardée</span></div></div></button>' +
     '<div class="outfit-proposal-actions"><button class="button-primary button-small" type="button" data-action="open-saved-outfit" data-id="' + esc(saved.pinId) + '">Ouvrir la tenue ↗</button>' +
     '<button class="button-quiet button-small" type="button" data-action="remove-saved-outfit" data-id="' + esc(saved.pinId) + '">Retirer des favoris</button></div></article>';
@@ -973,7 +1010,7 @@ function openOutfitDetail(idea) {
     const liked = isLiked(product.id);
     const url = safeExternalUrl(product.url);
     return '<article class="outfit-carousel-card" data-outfit-slide="' + index + '">' +
-      '<div class="outfit-carousel-image">' + imageMarkup(product.imageUrl,product.name) + '<span class="outfit-carousel-slot">' + esc(outfitSlotLabel(entry.slot)) + '</span><span class="outfit-carousel-index">' + (index+1) + ' / ' + items.length + '</span></div>' +
+      '<div class="outfit-carousel-image">' + productImageMarkup(product,product.name) + '<span class="outfit-carousel-slot">' + esc(outfitSlotLabel(entry.slot)) + '</span><span class="outfit-carousel-index">' + (index+1) + ' / ' + items.length + '</span></div>' +
       '<div class="outfit-carousel-copy"><span class="product-brand">' + esc(product.brand || product.merchant || "Marque non renseignée") + '</span><h3>' + esc(product.name) + '</h3>' +
       '<strong class="outfit-carousel-price">' + esc(formatPrice(product.price)) + '</strong><p>' + esc(product.description || (product.colors || []).join(" · ") || "Fiche produit enregistrée dans le catalogue.") + '</p>' +
       '<div class="outfit-carousel-actions">' +
@@ -1351,7 +1388,7 @@ function openProductDetails(productId) {
   const sourceLink = safeExternalUrl(product.url);
   modalRoot.innerHTML = '<div class="modal-backdrop"><section class="modal modal-wide" role="dialog" aria-modal="true" aria-labelledby="product-modal-title" data-modal-content>' +
     '<div class="modal-head"><div><span class="eyebrow">Fiche produit</span><h2 id="product-modal-title">Détails de la pièce</h2><p>Informations issues de la fiche enregistrée. Les données manquantes sont indiquées explicitement.</p></div><button class="close-button" type="button" data-action="close-modal" aria-label="Fermer">×</button></div>' +
-    '<div class="details-layout"><div class="details-image">' + imageMarkup(product.imageUrl, product.name) + '</div><div class="details-copy">' +
+    '<div class="details-layout"><div class="details-image">' + productImageMarkup(product, product.name) + '</div><div class="details-copy">' +
     '<span class="detail-brand">' + esc(product.brand || "Marque non renseignée") + '</span><h3>' + esc(product.name) + '</h3><div class="details-price">' + esc(formatPrice(product.price)) + '</div>' +
     '<p class="field-hint">' + esc(product.description || "Aucune description enregistrée.") + '</p><div class="details-list">' +
     details.map(function(row) { return '<div class="detail-row"><span>' + esc(row[0]) + '</span><span>' + esc(row[1]) + '</span></div>'; }).join("") +
