@@ -25,12 +25,13 @@ test("imports official EUR products and keeps product ratings separate from merc
   assert.equal(products[0].sourceType,"public-web");
 });
 
-test("prefers the current product-page Open Graph image over a stale structured-data URL", () => {
+test("prefers the structured product image and retains the Open Graph image as a fallback", () => {
   const html = '<meta property="og:image" content="https://cdn.example.com/current-product.jpg">' +
-    '<script type="application/ld+json">{"@type":"Product","name":"Pull marin homme","url":"https://example.com/pull","image":"https://example.com/products/files/old-product.jpg","offers":{"price":"149","priceCurrency":"EUR","availability":"https://schema.org/InStock"}}</script>';
+    '<script type="application/ld+json">{"@type":"Product","name":"Pull marin homme","url":"https://example.com/pull","image":"https://cdn.example.com/structured-product.webp","offers":{"price":"149","priceCurrency":"EUR","availability":"https://schema.org/InStock"}}</script>';
   const products = extractProductsFromHtml(html,source,"https://example.com/pull","2026-11-13T08:00:00.000Z");
   assert.equal(products.length,1);
-  assert.equal(products[0].imageUrl,"https://cdn.example.com/current-product.jpg");
+  assert.equal(products[0].imageUrl,"https://cdn.example.com/structured-product.webp");
+  assert.equal(products[0].imageFallbackUrl,"https://cdn.example.com/current-product.jpg");
 });
 
 test("rejects non-EUR, out-of-stock and incomplete records", () => {
@@ -161,3 +162,40 @@ test("caches confirmed men's product photos on the same origin and keeps the CDN
   }
 });
 
+
+
+test("caches a fresh gallery image after both stored product-image URLs return 404", async () => {
+  const directory = await mkdtemp(resolve(tmpdir(),"dressopp-gallery-recovery-"));
+  const productUrl = "https://www.armorlux.com/products/pull-marin-homme";
+  const staleUrl = "https://www.armorlux.com/products/files/old.jpg";
+  const freshUrl = "https://www.armorlux.com/cdn/shop/files/current.jpg";
+  const html = '<meta property="og:image" content="' + staleUrl + '">' +
+    '<script type="application/ld+json">{"@type":"Product","name":"Pull marin homme","image":"' + staleUrl + '","offers":{"price":"149","priceCurrency":"EUR"}}</script>' +
+    '<img alt="Pull marin homme - Armor-lux - 1" src="' + freshUrl + '">';
+  try {
+    const product = {
+      id:"armor-lux-recovery",name:"Pull marin homme",gender:"men",genderVerified:true,
+      url:productUrl,imageUrl:staleUrl,imageFallbackUrl:staleUrl
+    };
+    const calls=[];
+    const result = await cacheProductImages([product],{
+      directory,
+      fetcher:async (url) => {
+        calls.push(url);
+        if(url===productUrl) return new Response(html,{status:200,headers:{"content-type":"text/html"}});
+        if(url===freshUrl) return new Response(new Uint8Array([255,216,255]),{status:200,headers:{"content-type":"image/jpeg"}});
+        return new Response("not found",{status:404});
+      }
+    });
+    assert.equal(result.cached,1);
+    assert.equal(result.failed,0);
+    assert.ok(product.imageUrl.startsWith("./assets/product-images/"));
+    assert.equal(product.imageFallbackUrl,staleUrl);
+    assert.ok(calls.includes(productUrl));
+    assert.ok(calls.includes(freshUrl));
+    const filename=product.imageUrl.split("/").pop();
+    assert.deepEqual(Array.from(await readFile(resolve(directory,filename))),[255,216,255]);
+  } finally {
+    await rm(directory,{recursive:true,force:true});
+  }
+});
