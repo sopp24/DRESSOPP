@@ -3560,3 +3560,117 @@ button, a { touch-action: manipulation; }
     animation: none !important;
   }
 }
+
+
+/* Active discovery card: dedicated rows override legacy absolute positioning. */
+#active-product-wrap {
+  display: grid !important;
+  width: min(100%,680px) !important;
+  height: 100% !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  flex: 1 1 auto !important;
+  grid-template-rows: minmax(260px,1fr) auto auto !important;
+  align-content: stretch !important;
+  gap: 10px !important;
+  margin: 0 auto !important;
+}
+#active-product-card {
+  position: relative !important;
+  display: grid !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  grid-row: 1 !important;
+  grid-template-rows: minmax(0,1fr) auto !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  border-radius: 22px !important;
+}
+#active-product-card > .product-visual {
+  position: relative !important;
+  inset: auto !important;
+  z-index: 0 !important;
+  display: grid !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-width: 0 !important;
+  min-height: 140px !important;
+  max-height: none !important;
+  grid-row: 1 !important;
+  overflow: hidden !important;
+  aspect-ratio: auto !important;
+  border-radius: 0 !important;
+  background: #eeede9 !important;
+}
+#active-product-card > .product-visual img.product-photo {
+  position: relative !important;
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  padding: 8px !important;
+  object-fit: contain !important;
+  object-position: center !important;
+  background: #eeede9 !important;
+}
+#active-product-card > .product-visual::after { display: none !important; }
+#active-product-card > .product-info {
+  position: relative !important;
+  inset: auto !important;
+  z-index: 4 !important;
+  display: grid !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  grid-row: 2 !important;
+  grid-template-columns: minmax(0,1fr) auto !important;
+  grid-template-areas: "copy links" "attributes attributes" !important;
+  align-items: center !important;
+  justify-content: initial !important;
+  gap: 8px 12px !important;
+  padding: 13px 15px !important;
+  background: #151518 !important;
+}
+#active-product-card > .swipe-tint,
+#active-product-card > .swipe-stamp { position: absolute !important; }
+#active-product-wrap > .deck-actions {
+  position: relative !important;
+  inset: auto !important;
+  bottom: auto !important;
+  z-index: 5 !important;
+  display: flex !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  grid-row: 2 !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: clamp(5px,1.5vw,12px) !important;
+  padding: 0 4px !important;
+  margin: 0 !important;
+}
+#active-product-wrap > .deck-hint {
+  position: relative !important;
+  inset: auto !important;
+  bottom: auto !important;
+  grid-row: 3 !important;
+  margin: 0 !important;
+}
+@media (max-width: 600px) {
+  #active-product-wrap { grid-template-rows: minmax(235px,1fr) auto auto !important; gap: 8px !important; }
+  #active-product-card { border-radius: 18px !important; }
+  #active-product-card > .product-info { gap: 6px 9px !important; padding: 10px 11px !important; }
+  #active-product-card .product-title { font-size: clamp(16px,4.7vw,20px) !important; }
+  #active-product-wrap > .deck-actions { gap: 4px !important; }
+}
+@media (max-width: 350px) {
+  #active-product-wrap { grid-template-rows: minmax(210px,1fr) auto auto !important; gap: 6px !important; }
+  #active-product-card > .product-info { padding: 9px 10px !important; }
+}
+@media (orientation: landscape) and (max-height: 600px) and (max-width: 850px) {
+  #active-product-wrap { grid-template-rows: minmax(150px,1fr) auto auto !important; gap: 5px !important; }
+  #active-product-card > .product-info { gap: 4px 7px !important; padding: 6px 9px !important; }
+  #active-product-card .product-attributes { display: none !important; }
+  #active-product-wrap > .deck-hint { font-size: 7px !important; }
+}
