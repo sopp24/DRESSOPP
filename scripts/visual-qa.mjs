@@ -29,8 +29,8 @@ async function startLocalServer() {
   return "http://127.0.0.1:4173/";
 }
 
-async function ensureAppReady(page) {
-  const response = await page.goto(baseUrl, { waitUntil: "domcontentloaded", timeout: 60000 });
+async function ensureAppReady(page, targetUrl) {
+  const response = await page.goto(targetUrl || baseUrl, { waitUntil: "domcontentloaded", timeout: 60000 });
   if (!response || !response.ok()) throw new Error("Page non accessible : " + (response && response.status()));
   await page.locator("#app-main").waitFor({ timeout: 30000 });
   await page.waitForFunction(() => {
@@ -153,7 +153,7 @@ async function dragTouch(session, start, end, steps = 12) {
   await frame();
 }
 
-async function runViewport(browser, config) {
+async function runViewport(browser, config, targetUrl) {
   const context = await browser.newContext({
     viewport:{width:config.width,height:config.height},
     deviceScaleFactor:config.mobile ? 2 : 1,
@@ -162,7 +162,7 @@ async function runViewport(browser, config) {
   });
   const page = await context.newPage();
   page.on("pageerror", error => pageErrors.push(config.name + ": " + error.message));
-  await ensureAppReady(page);
+  await ensureAppReady(page, targetUrl);
   await capture(page, config.name, "pour-toi");
   if (config.name === "phone-390" && await page.locator("#active-product-card").count()) {
     const touchSession = await context.newCDPSession(page);
@@ -262,7 +262,7 @@ async function main() {
       {name:"phone-320",width:320,height:720,mobile:true},
       {name:"phone-landscape",width:844,height:390,mobile:true}
     ];
-    for (const viewport of viewports) await runViewport(browser, viewport);
+    for (const viewport of viewports) await runViewport(browser, viewport, target);
   } finally {
     await browser.close();
     if (server) await new Promise(resolve => server.close(resolve));
