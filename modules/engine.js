@@ -272,7 +272,8 @@ export function diversifyScoredProducts(entries, limit) {
     entry,index,product:entry && entry.product ? entry.product : entry,
     score:Number(entry && entry.score) || 0
   }));
-  const merchantKey = product => normalizeText(product && (product.merchant || product.source || product.brand) || "sans boutique");
+  const merchantKey = product => normalizeText(product && (product.merchant || product.source || product.brand) || "sans boutique")
+    .split(" · ")[0].trim();
   const brandKey = product => normalizeText(product && product.brand || "");
   const categoryKey = product => normalizeText(product && (product.category || product.objective) || "autre");
   const priceBand = product => {
