@@ -1865,7 +1865,10 @@ function attachSwipe() {
   });
 
   function finishSwipe(event) {
-    if (!dragging || event.pointerId !== pointerId) return;
+    if (!dragging || (event.pointerId !== undefined && event.pointerId !== pointerId)) return;
+    // Le dernier mouvement peut être coalescé : utilise aussi la position de fin.
+    if (Number.isFinite(event.clientX)) deltaX = event.clientX - startX;
+    if (Number.isFinite(event.clientY)) deltaY = event.clientY - startY;
     dragging = false;
     const width = Math.max(1, card.getBoundingClientRect().width);
     const elapsed = Math.max(1, performance.now() - startTime);
@@ -1892,6 +1895,17 @@ function attachSwipe() {
   }
 
   gestureSurface.addEventListener("pointerup", finishSwipe);
+  // Repli pour les navigateurs qui ne livrent pas pointerup après la capture tactile.
+  gestureSurface.addEventListener("touchend", function(event) {
+    if (!dragging || !event.changedTouches || !event.changedTouches.length) return;
+    const touch = event.changedTouches[0];
+    finishSwipe({ pointerId:pointerId, clientX:touch.clientX, clientY:touch.clientY });
+  }, { passive:true });
+  gestureSurface.addEventListener("touchcancel", function() {
+    if (!dragging) return;
+    pointerId = null;
+    clearPreview(true);
+  }, { passive:true });
   gestureSurface.addEventListener("pointercancel", function(event) {
     if (!dragging || (pointerId !== null && event.pointerId !== pointerId)) return;
     pointerId = null;
