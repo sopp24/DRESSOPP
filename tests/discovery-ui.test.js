@@ -252,7 +252,9 @@ test("la fiche produit reste distincte de la photo en paysage", function() {
   const landscape = css.slice(css.lastIndexOf("@media (orientation: landscape) and (max-height: 600px) and (max-width: 850px)"));
   assert.ok(landscape.includes('grid-template-areas: "copy links" !important;'));
   assert.ok(landscape.includes("min-height: 160px !important;"));
-  assert.ok(landscape.includes("grid-template-rows: minmax(198px,1fr) 44px 0 !important;"));
+  assert.ok(landscape.includes("grid-template-rows: minmax(204px,1fr) 44px 0 !important;"));
+  assert.ok(landscape.includes("height: 42px !important;"));
+  assert.ok(landscape.includes("max-height: 42px !important;"));
   assert.ok(landscape.includes("grid-template-columns: minmax(0,1fr) auto !important;"));
   assert.ok(landscape.includes("white-space: nowrap !important;"));
   assert.ok(landscape.includes("height: 32px !important;"));
