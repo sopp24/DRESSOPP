@@ -251,7 +251,7 @@ test("the product card, action row and touch targets stay in separate layout row
 test("la fiche produit reste distincte de la photo en paysage", function() {
   const landscape = css.slice(css.lastIndexOf("@media (orientation: landscape) and (max-height: 600px) and (max-width: 850px)"));
   assert.ok(landscape.includes('grid-template-areas: "copy links" !important;'));
-  assert.ok(landscape.includes("min-height: 130px !important;"));
+  assert.ok(landscape.includes("min-height: 110px !important;"));
   assert.ok(landscape.includes("grid-template-columns: minmax(0,1fr) auto !important;"));
   assert.ok(landscape.includes("white-space: nowrap !important;"));
   assert.ok(landscape.includes("min-height: 34px !important;"));
