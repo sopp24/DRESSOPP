@@ -373,8 +373,12 @@ function persist() {
   })();
   return persistPromise;
 }
-function imageMarkup(url, label) {
-  if (url) return '<img class="product-photo" src="' + esc(url) + '" alt="' + esc(label || "Photo du produit") + '" loading="lazy">';
+function imageMarkup(url, label, options) {
+  const opts = options || {};
+  if (url) {
+    const priority = opts.eager ? ' loading="eager" fetchpriority="high"' : ' loading="lazy"';
+    return '<img class="product-photo" src="' + esc(url) + '" alt="' + esc(label || "Photo du produit") + '"' + priority + ' decoding="async">';
+  }
   return '<div class="image-fallback"><span class="hanger" aria-hidden="true">⌁</span><small>Photo non renseignée</small></div>';
 }
 function renderPageHeading(eyebrow, title, description, actions) {
@@ -438,6 +442,7 @@ function productColorSwatch(value) {
 function renderProductAttributes(product) {
   const colors = Array.isArray(product.colors) ? product.colors.filter(Boolean).slice(0, 4) : [];
   const materials = Array.isArray(product.materials) ? product.materials.filter(Boolean).slice(0, 4) : [];
+  if (!colors.length && !materials.length) return "";
   const colorValues = colors.length
     ? colors.map(function(color) {
         return '<span class="product-color-value"><i aria-hidden="true" style="background:' + productColorSwatch(color) + '"></i>' + esc(color) + '</span>';
@@ -648,7 +653,7 @@ function renderDeckCard(product, training) {
     ? '<a class="product-original-link" href="' + esc(articleUrl) + '" target="_blank" rel="noopener noreferrer"><span>Voir l’article original</span><i aria-hidden="true">↗</i></a>'
     : '<button class="product-original-link" type="button" data-action="details" data-id="' + esc(product.id) + '"><span>Voir la fiche produit</span><i aria-hidden="true">↗</i></button>';
   return '<div class="deck-card-wrap"><article class="product-card" id="active-product-card" data-product-id="' + esc(product.id) + '" role="group" tabindex="0" aria-labelledby="active-product-title" aria-describedby="deck-keyboard-hint deck-touch-hint" aria-keyshortcuts="ArrowLeft ArrowRight ArrowDown Control+Z Meta+Z">' +
-    '<div class="product-visual">' + imageMarkup(product.imageUrl, product.name) + '</div>' +
+    '<div class="product-visual">' + imageMarkup(product.imageUrl, product.name, {eager:true}) + '</div>' +
     '<div class="swipe-tint" aria-hidden="true"></div>' +
     '<div class="swipe-stamp swipe-stamp-nope" aria-hidden="true">NON</div><div class="swipe-stamp swipe-stamp-like" aria-hidden="true">OUI</div><div class="swipe-stamp swipe-stamp-save" aria-hidden="true">AJOUTÉ</div>' +
     '<div class="product-info"><div class="product-copy">' +
@@ -1184,10 +1189,8 @@ function vote(productId, value) {
   const event = { productId: productId, createdAt: new Date().toISOString(), view: currentView };
   if (value === "yes" || value === "like") {
     state.interactions.likes.push(event);
-    showToast("Réponse Oui enregistrée : tes préférences sont affinées", true);
   } else {
     state.interactions.dislikes.push(event);
-    showToast("Réponse Non enregistrée : cette piste sera moins proposée", true);
   }
   state.interactions.lastAction = { productId: productId, action: value, createdAt: event.createdAt };
   state.learnedPreferences = deriveLearnedPreferences(state);
@@ -1205,7 +1208,6 @@ function saveToList(productId) {
   state.interactions.lastAction = { productId: productId, action: "save", createdAt: createdAt };
   persist();
   render();
-  showToast("Article ajouté à ta liste", true);
 }
 async function shareProduct(productId) {
   const product = productById(productId);
@@ -1338,12 +1340,18 @@ function closeModal() {
 }
 function attachImageFallbacks(scope) {
   scope.querySelectorAll("img.product-photo").forEach(function(image) {
-    image.addEventListener("error", function() {
+    function replaceWithFallback() {
+      if (!image.isConnected || image.dataset.fallbackApplied === "true") return;
+      image.dataset.fallbackApplied = "true";
       const fallback = document.createElement("div");
       fallback.className = "image-fallback";
-      fallback.innerHTML = '<span class="hanger" aria-hidden="true">⌁</span><small>Image indisponible</small>';
+      fallback.dataset.imageUrl = image.currentSrc || image.src || "";
+      fallback.innerHTML = '<span class="hanger" aria-hidden="true">⌁</span><small>Photo momentanément indisponible</small>';
       image.replaceWith(fallback);
-    }, { once: true });
+    }
+    image.addEventListener("error", replaceWithFallback, { once: true });
+    // Un cache froid ou un rendu très rapide peut terminer avant l'ajout du listener.
+    if (image.complete && image.naturalWidth === 0) replaceWithFallback();
   });
 }
 function openProductForm() {
