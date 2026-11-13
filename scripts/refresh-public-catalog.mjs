@@ -128,14 +128,14 @@ function galleryImageCandidates(html,pageUrl,productName) {
   const normalizedName = clean(productName).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"")
     .replace(/[^a-z0-9]+/g," ").trim();
   const words = normalizedName.split(" ").filter(word => word.length > 2);
-  const tags = String(html || "").match(/<img\\b[^>]*>/gi) || [];
+  const tags = String(html || "").match(/<img\b[^>]*>/gi) || [];
   const images = [];
   for (const tag of tags) {
-    const alt = clean((tag.match(/\\balt\\s*=\\s*["']([^"']*)["']/i) || [])[1] || "").toLowerCase()
+    const alt = clean((tag.match(/\balt\s*=\s*["']([^"']*)["']/i) || [])[1] || "").toLowerCase()
       .normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/g," ").trim();
     const srcValues = ["src","data-src","data-original","data-lazy-src","data-zoom-image","srcset","data-srcset"]
-      .map(name => (tag.match(new RegExp("\\\\b"+name+"\\\\s*=\\\\s*[\"']([^\"']*)[\"']","i")) || [])[1] || "")
-      .flatMap(value => /srcset/i.test(value) ? value.split(",").map(part => part.trim().split(/\\s+/)[0]) : [value]);
+      .map(name => (tag.match(new RegExp("\\b"+name+"\\s*=\\s*[\"']([^\"']*)[\"']","i")) || [])[1] || "")
+      .flatMap(value => /srcset/i.test(value) ? value.split(",").map(part => part.trim().split(/\s+/)[0]) : [value]);
     const relevant = normalizedName && (alt.includes(normalizedName) ||
       (words.length >= 2 && words.filter(word => alt.includes(word)).length >= Math.min(3,words.length)));
     if (!relevant) continue;
@@ -147,10 +147,10 @@ function galleryImageCandidates(html,pageUrl,productName) {
   return Array.from(new Set(images));
 }
 function extractPageImageCandidates(html,pageUrl,productName) {
-  const scripts = String(html || "").match(/<script\\b[^>]*type\\s*=\\s*["']application\\/ld\\+json["'][^>]*>[\\s\\S]*?<\\/script>/gi) || [];
+  const scripts = String(html || "").match(/<script\b[^>]*type\s*=\s*["']application\/ld\+json["'][^>]*>[\s\S]*?<\/script>/gi) || [];
   const structured = [];
   for (const block of scripts) {
-    const raw = block.replace(/^<script\\b[^>]*>/i,"").replace(/<\\/script>$/i,"").trim();
+    const raw = block.replace(/^<script\b[^>]*>/i,"").replace(/<\/script>$/i,"").trim();
     try {
       flattenProducts(JSON.parse(raw)).forEach(item => list(item.image).forEach(value => {
         const url = safeImage(typeof value === "string" ? value : value && (value.url || value.contentUrl),pageUrl);
