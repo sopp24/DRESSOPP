@@ -244,3 +244,21 @@ test("default discovery interleaves merchants and balances style and price bands
   assert.ok(new Set(firstFour.map(item=>item.price < 40 ? "budget" : item.price < 100 ? "mid" : "premium")).size >= 3);
 });
 
+
+test("merchant diversity treats seller labels on one marketplace as the same shop", function() {
+  const products = [
+    normalizeProduct({id:"z1",name:"Pull OVS",merchant:"Zalando · OVS Group",brand:"OVS",price:50,category:"Pull",seasonTags:["Toute saison"]}),
+    normalizeProduct({id:"z2",name:"Jean OVS",merchant:"Zalando · OVS Group",brand:"OVS",price:65,category:"Pantalon",seasonTags:["Toute saison"]}),
+    normalizeProduct({id:"z3",name:"Pull Massimo",merchant:"Zalando · Massimo Dutti",brand:"Massimo Dutti",price:85,category:"Pull",seasonTags:["Toute saison"]}),
+    normalizeProduct({id:"c1",name:"Veste COS",merchant:"COS",brand:"COS",price:190,category:"Veste",seasonTags:["Toute saison"]}),
+    normalizeProduct({id:"s1",name:"Sneakers SNIPES",merchant:"SNIPES",brand:"Nike",price:110,objective:"Chaussures",category:"Chaussures",seasonTags:["Toute saison"]}),
+    normalizeProduct({id:"u1",name:"Pantalon UNIQLO",merchant:"UNIQLO",brand:"UNIQLO",price:49,category:"Pantalon",seasonTags:["Toute saison"]})
+  ];
+  const state = createInitialState(products);
+  const result = rankProducts(products,state,{
+    includeSeen:true,
+    filters:{objective:"Tout",style:"Tous",season:"Toute saison",maxPrice:null}
+  });
+  const firstFour = result.slice(0,4).map(item=>String(item.merchant).split(" · ")[0]);
+  assert.equal(new Set(firstFour).size,4);
+});
