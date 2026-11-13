@@ -243,6 +243,9 @@ test("the product card, action row and touch targets stay in separate layout row
   assert.ok(css.includes("min-width: 44px;"));
   assert.ok(visualQA.includes("cardSectionsOverlap"));
   assert.ok(visualQA.includes("requestedSrc"));
+  assert.ok(visualQA.includes("ensureAppReady(page, targetUrl)"));
+  assert.ok(visualQA.includes("page.goto(targetUrl || baseUrl"));
+  assert.ok(visualQA.includes("runViewport(browser, viewport, target)"));
 });
 
 
