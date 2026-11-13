@@ -164,6 +164,7 @@ test("caches confirmed men's product photos on the same origin and keeps the CDN
 
 
 
+// Exercise responsive srcset parsing, not only a single img src.
 test("caches a fresh gallery image after both stored product-image URLs return 404", async () => {
   const directory = await mkdtemp(resolve(tmpdir(),"dressopp-gallery-recovery-"));
   const productUrl = "https://www.armorlux.com/products/pull-marin-homme";
