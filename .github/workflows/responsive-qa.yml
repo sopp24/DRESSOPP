@@ -1,6 +1,8 @@
 name: Responsive QA (pre-merge)
 
 on:
+  push:
+    branches: [fix/mobile-swipe-responsive-qa]
   pull_request:
     branches: [main]
   workflow_dispatch:
@@ -9,7 +11,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: dressopp-responsive-qa-${{ github.event.pull_request.number || github.ref }}
+  group: dressopp-responsive-qa-${{ github.event.pull_request.head.ref || github.ref_name }}
   cancel-in-progress: true
 
 jobs:
