@@ -124,6 +124,43 @@ function flattenProducts(value) {
   const found = type.includes("product") ? [value] : [];
   return found.concat(flattenProducts(value["@graph"]),flattenProducts(value.mainEntity),flattenProducts(value.itemListElement),flattenProducts(value.item));
 }
+function galleryImageCandidates(html,pageUrl,productName) {
+  const normalizedName = clean(productName).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"")
+    .replace(/[^a-z0-9]+/g," ").trim();
+  const words = normalizedName.split(" ").filter(word => word.length > 2);
+  const tags = String(html || "").match(/<img\\b[^>]*>/gi) || [];
+  const images = [];
+  for (const tag of tags) {
+    const alt = clean((tag.match(/\\balt\\s*=\\s*["']([^"']*)["']/i) || [])[1] || "").toLowerCase()
+      .normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/g," ").trim();
+    const srcValues = ["src","data-src","data-original","data-lazy-src","data-zoom-image","srcset","data-srcset"]
+      .map(name => (tag.match(new RegExp("\\\\b"+name+"\\\\s*=\\\\s*[\"']([^\"']*)[\"']","i")) || [])[1] || "")
+      .flatMap(value => /srcset/i.test(value) ? value.split(",").map(part => part.trim().split(/\\s+/)[0]) : [value]);
+    const relevant = normalizedName && (alt.includes(normalizedName) ||
+      (words.length >= 2 && words.filter(word => alt.includes(word)).length >= Math.min(3,words.length)));
+    if (!relevant) continue;
+    srcValues.forEach(value => {
+      const url = safeImage(value,pageUrl);
+      if (url) images.push(url);
+    });
+  }
+  return Array.from(new Set(images));
+}
+function extractPageImageCandidates(html,pageUrl,productName) {
+  const scripts = String(html || "").match(/<script\\b[^>]*type\\s*=\\s*["']application\\/ld\\+json["'][^>]*>[\\s\\S]*?<\\/script>/gi) || [];
+  const structured = [];
+  for (const block of scripts) {
+    const raw = block.replace(/^<script\\b[^>]*>/i,"").replace(/<\\/script>$/i,"").trim();
+    try {
+      flattenProducts(JSON.parse(raw)).forEach(item => list(item.image).forEach(value => {
+        const url = safeImage(typeof value === "string" ? value : value && (value.url || value.contentUrl),pageUrl);
+        if (url) structured.push(url);
+      }));
+    } catch { /* Ignorer les données structurées mal formées. */ }
+  }
+  const social = safeImage(meta(html,"og:image"),pageUrl);
+  return Array.from(new Set(structured.concat(social ? [social] : [],galleryImageCandidates(html,pageUrl,productName))));
+}
 function inferCatalogGender(item,pageUrl,trustDeclaredGender = true) {
   const audience = item && item.audience && typeof item.audience === "object"
     ? [item.audience.name,item.audience.suggestedGender,item.audience.genderType].filter(Boolean).join(" ")
@@ -152,11 +189,15 @@ function productRecord(item,source,pageUrl,checkedAt,html) {
   const availability = String(offer.availability || "").toLowerCase();
   if (!item.name || currency !== "EUR" || !Number.isFinite(price) || price <= 0 || /outofstock|soldout|discontinued/.test(availability)) return null;
   const page = safePage(item.url || pageUrl,pageUrl,source.domain);
-  const imageValue = list(item.image)[0];
-  const structuredImage = safeImage(typeof imageValue === "string" ? imageValue : imageValue && (imageValue.url || imageValue.contentUrl),pageUrl);
-  // Certaines boutiques conservent une URL JSON-LD historique : og:image correspond à la galerie active.
+  const structuredImages = list(item.image).map(value =>
+    safeImage(typeof value === "string" ? value : value && (value.url || value.contentUrl),pageUrl)
+  ).filter(Boolean);
   const socialImage = safeImage(meta(html,"og:image"),pageUrl);
-  const image = socialImage || structuredImage;
+  const galleryImages = galleryImageCandidates(html,pageUrl,item.name);
+  // Le JSON-LD de la fiche est prioritaire ; OG et galerie servent de solutions de secours.
+  const image = structuredImages[0] || socialImage || galleryImages[0] || "";
+  const imageFallbackUrl = structuredImages.slice(1).concat(socialImage ? [socialImage] : [],galleryImages)
+    .find(url => url && url !== image) || "";
   if (!page || !image) return null;
   const name = clean(item.name); if (!name || name.length > 220) return null;
   const brand = clean(item.brand && item.brand.name || item.brand || source.name);
@@ -198,7 +239,7 @@ function productRecord(item,source,pageUrl,checkedAt,html) {
   const gender = inferCatalogGender(item,page.href);
   return {
     id:"web-" + hash(page.href.split("?")[0].toLowerCase()), name, brand, merchant:source.name,
-    url:page.href, imageUrl:image, price, originalPrice:Number(offer.highPrice) || null,
+    url:page.href, imageUrl:image, imageFallbackUrl, price, originalPrice:Number(offer.highPrice) || null,
     objective, category, gender, genderVerified:gender === "men",
     styleTags:rules.filter(([,pattern]) => pattern.test(terms)).map(([label]) => label),
     seasonTags:[], colors:list(item.color).map(clean).filter(Boolean), materials:list(item.material).map(clean).filter(Boolean),
@@ -229,7 +270,7 @@ export function extractProductsFromHtml(html,source,pageUrl,checkedAt = new Date
     const checked = new Date(checkedAt).toISOString();
     products.push({
       id:"web-" + hash(pageUrl), name:title, brand:meta(html,"product:brand") || source.name, merchant:source.name,
-      url:pageUrl, imageUrl:image, price, originalPrice:null, objective:"Vêtements", category:"Vêtements",
+      url:pageUrl, imageUrl:image, imageFallbackUrl:"", price, originalPrice:null, objective:"Vêtements", category:"Vêtements",
       gender:inferCatalogGender({name:title,description:meta(html,"og:description")},pageUrl),
       genderVerified:inferCatalogGender({name:title,description:meta(html,"og:description")},pageUrl) === "men",
       styleTags:[], seasonTags:[], colors:[], materials:[], cuts:[], patterns:[], description:meta(html,"og:description"), sizes:[],
@@ -433,35 +474,83 @@ export async function cacheProductImages(items, options = {}) {
   const maxBytes = Number(options.maxBytes) || 1200000;
   await mkdir(directory,{recursive:true});
   let cached = 0, failed = 0;
+  const timeoutSignal = () => typeof AbortSignal !== "undefined" && AbortSignal.timeout
+    ? AbortSignal.timeout(12000) : undefined;
+
   for (const product of (Array.isArray(items) ? items : [])) {
     if (!product || product.gender !== "men" || product.genderVerified !== true) continue;
-    const remoteUrl = String(product.imageFallbackUrl || product.imageUrl || "").trim();
-    if (!/^https:\/\//i.test(remoteUrl)) continue;
     if (/^\.\/assets\/product-images\//i.test(String(product.imageUrl || ""))) continue;
-    product.imageFallbackUrl = remoteUrl;
-    try {
-      const response = await fetcher(remoteUrl,{
-        headers:{
-          "user-agent":UA,
-          "accept":"image/avif,image/webp,image/png,image/jpeg,*/*;q=0.5",
-          "referer":String(product.url || "https://sopp24.github.io/DRESSOPP/")
-        },
-        signal:typeof AbortSignal !== "undefined" && AbortSignal.timeout ? AbortSignal.timeout(12000) : undefined
-      });
-      if (!response || !response.ok) throw new Error("Image HTTP " + (response && response.status));
-      const contentType = String(response.headers && response.headers.get("content-type") || "").split(";")[0].trim().toLowerCase();
-      const extensions = { "image/jpeg":"jpg","image/png":"png","image/webp":"webp","image/avif":"avif" };
-      const extension = extensions[contentType];
-      if (!extension) throw new Error("Format image non pris en charge : " + contentType);
-      const bytes = Buffer.from(await response.arrayBuffer());
-      if (!bytes.length || bytes.length > maxBytes) throw new Error("Image vide ou trop volumineuse");
-      const filename = hash(product.id || product.url) + "." + extension;
-      await writeFile(resolve(directory,filename),bytes);
+    let candidates = Array.from(new Set([product.imageUrl,product.imageFallbackUrl]
+      .map(value => String(value || "").trim()).filter(value => /^https:\/\//i.test(value))));
+    const tried = new Set();
+    let saved = null;
+
+    const tryImage = async url => {
+      if (!url || tried.has(url)) return null;
+      tried.add(url);
+      try {
+        const response = await fetcher(url,{
+          headers:{
+            "user-agent":UA,
+            "accept":"image/avif,image/webp,image/png,image/jpeg,*/*;q=0.5",
+            "referer":String(product.url || "https://sopp24.github.io/DRESSOPP/")
+          },
+          signal:timeoutSignal()
+        });
+        if (!response || !response.ok) throw new Error("Image HTTP " + (response && response.status));
+        const contentType = String(response.headers && response.headers.get("content-type") || "").split(";")[0].trim().toLowerCase();
+        const extensions = { "image/jpeg":"jpg","image/png":"png","image/webp":"webp","image/avif":"avif" };
+        const extension = extensions[contentType];
+        if (!extension) throw new Error("Format image non pris en charge : " + contentType);
+        const bytes = Buffer.from(await response.arrayBuffer());
+        if (!bytes.length || bytes.length > maxBytes) throw new Error("Image vide ou trop volumineuse");
+        return { url,extension,bytes };
+      } catch (error) {
+        console.warn("[DRESSOPP] Source photo indisponible pour " + (product.id || product.name) + " : " + error.message);
+        return null;
+      }
+    };
+
+    for (const url of candidates) {
+      saved = await tryImage(url);
+      if (saved) break;
+    }
+
+    // Une URL enregistrée peut avoir été supprimée. Relire la fiche officielle pour récupérer
+    // les nouvelles images JSON-LD, Open Graph et celles de la galerie réellement affichée.
+    if (!saved && product.url && /^https:\/\//i.test(String(product.url))) {
+      try {
+        const page = await fetcher(product.url,{
+          headers:{
+            "user-agent":UA,
+            "accept":"text/html,application/xhtml+xml,*/*;q=0.5",
+            "referer":"https://sopp24.github.io/DRESSOPP/"
+          },
+          signal:timeoutSignal()
+        });
+        if (page && page.ok) {
+          const html = await page.text();
+          const freshCandidates = extractPageImageCandidates(html,product.url,product.name);
+          candidates = Array.from(new Set(candidates.concat(freshCandidates)));
+          for (const url of freshCandidates) {
+            saved = await tryImage(url);
+            if (saved) break;
+          }
+        }
+      } catch (error) {
+        console.warn("[DRESSOPP] Impossible de relire la fiche produit " + (product.id || product.name) + " : " + error.message);
+      }
+    }
+
+    if (saved) {
+      const filename = hash(product.id || product.url) + "." + saved.extension;
+      await writeFile(resolve(directory,filename),saved.bytes);
       product.imageUrl = "./assets/product-images/" + filename;
+      product.imageFallbackUrl = candidates.find(url => url !== saved.url) || saved.url;
       cached += 1;
-    } catch (error) {
+    } else {
+      product.imageFallbackUrl = candidates.find(url => url !== candidates[0]) || candidates[0] || "";
       failed += 1;
-      console.warn("[DRESSOPP] Photo conservée en URL distante pour " + (product.id || product.name) + " : " + error.message);
     }
   }
   return { cached,failed };
