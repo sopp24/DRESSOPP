@@ -6,6 +6,7 @@ const app = readFileSync(new URL("../app.js", import.meta.url), "utf8");
 const css = readFileSync(new URL("../styles.css", import.meta.url), "utf8");
 const index = readFileSync(new URL("../index.html", import.meta.url), "utf8");
 const sw = readFileSync(new URL("../sw.js", import.meta.url), "utf8");
+const visualQA = readFileSync(new URL("../scripts/visual-qa.mjs", import.meta.url), "utf8");
 const root = new URL("../", import.meta.url);
 
 test("the discovery deck exposes the five Tinder-style actions", function() {
@@ -128,11 +129,16 @@ test("Pinterest is the sole inspiration source and the old local lookbook is abs
 });
 
 
-test("swiping down on the discovery card saves it to the list", function() {
+test("swiping down on the discovery card saves it reliably on touch devices", function() {
   assert.ok(app.includes("verticalSaveIntent"));
   assert.ok(app.includes("const acceptedSave = !horizontalIntent && deltaY >= saveThreshold && deltaY > Math.abs(deltaX) * 1.08"));
   assert.ok(app.includes('animateDeckDecision(productId, acceptedSave ? "save"'));
+  assert.ok(app.includes('gestureSurface.addEventListener("touchend"'));
+  assert.ok(app.includes("deltaY = event.clientY - startY"));
   assert.ok(css.includes(".product-card.is-committing.is-save .swipe-tint"));
+  assert.ok(css.includes("touch-action: none;"));
+  assert.ok(visualQA.includes("await frame();"));
+  assert.ok(visualQA.includes("swipe-save-failure.png"));
 });
 
 test("Pinterest pins are inside Training and no standalone Pins navigation remains", function() {
