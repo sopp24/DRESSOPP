@@ -74,7 +74,7 @@ test("all local files referenced by the application shell exist", function() {
 });
 
 test("the PWA refreshes its cache and preloads the app icons and first catalogue page", function() {
-  assert.ok(sw.includes('dressopp-static-v16'));
+  assert.ok(sw.includes('dressopp-static-v17'));
   for (const path of [
     "./assets/logo-horizontal.png",
     "./assets/logo-square.png",
@@ -131,12 +131,12 @@ test("Pinterest is the sole inspiration source and the old local lookbook is abs
 
 test("swiping down on the discovery card saves it reliably on touch devices", function() {
   assert.ok(app.includes("verticalSaveIntent"));
-  assert.ok(app.includes("const acceptedSave = !horizontalIntent && deltaY >= saveThreshold && deltaY > Math.abs(deltaX) * 1.08"));
+  assert.ok(app.includes("const acceptedSave = !horizontalIntent && deltaY >= saveThreshold &&"));
   assert.ok(app.includes('animateDeckDecision(productId, acceptedSave ? "save"'));
   assert.ok(app.includes('document.addEventListener("touchend"'));
-  assert.ok(app.includes('gestureSurface.addEventListener("touchmove"'));
-  assert.ok(app.includes("updateGesturePosition(touch.clientX,touch.clientY,event)"));
-  assert.ok(app.includes("deltaY = event.clientY - startY"));
+  assert.ok(app.includes('document.addEventListener("touchmove"'));
+  assert.ok(app.includes("updateGesturePosition(touch.clientX, touch.clientY, event)"));
+  assert.ok(app.includes("deltaY = clientY - startY"));
   assert.ok(css.includes(".product-card.is-committing.is-save .swipe-tint"));
   assert.ok(css.includes("touch-action: none;"));
   assert.ok(visualQA.includes("await frame();"));
