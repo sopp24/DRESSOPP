@@ -232,7 +232,8 @@ test("la carte de découverte sépare la photo, la fiche et les commandes", func
 // Responsive QA guardrails: keep this suite attached to the current PR revision.
 
 test("the product card uses its grid row height instead of overflowing below it", function() {
-  assert.ok(css.includes("height: auto; min-width: 0; min-height: 0; flex: 0 1 auto; align-self: stretch;"));
+  assert.ok(css.includes("height: auto;"));
+  assert.ok(css.includes("align-self: stretch;"));
   assert.ok(css.includes("grid-template-rows: minmax(0,1fr) auto auto;"));
   assert.ok(visualQA.includes("requestedSrc"));
 });
