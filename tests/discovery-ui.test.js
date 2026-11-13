@@ -228,19 +228,19 @@ test("la photo de la carte active utilise le catalogue courant et une source de 
 
 test("la carte de découverte sépare physiquement photo, fiche et commandes", function() {
   const layer = css.slice(css.indexOf("DRESSOPP responsive card layout"));
-  assert.ok(layer.includes("grid-template-rows:minmax(280px,1fr) auto auto;"));
-  assert.ok(layer.includes("grid-template-rows:minmax(0,1fr) auto;"));
+  assert.ok(layer.includes("grid-template-rows: minmax(280px,1fr) auto auto;"));
+  assert.ok(layer.includes("grid-template-rows: minmax(0,1fr) auto;"));
   assert.ok(layer.includes(".discovery-page--app .deck-actions {"));
-  assert.ok(layer.includes("position:relative;"));
-  assert.ok(layer.includes("object-fit:contain;"));
+  assert.ok(layer.includes("position: relative;"));
+  assert.ok(layer.includes("object-fit: contain;"));
 });
 // Responsive QA guardrails: keep this suite attached to the current PR revision.
 
 test("the product card, action row and touch targets stay in separate layout rows", function() {
   const layer = css.slice(css.indexOf("DRESSOPP responsive card layout"));
-  assert.ok(layer.includes("height:100%;"));
-  assert.ok(layer.includes("grid-template-rows:minmax(0,1fr) auto;"));
-  assert.ok(layer.includes("min-width:44px;"));
+  assert.ok(layer.includes("height: 100%;"));
+  assert.ok(layer.includes("grid-template-rows: minmax(0,1fr) auto;"));
+  assert.ok(layer.includes("min-width: 44px;"));
   assert.ok(visualQA.includes("cardSectionsOverlap"));
   assert.ok(visualQA.includes("requestedSrc"));
 });
