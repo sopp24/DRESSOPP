@@ -74,7 +74,7 @@ test("all local files referenced by the application shell exist", function() {
 });
 
 test("the PWA refreshes its cache and preloads the app icons and first catalogue page", function() {
-  assert.ok(sw.includes('dressopp-static-v15'));
+  assert.ok(sw.includes('dressopp-static-v16'));
   for (const path of [
     "./assets/logo-horizontal.png",
     "./assets/logo-square.png",
@@ -200,4 +200,28 @@ test("the restored swipe layout keeps the product card separate from the action 
   assert.ok(app.includes('name="menswear" required'));
   assert.ok(app.includes('if (data.get("menswear") !== "on") throw new Error("Confirme que la fiche source classe explicitement cet article dans la collection homme.")'));
   assert.ok(app.includes('gender: "men", genderVerified: true'));
+});
+
+test("voter ou ajouter à la liste ne déclenche aucune notification de confirmation", function() {
+  assert.ok(!app.includes('showToast("Réponse Oui enregistrée'));
+  assert.ok(!app.includes('showToast("Réponse Non enregistrée'));
+  assert.ok(!app.includes('showToast("Article ajouté à ta liste'));
+  assert.ok(app.includes("state.interactions.likes.push(event)"));
+  assert.ok(app.includes("state.interactions.dislikes.push(event)"));
+  assert.ok(app.includes("state.likedProducts.push({ productId: productId, addedAt: createdAt })"));
+});
+
+test("la photo de la carte active est chargée en priorité et les attributs inconnus restent masqués", function() {
+  assert.ok(app.includes('imageMarkup(product.imageUrl, product.name, {eager:true})'));
+  assert.ok(app.includes('fetchpriority="high"'));
+  assert.ok(app.includes('if (image.complete && image.naturalWidth === 0) replaceWithFallback();'));
+  assert.ok(app.includes('if (!colors.length && !materials.length) return "";'));
+  assert.ok(visualQA.includes("la photo principale du produit ne s'est pas chargée"));
+  assert.ok(visualQA.includes("les zones photo, informations et commandes se chevauchent"));
+});
+
+test("la carte de découverte sépare la photo, la fiche et les commandes", function() {
+  assert.ok(css.includes("DRESSOPP card layout — photo, fiche et commandes"));
+  assert.ok(css.includes("grid-template-rows: minmax(0,1fr) auto auto;"));
+  assert.ok(css.includes("object-fit: contain;"));
 });
