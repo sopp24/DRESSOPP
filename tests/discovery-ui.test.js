@@ -293,7 +293,7 @@ test("Pinterest inspiration cards expose a separate inventory of visible outfit 
   assert.ok(app.includes("function renderPinterestPieceAnalysis(pin)"));
   assert.ok(app.includes("Pièces repérées dans la photo"));
   assert.ok(app.includes("renderPinterestPieceAnalysis(item)"));
-  assert.ok(app.includes("pieces:(Array.isArray(visual.pieces) ? visual.pieces : []).slice(0,12)"));
+  assert.ok(app.includes("const pieces = (Array.isArray(visual.pieces) ? visual.pieces : []).slice(0,12)"));
   assert.ok(app.includes("slot:piece.slot || productSlot({name:piece.type || \"\"})"));
 });
 
