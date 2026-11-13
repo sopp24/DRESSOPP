@@ -645,6 +645,8 @@ function renderRetailerDirectory() {
     '<p class="retailer-disclaimer">La Meta Ad Library donne accès à des publicités publiques, pas à ton fil publicitaire Instagram personnalisé. Les avis d’article ne sont pas assimilés à une note de fiabilité du marchand.</p></section>';
 }
 function renderDeckCard(product, training) {
+  const catalogProduct = Array.isArray(catalog) ? catalog.find(item => item.id === product.id) : null;
+  const productImageUrl = catalogProduct && catalogProduct.imageUrl || product.imageUrl || "";
   const brand = product.brand || product.merchant || product.source || "Marque non renseignée";
   const price = formatPrice(product.price);
   const articleUrl = safeExternalUrl(product.url);
@@ -652,8 +654,8 @@ function renderDeckCard(product, training) {
   const originalLink = articleUrl
     ? '<a class="product-original-link" href="' + esc(articleUrl) + '" target="_blank" rel="noopener noreferrer"><span>Voir l’article original</span><i aria-hidden="true">↗</i></a>'
     : '<button class="product-original-link" type="button" data-action="details" data-id="' + esc(product.id) + '"><span>Voir la fiche produit</span><i aria-hidden="true">↗</i></button>';
-  return '<div class="deck-card-wrap"><article class="product-card" id="active-product-card" data-product-id="' + esc(product.id) + '" role="group" tabindex="0" aria-labelledby="active-product-title" aria-describedby="deck-keyboard-hint deck-touch-hint" aria-keyshortcuts="ArrowLeft ArrowRight ArrowDown Control+Z Meta+Z">' +
-    '<div class="product-visual">' + imageMarkup(product.imageUrl, product.name, {eager:true}) + '</div>' +
+  return '<div class="deck-card-wrap"><article class="product-card" id="active-product-card" data-product-id="' + esc(product.id) + '" data-image-url="' + esc(productImageUrl) + '" role="group" tabindex="0" aria-labelledby="active-product-title" aria-describedby="deck-keyboard-hint deck-touch-hint" aria-keyshortcuts="ArrowLeft ArrowRight ArrowDown Control+Z Meta+Z">' +
+    '<div class="product-visual">' + imageMarkup(productImageUrl, product.name, {eager:true}) + '</div>' +
     '<div class="swipe-tint" aria-hidden="true"></div>' +
     '<div class="swipe-stamp swipe-stamp-nope" aria-hidden="true">NON</div><div class="swipe-stamp swipe-stamp-like" aria-hidden="true">OUI</div><div class="swipe-stamp swipe-stamp-save" aria-hidden="true">AJOUTÉ</div>' +
     '<div class="product-info"><div class="product-copy">' +
@@ -1909,12 +1911,18 @@ function attachSwipe() {
   }
 
   gestureSurface.addEventListener("pointerup", finishSwipe);
-  // Capture phase prevents another touch handler from swallowing the final position.
-  gestureSurface.addEventListener("touchend", function(event) {
+  // Document capture survives pointer capture retargeting and browser touch retargeting.
+  document.addEventListener("touchend", function(event) {
     if (!dragging || !event.changedTouches || !event.changedTouches.length) return;
+    if (!card.isConnected) { pointerId = null; clearPreview(false); return; }
     const touch = event.changedTouches[0];
     updateGesturePosition(touch.clientX,touch.clientY,null);
     finishSwipe({ pointerId:pointerId, clientX:touch.clientX, clientY:touch.clientY });
+  }, { capture:true, passive:true });
+  document.addEventListener("touchcancel", function() {
+    if (!dragging) return;
+    pointerId = null;
+    clearPreview(true);
   }, { capture:true, passive:true });
   gestureSurface.addEventListener("touchcancel", function() {
     if (!dragging) return;
