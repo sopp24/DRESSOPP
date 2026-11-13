@@ -65,9 +65,11 @@ async function getLayout(page) {
     const imageRect = rect(visual);
     const infoRect = rect(info);
     const productImage = card ? {
+      productId:card.dataset.productId || null,
       loaded:Boolean(photo && photo.complete && photo.naturalWidth > 0),
       fallback:Boolean(fallback),
       url:photo ? (photo.currentSrc || photo.src) : fallback && fallback.dataset.imageUrl || null,
+      requestedSrc:photo ? (photo.getAttribute("src") || null) : null,
       naturalWidth:photo ? photo.naturalWidth : 0,
       visual:imageRect,
       info:infoRect
