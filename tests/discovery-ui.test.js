@@ -133,7 +133,7 @@ test("swiping down on the discovery card saves it reliably on touch devices", fu
   assert.ok(app.includes("verticalSaveIntent"));
   assert.ok(app.includes("const acceptedSave = !horizontalIntent && deltaY >= saveThreshold && deltaY > Math.abs(deltaX) * 1.08"));
   assert.ok(app.includes('animateDeckDecision(productId, acceptedSave ? "save"'));
-  assert.ok(app.includes('gestureSurface.addEventListener("touchend"'));
+  assert.ok(app.includes('document.addEventListener("touchend"'));
   assert.ok(app.includes('gestureSurface.addEventListener("touchmove"'));
   assert.ok(app.includes("updateGesturePosition(touch.clientX,touch.clientY,event)"));
   assert.ok(app.includes("deltaY = event.clientY - startY"));
@@ -214,7 +214,8 @@ test("voter ou ajouter à la liste ne déclenche aucune notification de confirma
 });
 
 test("la photo de la carte active est chargée en priorité et les attributs inconnus restent masqués", function() {
-  assert.ok(app.includes('imageMarkup(product.imageUrl, product.name, {eager:true})'));
+  assert.ok(app.includes('imageMarkup(productImageUrl, product.name, {eager:true})'));
+  assert.ok(app.includes("catalogProduct && catalogProduct.imageUrl || product.imageUrl ||"));
   assert.ok(app.includes('fetchpriority="high"'));
   assert.ok(app.includes('if (image.complete && image.naturalWidth === 0) replaceWithFallback();'));
   assert.ok(app.includes("attachImageFallbacks(main);"));
@@ -227,6 +228,7 @@ test("la photo de la carte active est chargée en priorité et les attributs inc
 test("la carte de découverte sépare la photo, la fiche et les commandes", function() {
   assert.ok(css.includes("DRESSOPP card layout — photo, fiche et commandes"));
   assert.ok(css.includes("grid-template-rows: minmax(0,1fr) auto auto;"));
+  assert.ok(!css.slice(css.indexOf("DRESSOPP card layout — photo, fiche et commandes")).includes("body.is-discovery-app .discovery-page--app"));
   assert.ok(css.includes("object-fit: contain;"));
 });
 // Responsive QA guardrails: keep this suite attached to the current PR revision.
