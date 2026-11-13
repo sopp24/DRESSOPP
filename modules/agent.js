@@ -1,3 +1,5 @@
+import { diversifyScoredProducts } from "./engine.js";
+
 const MAX_CANDIDATES = 50;
 const MAX_HISTORY = 15;
 
@@ -167,27 +169,8 @@ export function recommendLocally(state, rankedCandidates, inspirations = [], lim
     return {product,score,index,matched};
   }).sort((a,b) => b.score-a.score || a.index-b.index);
 
-  const selected = [];
-  const merchantCounts = new Map();
-  const categoryCounts = new Map();
   const cap = Math.max(1,Math.min(14,Math.floor(Number(limit) || 14)));
-  while (selected.length < cap && scored.length) {
-    let bestIndex = 0, bestAdjusted = -Infinity;
-    scored.forEach((item,index) => {
-      const merchant = localNormalize(item.product.merchant || item.product.source || "");
-      const category = localNormalize(item.product.objective || item.product.category || "");
-      const diversityPenalty = (merchantCounts.get(merchant) || 0) * 2.5 + (categoryCounts.get(category) || 0) * 0.8;
-      const adjusted = item.score - diversityPenalty;
-      if (adjusted > bestAdjusted) { bestAdjusted=adjusted; bestIndex=index; }
-    });
-    const chosen = scored.splice(bestIndex,1)[0];
-    selected.push(chosen);
-    const merchant = localNormalize(chosen.product.merchant || chosen.product.source || "");
-    const category = localNormalize(chosen.product.objective || chosen.product.category || "");
-    merchantCounts.set(merchant,(merchantCounts.get(merchant) || 0)+1);
-    categoryCounts.set(category,(categoryCounts.get(category) || 0)+1);
-  }
-
+  const selected = diversifyScoredProducts(scored,cap);
   const recommendations = selected.map(item => {
     const evidence = Array.from(new Map(item.matched.sort((a,b)=>b.weight-a.weight).map(match => [localNormalize(match.value),match])).values()).slice(0,2);
     const reason = evidence.length
