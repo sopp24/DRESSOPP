@@ -3669,41 +3669,63 @@ button, a { touch-action: manipulation; }
   #active-product-card > .product-info { padding: 9px 10px !important; }
 }
 @media (orientation: landscape) and (max-height: 600px) and (max-width: 850px) {
-  #active-product-wrap { grid-template-rows: minmax(178px,1fr) auto auto !important; gap: 5px !important; }
+  #active-product-wrap {
+    grid-template-rows: minmax(198px,1fr) 44px 0 !important;
+    gap: 3px !important;
+  }
   #active-product-card { grid-template-rows: minmax(0,1fr) auto !important; }
-  #active-product-card > .product-visual { min-height: 110px !important; }
+  #active-product-card > .product-visual { min-height: 160px !important; }
   #active-product-card > .product-info {
     grid-template-rows: minmax(0,auto) !important;
     grid-template-areas: "copy links" !important;
-    gap: 3px 7px !important;
-    padding: 4px 8px !important;
+    gap: 2px 7px !important;
+    padding: 2px 8px !important;
   }
   #active-product-card .product-copy {
     display: grid !important;
     grid-template-columns: minmax(0,1fr) auto !important;
     align-items: center !important;
-    gap: 3px 8px !important;
+    gap: 2px 7px !important;
   }
   #active-product-card .product-title {
     display: block !important;
     overflow: hidden !important;
-    font-size: 13px !important;
-    line-height: 1.05 !important;
+    font-size: 12px !important;
+    line-height: 1 !important;
     white-space: nowrap !important;
     text-overflow: ellipsis !important;
   }
   #active-product-card .product-brand-price {
-    gap: 4px !important;
+    gap: 3px !important;
     margin-top: 0 !important;
     font-size: 8px !important;
+    line-height: 1 !important;
     white-space: nowrap !important;
   }
   #active-product-card .product-attributes { display: none !important; }
-  #active-product-card .product-card-links { max-width: 90px !important; }
+  #active-product-card .product-card-links { max-width: 88px !important; }
   #active-product-card .product-card-links .product-original-link {
-    min-height: 34px !important;
-    padding: 4px 6px !important;
+    height: 32px !important;
+    min-height: 32px !important;
+    padding: 2px 5px !important;
     font-size: 8px !important;
+    line-height: 1 !important;
   }
-  #active-product-wrap > .deck-hint { font-size: 7px !important; }
+  #active-product-wrap > .deck-actions {
+    height: 44px !important;
+    gap: 4px !important;
+  }
+  #active-product-wrap > .deck-actions .deck-action,
+  #active-product-wrap > .deck-actions .deck-action-undo,
+  #active-product-wrap > .deck-actions .deck-action-share,
+  #active-product-wrap > .deck-actions .deck-action-no,
+  #active-product-wrap > .deck-actions .deck-action-save,
+  #active-product-wrap > .deck-actions .deck-action-yes {
+    width: 44px !important;
+    height: 44px !important;
+    min-width: 44px !important;
+    min-height: 44px !important;
+    flex: 0 0 44px !important;
+  }
+  #active-product-wrap > .deck-hint { display: none !important; }
 }
