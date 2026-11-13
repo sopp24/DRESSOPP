@@ -1817,7 +1817,8 @@ body.is-discovery-app .app-footer { display: none; }
     border-color 160ms ease,
     box-shadow 360ms ease;
   will-change: transform,opacity;
-  touch-action: pan-y;
+  /* La carte gère ses swipes dans les deux axes, sans scroll natif concurrent. */
+  touch-action: none;
   isolation: isolate;
 }
 .discovery-page--app .product-visual {
@@ -2908,7 +2909,7 @@ button, a { touch-action: manipulation; }
   .search-input { width: min(300px,38vw); }
 }
 @media (min-width: 851px) {
-  body.is-discovery-app .product-card { touch-action: pan-y; }
+  body.is-discovery-app .product-card { touch-action: none; }
   .discovery-page--app .deck-card-wrap { max-width: min(100%,680px); }
   .discovery-page--app .deck-column { max-width: 680px; }
   .discovery-page--app .product-info { bottom: 96px; }
