@@ -134,8 +134,8 @@ test("Pinterest image analysis uses the vision model and returns hidden structur
     assert.match(analysis.outfitFormula,/Veste en cuir/);
     assert.match(modelInput.messages[1].content.find(part => part.type==="text").text,/mode masculine uniquement/);
     assert.match(modelInput.messages[1].content.find(part => part.type==="text").text,/audience/);
-    assert.match(modelInput.messages[1].content.find(part => part.type==="text").text,/tête aux pieds/);
-    assert.match(modelInput.messages[1].content.find(part => part.type==="text").text,/accessory/);
+    assert.match(modelInput.messages[1].content.find(part => part.type==="text").text,/vêtement, chaussure et accessoire/);
+    assert.match(modelInput.messages[1].content.find(part => part.type==="text").text,/jusqu’à 8 objets/);
     assert.equal(modelName,"@cf/google/gemma-4-26b-a4b-it");
     const imagePart = modelInput.messages[1].content.find(part => part.type==="image_url");
     assert.match(imagePart.image_url.url,/^data:image\/jpeg;base64,/);
