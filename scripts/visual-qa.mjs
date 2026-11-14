@@ -88,9 +88,19 @@ async function getLayout(page) {
       actionsPosition:actions ? getComputedStyle(actions).position : null
     } : null;
     const cardBottom = card ? card.getBoundingClientRect().bottom : 0;
+    const visualRect = visual && visual.getBoundingClientRect();
+    const infoRectForOverlap = info && info.getBoundingClientRect();
+    const horizontalCard = Boolean(card && getComputedStyle(card).display === "flex" &&
+      getComputedStyle(card).flexDirection === "row");
+    const visualInfoOverlap = Boolean(visualRect && infoRectForOverlap && (
+      horizontalCard
+        ? Math.min(visualRect.right, infoRectForOverlap.right) - Math.max(visualRect.left, infoRectForOverlap.left) > 2 &&
+          Math.min(visualRect.bottom, infoRectForOverlap.bottom) - Math.max(visualRect.top, infoRectForOverlap.top) > 2
+        : visualRect.bottom > infoRectForOverlap.top + 2
+    ));
     const cardSectionsOverlap = Boolean(visual && info && actions &&
-      (visual.getBoundingClientRect().bottom > info.getBoundingClientRect().top + 2 ||
-       info.getBoundingClientRect().bottom > cardBottom + 2 ||
+      (visualInfoOverlap ||
+       infoRectForOverlap.bottom > cardBottom + 2 ||
        actions.getBoundingClientRect().top < cardBottom + 1));
     const actionSizes = Array.from(document.querySelectorAll(".deck-action")).map(button => {
       const box = button.getBoundingClientRect();
