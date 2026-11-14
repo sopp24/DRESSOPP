@@ -73,9 +73,8 @@ test("all local files referenced by the application shell exist", function() {
 });
 
 test("the PWA refreshes its cache and preloads the app icons and first catalogue page", function() {
-  assert.ok(sw.includes('dressopp-static-v16'));
+  assert.ok(sw.includes('dressopp-static-v17'));
   for (const path of [
-    "./assets/logo-square.svg",
     "./assets/logo-square.svg",
     "./assets/rewind.svg",
     "./assets/cross.svg",
@@ -116,6 +115,11 @@ test("Pour toi is swipe-first and moves all secondary discovery panels to Settin
   assert.ok(app.includes('currentView === "discover"'));
   assert.ok(css.includes("height: 100dvh"));
   assert.ok(css.includes(".discovery-page--app .deck-card-wrap"));
+});
+
+test("the selected discovery layout is retained across reloads", function() {
+  assert.ok(!app.includes('state.settings.discoveryView = "cards";'));
+  assert.ok(app.includes('state.settings.discoveryView === "grid"'));
 });
 
 test("Pinterest is the sole inspiration source and the old local lookbook is absent", function() {
