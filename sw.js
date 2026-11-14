@@ -4,7 +4,7 @@ const CORE_FILES = [
   "./modules/store.js", "./modules/engine.js", "./modules/integrations.js",
   "./modules/outfits.js", "./modules/community.js", "./modules/agent.js", "./modules/audience.js",
   "./data/catalog-manifest.json", "./data/catalog-pages/page-0001.json",
-  "./assets/logo-square.svg", "./assets/rewind.svg", "./assets/cross.svg",
+  "./assets/logo-square.svg", "./assets/logo-horizontal.svg", "./assets/rewind.svg", "./assets/cross.svg",
   "./assets/star.svg", "./assets/fav.svg", "./assets/share.svg",
   "./assets/fonts/poppins-latin-400-normal.woff2",
   "./assets/fonts/poppins-latin-500-normal.woff2",
