@@ -1,0 +1,2475 @@
+diff --git a/README.md b/README.md
+index 023b0fa..ea44c83 100644
+--- a/README.md
++++ b/README.md
+@@ -2,7 +2,7 @@
+ 
+ **Mode diligente.**
+ 
+-DRESSOPP — « Mode diligente. » — est un personal shopper visuel pour la mode masculine uniquement (homme exclusivement ; unisexe, mixte et femme exclus) : une expérience de découverte façon Tinder, construite autour d'un catalogue multi-boutiques et d'un moteur qui apprend de chaque réponse Oui, Non et de chaque article sauvegardé. Les Pins Pinterest synchronisés ou ajoutés comme inspirations alimentent le profil stylistique et les propositions de tenues ; leurs images sont analysées côté serveur par un modèle de vision, sans ajouter d'information technique à l'interface.
++DRESSOPP — « Mode diligente. » — est un personal shopper visuel pour la mode masculine uniquement (homme, ou unisexe lorsque la pièce se porte aussi côté homme ; femme et pièces typiquement féminines exclues) : une expérience de découverte façon Tinder, construite autour d'un catalogue multi-boutiques et d'un moteur qui apprend de chaque réponse Oui, Non et de chaque article sauvegardé. Les Pins Pinterest synchronisés ou ajoutés comme inspirations alimentent le profil stylistique et les propositions de tenues ; leurs images sont analysées côté serveur par un modèle de vision, sans ajouter d'information technique à l'interface.
+ 
+ Site : https://sopp24.github.io/DRESSOPP/
+ 
+@@ -12,9 +12,9 @@ Les éléments ci-dessous ont été comparés aux fichiers réellement présents
+ 
+ | Élément | État constaté |
+ |---|---|
+-| Répertoire des boutiques | **200 enseignes** ; les neuf catégories et leurs sous-totaux correspondent à `data/merchant-directory.json`. |
++| Répertoire des boutiques | **236 enseignes** ; les neuf catégories et leurs sous-totaux correspondent à `data/merchant-directory.json`. |
+ | Dernier catalogue publié | Généré le **12 novembre 2026 à 16:01:36 UTC** ; statut `partial`. |
+-| Fiches du catalogue | **211 au total** : 180 fiches publiques actives, 16 références éditoriales et 15 fiches publiques périmées. Parmi toutes les fiches, **18 références masculines confirmées sont actuellement actives** ; les références femme, mixtes, unisexes ou ambiguës restent exclues de la découverte. |
++| Fiches du catalogue | **211 au total** : 180 fiches publiques actives, 16 références éditoriales et 15 fiches publiques périmées. Parmi les fiches actives, **82 sont proposables** (homme confirmé, boutique masculine ou unisexe adapté aux hommes) ; les références femme, les pièces typiquement féminines et les fiches dont le public est inconnu restent exclues de la découverte. |
+ | Sources actives du dernier instantané | 12 sources ont fourni des fiches exploitables ; 36 enseignes ont été examinées et 276 pages contrôlées. |
+ | Dernière collecte | 36 enseignes examinées et 276 pages contrôlées pendant cette exécution. |
+ | Pinterest | Tableau `mode` confirmé **PUBLIC** ; **36 Pins synchronisés**, dont 34 reconnus comme mode masculine, 1 unisexe et 1 non vestimentaire exclus des inspirations. Dernière synchronisation vérifiée : **12 novembre 2026 à 18:38:51 UTC**. |
+@@ -34,7 +34,7 @@ Cette section conserve la demande de référence pour faire évoluer les sources
+ 3. **Adapter les propositions au style, à la catégorie et au budget.** Les univers prioritaires comprennent les multimarques (Zalando, ASOS, UNIQLO…), l'accessible/casual (BZB, Pull & Bear…), le premium et le luxe (Louis Vuitton, Dior, Lothaire…), les sneakers et le sport (Nike, adidas, Courir…) et les sous-vêtements (Calvin Klein, Undiz…).
+ 4. **Fiabilité des marchands.** Trustpilot, Google Avis clients, Avis Vérifiés, Trusted Shops et Custplace sont des sources envisagées, pas des connecteurs actuellement intégrés. Le collecteur public ne renseigne pas les notes de marchands ; il peut récupérer une note de produit publiée dans les données structurées Schema.org. Une note produit ne doit jamais être assimilée à la fiabilité du vendeur.
+ 5. **Publicités mode.** Meta Ad Library est une piste de veille, mais aucun collecteur Meta Ad Library n'est actuellement présent dans le dépôt. Si cette source est ajoutée, elle devra se limiter aux données publiques accessibles par un moyen autorisé. Elle ne donne pas accès au fil Instagram personnalisé de l'utilisateur et ne prouve pas qu'un produit est apprécié personnellement.
+-6. **Couverture internationale.** Le répertoire comprend 200 enseignes couvrant plusieurs univers de mode masculine, dans les mêmes univers que les références fournies. Les pays, devises, livraison et accès techniques varient selon les enseignes.
++6. **Couverture internationale.** Le répertoire comprend 236 enseignes couvrant plusieurs univers de mode masculine, dans les mêmes univers que les références fournies. Les pays, devises, livraison et accès techniques varient selon les enseignes.
+ 
+ ## Expérience de découverte en flux continu
+ 
+@@ -47,37 +47,43 @@ Cette section conserve la demande de référence pour faire évoluer les sources
+ - Le workflow catalogue explore **36 enseignes par jour** parmi les 200, dont 12 priorités hautes et 24 sources en rotation. Les curseurs de rotation sont conservés dans `data/catalog-meta.json`.
+ - Ce fonctionnement supprime la limite artificielle de swipes. Il ne promet pas une infinité mathématique de vêtements : le volume réel dépend des produits que les sources publient, de leurs accès autorisés et de la disponibilité des articles. L'instantané publié le 12 novembre 2026 contient 180 fiches publiques actives, mais seules 18 références masculines confirmées sont actuellement actives ; le statut général de la collecte reste `partial`.
+ 
+-## Le répertoire permanent des 200 enseignes
++## Pertinence Pinterest et public masculin
++
++- **Public.** Une fiche est proposée si elle est confirmée homme (texte, déclaration vérifiée ou boutique marquée `audience: "men"` dans le répertoire) ou unisexe avec une pièce qui se porte côté homme. Les fiches femme, les pièces typiquement féminines (robe, jupe, lingerie…) et celles dont le public est inconnu ne sont jamais proposées. Le prédicat unique est `isMenFit` (`modules/audience.js`).
++- **Classement.** Chaque pièce est comparée aux Pins masculins analysés (pièces, couleurs, matières, coupes, détails) ; les trois meilleures correspondances forment un score de proximité qui s'ajoute au profil appris. Les couleurs, matières et coupes absentes d'une fiche sont lues dans son titre et sa description.
++- **Collecte.** Le collecteur visite en priorité les pages produit au rayon homme et proches des pièces du tableau, et relègue les rayons femme/enfant.
++
++## Le répertoire permanent des 236 enseignes
+ 
+ Le fichier de référence et ses métadonnées (domaine, URL, famille, gamme de prix indicative, région, priorité et statut de collecte) sont dans [`data/merchant-directory.json`](./data/merchant-directory.json). La liste est éditoriale, adaptée au brief, et n'est pas un classement mondial par chiffre d'affaires. Sa présence ne garantit ni que la boutique accepte le crawl, ni qu'elle livre dans tous les pays, ni qu'elle expose des fiches exploitables.
+ 
+-### Multi-marques & grands magasins (25)
++### Multi-marques & grands magasins (28)
+ 
+-Zalando · ASOS · ABOUT YOU · La Redoute · Galeries Lafayette · Printemps · 24S · Farfetch · SSENSE · END. · MR PORTER · Mytheresa · LUISAVIAROMA · YOOX · Browns · Selfridges · Harrods · Flannels · Nordstrom · Macy's · Urban Outfitters · NEXT · Marks & Spencer · Boozt · Care of Carl
++Zalando · ASOS · ABOUT YOU · La Redoute · Galeries Lafayette · Printemps · 24S · Farfetch · SSENSE · END. · MR PORTER · Mytheresa · LUISAVIAROMA · YOOX · Browns · Selfridges · Harrods · Flannels · Nordstrom · Macy's · Urban Outfitters · NEXT · Marks & Spencer · Boozt · Care of Carl · L'Exception · Beige Habilleur · LYNDI
+ 
+-### Accessible, casual & essentiels (27)
++### Accessible, casual & essentiels (34)
+ 
+-UNIQLO · Zara · BZB · Pull & Bear · Bershka · H&M · Mango Man · C&A · Celio · Jules · Kiabi · Primark · GAP · J.Crew · Abercrombie & Fitch · Hollister · American Eagle · Cotton On · PacSun · Selected Homme · Only & Sons · Jack & Jones · GU · MUJI · River Island · Industrie · The Iconic
++UNIQLO · Zara · BZB · Pull & Bear · Bershka · H&M · Mango Man · C&A · Celio · Jules · Kiabi · Primark · GAP · J.Crew · Abercrombie & Fitch · Hollister · American Eagle · Cotton On · PacSun · Selected Homme · Only & Sons · Jack & Jones · GU · MUJI · River Island · Industrie · The Iconic · Asphalte · Octobre Éditions · FAGUO · Olow · LePantalon · Montlimart · Armor Lux
+ 
+-### Premium, heritage & créateurs (35)
++### Premium, heritage & créateurs (50)
+ 
+-COS · ARKET · Massimo Dutti · Levi's · Carhartt WIP · Weekday · Charles Tyrwhitt · Lacoste · Fred Perry · Tommy Hilfiger · Polo Ralph Lauren · GANT · Barbour · Paul Smith · Sandro · AMI Paris · A.P.C. · Maison Kitsuné · Acne Studios · Our Legacy · Norse Projects · Folk · Universal Works · Percival · Edwin · Nudie Jeans · G-Star RAW · Diesel · Wrangler · Lee · Dickies · Filson · Rains · K-Way · Lothaire
++COS · ARKET · Massimo Dutti · Levi's · Carhartt WIP · Weekday · Charles Tyrwhitt · Lacoste · Fred Perry · Tommy Hilfiger · Polo Ralph Lauren · GANT · Barbour · Paul Smith · Sandro · AMI Paris · A.P.C. · Maison Kitsuné · Acne Studios · Our Legacy · Norse Projects · Folk · Universal Works · Percival · Edwin · Nudie Jeans · G-Star RAW · Diesel · Wrangler · Lee · Dickies · Filson · Rains · K-Way · Lothaire · Asket · Hast · BonneGueule · A Day's March · Homecore · Hircus · Officine Générale · Le Mont Saint Michel · NN07 · Samsøe Samsøe · mfpen · Wax London · Kestin · John Smedley · Story MFG
+ 
+-### Luxe & maisons de mode (25)
++### Luxe & maisons de mode (28)
+ 
+-Louis Vuitton · Dior · Gucci · Prada · Saint Laurent · Balenciaga · Bottega Veneta · Celine · Loewe · Givenchy · Burberry · Moncler · Canada Goose · Stone Island · C.P. Company · Loro Piana · Zegna · Brunello Cucinelli · Hermès · Maison Margiela · Jacquemus · Off-White · Valentino · Alexander McQueen · Kenzo
++Louis Vuitton · Dior · Gucci · Prada · Saint Laurent · Balenciaga · Bottega Veneta · Celine · Loewe · Givenchy · Burberry · Moncler · Canada Goose · Stone Island · C.P. Company · Loro Piana · Zegna · Brunello Cucinelli · Hermès · Maison Margiela · Jacquemus · Off-White · Valentino · Alexander McQueen · Kenzo · Studio Nicholson · LEMAIRE · Drake's
+ 
+-### Sneakers, chaussures & sport (25)
++### Sneakers, chaussures & sport (29)
+ 
+-Nike · adidas · New Balance · Puma · ASICS · Converse · Courir · JD Sports · Foot Locker · SNIPES · Decathlon · Footpatrol · Size? · BSTN · Asphaltgold · Vans · Reebok · On · HOKA · Salomon · Mizuno · Saucony · VEJA · Autry · Golden Goose
++Nike · adidas · New Balance · Puma · ASICS · Converse · Courir · JD Sports · Foot Locker · SNIPES · Decathlon · Footpatrol · Size? · BSTN · Asphaltgold · Vans · Reebok · On · HOKA · Salomon · Mizuno · Saucony · VEJA · Autry · Golden Goose · Aigle · Gramicci · Patagonia · nanamica
+ 
+ ### Sous-vêtements & essentiels (17)
+ 
+ Calvin Klein · Undiz · Intimissimi Uomo · HOM · Sloggi · DIM · Hanes · Jockey · Björn Borg · SAXX · CDLP · Sunspel · Derek Rose · Zimmerli · Pump! · Falke · Skims
+ 
+-### Streetwear & labels asiatiques (19)
++### Streetwear & labels asiatiques (23)
+ 
+-BAPE · Human Made · NEEDLES · COMME des GARÇONS · Yohji Yamamoto · ISSEY MIYAKE · Ader Error · thisisneverthat · MUSINSA · BEAMS · United Arrows · NANO universe · Urban Research · Stüssy · Supreme · Palace · Kith · Represent · Dover Street Market
++BAPE · Human Made · NEEDLES · COMME des GARÇONS · Yohji Yamamoto · ISSEY MIYAKE · Ader Error · thisisneverthat · MUSINSA · BEAMS · United Arrows · NANO universe · Urban Research · Stüssy · Supreme · Palace · Kith · Represent · Dover Street Market · Daily Paper · Patta · Arte Antwerp · Manastash
+ 
+ ### Seconde main & marketplaces mode (8)
+ 
+@@ -171,13 +177,14 @@ Le dépôt étant public et les workflows utilisant `ubuntu-latest`, les runners
+ ### Structure
+ 
+ - `app.js` : interface, swipe, vues et chargement progressif.
+-- `modules/engine.js` : filtres, apprentissage et classement local.
++- `modules/engine.js` : filtres, apprentissage et classement local (le tableau Pinterest pèse dans le score).
++- `modules/audience.js` : règle unique « homme ou unisexe adapté » (`isMenFit`), boutiques 100 % homme.
+ - `modules/agent.js` : préparation et validation des recommandations IA.
+-- `modules/outfits.js` : extraction de signaux stylistiques des Pins et associations de tenues.
++- `modules/outfits.js` : extraction de signaux stylistiques des Pins, proximité produit/Pin (`pinterestAffinity`) et associations de tenues.
+ - `modules/store.js` : stockage local.
+ - `scripts/refresh-public-catalog.mjs` : collecte et pagination des produits publics autorisés.
+ - `scripts/sync-pinterest.mjs` : synchronisation Pinterest officielle.
+-- `data/merchant-directory.json` : répertoire éditorial des 200 enseignes.
++- `data/merchant-directory.json` : répertoire éditorial des 236 enseignes.
+ - `data/public-sources.json` : paramètres de rotation (36 enseignes par exécution, dont 12 emplacements prioritaires).
+ - `data/catalog-seeds.json` : références produits éditoriales conservées lors des collectes.
+ - `data/catalog-manifest.json` et `data/catalog-pages/` : manifeste et pages du catalogue.
+diff --git a/app.js b/app.js
+index 32fa6d5..d6024f7 100644
+--- a/app.js
++++ b/app.js
+@@ -1,6 +1,6 @@
+ import { loadState, saveState, clearState } from "./modules/store.js";
+-import { createInitialState, normalizeProduct, productIdentity, seasonFor, rankProducts, deriveLearnedPreferences, matchesFilters } from "./modules/engine.js";
+-import { INTEGRATIONS, getPersistenceNotice, PINTEREST_BOARD_URL } from "./modules/integrations.js";
++import { createInitialState, normalizeProduct, productIdentity, seasonFor, rankProducts, deriveLearnedPreferences, matchesFilters, isMenFit, registerMenMerchants } from "./modules/engine.js";
++import { getPersistenceNotice, PINTEREST_BOARD_URL } from "./modules/integrations.js";
+ import { inferPinterestTags, inferPinterestFeatures, isMenswearPin, buildOutfitIdeas, productSlot, outfitTotalPrice } from "./modules/outfits.js";
+ import { syncCommunityProfile, deleteCommunityProfile, buildCommunitySignals } from "./modules/community.js";
+ import { requestAgentRecommendations, orderProductsByAgent, selectAgentCandidates, recommendLocally } from "./modules/agent.js";
+@@ -30,7 +30,6 @@ let currentView = "discover";
+ let deckActionPending = false;
+ let currentOutfitIdeas = [];
+ let discoveryFiltersOpen = false;
+-let currentModalProduct = null;
+ let modalReturnFocus = null;
+ const modalFocusObserver = typeof MutationObserver === "function" ? new MutationObserver(function() {
+   const dialog = modalRoot.querySelector('[role="dialog"]');
+@@ -128,7 +127,7 @@ function formatPrice(value) {
+ }
+ function productById(id) {
+   const product = state.products.find(function(item) { return item.id === id; }) || null;
+-  return product && product.gender === "men" && product.genderVerified === true ? product : null;
++  return product && isMenFit(product) ? product : null;
+ }
+ function isLiked(id) {
+   return state.likedProducts.some(function(item) { return item.productId === id; });
+@@ -515,7 +514,7 @@ function mergeCatalogPageProducts(items) {
+   let added = 0;
+   (items || []).forEach(function(raw) {
+     const product = normalizeProduct(raw);
+-    if (!product.id || !product.name || !product.url || product.gender !== "men" || product.genderVerified !== true) return;
++    if (!product.id || !product.name || !product.url || !isMenFit(product)) return;
+     const identity = productIdentity(product);
+     const existing = byIdentity.get(identity);
+     if (existing && existing.sourceType !== "public-web") return;
+@@ -602,7 +601,7 @@ function renderCatalogStatus() {
+   const curatedCount = Number(catalogMeta.curatedProductCount) ||
+     state.products.filter(product => product.sourceType === "curated").length;
+   const syncedAt = catalogMeta.syncedAt ? new Date(catalogMeta.syncedAt).toLocaleString("fr-FR") : "Pas encore actualisé";
+-  const directoryCount = Number(catalogMeta.directoryCount) || 200;
++  const directoryCount = catalogDirectory.length || Number(catalogMeta.directoryCount) || 200;
+   const pageCount = Number(catalogMeta.pageCount) || (catalogManifest && catalogManifest.pageCount) || 0;
+   const connected = catalogMeta.status === "connected" || catalogMeta.status === "partial";
+   const sourceLabel = Array.isArray(catalogMeta.sources) && catalogMeta.sources.length
+@@ -610,11 +609,11 @@ function renderCatalogStatus() {
+     : "Les boutiques accessibles seront détectées automatiquement";
+   const message = connected
+     ? "Dernière rotation : " + syncedAt + " · " + Number(catalogMeta.scannedSourceCount || catalogMeta.attemptedSourceCount || 0) + " boutique(s) explorée(s) sur " + directoryCount
+-    : "Catalogue de 200 enseignes en rotation ; les premières collectes sont publiées progressivement.";
++    : "Catalogue de ' + directoryCount + ' enseignes en rotation ; les premières collectes sont publiées progressivement.";
+   return '<section class="catalog-status panel ' + (connected ? "is-connected" : "is-pending") + '" aria-label="État du catalogue public">' +
+     '<div class="catalog-status-main"><span class="eyebrow">Catalogue public multi-boutiques</span><strong>' + liveCount + ' article(s) publics exploitables</strong>' +
+     '<p>' + esc(message) + '</p><small>' + esc(sourceLabel) + '</small></div><div class="catalog-status-side"><span>' +
+-    curatedCount + ' référence(s) éditoriale(s) · ' + pageCount + ' page(s) de catalogue</span><a class="button-quiet button-small" href="https://github.com/sopp24/DRESSOPP/blob/main/data/merchant-directory.json" target="_blank" rel="noopener noreferrer">Répertoire des 200 enseignes ↗</a></div></section>';
++    curatedCount + ' référence(s) éditoriale(s) · ' + pageCount + ' page(s) de catalogue</span><a class="button-quiet button-small" href="https://github.com/sopp24/DRESSOPP/blob/main/data/merchant-directory.json" target="_blank" rel="noopener noreferrer">Répertoire des ' + directoryCount + ' enseignes ↗</a></div></section>';
+ }
+ function renderRetailerDirectory() {
+   const groups = RETAILER_GROUPS.map(function(group) {
+@@ -631,12 +630,12 @@ function renderRetailerDirectory() {
+             return '<a class="retailer-link" href="' + esc(item.url) + '" target="_blank" rel="noopener noreferrer"><span>' + esc(item.name) + '</span><i aria-hidden="true">↗</i></a>';
+           }).join("") + '</div></div>';
+       }).join("")
+-    : '<p class="retailer-disclaimer">Le répertoire complet de 200 enseignes est disponible dans data/merchant-directory.json.</p>';
++    : '<p class="retailer-disclaimer">Le répertoire complet des enseignes est disponible dans data/merchant-directory.json.</p>';
+   return '<section class="panel retailer-directory"><div class="retailer-directory-heading"><div><span class="eyebrow">Tes sources</span><h2>Explorer les boutiques</h2>' +
+-    '<p>Les flux autorisés alimentent le swipe. Les 200 enseignes du répertoire sont classées par univers et par gamme de prix.</p></div>' +
++    '<p>Les flux autorisés alimentent le swipe. Les ' + (catalogDirectory.length || 200) + ' enseignes du répertoire sont classées par univers et par gamme de prix.</p></div>' +
+     '<a class="button-quiet button-small" href="https://www.facebook.com/ads/library/?active_status=active&ad_type=ALL&country=FR" target="_blank" rel="noopener noreferrer">Meta Ad Library ↗</a></div>' +
+     '<div class="retailer-groups">' + groups + '</div>' +
+-    '<details class="retailer-directory-expanded"><summary>Voir les 200 enseignes du répertoire</summary><div class="retailer-groups">' + allDirectory + '</div></details>' +
++    '<details class="retailer-directory-expanded"><summary>Voir les ' + (catalogDirectory.length || 200) + ' enseignes du répertoire</summary><div class="retailer-groups">' + allDirectory + '</div></details>' +
+     '<p class="retailer-disclaimer">La Meta Ad Library donne accès à des publicités publiques, pas à ton fil publicitaire Instagram personnalisé. Les avis d’article ne sont pas assimilés à une note de fiabilité du marchand.</p></section>';
+ }
+ function renderDeckCard(product, training) {
+@@ -719,7 +718,7 @@ function renderDiscover(training) {
+ function renderWardrobe() {
+   const heading = renderPageHeading("Tes pièces retenues", "Ma garde-robe", "Tous tes coups de cœur au même endroit. Retirer un favori ne crée pas de rejet dans ton profil de style.", '<button class="button-primary" type="button" data-action="add-product">＋ Ajouter un article</button>');
+   const wardrobeFilters = state.settings.wardrobeFilters || { objective: "Tout", style: "Tous", season: "Toute saison", maxPrice: null };
+-  const favorites = state.likedProducts.map(function(item) { return productById(item.productId); }).filter(Boolean).filter(function(product) { return product.gender === "men" && product.genderVerified === true && matchesFilters(product, wardrobeFilters); });
++  const favorites = state.likedProducts.map(function(item) { return productById(item.productId); }).filter(Boolean).filter(function(product) { return isMenFit(product) && matchesFilters(product, wardrobeFilters); });
+   const sorted = favorites.slice().sort(function(a, b) {
+     const sort = state.settings.wardrobeSort || "recent";
+     if (sort === "price-asc") return (a.price == null ? Infinity : a.price) - (b.price == null ? Infinity : b.price);
+@@ -1318,7 +1317,7 @@ function openProductDetails(productId) {
+     '<div class="modal-head"><div><span class="eyebrow">Fiche produit</span><h2 id="product-modal-title">Détails de la pièce</h2><p>Informations issues de la fiche enregistrée. Les données manquantes sont indiquées explicitement.</p></div><button class="close-button" type="button" data-action="close-modal" aria-label="Fermer">×</button></div>' +
+     '<div class="details-layout"><div class="details-image">' + imageMarkup(product.imageUrl, product.name) + '</div><div class="details-copy">' +
+     '<span class="detail-brand">' + esc(product.brand || "Marque non renseignée") + '</span><h3>' + esc(product.name) + '</h3><div class="details-price">' + esc(formatPrice(product.price)) + '</div>' +
+-    '<p class="field-hint">' + esc(product.description || "Aucune description enregistrée.") + '</p><div class="details-list">' +
++    '<p class="field-hint">' + esc(product.description || "Aucune description enregistrée.") + '</p><div class="product-review-block">' + renderProductReview(product) + '</div><div class="details-list">' +
+     details.map(function(row) { return '<div class="detail-row"><span>' + esc(row[0]) + '</span><span>' + esc(row[1]) + '</span></div>'; }).join("") +
+     '</div>' + (sourceLink ? '<a class="button-primary" href="' + esc(sourceLink) + '" target="_blank" rel="noopener noreferrer">Voir chez le marchand ↗</a>' : '<span class="status-pill pending">Lien marchand non renseigné</span>') +
+     '<p class="modal-note">Les prix, les tailles et la disponibilité ne sont pas actualisés automatiquement. Vérifie les informations sur le site d’origine avant achat.</p></div></div></section></div>';
+@@ -1329,7 +1328,6 @@ function openProductDetails(productId) {
+ }
+ function closeModal() {
+   modalRoot.innerHTML = "";
+-  currentModalProduct = null;
+   const returnTarget = modalReturnFocus;
+   modalReturnFocus = null;
+   if (returnTarget && returnTarget.isConnected && typeof returnTarget.focus === "function") {
+@@ -1417,7 +1415,7 @@ async function submitProduct(form) {
+     imageUrl: uploadedImage || data.get("imageUrl"), description: data.get("description"),
+     source: data.get("merchant"), gender: "men", genderVerified: true
+   });
+-  if (product.gender !== "men" || product.genderVerified !== true) throw new Error("Cet article ne présente pas de preuve suffisante de son public masculin.");
++  if (!isMenFit(product)) throw new Error("Cet article ne présente pas de preuve suffisante de son public masculin.");
+   if (!product.name || !product.merchant || !safeExternalUrl(product.url)) throw new Error("Le nom, le marchand et un lien HTTP(S) valide sont obligatoires.");
+   const identity = productIdentity(product);
+   if (state.products.some(function(item) { return productIdentity(item) === identity; })) {
+@@ -1520,7 +1518,7 @@ async function importCatalogFile(file) {
+   let added = 0;
+   input.forEach(function(item) {
+     const product = normalizeProduct(item);
+-    if (!product.name || !safeExternalUrl(product.url) || product.gender !== "men" || product.genderVerified !== true) return;
++    if (!product.name || !safeExternalUrl(product.url) || !isMenFit(product)) return;
+     const identity = productIdentity(product);
+     if (state.products.some(function(existing) { return productIdentity(existing) === identity; })) return;
+     state.products.push(product);
+@@ -1546,7 +1544,7 @@ async function importBackupFile(file) {
+   state.settings.outfitFilters = Object.assign(base.settings.outfitFilters,state.settings.outfitFilters || {});
+   state.inspirations = Array.isArray(imported.inspirations) ? imported.inspirations : [];
+   state.outfitFeedback = imported.outfitFeedback && typeof imported.outfitFeedback === "object" && !Array.isArray(imported.outfitFeedback) ? imported.outfitFeedback : {};
+-  state.products = imported.products.map(normalizeProduct).filter(function(product) { return product.gender === "men" && product.genderVerified === true; });
++  state.products = imported.products.map(normalizeProduct).filter(function(product) { return isMenFit(product); });
+   state.learnedPreferences = deriveLearnedPreferences(state);
+   await persist();
+   currentView = "discover";
+@@ -1966,6 +1964,14 @@ async function boot() {
+       if (payload.privacy === "PUBLIC" && Array.isArray(payload.pins)) pinterestFeed = payload;
+     }
+   } catch (error) { console.warn("Flux Pinterest non chargé.", error); }
++  try {
++    const directoryResponse = await fetch("./data/merchant-directory.json", { cache:"no-store" });
++    if (directoryResponse.ok) {
++      const directoryPayload = await directoryResponse.json();
++      catalogDirectory = Array.isArray(directoryPayload.entries) ? directoryPayload.entries : [];
++      registerMenMerchants(catalogDirectory);
++    }
++  } catch (error) { console.warn("Répertoire des enseignes non chargé.", error); }
+   try {
+     await refreshCatalogManifest(true);
+     if (catalogManifest && Array.isArray(catalogManifest.pages) && catalogManifest.pages.length) {
+@@ -1974,7 +1980,7 @@ async function boot() {
+         const response = await fetch("./data/" + catalogManifest.pages[first].file.replace(/^data\//, ""), { cache:"no-store" });
+         if (response.ok) {
+           const payload = await response.json();
+-          catalog = (payload.products || []).map(normalizeProduct).filter(function(product) { return product.gender === "men" && product.genderVerified === true; });
++          catalog = (payload.products || []).map(normalizeProduct).filter(function(product) { return isMenFit(product); });
+           catalogLoadedPages.add(catalogManifest.pages[first].file);
+           catalogLoaded = true;
+         }
+@@ -1984,18 +1990,11 @@ async function boot() {
+       const response = await fetch("./data/catalog.json", { cache:"no-store" });
+       if (response.ok) {
+         const payload = await response.json();
+-        catalog = (payload.products || []).map(normalizeProduct).filter(function(product) { return product.gender === "men" && product.genderVerified === true; });
++        catalog = (payload.products || []).map(normalizeProduct).filter(function(product) { return isMenFit(product); });
+         catalogLoaded = true;
+       }
+     }
+   } catch (error) { console.warn("Catalogue distant non chargé.", error); }
+-  try {
+-    const directoryResponse = await fetch("./data/merchant-directory.json", { cache:"no-store" });
+-    if (directoryResponse.ok) {
+-      const directoryPayload = await directoryResponse.json();
+-      catalogDirectory = Array.isArray(directoryPayload.entries) ? directoryPayload.entries : [];
+-    }
+-  } catch (error) { console.warn("Répertoire des enseignes non chargé.", error); }
+   try {
+     const response = await fetch("./data/catalog-meta.json", { cache: "no-store" });
+     if (response.ok) catalogMeta = await response.json();
+@@ -2012,7 +2011,7 @@ async function boot() {
+   const base = createInitialState(catalog);
+   state = stored ? Object.assign(base, stored) : base;
+   // Keep only products with explicit men's evidence or a confirmed men's-only manual entry.
+-  state.products = (Array.isArray(state.products) ? state.products : []).map(normalizeProduct).filter(function(product) { return product.gender === "men" && product.genderVerified === true; });
++  state.products = (Array.isArray(state.products) ? state.products : []).map(normalizeProduct).filter(function(product) { return isMenFit(product); });
+   state.profile = Object.assign(base.profile, state.profile || {});
+   state.profile.sizes = Object.assign(base.profile.sizes, state.profile.sizes || {});
+   state.settings = Object.assign(base.settings, state.settings || {});
+diff --git a/assets/fonts/OFL-Poppins.txt b/assets/fonts/OFL-Poppins.txt
+new file mode 100644
+index 0000000..3c49f41
+--- /dev/null
++++ b/assets/fonts/OFL-Poppins.txt
+@@ -0,0 +1,93 @@
++Copyright 2020 The Poppins Project Authors (https://github.com/itfoundry/Poppins) Poppins-ThinItalic.ttf: Copyright 2020 The Poppins Project Authors (https://github.com/itfoundry/Poppins) Poppins-ExtraLight.ttf: Copyright 2020 The Poppins Project Authors (https://github.com/itfoundry/Poppins) Poppins-ExtraLightItalic.ttf: Copyright 2020 The Poppins Project Authors (https://github.com/itfoundry/Poppins) Poppins-Light.ttf: Copyright 2020 The Poppins Project Authors (https://github.com/itfoundry/Poppins) Poppins-LightItalic.ttf: Copyright 2020 The Poppins Project Authors (https://github.com/itfoundry/Poppins) Poppins-Regular.ttf: Copyright 2020 The Poppins Project Authors (https://github.com/itfoundry/Poppins) Poppins-Italic.ttf: Copyright 2020 The Poppins Project Authors (https://github.com/itfoundry/Poppins) Poppins-Medium.ttf: Copyright 2020 The Poppins Project Authors (https://github.com/itfoundry/Poppins) Poppins-MediumItalic.ttf: Copyright 2020 The Poppins Project Authors (https://github.com/itfoundry/Poppins) Poppins-SemiBold.ttf: Copyright 2020 The Poppins Project Authors (https://github.com/itfoundry/Poppins) Poppins-SemiBoldItalic.ttf: Copyright 2020 The Poppins Project Authors (https://github.com/itfoundry/Poppins) Poppins-Bold.ttf: Copyright 2020 The Poppins Project Authors (https://github.com/itfoundry/Poppins) Poppins-BoldItalic.ttf: Copyright 2020 The Poppins Project Authors (https://github.com/itfoundry/Poppins) Poppins-ExtraBold.ttf: Copyright 2020 The Poppins Project Authors (https://github.com/itfoundry/Poppins) Poppins-ExtraBoldItalic.ttf: Copyright 2020 The Poppins Project Authors (https://github.com/itfoundry/Poppins) Poppins-Black.ttf: Copyright 2020 The Poppins Project Authors (https://github.com/itfoundry/Poppins) Poppins-BlackItalic.ttf: Copyright 2020 The Poppins Project Authors (https://github.com/itfoundry/Poppins)
++
++This Font Software is licensed under the SIL Open Font License, Version 1.1.
++This license is copied below, and is also available with a FAQ at:
++http://scripts.sil.org/OFL
++
++
++-----------------------------------------------------------
++SIL OPEN FONT LICENSE Version 1.1 - 26 February 2007
++-----------------------------------------------------------
++
++PREAMBLE
++The goals of the Open Font License (OFL) are to stimulate worldwide
++development of collaborative font projects, to support the font creation
++efforts of academic and linguistic communities, and to provide a free and
++open framework in which fonts may be shared and improved in partnership
++with others.
++
++The OFL allows the licensed fonts to be used, studied, modified and
++redistributed freely as long as they are not sold by themselves. The
++fonts, including any derivative works, can be bundled, embedded,
++redistributed and/or sold with any software provided that any reserved
++names are not used by derivative works. The fonts and derivatives,
++however, cannot be released under any other type of license. The
++requirement for fonts to remain under this license does not apply
++to any document created using the fonts or their derivatives.
++
++DEFINITIONS
++"Font Software" refers to the set of files released by the Copyright
++Holder(s) under this license and clearly marked as such. This may
++include source files, build scripts and documentation.
++
++"Reserved Font Name" refers to any names specified as such after the
++copyright statement(s).
++
++"Original Version" refers to the collection of Font Software components as
++distributed by the Copyright Holder(s).
++
++"Modified Version" refers to any derivative made by adding to, deleting,
++or substituting -- in part or in whole -- any of the components of the
++Original Version, by changing formats or by porting the Font Software to a
++new environment.
++
++"Author" refers to any designer, engineer, programmer, technical
++writer or other person who contributed to the Font Software.
++
++PERMISSION & CONDITIONS
++Permission is hereby granted, free of charge, to any person obtaining
++a copy of the Font Software, to use, study, copy, merge, embed, modify,
++redistribute, and sell modified and unmodified copies of the Font
++Software, subject to the following conditions:
++
++1) Neither the Font Software nor any of its individual components,
++in Original or Modified Versions, may be sold by itself.
++
++2) Original or Modified Versions of the Font Software may be bundled,
++redistributed and/or sold with any software, provided that each copy
++contains the above copyright notice and this license. These can be
++included either as stand-alone text files, human-readable headers or
++in the appropriate machine-readable metadata fields within text or
++binary files as long as those fields can be easily viewed by the user.
++
++3) No Modified Version of the Font Software may use the Reserved Font
++Name(s) unless explicit written permission is granted by the corresponding
++Copyright Holder. This restriction only applies to the primary font name as
++presented to the users.
++
++4) The name(s) of the Copyright Holder(s) or the Author(s) of the Font
++Software shall not be used to promote, endorse or advertise any
++Modified Version, except to acknowledge the contribution(s) of the
++Copyright Holder(s) and the Author(s) or with their explicit written
++permission.
++
++5) The Font Software, modified or unmodified, in part or in whole,
++must be distributed entirely under this license, and must not be
++distributed under any other license. The requirement for fonts to
++remain under this license does not apply to any document created
++using the Font Software.
++
++TERMINATION
++This license becomes null and void if any of the above conditions are
++not met.
++
++DISCLAIMER
++THE FONT SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
++EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTIES OF
++MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT
++OF COPYRIGHT, PATENT, TRADEMARK, OR OTHER RIGHT. IN NO EVENT SHALL THE
++COPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
++INCLUDING ANY GENERAL, SPECIAL, INDIRECT, INCIDENTAL, OR CONSEQUENTIAL
++DAMAGES, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
++FROM, OUT OF THE USE OR INABILITY TO USE THE FONT SOFTWARE OR FROM
++OTHER DEALINGS IN THE FONT SOFTWARE.
+diff --git a/assets/fonts/poppins-latin-400-normal.woff2 b/assets/fonts/poppins-latin-400-normal.woff2
+new file mode 100644
+index 0000000000000000000000000000000000000000..b69e0091c26c46151996a7feec95515567f95ac2
+GIT binary patch
+literal 7884
+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
+
+literal 0
+HcmV?d00001
+
+diff --git a/assets/fonts/poppins-latin-500-normal.woff2 b/assets/fonts/poppins-latin-500-normal.woff2
+new file mode 100644
+index 0000000000000000000000000000000000000000..c6603368bf147d85b919d0ce9766bff0a73959d0
+GIT binary patch
+literal 7748
+zcmV-K9=qXpPew8T0RR9103JjD3;+NC06%a503GoF0RR9100000000000000000000
+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
+K5RWe<0RRBxHWilu
+
+literal 0
+HcmV?d00001
+
+diff --git a/assets/fonts/poppins-latin-600-normal.woff2 b/assets/fonts/poppins-latin-600-normal.woff2
+new file mode 100644
+index 0000000000000000000000000000000000000000..921e962b91ded5f8574b8605d1e0b2af1294189f
+GIT binary patch
+literal 8000
+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
+CEPT=c
+
+literal 0
+HcmV?d00001
+
+diff --git a/assets/fonts/poppins-latin-700-normal.woff2 b/assets/fonts/poppins-latin-700-normal.woff2
+new file mode 100644
+index 0000000000000000000000000000000000000000..bf022fc77e764ee16a6d45fae8ed5016110ca2fc
+GIT binary patch
+literal 7816
+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
+a#rF!vrZP-gD&O<}^};ukMx!zS00029z2{T_
+
+literal 0
+HcmV?d00001
+
+diff --git a/assets/fonts/poppins-latin-800-normal.woff2 b/assets/fonts/poppins-latin-800-normal.woff2
+new file mode 100644
+index 0000000000000000000000000000000000000000..f107b3699fcf9ee8cf4612a6a5d58d2b23e9c803
+GIT binary patch
+literal 7824
+zcmV;B9&h1yPew8T0RR9103MJ43;+NC06o|M03JU80RR9100000000000000000000
+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
+
+literal 0
+HcmV?d00001
+
+diff --git a/data/merchant-directory.json b/data/merchant-directory.json
+index ba82767..7c282c4 100644
+--- a/data/merchant-directory.json
++++ b/data/merchant-directory.json
+@@ -2,7 +2,7 @@
+   "schemaVersion": 1,
+   "updatedAt": "2026-11-12",
+   "selection": "Répertoire éditorial de 200 enseignes pertinentes pour trouver des pièces de mode masculine ; seules les fiches produits dont le public masculin est confirmé sont proposées. Les ajouts sont orientés par les styles, couleurs, matières et coupes extraits du tableau Pinterest sopppx24/mode : casual, smart casual, streetwear, héritage, maille, workwear, silhouettes amples et palettes faciles à associer. Il ne s'agit pas d'un classement mondial par chiffre d'affaires.",
+-  "note": "La présence d'une enseigne ne garantit pas l'accès technique au catalogue ni la livraison dans tous les pays. Les connecteurs officiels, flux partenaires et collectes publiques autorisées sont testés séparément.",
++  "note": "La présence d'une enseigne ne garantit pas l'accès technique au catalogue ni la livraison dans tous les pays. Les connecteurs officiels, flux partenaires et collectes publiques autorisées sont testés séparément. Le champ audience=\"men\" signale une boutique masculine par défaut (ou exclusivement masculine) dont les pièces femme sont explicitement étiquetées : ses fiches sans mention de genre sont acceptées, hors pièces typiquement féminines ; une mention « femme » les exclut toujours.",
+   "entries": [
+     {
+       "name": "Zalando",
+@@ -123,7 +123,8 @@
+       "priceTier": "mid",
+       "region": "International",
+       "priority": 2,
+-      "crawl": "candidate"
++      "crawl": "candidate",
++      "audience": "men"
+     },
+     {
+       "name": "Mytheresa",
+@@ -299,7 +300,8 @@
+       "priceTier": "luxury",
+       "region": "France",
+       "priority": 2,
+-      "crawl": "candidate"
++      "crawl": "candidate",
++      "audience": "men"
+     },
+     {
+       "name": "LYNDI",
+@@ -343,7 +345,8 @@
+       "priceTier": "budget",
+       "region": "International",
+       "priority": 1,
+-      "crawl": "candidate"
++      "crawl": "candidate",
++      "audience": "men"
+     },
+     {
+       "name": "Pull & Bear",
+@@ -409,7 +412,8 @@
+       "priceTier": "budget",
+       "region": "International",
+       "priority": 1,
+-      "crawl": "candidate"
++      "crawl": "candidate",
++      "audience": "men"
+     },
+     {
+       "name": "Jules",
+@@ -420,7 +424,8 @@
+       "priceTier": "budget",
+       "region": "International",
+       "priority": 1,
+-      "crawl": "candidate"
++      "crawl": "candidate",
++      "audience": "men"
+     },
+     {
+       "name": "Kiabi",
+@@ -530,7 +535,8 @@
+       "priceTier": "budget",
+       "region": "International",
+       "priority": 2,
+-      "crawl": "candidate"
++      "crawl": "candidate",
++      "audience": "men"
+     },
+     {
+       "name": "Only & Sons",
+@@ -541,7 +547,8 @@
+       "priceTier": "budget",
+       "region": "International",
+       "priority": 2,
+-      "crawl": "candidate"
++      "crawl": "candidate",
++      "audience": "men"
+     },
+     {
+       "name": "Jack & Jones",
+@@ -552,7 +559,8 @@
+       "priceTier": "budget",
+       "region": "International",
+       "priority": 1,
+-      "crawl": "candidate"
++      "crawl": "candidate",
++      "audience": "men"
+     },
+     {
+       "name": "GU",
+@@ -629,7 +637,8 @@
+       "priceTier": "mid",
+       "region": "France",
+       "priority": 1,
+-      "crawl": "candidate"
++      "crawl": "candidate",
++      "audience": "men"
+     },
+     {
+       "name": "FAGUO",
+@@ -662,7 +671,8 @@
+       "priceTier": "mid",
+       "region": "France",
+       "priority": 2,
+-      "crawl": "candidate"
++      "crawl": "candidate",
++      "audience": "men"
+     },
+     {
+       "name": "Montlimart",
+@@ -739,7 +749,8 @@
+       "priceTier": "premium",
+       "region": "International",
+       "priority": 1,
+-      "crawl": "candidate"
++      "crawl": "candidate",
++      "audience": "men"
+     },
+     {
+       "name": "Weekday",
+@@ -1091,7 +1102,8 @@
+       "priceTier": "premium",
+       "region": "France",
+       "priority": 1,
+-      "crawl": "candidate"
++      "crawl": "candidate",
++      "audience": "men"
+     },
+     {
+       "name": "BonneGueule",
+@@ -1102,7 +1114,8 @@
+       "priceTier": "premium",
+       "region": "France",
+       "priority": 1,
+-      "crawl": "candidate"
++      "crawl": "candidate",
++      "audience": "men"
+     },
+     {
+       "name": "A Day's March",
+@@ -1399,7 +1412,8 @@
+       "priceTier": "luxury",
+       "region": "International",
+       "priority": 2,
+-      "crawl": "candidate"
++      "crawl": "candidate",
++      "audience": "men"
+     },
+     {
+       "name": "Loro Piana",
+@@ -1542,7 +1556,8 @@
+       "priceTier": "luxury",
+       "region": "UK",
+       "priority": 2,
+-      "crawl": "candidate"
++      "crawl": "candidate",
++      "audience": "men"
+     },
+     {
+       "name": "Nike",
+@@ -1894,7 +1909,8 @@
+       "priceTier": "mid",
+       "region": "International",
+       "priority": 2,
+-      "crawl": "candidate"
++      "crawl": "candidate",
++      "audience": "men"
+     },
+     {
+       "name": "HOM",
+@@ -1905,7 +1921,8 @@
+       "priceTier": "mid",
+       "region": "International",
+       "priority": 2,
+-      "crawl": "candidate"
++      "crawl": "candidate",
++      "audience": "men"
+     },
+     {
+       "name": "Sloggi",
+@@ -1971,7 +1988,8 @@
+       "priceTier": "mid",
+       "region": "International",
+       "priority": 3,
+-      "crawl": "candidate"
++      "crawl": "candidate",
++      "audience": "men"
+     },
+     {
+       "name": "CDLP",
+@@ -1982,7 +2000,8 @@
+       "priceTier": "mid",
+       "region": "International",
+       "priority": 3,
+-      "crawl": "candidate"
++      "crawl": "candidate",
++      "audience": "men"
+     },
+     {
+       "name": "Sunspel",
+diff --git a/docs/AI-AGENT.md b/docs/AI-AGENT.md
+index 5733984..9531881 100644
+--- a/docs/AI-AGENT.md
++++ b/docs/AI-AGENT.md
+@@ -1,6 +1,6 @@
+ # Agent IA DRESSOPP — Personal shopper
+ 
+-DRESSOPP possède désormais un agent utilisable dès l'ouverture, sans déployer de service et sans accepter de transfert de données. La sélection est strictement masculine : seuls les produits confirmés pour homme entrent dans le classement local ou distant ; les fiches mixtes, unisexes ou de public inconnu sont exclues.
++DRESSOPP possède désormais un agent utilisable dès l'ouverture, sans déployer de service et sans accepter de transfert de données. La sélection reste masculine : seuls les produits confirmés pour homme, ou unisexes et adaptés à un homme (champ `menFit`), entrent dans le classement local ou distant ; les fiches femme, les pièces typiquement féminines et les fiches de public inconnu sont exclues. Après mise à jour du code, redéployer le Worker (`npx wrangler deploy`) pour qu'il accepte `menFit`.
+ 
+ ## Mode local — activé par défaut
+ 
+diff --git a/docs/SOURCES.md b/docs/SOURCES.md
+index 8c08042..361c64d 100644
+--- a/docs/SOURCES.md
++++ b/docs/SOURCES.md
+@@ -2,7 +2,7 @@
+ 
+ ## Répertoire permanent
+ 
+-Le répertoire éditorial de **200 enseignes** est conservé dans [`data/merchant-directory.json`](../data/merchant-directory.json). Il couvre les multimarques, le casual accessible, le premium, le luxe, le sport et les sneakers, les sous-vêtements, le streetwear asiatique, la seconde main et des marchés internationaux.
++Le répertoire éditorial de **236 enseignes** est conservé dans [`data/merchant-directory.json`](../data/merchant-directory.json). Il couvre les multimarques, le casual accessible, le premium, le luxe, le sport et les sneakers, les sous-vêtements, le streetwear asiatique, la seconde main et des marchés internationaux.
+ 
+ Chaque entrée comporte le nom, le domaine officiel, l'URL, la famille, le niveau de prix indicatif, la région et une priorité de collecte. Les 200 entrées sont des cibles de sourcing, pas la promesse que toutes publient des fiches récupérables. L'existence d'un lien boutique ne signifie pas qu'un flux API ou un accès robot est autorisé.
+ 
+diff --git a/index.html b/index.html
+index 5b67510..a5328be 100644
+--- a/index.html
++++ b/index.html
+@@ -12,6 +12,8 @@
+   <link rel="icon" type="image/png" sizes="512x512" href="./assets/logo-square.png">
+   <link rel="apple-touch-icon" href="./assets/logo-square.png">
+   <link rel="manifest" href="./manifest.webmanifest">
++  <link rel="preload" href="./assets/fonts/poppins-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
++  <link rel="preload" href="./assets/fonts/poppins-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+   <link rel="stylesheet" href="./styles.css">
+   <script type="module" src="./app.js"></script>
+ </head>
+diff --git a/modules/agent.js b/modules/agent.js
+index d124eff..ab9d174 100644
+--- a/modules/agent.js
++++ b/modules/agent.js
+@@ -1,3 +1,4 @@
++import { isMenFit } from "./audience.js";
+ const MAX_CANDIDATES = 50;
+ const MAX_HISTORY = 15;
+ 
+@@ -12,19 +13,19 @@ export function selectAgentCandidates(rankedProducts, limit = MAX_CANDIDATES) {
+ function clean(value, limit = 140) { return String(value == null ? "" : value).replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim().slice(0, limit); }
+ function list(value, max = 10) { return (Array.isArray(value) ? value : []).map(item => clean(item, 48)).filter(Boolean).slice(0, max); }
+ function productSummary(product) {
+-  return { id:clean(product.id,128), name:clean(product.name), brand:clean(product.brand,80), merchant:clean(product.merchant || product.source,80), gender:clean(product.gender,20), genderVerified:product.genderVerified === true, price:product.price == null ? null : Number(product.price), objective:clean(product.objective || product.category,40), category:clean(product.category,60), styleTags:list(product.styleTags,6), colors:list(product.colors,5), materials:list(product.materials,5), cuts:list(product.cuts,4), patterns:list(product.patterns,4), seasonTags:list(product.seasonTags,4), description:clean(product.description,240) };
++  return { id:clean(product.id,128), name:clean(product.name), brand:clean(product.brand,80), merchant:clean(product.merchant || product.source,80), gender:clean(product.gender,20), genderVerified:product.genderVerified === true, menFit:clean(product.menFit,12), price:product.price == null ? null : Number(product.price), objective:clean(product.objective || product.category,40), category:clean(product.category,60), styleTags:list(product.styleTags,6), colors:list(product.colors,5), materials:list(product.materials,5), cuts:list(product.cuts,4), patterns:list(product.patterns,4), seasonTags:list(product.seasonTags,4), description:clean(product.description,240) };
+ }
+ function feedbackProducts(state, key) {
+   const products = new Map((state.products || []).map(product => [product.id, product]));
+   const events = Array.isArray(state.interactions && state.interactions[key]) ? state.interactions[key] : [];
+   const seen = new Set();
+-  return events.slice(-MAX_HISTORY).reverse().map(event => { const product = products.get(event.productId); if (!product || product.gender !== "men" || product.genderVerified !== true || seen.has(product.id)) return null; seen.add(product.id); return productSummary(product); }).filter(Boolean);
++  return events.slice(-MAX_HISTORY).reverse().map(event => { const product = products.get(event.productId); if (!product || !isMenFit(product) || seen.has(product.id)) return null; seen.add(product.id); return productSummary(product); }).filter(Boolean);
+ }
+ function savedProducts(state) {
+   const products = new Map((state.products || []).map(product => [product.id, product]));
+   const saved = Array.isArray(state.likedProducts) ? state.likedProducts : [];
+   const seen = new Set();
+-  return saved.slice(-MAX_HISTORY).reverse().map(item => { const product = products.get(item.productId); if (!product || product.gender !== "men" || product.genderVerified !== true || seen.has(product.id)) return null; seen.add(product.id); return productSummary(product); }).filter(Boolean);
++  return saved.slice(-MAX_HISTORY).reverse().map(item => { const product = products.get(item.productId); if (!product || !isMenFit(product) || seen.has(product.id)) return null; seen.add(product.id); return productSummary(product); }).filter(Boolean);
+ }
+ export function createAgentPayload(state, candidates, inspirations) {
+   const settings = state.settings || {}, profile = state.profile || {};
+@@ -33,7 +34,7 @@ export function createAgentPayload(state, candidates, inspirations) {
+     profile:{ preferredStyles:list(profile.preferredStyles,12), excludedStyles:list(profile.excludedStyles,12), favoriteBrands:list(profile.favoriteBrands,12), excludedBrands:list(profile.excludedBrands,12), preferredColors:list(profile.preferredColors,12), excludedColors:list(profile.excludedColors,12), preferredMaterials:list(profile.preferredMaterials,12), excludedMaterials:list(profile.excludedMaterials,12), preferredCuts:list(profile.preferredCuts,12), excludedCuts:list(profile.excludedCuts,12), comfort:clean(profile.comfort,50), fit:clean(profile.fit,50) },
+     feedback:{ liked:feedbackProducts(state,"likes"), saved:savedProducts(state), disliked:feedbackProducts(state,"dislikes") },
+     inspirations:(Array.isArray(inspirations) ? inspirations : []).slice(0,12).map(item => ({ title:clean(item.title,100), tags:list(item.tags,10) })),
+-    products:(Array.isArray(candidates) ? candidates : []).filter(product => product && product.gender === "men" && product.genderVerified === true).slice(0,MAX_CANDIDATES).map(productSummary)
++    products:(Array.isArray(candidates) ? candidates : []).filter(product => isMenFit(product)).slice(0,MAX_CANDIDATES).map(productSummary)
+   };
+ }
+ export async function requestAgentRecommendations(endpoint, state, candidates, inspirations, options = {}) {
+@@ -68,7 +69,7 @@ function addLocalSignal(weights, field, value, amount) {
+   weights.set(key,(weights.get(key) || 0) + amount);
+ }
+ function localProductSignals(weights, product, amount) {
+-  if (!product || product.gender !== "men" || product.genderVerified !== true) return;
++  if (!product || !isMenFit(product)) return;
+   ["styleTags","colors","materials","cuts","patterns"].forEach(field => {
+     localValues(product,field).forEach(value => addLocalSignal(weights,field,value,amount));
+   });
+@@ -90,7 +91,7 @@ function localFeatureNames(product) {
+  */
+ export function recommendLocally(state, rankedCandidates, inspirations = [], limit = 14) {
+   const source = state || {};
+-  const candidates = Array.isArray(rankedCandidates) ? rankedCandidates.filter(product => product && product.gender === "men" && product.genderVerified === true) : [];
++  const candidates = Array.isArray(rankedCandidates) ? rankedCandidates.filter(product => isMenFit(product)) : [];
+   if (!candidates.length) return { recommendations:[], message:"Aucun article candidat à classer.", searchHints:[], candidateCount:0, provider:"local" };
+ 
+   const weights = new Map();
+diff --git a/modules/audience.js b/modules/audience.js
+new file mode 100644
+index 0000000..ccc042b
+--- /dev/null
++++ b/modules/audience.js
+@@ -0,0 +1,70 @@
++// Public masculin des fiches : un seul endroit décide si une pièce peut être proposée.
++// « men »    : homme confirmé (texte de la fiche, déclaration vérifiée ou boutique 100 % homme) ;
++// « unisex » : pièce unisexe qui se porte aussi bien côté homme ;
++// ""         : femme, pièce typiquement féminine ou public inconnu → jamais proposée.
++function text(value) { return String(value == null ? "" : value).trim(); }
++function normalizeText(value) { return text(value).normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase(); }
++
++const FEMININE_ITEM = /(^|[^a-z])(robes?|jupes?|dress|skirt|soutien|brassiere|bustier|corset|culottes?|bikini|lingerie|escarpins?|talons?|ballerines?|collants?|combinaisons?|jumpsuit|crop top|top court|sac a main|handbag)([^a-z]|$)/;
++
++export function inferProductGender(source) {
++  const item = source || {};
++  const audience = item.audience && typeof item.audience === "object"
++    ? [item.audience.name, item.audience.suggestedGender, item.audience.genderType].filter(Boolean).join(" ")
++    : item.audience;
++  const evidence = normalizeText([
++    audience, item.name, item.title, item.description,
++    item.category, item.objective, item.url, item.productUrl
++  ].filter(Boolean).join(" "));
++  const declared = normalizeText(item.gender);
++  const women = /(^|[^a-z])(femme|femmes|woman|women|womens|female|girl|girls|ladies|damen|feminin)([^a-z]|$)/.test(evidence) ||
++    /pour femme|for women|womenswear|collection femme/.test(evidence) || declared === "women";
++  const men = /(^|[^a-z])(homme|hommes|man|men|mens|masculin|male)([^a-z]|$)/.test(evidence) ||
++    /pour homme|for men|menswear|collection homme/.test(evidence) ||
++    (declared === "men" && item.genderVerified === true);
++  const unisex = /(^|[^a-z])(unisexe|unisex|mixte)([^a-z]|$)/.test(evidence) ||
++    /gender.?neutral|tous les genres|all genders/.test(evidence) || declared === "unisex";
++  if (unisex || (women && men)) return "unisex";
++  if (women) return "women";
++  if (men) return "men";
++  return "unknown";
++}
++
++let menMerchants = new Set();
++export function registerMenMerchants(entries) {
++  const keys = [];
++  (Array.isArray(entries) ? entries : []).forEach(function(entry) {
++    if (!entry || entry.audience !== "men") return;
++    keys.push(normalizeText(entry.name), normalizeText(entry.domain).replace(/^www\./, ""));
++  });
++  menMerchants = new Set(keys.filter(Boolean));
++}
++function hostOf(value) {
++  try { return new URL(String(value)).hostname.toLowerCase().replace(/^www\./, ""); } catch (error) { return ""; }
++}
++export function isMenMerchant(source) {
++  const item = source || {};
++  if (!menMerchants.size) return false;
++  const names = [item.merchant, item.shop, item.store, item.source, item.brand].map(normalizeText);
++  if (names.some(function(name) { return name && menMerchants.has(name); })) return true;
++  const host = hostOf(item.url || item.productUrl || item.link);
++  return Boolean(host) && Array.from(menMerchants).some(function(key) { return host === key || host.endsWith("." + key); });
++}
++
++export function inferMenFit(source, knownGender) {
++  const item = source || {};
++  const gender = knownGender || inferProductGender(item);
++  if (gender === "women") return "";
++  const title = normalizeText([item.name, item.title, item.category, item.objective].filter(Boolean).join(" "));
++  const feminine = FEMININE_ITEM.test(title);
++  if (gender === "men") return "men";
++  if (feminine) return "";
++  if (gender === "unisex") return "unisex";
++  return isMenMerchant(item) ? "men" : "";
++}
++
++export function isMenFit(product) {
++  if (!product) return false;
++  if (product.menFit !== undefined) return product.menFit === "men" || product.menFit === "unisex";
++  return product.gender === "men" && product.genderVerified === true;
++}
+diff --git a/modules/community.js b/modules/community.js
+index 4bd7ba7..e322b7a 100644
+--- a/modules/community.js
++++ b/modules/community.js
+@@ -1,4 +1,5 @@
+ import { productCommunityToken } from "./engine.js";
++import { isMenFit } from "./audience.js";
+ 
+ const TOKEN_KEY = "dressopp-community-auth-v1";
+ const API_ROOT = "https://identitytoolkit.googleapis.com/v1";
+@@ -36,7 +37,7 @@ export function buildCommunityFeatures(state) {
+   const byId = new Map((state.products || []).map(product => [product.id, product]));
+   const add = (target, itemTarget, productId) => {
+     const product = byId.get(productId);
+-    if (!product || product.gender !== "men" || product.genderVerified !== true) return;
++    if (!product || !isMenFit(product)) return;
+     productFeatures(product).forEach(feature => target.add(feature));
+     const itemToken = productCommunityToken(product);
+     if (itemToken) itemTarget.add(itemToken);
+diff --git a/modules/engine.js b/modules/engine.js
+index 651ea21..7a5ddf2 100644
+--- a/modules/engine.js
++++ b/modules/engine.js
+@@ -1,4 +1,7 @@
+-import { inferPinterestFeatures, isMenswearPin } from "./outfits.js";
++import { inferPinterestFeatures, isMenswearPin, inferTextFeatures, pinterestAffinity } from "./outfits.js";
++import { inferProductGender, inferMenFit, isMenFit, registerMenMerchants, isMenMerchant } from "./audience.js";
++
++export { inferProductGender, inferMenFit, isMenFit, registerMenMerchants, isMenMerchant };
+ 
+ const FEATURE_FIELDS = ["styleTags", "colors", "materials", "cuts", "patterns", "categories"];
+ 
+@@ -16,29 +19,6 @@ function safeHttpUrl(value) {
+     return url.protocol === "http:" || url.protocol === "https:" ? url.href : "";
+   } catch (error) { return ""; }
+ }
+-export function inferProductGender(source) {
+-  const item = source || {};
+-  const audience = item.audience && typeof item.audience === "object"
+-    ? [item.audience.name, item.audience.suggestedGender, item.audience.genderType].filter(Boolean).join(" ")
+-    : item.audience;
+-  const evidence = normalizeText([
+-    audience, item.name, item.title, item.description,
+-    item.category, item.objective, item.url, item.productUrl
+-  ].filter(Boolean).join(" "));
+-  const declared = normalizeText(item.gender);
+-  const women = /(^|[^a-z])(femme|femmes|woman|women|womens|female|girl|girls|ladies|damen|feminin)([^a-z]|$)/.test(evidence) ||
+-    /pour femme|for women|womenswear|collection femme/.test(evidence) || declared === "women";
+-  const men = /(^|[^a-z])(homme|hommes|man|men|mens|masculin|male)([^a-z]|$)/.test(evidence) ||
+-    /pour homme|for men|menswear|collection homme/.test(evidence) ||
+-    (declared === "men" && item.genderVerified === true);
+-  const unisex = /(^|[^a-z])(unisexe|unisex|mixte)([^a-z]|$)/.test(evidence) ||
+-    /gender.?neutral|tous les genres|all genders/.test(evidence) || declared === "unisex";
+-  if (unisex || (women && men)) return "unisex";
+-  if (women) return "women";
+-  if (men) return "men";
+-  return "unknown";
+-}
+-
+ function hash(value) {
+   let result = 2166136261;
+   for (let index = 0; index < value.length; index += 1) { result ^= value.charCodeAt(index); result = Math.imul(result, 16777619); }
+@@ -94,20 +74,28 @@ export function normalizeProduct(raw) {
+   const suppliedPrice = source.price === "" || source.price == null ? null : Number(source.price);
+   const price = Number.isFinite(suppliedPrice) && suppliedPrice >= 0 ? suppliedPrice : null;
+   const id = text(source.id) || "prod-" + hash(identity);
+-  const gender = inferProductGender(source);
++  let gender = inferProductGender(source);
++  const menFit = inferMenFit(source, gender);
++  if (gender === "unknown" && menFit === "men") gender = "men";
++  const colors = arrayOf(source.colors || source.color);
++  const materials = arrayOf(source.materials || source.material || source.composition);
++  const cuts = arrayOf(source.cuts || source.fit || source.silhouette);
++  const patterns = arrayOf(source.patterns || source.pattern);
++  const inferred = (!colors.length || !materials.length || !cuts.length || !patterns.length)
++    ? inferTextFeatures([name, text(source.description)].join(" "), name) : null;
+   return {
+     id: id, name: name, brand: brand, merchant: merchant, url: url, imageUrl: imageUrl,
+-    gender: gender, genderVerified: gender === "men",
++    gender: gender, genderVerified: gender === "men", menFit: menFit,
+     price: price,
+     originalPrice: source.originalPrice == null || source.originalPrice === "" ? null : Number(source.originalPrice),
+     objective: text(source.objective || source.category) || "Vêtements",
+     category: text(source.category || source.objective) || "Vêtements",
+     styleTags: arrayOf(source.styleTags || source.styles || source.style),
+     seasonTags: arrayOf(source.seasonTags || source.seasons || source.season),
+-    colors: arrayOf(source.colors || source.color),
+-    materials: arrayOf(source.materials || source.material || source.composition),
+-    cuts: arrayOf(source.cuts || source.fit || source.silhouette),
+-    patterns: arrayOf(source.patterns || source.pattern),
++    colors: colors.length ? colors : (inferred ? inferred.colors : []),
++    materials: materials.length ? materials : (inferred ? inferred.materials : []),
++    cuts: cuts.length ? cuts : (inferred ? inferred.cuts : []),
++    patterns: patterns.length ? patterns : (inferred ? inferred.patterns : []),
+     description: text(source.description), sizes: arrayOf(source.sizes),
+     availability: text(source.availability) || "Information non disponible",
+     source: text(source.source) || merchant || "Import manuel",
+@@ -178,11 +166,11 @@ export function deriveLearnedPreferences(state) {
+   const interactions = source.interactions || { likes: [], dislikes: [] };
+   (interactions.likes || []).forEach(function(item) {
+     const product = (source.products || []).find(function(candidate) { return candidate.id === item.productId; });
+-    if (product && product.gender === "men" && product.genderVerified === true) featureTokens(product).forEach(function(token) { totals[token] = (totals[token] || 0) + 3; });
++    if (isMenFit(product)) featureTokens(product).forEach(function(token) { totals[token] = (totals[token] || 0) + 3; });
+   });
+   (interactions.dislikes || []).forEach(function(item) {
+     const product = (source.products || []).find(function(candidate) { return candidate.id === item.productId; });
+-    if (product && product.gender === "men" && product.genderVerified === true) featureTokens(product).forEach(function(token) { totals[token] = (totals[token] || 0) - 4; });
++    if (isMenFit(product)) featureTokens(product).forEach(function(token) { totals[token] = (totals[token] || 0) - 4; });
+   });
+ 
+   const pins = (source.inspirations || []).concat(source.pinterestPins || []).filter(isMenswearPin);
+@@ -274,6 +262,8 @@ export function rankProducts(products, state, options) {
+     (state.likedProducts || []).forEach(function(item) { seen.add(item.productId); });
+   }
+   const profile = state.profile || {};
++  const pins = (state.inspirations || []).concat(state.pinterestPins || []).filter(isMenswearPin);
++  const pinterestWeight = training ? 1 : 1.8;
+   function sizeMatches(product) {
+     const suppliedSizes = (product.sizes || []).map(normalizeText);
+     if (!suppliedSizes.length) return true;
+@@ -341,13 +331,15 @@ export function rankProducts(products, state, options) {
+       (product.expiresAt && Date.parse(product.expiresAt) <= Date.now());
+     const stale = product.catalogStatus === "stale";
+     const unavailable = product.availabilityStatus === "out_of_stock";
+-    return product.gender === "men" && product.genderVerified === true && !expired && !stale && !unavailable && sizeMatches(product) &&
++    return isMenFit(product) && !expired && !stale && !unavailable && sizeMatches(product) &&
+       matchesFilters(product, opts.filters || config) && !seen.has(product.id);
+   }).map(function(product) {
+     const familiarity = preferenceScore(product, learned) + explicitProfileScore(product, profile);
+     const novelty = noveltyScore(product, learned);
+     const baseScore = familiarity * (1 - discovery / 100) + novelty * (discovery / 100) * (training ? 1.25 : 1);
+-    const score = baseScore + freshnessBoost(product) + reviewBoost(product) +
++    // Le tableau Pinterest guide le classement : plus une pièce ressemble aux tenues analysées, plus elle monte.
++    const pinterest = Math.min(36, pinterestAffinity(product, pins) * pinterestWeight) + (product.menFit === "men" ? 1.5 : 0);
++    const score = baseScore + pinterest + freshnessBoost(product) + reviewBoost(product) +
+       merchantTrustBoost(product) + popularityBoost(product) + communityBoost(product);
+     return { product: product, score: score };
+   });
+diff --git a/modules/outfits.js b/modules/outfits.js
+index c749538..dcabfad 100644
+--- a/modules/outfits.js
++++ b/modules/outfits.js
+@@ -1,3 +1,5 @@
++import { isMenFit } from "./audience.js";
++
+ const STYLE_HINTS = {
+   "Classique": ["classique", "minimal", "minimaliste", "basique", "timeless", "clean"],
+   "Créatif": ["creative", "créatif", "original", "statement", "graphic", "imprimé"],
+@@ -136,54 +138,86 @@ export function productSlot(product) {
+   return "other";
+ }
+ 
++const PRODUCT_TERMS = new WeakMap();
+ function productTerms(product) {
+-  return clean([
++  if (product && typeof product === "object" && PRODUCT_TERMS.has(product)) return PRODUCT_TERMS.get(product);
++  const terms = clean([
+     product.name, product.description, product.brand, product.objective, product.category,
+     ...(product.styleTags || []), ...(product.colors || []), ...(product.materials || []),
+     ...(product.cuts || []), ...(product.patterns || [])
+   ].join(" "));
++  if (product && typeof product === "object") PRODUCT_TERMS.set(product, terms);
++  return terms;
+ }
+ 
+-function matchScore(product, pin) {
++const PIN_PROFILES = new WeakMap();
++function pinProfile(pin) {
++  if (pin && typeof pin === "object" && PIN_PROFILES.has(pin)) return PIN_PROFILES.get(pin);
+   const visual = pin && pin.visualAnalysis && pin.visualAnalysis.isFashion !== false ? pin.visualAnalysis : null;
+   const pieces = visual && Array.isArray(visual.pieces) ? visual.pieces : [];
+   const visualText = visual ? [
+     visual.summary,visual.layering,visual.outfitFormula,visual.silhouetteTags,
+     visual.details,pieces.flatMap(piece => [piece.type,piece.color,piece.material,piece.cut,piece.pattern,...(piece.details || [])])
+   ].flat().filter(Boolean) : [];
+-  const pinText = clean([pinterestText(pin),...visualText].filter(Boolean).join(" "));
+   const features = inferPinterestFeatures(pin);
+-  const tags = unique([].concat(features.styleTags,features.colors,features.materials,features.cuts,features.patterns)).map(clean);
++  const profile = {
++    pinText: clean([pinterestText(pin),...visualText].filter(Boolean).join(" ")),
++    tags: unique([].concat(features.styleTags,features.colors,features.materials,features.cuts,features.patterns)).map(clean),
++    pieceTypes: unique(pieces.map(piece => clean(piece.type)).filter(Boolean)),
++    details: unique([
++      ...(visual && Array.isArray(visual.details) ? visual.details : []),
++      ...pieces.flatMap(piece => Array.isArray(piece.details) ? piece.details : [])
++    ].map(clean))
++  };
++  if (pin && typeof pin === "object") PIN_PROFILES.set(pin, profile);
++  return profile;
++}
++
++function matchScore(product, pin) {
++  const profile = pinProfile(pin);
+   const fields = [
+     ...(product.styleTags || []), ...(product.colors || []),
+     ...(product.materials || []), ...(product.cuts || []), ...(product.patterns || [])
+   ].map(clean);
+   let score = fields.reduce(function(total, field) {
+-    return total + (tags.includes(field) ? 4 : 0);
++    return total + (profile.tags.includes(field) ? 4 : 0);
+   }, 0);
+   const terms = productTerms(product);
+-  tags.forEach(function(tag) {
++  profile.tags.forEach(function(tag) {
+     if (tag.length > 2 && terms.includes(tag)) score += 2;
+   });
+-  const pieceTypes = unique(pieces.map(piece => clean(piece.type)).filter(Boolean));
+-  const matchingPieces = pieceTypes.filter(type => type.length > 2 && terms.includes(type));
++  const matchingPieces = profile.pieceTypes.filter(type => type.length > 2 && terms.includes(type));
+   score += Math.min(12,matchingPieces.length * 3);
+-  const details = unique([
+-    ...(visual && Array.isArray(visual.details) ? visual.details : []),
+-    ...pieces.flatMap(piece => Array.isArray(piece.details) ? piece.details : [])
+-  ].map(clean));
+-  details.forEach(detail => {
++  profile.details.forEach(detail => {
+     if (detail.length > 3 && terms.includes(detail)) score += 1.5;
+   });
+   (product.colors || []).forEach(function(color) {
+-    if (pinText.includes(clean(color))) score += 2;
++    if (profile.pinText.includes(clean(color))) score += 2;
+   });
+   (product.styleTags || []).forEach(function(style) {
+-    if (pinText.includes(clean(style))) score += 3;
++    if (profile.pinText.includes(clean(style))) score += 3;
+   });
+   return score;
+ }
+ 
++// Proximité d'une pièce avec les tenues du tableau Pinterest : les meilleures correspondances comptent le plus.
++export function pinterestAffinity(product, pins) {
++  const scores = (Array.isArray(pins) ? pins : []).map(pin => matchScore(product, pin)).sort((a, b) => b - a);
++  if (!scores.length) return 0;
++  return scores[0] * .6 + (scores[1] || 0) * .25 + (scores[2] || 0) * .15;
++}
++
++// Couleurs, matières, coupes et motifs lus dans le titre / la description d'une fiche quand le marchand ne les renseigne pas.
++export function inferTextFeatures(value, colorSource) {
++  const features = classifyPinterestText(clean(value));
++  const colors = classifyPinterestText(clean(colorSource == null ? value : colorSource)).colors;
++  const label = word => word.charAt(0).toUpperCase() + word.slice(1);
++  return {
++    colors: colors.slice(0, 3).map(label), materials: features.materials.slice(0, 3).map(label),
++    cuts: features.cuts.slice(0, 2).map(label), patterns: features.patterns.slice(0, 2).map(label)
++  };
++}
++
+ function pinIdentity(pin) {
+   return String(pin && (pin.pinId || pin.id || pin.sourceUrl || pin.pinUrl) || "");
+ }
+@@ -249,7 +283,7 @@ function matchesAny(values, expected) {
+   return expected.some(value => source.includes(clean(value)));
+ }
+ function productIsForMen(product) {
+-  return Boolean(product && product.gender === "men" && product.genderVerified === true);
++  return isMenFit(product);
+ }
+ function productExcludedByProfile(product, profile) {
+   const p = profile || {};
+diff --git a/package.json b/package.json
+index 3a893f7..2855fb1 100644
+--- a/package.json
++++ b/package.json
+@@ -5,6 +5,6 @@
+   "type": "module",
+   "description": "DRESSOPP — assistant personnel de découverte vestimentaire",
+   "scripts": {
+-    "test": "node --check app.js && node --check modules/agent.js && node --check modules/community.js && node --check modules/engine.js && node --check modules/outfits.js && node --check modules/store.js && node --check modules/integrations.js && node --check sw.js && node --check workers/dressopp-agent/src/index.js && node --check scripts/sync-pinterest.mjs && node --check scripts/refresh-public-catalog.mjs && node --test"
++    "test": "node --check app.js && node --check modules/agent.js && node --check modules/audience.js && node --check modules/community.js && node --check modules/engine.js && node --check modules/outfits.js && node --check modules/store.js && node --check modules/integrations.js && node --check sw.js && node --check workers/dressopp-agent/src/index.js && node --check scripts/sync-pinterest.mjs && node --check scripts/refresh-public-catalog.mjs && node --test"
+   }
+ }
+diff --git a/scripts/refresh-public-catalog.mjs b/scripts/refresh-public-catalog.mjs
+index a2a849a..2f4e199 100644
+--- a/scripts/refresh-public-catalog.mjs
++++ b/scripts/refresh-public-catalog.mjs
+@@ -10,12 +10,21 @@ const META = resolve(ROOT, "data/catalog-meta.json");
+ const MANIFEST = resolve(ROOT, "data/catalog-manifest.json");
+ const PAGE_DIR = resolve(ROOT, "data/catalog-pages");
+ const SEEDS = resolve(ROOT, "data/catalog-seeds.json");
++const PINTEREST = resolve(ROOT, "data/pinterest-pins.json");
+ const BOT = "DRESSOPPBot";
+ const UA = "DRESSOPPBot/1.0 (+https://sopp24.github.io/DRESSOPP/)";
+ const TTL = 7 * 86400000;
+ const MAX_SITEMAPS = 6, MAX_PAGES = 18, MAX_STORE_PRODUCTS = 20;
+ const DEFAULT_BATCH_SIZE = 36, DEFAULT_PRIORITY_SLOTS = 12, PAGE_SIZE = 120;
+ const GAP = 700, lastRequest = new Map();
++const PIECE_ALIASES = {
++  pantalon:["trouser","pant","chino"], pull:["sweater","jumper","knit","maille"], chemise:["shirt","overshirt"], veste:["jacket","blazer"],
++  manteau:["coat","parka","trench"], blouson:["bomber","jacket"], mocassins:["loafer","mocassin"], mocassin:["loafer"], baskets:["sneaker","trainer","basket"],
++  chaussures:["shoe","boot","derby"], ceinture:["belt"], casquette:["cap"], bonnet:["beanie"], cravate:["tie"], laine:["wool","merino","merinos"],
++  cuir:["leather"], noir:["black"], marron:["brown"], crème:["cream","ecru"], gris:["grey","gray"], marine:["navy"], kaki:["khaki","olive"]
++};
++const DEFAULT_INTEREST_TERMS = ["pull","pantalon","chemise","veste","jean","mocassin","cardigan","polo","sweat","chino","manteau","blouson","sneaker","derby","laine","cuir","maille","coton","denim","oversize"];
++let interestTerms = DEFAULT_INTEREST_TERMS;
+ 
+ const clean = value => String(value == null ? "" : value).replace(/<[^>]*>/g," ")
+   .replace(/&nbsp;|&#160;/gi," ").replace(/&amp;/gi,"&").replace(/&quot;/gi,'"')
+@@ -46,6 +55,35 @@ function pathScore(path) {
+   return (/\/products?\//.test(p) ? 5 : 0) + (/\/p\/|\/prd\/|\/product\/|\/item\/|\/dp\//.test(p) ? 4 : 0) +
+     (/-\d{5,}(?:\.html?)?(?:$|[/?])/.test(p) ? 3 : 0) + (/\.html?(?:$|[/?])/.test(p) ? 2 : 0);
+ }
++// Termes (pièces, matières, couleurs) les plus fréquents dans les Pins masculins analysés du tableau Pinterest.
++export function pinterestInterestTerms(pins,limit = 40) {
++  const counts = new Map(), stop = new Set(["avec","sans","pour","dans","tres","plus","unie","uni","autre","autres"]);
++  const add = value => fold(value).split(/[^a-z-]+/).filter(word => word.length >= 4 && !stop.has(word) || ["pull","sac","jean"].includes(word)).forEach(word => counts.set(word,(counts.get(word) || 0) + 1));
++  for (const pin of Array.isArray(pins) ? pins : []) {
++    const visual = pin && pin.visualAnalysis;
++    if (!visual || visual.isFashion !== true || visual.audience !== "men") continue;
++    for (const piece of Array.isArray(visual.pieces) ? visual.pieces : []) [piece.type,piece.material,piece.color].forEach(add);
++    [visual.materials,visual.colors].forEach(values => (Array.isArray(values) ? values : []).forEach(add));
++  }
++  const ranked = Array.from(counts.entries()).sort((a,b) => b[1] - a[1] || a[0].localeCompare(b[0])).map(entry => entry[0]).slice(0,limit);
++  const expanded = new Set();
++  ranked.forEach(term => { expanded.add(term); (PIECE_ALIASES[term] || []).forEach(alias => expanded.add(alias)); });
++  return expanded.size ? Array.from(expanded) : DEFAULT_INTEREST_TERMS;
++}
++// Les pages les plus proches d'un look masculin du tableau passent en premier ; les rayons femme / enfant en dernier.
++export function urlAudienceScore(url,terms = DEFAULT_INTEREST_TERMS) {
++  let path;
++  try { path = decodeURIComponent(new URL(url).pathname); } catch { path = String(url || ""); }
++  path = fold(path);
++  const women = /(^|[\/_.-])(femme|femmes|women|womens|woman|ladies|girls?|filles?|enfants?|kids?|bebes?|baby)([\/_.-]|$)/.test(path) || /(^|\/)w-/.test(path);
++  const men = /(^|[\/_.-])(homme|hommes|men|mens|man|male|uomo|herren)([\/_.-]|$)/.test(path);
++  const matched = new Set((terms || []).filter(term => term && path.includes(fold(term)))).size;
++  return pathScore(path) + (men ? 4 : 0) - (women ? 10 : 0) + Math.min(4,matched) * 1.5;
++}
++export function rankCandidateUrls(urls,terms = DEFAULT_INTEREST_TERMS) {
++  return urls.map((url,index) => ({url,index,score:urlAudienceScore(url,terms)}))
++    .sort((a,b) => b.score - a.score || a.index - b.index).map(entry => entry.url);
++}
+ export function parseRobots(text) {
+   const groups = [];
+   let current = null;
+@@ -123,15 +161,23 @@ function flattenProducts(value) {
+   const found = type.includes("product") ? [value] : [];
+   return found.concat(flattenProducts(value["@graph"]),flattenProducts(value.mainEntity),flattenProducts(value.itemListElement),flattenProducts(value.item));
+ }
++const fold = value => String(value == null ? "" : value).normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
++const FEMININE_TITLE = /(^|[^a-z])(robes?|jupes?|dress|skirt|soutien|brassiere|bustier|corset|culottes?|bikini|lingerie|escarpins?|talons?|ballerines?|collants?|combinaisons?|jumpsuit|crop top|top court|sac a main|handbag)([^a-z]|$)/;
++// Boutique 100 % masculine (champ audience="men" du répertoire) : une fiche sans mention de genre est acceptée, sauf pièce typiquement féminine.
++function catalogAudience(item,pageUrl,source,trustDeclaredGender = true) {
++  const gender = inferCatalogGender(item,pageUrl,trustDeclaredGender);
++  if (gender === "unknown" && source && source.audience === "men" && !FEMININE_TITLE.test(fold(item && item.name))) return {gender:"men",evidence:"merchant"};
++  return {gender,evidence:gender === "men" ? "product" : ""};
++}
+ function inferCatalogGender(item,pageUrl,trustDeclaredGender = true) {
+   const audience = item && item.audience && typeof item.audience === "object"
+     ? [item.audience.name,item.audience.suggestedGender,item.audience.genderType].filter(Boolean).join(" ")
+     : item && item.audience;
+   // Les genres déjà calculés par les anciennes versions ne sont pas une preuve ; seuls les champs déclarés ou le texte source comptent.
+-  const value = clean([
++  const value = fold(clean([
+     trustDeclaredGender && item && item.gender,audience,item && item.name,item && item.description,
+     item && item.category,pageUrl
+-  ].filter(Boolean).join(" "));
++  ].filter(Boolean).join(" ")));
+   const women = /(^|[^a-z])(femme|femmes|woman|women|womens|female|girl|girls|ladies|damen|feminin)([^a-z]|$)/.test(value) ||
+     /pour femme|for women|womenswear|collection femme/.test(value);
+   const men = /(^|[^a-z])(homme|hommes|man|men|mens|masculin|male)([^a-z]|$)/.test(value) ||
+@@ -191,11 +237,11 @@ function productRecord(item,source,pageUrl,checkedAt) {
+   const checked = new Date(checkedAt).toISOString();
+   const rating = Number(item.aggregateRating && item.aggregateRating.ratingValue);
+   const aggregate = item.aggregateRating || {};
+-  const gender = inferCatalogGender(item,page.href);
++  const audience = catalogAudience(item,page.href,source), gender = audience.gender;
+   return {
+     id:"web-" + hash(page.href.split("?")[0].toLowerCase()), name, brand, merchant:source.name,
+     url:page.href, imageUrl:image, price, originalPrice:Number(offer.highPrice) || null,
+-    objective, category, gender, genderVerified:gender === "men",
++    objective, category, gender, genderVerified:gender === "men", audienceEvidence:audience.evidence,
+     styleTags:rules.filter(([,pattern]) => pattern.test(terms)).map(([label]) => label),
+     seasonTags:[], colors:list(item.color).map(clean).filter(Boolean), materials:list(item.material).map(clean).filter(Boolean),
+     cuts:[], patterns:[], description, sizes:list(item.size).map(clean).filter(Boolean),
+@@ -223,11 +269,11 @@ export function extractProductsFromHtml(html,source,pageUrl,checkedAt = new Date
+   const price = Number(meta(html,"product:price:amount"));
+   if (meta(html,"og:type") === "product" && title && image && meta(html,"product:price:currency").toUpperCase() === "EUR" && price > 0) {
+     const checked = new Date(checkedAt).toISOString();
++    const ogAudience = catalogAudience({name:title,description:meta(html,"og:description")},pageUrl,source);
+     products.push({
+       id:"web-" + hash(pageUrl), name:title, brand:meta(html,"product:brand") || source.name, merchant:source.name,
+       url:pageUrl, imageUrl:image, price, originalPrice:null, objective:"Vêtements", category:"Vêtements",
+-      gender:inferCatalogGender({name:title,description:meta(html,"og:description")},pageUrl),
+-      genderVerified:inferCatalogGender({name:title,description:meta(html,"og:description")},pageUrl) === "men",
++      gender:ogAudience.gender, genderVerified:ogAudience.gender === "men", audienceEvidence:ogAudience.evidence,
+       styleTags:[], seasonTags:[], colors:[], materials:[], cuts:[], patterns:[], description:meta(html,"og:description"), sizes:[],
+       availability:"Disponibilité à confirmer sur la boutique", availabilityStatus:"unknown",
+       source:source.name, sourceType:"public-web", catalogStatus:"active", verifiedAt:checked, syncedAt:checked,
+@@ -311,7 +357,7 @@ async function scan(source) {
+       links(result.text,result.url.href,source.domain).filter(link => pathScore(new URL(link).pathname) >= 3).forEach(link => urls.add(link));
+     } catch { /* Ignorer une catégorie inaccessible. */ }
+   }
+-  const candidates = Array.from(urls).sort((a,b) => pathScore(b) - pathScore(a)).slice(0,MAX_PAGES);
++  const candidates = rankCandidateUrls(Array.from(urls),interestTerms).slice(0,MAX_PAGES);
+   const products = [];
+   for (const candidate of candidates) {
+     const page = safeAllowed(candidate,base,source,robots); if (!page) continue;
+@@ -365,7 +411,8 @@ export function mergeCatalog(previous,seeds,results,now = new Date(),previousMet
+   const products = new Map();
+   const identity = item => { try { return new URL(item.url).href.split("?")[0].replace(/\/+$/, "").toLowerCase(); } catch { return item.id; } };
+   (previous || []).filter(p => p && p.sourceType === "public-web" && p.url).forEach(p => {
+-    const gender = inferCatalogGender(p,p.url,p.genderVerified === true);
++    let gender = inferCatalogGender(p,p.url,p.genderVerified === true);
++    if (gender === "unknown" && p.audienceEvidence === "merchant") gender = "men";
+     products.set(identity(p),{...p,gender,genderVerified:gender === "men"});
+   });
+   (seeds || []).filter(p => p && p.url).forEach(p => { if (!products.has(identity(p))) products.set(identity(p),p); });
+@@ -460,6 +507,8 @@ export async function main() {
+   const sources = Array.isArray(config.sources) && config.sources.length
+     ? config.sources : (Array.isArray(directory.entries) ? directory.entries : []);
+   if (!sources.length) throw new Error("Aucune boutique configurée : vérifie data/merchant-directory.json.");
++  const pinterest = await readJson(PINTEREST,{pins:[]});
++  interestTerms = pinterestInterestTerms(pinterest.pins);
+   const previousMeta = await readJson(META,{});
+   const previousCatalog = await readJson(CATALOG,{products:[]});
+   const previousManifest = await readJson(MANIFEST,{pages:[]});
+diff --git a/styles.css b/styles.css
+index 87fcacb..ad98b58 100644
+--- a/styles.css
++++ b/styles.css
+@@ -1,3 +1,9 @@
++/* Poppins (licence OFL, voir assets/fonts/OFL-Poppins.txt) — police de la carte « Pour toi », auto-hébergée. */
++@font-face { font-family: Poppins; font-style: normal; font-weight: 400; font-display: swap; src: url("./assets/fonts/poppins-latin-400-normal.woff2") format("woff2"); }
++@font-face { font-family: Poppins; font-style: normal; font-weight: 500; font-display: swap; src: url("./assets/fonts/poppins-latin-500-normal.woff2") format("woff2"); }
++@font-face { font-family: Poppins; font-style: normal; font-weight: 600; font-display: swap; src: url("./assets/fonts/poppins-latin-600-normal.woff2") format("woff2"); }
++@font-face { font-family: Poppins; font-style: normal; font-weight: 700; font-display: swap; src: url("./assets/fonts/poppins-latin-700-normal.woff2") format("woff2"); }
++@font-face { font-family: Poppins; font-style: normal; font-weight: 800; font-display: swap; src: url("./assets/fonts/poppins-latin-800-normal.woff2") format("woff2"); }
+ :root {
+   color-scheme: dark;
+   --bg: #080808;
+@@ -2417,22 +2423,6 @@ body.is-discovery-app .app-footer { display: none; }
+   .filter-bar .filter-tools > button { flex: 1 1 auto; }
+ }
+ 
+-/* Mobile: keep the original desktop external-link glyph; the native-looking circular arrow is intentionally removed. */
+-@media (max-width: 600px) {
+-  .discovery-layout--swipe .product-original-link > i {
+-    display: inline-block;
+-    width: auto;
+-    height: auto;
+-    flex: 0 0 auto;
+-    padding: 0 12px;
+-    border-radius: 0;
+-    color: #090909;
+-    background: transparent;
+-    font-size: inherit;
+-    font-style: normal;
+-    line-height: 1;
+-  }
+-}
+ /* Training contains the Pinterest pins and the agent sits after the add-to-list swipe area. */
+ .training-pins-panel { display: grid; gap: 14px; margin-top: 18px; }
+ .training-pins-heading { display: grid; gap: 5px; }
+@@ -3199,3 +3189,259 @@ button, a { touch-action: manipulation; }
+     min-height: 44px;
+   }
+ }
++
++/* ==========================================================================
++   Carte swipable — direction artistique de la maquette
++   Carte blanche arrondie, photo à coins arrondis, titre Poppins en capitales,
++   marque • prix, couleurs / matière, pilule « Voir l’article original » et
++   rangée de cinq boutons ronds sous la carte.
++   Toutes les dimensions suivent la largeur de la carte (cqw) ; --u plafonne
++   l’échelle pour laisser la photo respirer sur écran large ou peu haut.
++   ========================================================================== */
++.discovery-layout--swipe .deck-card-wrap {
++  --u: max(2.9px, min(1cqw, 3.9px, .46vh));
++  container-type: inline-size;
++  display: flex;
++  width: min(100%, 440px);
++  min-width: 0;
++  min-height: 0;
++  flex: 1 1 auto;
++  flex-direction: column;
++  margin: 0 auto;
++  font-family: Poppins, Inter, "Helvetica Neue", Helvetica, Arial, sans-serif;
++}
++@supports not (width: 1cqw) {
++  .discovery-layout--swipe .deck-card-wrap { --u: 3.6px; }
++}
++.discovery-layout--swipe .deck-card-wrap .product-card {
++  position: relative;
++  display: flex;
++  width: 100%;
++  height: auto;
++  min-height: 0;
++  flex: 0 0 auto;
++  flex-direction: column;
++  overflow: hidden;
++  padding: calc(var(--u) * 4.8) calc(var(--u) * 4.4) calc(var(--u) * 5);
++  border: calc(var(--u) * .45) solid #fff;
++  border-radius: calc(var(--u) * 5.45);
++  color: #000;
++  background: #fff;
++  box-shadow: 0 24px 60px rgba(0,0,0,.55);
++}
++.discovery-layout--swipe .deck-card-wrap .product-visual {
++  position: relative;
++  inset: auto;
++  z-index: 0;
++  display: block;
++  width: 100%;
++  height: auto;
++  min-height: 0;
++  max-height: none;
++  flex: 0 0 auto;
++  aspect-ratio: 3 / 4;
++  overflow: hidden;
++  border-radius: calc(var(--u) * 3.1);
++  background: #1b1b1b;
++}
++.discovery-layout--swipe .deck-card-wrap .product-visual::after { display: none; }
++.discovery-layout--swipe .deck-card-wrap .product-visual img {
++  position: absolute;
++  inset: 0;
++  width: 100%;
++  height: 100%;
++  object-fit: cover;
++  object-position: center 30%;
++}
++.discovery-layout--swipe .deck-card-wrap .swipe-tint { border-radius: inherit; }
++
++.discovery-layout--swipe .deck-card-wrap .product-info {
++  position: static;
++  display: flex;
++  flex: 0 0 auto;
++  flex-direction: column;
++  align-items: center;
++  gap: 0;
++  padding: calc(var(--u) * 2.6) 0 0;
++  text-align: center;
++  background: none;
++}
++.discovery-layout--swipe .deck-card-wrap .product-copy { width: 100%; max-width: none; flex: none; }
++.discovery-layout--swipe .deck-card-wrap .product-title {
++  display: -webkit-box;
++  overflow: hidden;
++  margin: 0;
++  color: #000;
++  font-size: max(14px, calc(var(--u) * 6.9));
++  font-weight: 700;
++  letter-spacing: 0;
++  line-height: 1.17;
++  overflow-wrap: anywhere;
++  text-align: center;
++  text-transform: uppercase;
++  white-space: normal;
++  -webkit-box-orient: vertical;
++  -webkit-line-clamp: 2;
++}
++.discovery-layout--swipe .deck-card-wrap .product-brand-price {
++  display: flex;
++  align-items: center;
++  justify-content: center;
++  flex-wrap: nowrap;
++  gap: calc(var(--u) * 4.4);
++  margin: calc(var(--u) * 3) 0 0;
++  color: #000;
++  font-size: max(12px, calc(var(--u) * 5.15));
++  font-weight: 400;
++  line-height: 1.3;
++}
++.discovery-layout--swipe .deck-card-wrap .product-brand-price > span {
++  min-width: 0;
++  overflow: hidden;
++  color: #000;
++  font-weight: 400;
++  text-overflow: ellipsis;
++  white-space: nowrap;
++}
++.discovery-layout--swipe .deck-card-wrap .product-brand-price > i { flex: none; color: #000; font-size: 1em; font-style: normal; line-height: 1; }
++.discovery-layout--swipe .deck-card-wrap .product-brand-price > strong { flex: none; color: #000; font-size: 1em; font-weight: 400; white-space: nowrap; }
++.discovery-layout--swipe .deck-card-wrap .product-attributes {
++  display: flex;
++  flex-wrap: wrap;
++  align-items: center;
++  justify-content: center;
++  gap: calc(var(--u) * 1) calc(var(--u) * 3.6);
++  margin: calc(var(--u) * 2.8) 0 0;
++  color: #000;
++  font-size: max(10.5px, calc(var(--u) * 3));
++  line-height: 1.35;
++}
++.discovery-layout--swipe .deck-card-wrap .product-attribute-group { display: inline-flex; align-items: center; gap: calc(var(--u) * 1.2); color: #000; }
++.discovery-layout--swipe .deck-card-wrap .product-attribute-group > strong { color: #000; font-size: 1em; font-weight: 700; }
++.discovery-layout--swipe .deck-card-wrap .product-attribute-values { display: inline-flex; flex-wrap: wrap; align-items: center; gap: calc(var(--u) * 1.4); color: #000; font-weight: 400; }
++.discovery-layout--swipe .deck-card-wrap .product-attribute-values::after { content: "."; margin-left: -.35em; }
++.discovery-layout--swipe .deck-card-wrap .product-color-value { display: inline-flex; align-items: center; gap: calc(var(--u) * 1.2); white-space: nowrap; }
++.discovery-layout--swipe .deck-card-wrap .product-color-value i {
++  flex: none;
++  width: calc(var(--u) * 4.3);
++  height: calc(var(--u) * 4.3);
++  min-width: 11px;
++  min-height: 11px;
++  border: 1px solid rgba(0,0,0,.16);
++  border-radius: 50%;
++}
++.discovery-layout--swipe .deck-card-wrap .product-attribute-missing,
++.discovery-layout--swipe .deck-card-wrap .attribute-separator { color: #6b6b6b; }
++
++.discovery-layout--swipe .deck-card-wrap .product-card-links {
++  display: flex;
++  width: 100%;
++  max-width: none;
++  flex: none;
++  flex-direction: row;
++  align-items: center;
++  justify-content: center;
++  margin: calc(var(--u) * 3.2) 0 0;
++}
++.discovery-layout--swipe .deck-card-wrap .product-original-link {
++  display: flex;
++  width: calc(var(--u) * 78);
++  max-width: 100%;
++  min-height: max(44px, calc(var(--u) * 11.6));
++  align-items: center;
++  justify-content: space-between;
++  gap: calc(var(--u) * 2);
++  overflow: hidden;
++  padding: calc(var(--u) * .9) calc(var(--u) * .9) calc(var(--u) * .9) calc(var(--u) * 3.5);
++  border: 0;
++  border-radius: 999px;
++  color: #000;
++  background: #eee;
++  font: 400 max(12px, calc(var(--u) * 5.6))/1.1 Poppins, Inter, "Helvetica Neue", Helvetica, Arial, sans-serif;
++  text-align: left;
++  text-decoration: none;
++  backdrop-filter: none;
++  -webkit-backdrop-filter: none;
++  cursor: pointer;
++  transition: background .2s ease, transform .2s ease;
++}
++.discovery-layout--swipe .deck-card-wrap .product-original-link:hover { background: #e2e2e2; }
++.discovery-layout--swipe .deck-card-wrap .product-original-link:active { transform: scale(.985); }
++.discovery-layout--swipe .deck-card-wrap .product-original-link:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
++.discovery-layout--swipe .deck-card-wrap .product-original-link > span { min-width: 0; overflow: hidden; padding: .12em 0; font-size: inherit; line-height: 1.3; text-overflow: ellipsis; white-space: nowrap; }
++.discovery-layout--swipe .deck-card-wrap .product-original-link > i {
++  display: block;
++  flex: 0 0 auto;
++  width: max(34px, calc(var(--u) * 9.7));
++  height: max(34px, calc(var(--u) * 9.7));
++  padding: 0;
++  border-radius: 50%;
++  color: transparent;
++  background: #757575 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 18 18 6M8.5 6H18v9.5'/%3E%3C/svg%3E") center / 56% no-repeat;
++  font-size: 0;
++  line-height: 0;
++}
++
++.discovery-layout--swipe .deck-card-wrap .deck-actions {
++  position: static;
++  display: flex;
++  width: 100%;
++  flex: 0 0 auto;
++  align-items: center;
++  justify-content: center;
++  gap: calc(var(--u) * 3.4);
++  margin: calc(var(--u) * 3.2) 0 0;
++  padding: 0;
++}
++.discovery-layout--swipe .deck-card-wrap .deck-actions .deck-action {
++  position: relative;
++  display: grid;
++  width: max(44px, calc(var(--u) * 13.2));
++  height: max(44px, calc(var(--u) * 13.2));
++  flex: 0 0 auto;
++  place-items: center;
++  padding: 0;
++  border: 1px solid rgba(255,255,255,.08);
++  border-radius: 50%;
++  color: #fff;
++  background: radial-gradient(circle at 50% 20%, #2b2b2b 0%, #171717 58%, #0e0e0e 100%);
++  box-shadow: inset 0 1px 0 rgba(255,255,255,.1), 0 10px 26px rgba(0,0,0,.55);
++  backdrop-filter: none;
++  -webkit-backdrop-filter: none;
++}
++.discovery-layout--swipe .deck-card-wrap .deck-actions .deck-action-no,
++.discovery-layout--swipe .deck-card-wrap .deck-actions .deck-action-yes {
++  width: max(56px, calc(var(--u) * 19));
++  height: max(56px, calc(var(--u) * 19));
++}
++.discovery-layout--swipe .deck-card-wrap .deck-actions .deck-action-save.is-selected { border-color: rgba(244,198,75,.6); background: radial-gradient(circle at 50% 20%, #3a3018 0%, #1b160a 70%, #0e0b05 100%); }
++.discovery-layout--swipe .deck-card-wrap .deck-actions .deck-action:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
++.discovery-layout--swipe .deck-card-wrap .deck-actions .deck-action-icon { width: 40%; height: 40%; object-fit: contain; }
++.discovery-layout--swipe .deck-card-wrap .deck-actions .deck-action-no .deck-action-icon,
++.discovery-layout--swipe .deck-card-wrap .deck-actions .deck-action-yes .deck-action-icon { width: 46%; height: 46%; }
++.discovery-layout--swipe .deck-card-wrap .deck-hint {
++  position: static;
++  margin: calc(var(--u) * 2.4) 0 0;
++  padding: 0;
++  color: #777;
++  font-size: 10px;
++  letter-spacing: .03em;
++  text-align: center;
++  text-transform: none;
++  pointer-events: none;
++}
++@media (max-width: 850px), (hover: none) {
++  .discovery-layout--swipe .deck-card-wrap .deck-hint-desktop { display: none; }
++}
++
++/* Pour toi : la carte occupe toute la hauteur disponible et la photo absorbe l’espace restant. */
++.discovery-page--app .deck-card-wrap .product-card { flex: 1 1 0; }
++.discovery-page--app .deck-card-wrap .product-visual { min-height: calc(var(--u) * 24); flex: 1 1 0; aspect-ratio: auto; }
++
++/* Fiche produit (fenêtre sombre) : avis et fraîcheur lisibles et alignés à gauche. */
++.details-copy .product-review-block:empty { display: none; }
++.details-copy .product-review-note { margin: 8px 0 0; color: #d8d8d8; text-align: left; }
++.details-copy .product-review-note strong { color: #fff; }
++.details-copy .product-review-note span { color: #9a9a9a; }
++.details-copy .product-freshness { margin: 8px 0 0; color: #8d8d8d; text-align: left; }
++.details-copy .product-freshness.is-stale { color: #ff7a7a; }
+diff --git a/sw.js b/sw.js
+index 34a9918..7ad7778 100644
+--- a/sw.js
++++ b/sw.js
+@@ -1,11 +1,13 @@
+-const CACHE_NAME = "dressopp-static-v15";
++const CACHE_NAME = "dressopp-static-v16";
+ const CORE_FILES = [
+   "./", "./index.html", "./privacy.html", "./styles.css", "./app.js",
+-  "./modules/store.js", "./modules/engine.js", "./modules/integrations.js", "./modules/outfits.js", "./modules/community.js", "./modules/agent.js",
++  "./modules/store.js", "./modules/engine.js", "./modules/integrations.js", "./modules/outfits.js", "./modules/community.js", "./modules/agent.js", "./modules/audience.js",
+   "./data/catalog-pages/page-0001.json",
+   "./assets/logo-horizontal.png",
+   "./assets/rewind.webp", "./assets/cross.webp", "./assets/star.webp", "./assets/fav.webp", "./assets/share.webp",
+-  "./assets/logo-square.png"
++  "./assets/logo-square.png",
++  "./assets/fonts/poppins-latin-400-normal.woff2", "./assets/fonts/poppins-latin-500-normal.woff2", "./assets/fonts/poppins-latin-600-normal.woff2",
++  "./assets/fonts/poppins-latin-700-normal.woff2", "./assets/fonts/poppins-latin-800-normal.woff2"
+ ];
+ self.addEventListener("install", function(event) {
+   event.waitUntil(caches.open(CACHE_NAME).then(function(cache) {
+diff --git a/tests/discovery-ui.test.js b/tests/discovery-ui.test.js
+index 46f5203..031f8fe 100644
+--- a/tests/discovery-ui.test.js
++++ b/tests/discovery-ui.test.js
+@@ -73,7 +73,7 @@ test("all local files referenced by the application shell exist", function() {
+ });
+ 
+ test("the PWA refreshes its cache and preloads the app icons and first catalogue page", function() {
+-  assert.ok(sw.includes('dressopp-static-v15'));
++  assert.ok(sw.includes('dressopp-static-v16'));
+   for (const path of [
+     "./assets/logo-horizontal.png",
+     "./assets/logo-square.png",
+@@ -143,9 +143,12 @@ test("Pinterest pins are inside Training and no standalone Pins navigation remai
+   assert.ok(css.includes(".training-support .ai-agent-panel"));
+ });
+ 
+-test("mobile external article link keeps the desktop arrow instead of a large circular icon", function() {
+-  assert.ok(css.includes("Mobile: keep the original desktop external-link glyph"));
+-  assert.ok(css.includes("background: transparent;"));
++test("the original-article pill keeps the maquette's circular arrow on every screen size", function() {
++  assert.ok(css.includes("Carte swipable — direction artistique de la maquette"));
++  assert.ok(css.includes(".discovery-layout--swipe .deck-card-wrap .product-original-link > i"));
++  assert.ok(!css.includes("the native-looking circular arrow is intentionally removed"));
++  assert.ok(css.includes("font-family: Poppins"));
++  for (const weight of [400, 500, 600, 700, 800]) assert.ok(existsSync(new URL("assets/fonts/poppins-latin-" + weight + "-normal.woff2", root)));
+ });
+ 
+  
+diff --git a/tests/engine.test.js b/tests/engine.test.js
+index 3645506..f0f2b28 100644
+--- a/tests/engine.test.js
++++ b/tests/engine.test.js
+@@ -1,6 +1,6 @@
+ import test from "node:test";
+ import assert from "node:assert/strict";
+-import { seasonFor, normalizeProduct as normalizeRawProduct, matchesFilters, rankProducts, createInitialState, deriveLearnedPreferences } from "../modules/engine.js";
++import { seasonFor, normalizeProduct as normalizeRawProduct, matchesFilters, rankProducts, createInitialState, deriveLearnedPreferences, registerMenMerchants, isMenFit } from "../modules/engine.js";
+ 
+ function normalizeProduct(raw) {
+   return normalizeRawProduct(Object.assign({ gender:"men", genderVerified:true },raw || {}));
+@@ -181,19 +181,58 @@ test("new local state keeps outfit filters and a separate saved outfit collectio
+ });
+ 
+ 
+-test("product discovery is limited to confirmed men's pieces", function() {
++test("product discovery keeps men's and men-compatible unisex pieces, never women's or unknown ones", function() {
+   const men = normalizeProduct({ id:"men", name:"Chemise homme", price:40 });
+   const unisex = normalizeRawProduct({ id:"unisex", name:"T-shirt unisexe", price:25 });
++  const unisexDress = normalizeRawProduct({ id:"unisex-dress", name:"Robe unisexe", price:25 });
+   const women = normalizeRawProduct({ id:"women", name:"Blouse femme", url:"https://shop.example/femme/blouse", price:30 });
+   const unknown = normalizeRawProduct({ id:"unknown", name:"Pull en maille", price:32 });
+   const state = createInitialState([men,unisex,women,unknown]);
+-  const result = rankProducts([women,unisex,unknown,men],state,{
++  const result = rankProducts([women,unisex,unisexDress,unknown,men],state,{
+     includeSeen:true,
+     filters:{objective:"Tout",style:"Tous",season:"Toute saison",maxPrice:null}
+   });
+-  assert.deepEqual(result.map(item=>item.id),["men"]);
++  assert.deepEqual(result.map(item=>item.id).sort(),["men","unisex"]);
+   assert.equal(men.gender,"men");
++  assert.equal(men.menFit,"men");
+   assert.equal(unisex.gender,"unisex");
++  assert.equal(unisex.menFit,"unisex");
++  assert.equal(unisexDress.menFit,"");
+   assert.equal(women.gender,"women");
+   assert.equal(unknown.gender,"unknown");
+ });
++
++test("men-only merchants make unlabelled pieces eligible, except typically feminine items", function() {
++  registerMenMerchants([{ name:"Jules", domain:"jules.com", audience:"men" }]);
++  try {
++    const jumper = normalizeRawProduct({ id:"jules-1", name:"Pull col rond", merchant:"Jules", url:"https://www.jules.com/fr/p/pull-1.html", price:30 });
++    const dress = normalizeRawProduct({ id:"jules-2", name:"Robe fluide", merchant:"Jules", price:30 });
++    const other = normalizeRawProduct({ id:"other-1", name:"Pull col rond", merchant:"Autre boutique", price:30 });
++    assert.equal(jumper.gender,"men");
++    assert.equal(jumper.menFit,"men");
++    assert.equal(dress.menFit,"");
++    assert.equal(other.menFit,"");
++    assert.ok(isMenFit(jumper) && !isMenFit(dress) && !isMenFit(other));
++  } finally { registerMenMerchants([]); }
++});
++
++test("missing colours and materials are read from the product title and description", function() {
++  const product = normalizeProduct({ id:"p1", name:"Pull col V en laine mérinos – Crème", description:"Coupe oversize", price:40 });
++  assert.deepEqual(product.colors,["Crème"]);
++  assert.ok(product.materials.includes("Laine"));
++  assert.ok(product.cuts.includes("Oversize"));
++  const declared = normalizeProduct({ id:"p2", name:"Pull noir", colors:["Bleu"], price:40 });
++  assert.deepEqual(declared.colors,["Bleu"]);
++});
++
++test("the Pinterest board ranks the closest pieces first", function() {
++  const pin = { id:"pin-1", title:"Look maille crème", description:"Pull oversize en laine crème avec pantalon marron", visualAnalysis:{
++    version:3, isFashion:true, audience:"men", styleTags:["Smart Casual"], colors:["crème","marron"], materials:["laine"], cuts:["oversize"], patterns:[],
++    pieces:[{type:"pull",color:"crème",material:"laine",cut:"oversize",pattern:"uni",details:["col v"]},{type:"pantalon",color:"marron",material:"",cut:"droit",pattern:"uni",details:[]}], details:["col v"] } };
++  const close = normalizeProduct({ id:"close", name:"Pull col V oversize en laine – Crème", brand:"A", price:50, url:"https://a.example/homme/pull", gender:"men", genderVerified:true });
++  const far = normalizeProduct({ id:"far", name:"Short de bain imprimé homme", brand:"B", price:50, url:"https://b.example/homme/short", gender:"men", genderVerified:true });
++  const state = createInitialState([close,far]);
++  state.pinterestPins = [pin];
++  const ranked = rankProducts([far,close],state,{ includeSeen:true, filters:{objective:"Tout",style:"Tous",season:"Toute saison",maxPrice:null} });
++  assert.equal(ranked[0].id,"close");
++});
+diff --git a/tests/public-catalog.test.js b/tests/public-catalog.test.js
+index 8f0c1bd..0c0aff7 100644
+--- a/tests/public-catalog.test.js
++++ b/tests/public-catalog.test.js
+@@ -124,3 +124,31 @@ test("catalogue extraction labels men's, mixed and women's product departments",
+   assert.deepEqual(products.map(item=>item.gender),["men","unisex","women","unknown"]);
+   assert.deepEqual(products.map(item=>item.genderVerified),[true,false,false,false]);
+ });
++
++test("catalogue gender detection ignores case and accents and honours men-only merchants", async () => {
++  const { extractProductsFromHtml } = await import("../scripts/refresh-public-catalog.mjs");
++  const html = name => '<script type="application/ld+json">' + JSON.stringify({ "@type":"Product", name, image:"https://shop.example/i.jpg", offers:{ price:"40", priceCurrency:"EUR", availability:"InStock" } }) + "</script>";
++  const page = "https://shop.example/p/1";
++  const women = extractProductsFromHtml(html("Women's Haydon Jacket"), { name:"Shop", domain:"shop.example" }, page);
++  assert.equal(women[0].gender, "women");
++  const men = extractProductsFromHtml(html("Pull Homme col V"), { name:"Shop", domain:"shop.example" }, page);
++  assert.equal(men[0].gender, "men");
++  const menShop = { name:"Jules", domain:"shop.example", audience:"men" };
++  const unlabelled = extractProductsFromHtml(html("Pull col rond"), menShop, page);
++  assert.equal(unlabelled[0].gender, "men");
++  assert.equal(unlabelled[0].audienceEvidence, "merchant");
++  assert.equal(extractProductsFromHtml(html("Robe fluide"), menShop, page)[0].gender, "unknown");
++});
++
++test("candidate pages favour men's pieces close to the Pinterest board and demote women's sections", async () => {
++  const { rankCandidateUrls, pinterestInterestTerms } = await import("../scripts/refresh-public-catalog.mjs");
++  const terms = pinterestInterestTerms([{ visualAnalysis:{ isFashion:true, audience:"men", materials:["laine"], colors:["marron"], pieces:[{ type:"pantalon", color:"marron", material:"" }, { type:"pull", color:"crème", material:"laine" }] } }]);
++  assert.ok(terms.includes("pantalon") && terms.includes("trouser") && terms.includes("laine"));
++  const ranked = rankCandidateUrls([
++    "https://shop.example/femme/p/robe-12345.html",
++    "https://shop.example/p/casquette-12345.html",
++    "https://shop.example/homme/p/pull-laine-12345.html"
++  ], terms);
++  assert.equal(ranked[0], "https://shop.example/homme/p/pull-laine-12345.html");
++  assert.equal(ranked[2], "https://shop.example/femme/p/robe-12345.html");
++});
+diff --git a/workers/dressopp-agent/src/index.js b/workers/dressopp-agent/src/index.js
+index 19209e1..c519ae7 100644
+--- a/workers/dressopp-agent/src/index.js
++++ b/workers/dressopp-agent/src/index.js
+@@ -25,7 +25,7 @@ function stringList(value, maxItems = 8, maxLength = 48) { return (Array.isArray
+ function normalizeProduct(item) {
+   return {
+     id:clean(item && item.id,128), name:clean(item && item.name,140), brand:clean(item && item.brand,80), merchant:clean(item && item.merchant,80),
+-    gender:clean(item && item.gender,20), genderVerified:Boolean(item && item.genderVerified === true), price:Number.isFinite(Number(item && item.price)) && item.price !== null ? Number(item.price) : null,
++    gender:clean(item && item.gender,20), genderVerified:Boolean(item && item.genderVerified === true), menFit:clean(item && item.menFit,12), price:Number.isFinite(Number(item && item.price)) && item.price !== null ? Number(item.price) : null,
+     objective:clean(item && item.objective,40), category:clean(item && item.category,60),
+     styleTags:stringList(item && item.styleTags,6), colors:stringList(item && item.colors,5), materials:stringList(item && item.materials,5),
+     cuts:stringList(item && item.cuts,4), patterns:stringList(item && item.patterns,4), seasonTags:stringList(item && item.seasonTags,4), description:clean(item && item.description,240)
+@@ -49,7 +49,7 @@ function validatePayload(body) {
+   if (!["Tout","Vêtements","Chaussures","Sous-vêtements","Accessoires"].includes(objective)) throw new Error("Catégorie non reconnue.");
+   if (maxPrice !== null && (!Number.isFinite(maxPrice) || maxPrice < 0)) throw new Error("Budget invalide.");
+   const filtered = products.filter(product => {
+-    if (product.gender !== "men" || product.genderVerified !== true) return false;
++    if (!(product.menFit === "men" || product.menFit === "unisex" || (product.gender === "men" && product.genderVerified === true))) return false;
+     if (objective !== "Tout" && product.objective !== objective) return false;
+     if (maxPrice !== null && (product.price === null || product.price > maxPrice)) return false;
+     if (style !== "Tous" && product.styleTags.length && !product.styleTags.some(tag => tag.toLowerCase() === style.toLowerCase())) return false;
+@@ -74,7 +74,7 @@ function buildPrompt(input) {
+   return [
+     "MISSION : tu es le personal shopper IA de DRESSOPP, exclusivement consacré à la mode masculine. Tu sélectionnes des vêtements, chaussures, sous-vêtements et accessoires pour homme dans une liste fermée de fiches produits réelles.",
+     "RÈGLES IMPÉRATIVES :",
+-    "- Ne recommande jamais de produit femme, unisexe, mixte ou dont le public masculin n'est pas explicitement confirmé ; chaque candidat doit porter gender=men et genderVerified=true.",
++    "- Ne recommande jamais de produit femme ni de pièce typiquement féminine ; seuls les candidats portant menFit=men (homme) ou menFit=unisex (unisexe qui se porte aussi côté homme) sont recommandables, à défaut gender=men et genderVerified=true.",
+     "- Tu ne peux recommander QUE des productId présents dans products. N’invente jamais une fiche, marque, prix, disponibilité ou caractéristique.",
+     "- Respecte en priorité la catégorie, le style, la saison et le budget maximum choisis.",
+     "- Réponds uniquement avec un JSON valide contenant recommendations (productId et reason), message et searchHints. Aucun texte hors du JSON.",
