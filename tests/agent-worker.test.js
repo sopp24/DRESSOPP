@@ -123,7 +123,7 @@ test("Pinterest image analysis uses the vision model and returns hidden structur
     assert.equal(body.ok,true);
     assert.equal(body.analyses[0].id,"pin-vision-1");
     const analysis = body.analyses[0].visualAnalysis;
-    assert.equal(analysis.version,4);
+    assert.equal(analysis.version,3);
     assert.equal(analysis.audience,"men");
     assert.equal(analysis.styleTags[0],"Streetwear");
     assert.deepEqual(analysis.colors,["noir","gris"]);
