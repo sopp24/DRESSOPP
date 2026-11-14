@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 240" role="img" aria-labelledby="title">
+  <title id="title">DRESSOPP — Mode diligente</title>
+  <rect x="10" y="10" width="220" height="220" rx="48" fill="#101010" stroke="#ffffff" stroke-opacity=".12" stroke-width="2"/>
+  <path d="M72 52h52c57 0 91 25 91 68s-34 68-91 68H72V52zm42 34v68h12c30 0 47-11 47-34s-17-34-47-34h-12z" fill="#ffffff"/>
+  <circle cx="177" cy="177" r="13" fill="#e00000"/>
+  <text x="260" y="135" fill="#ffffff" font-family="Arial,Helvetica,sans-serif" font-size="77" font-weight="800" letter-spacing="1.5">DRESSOPP</text>
+  <text x="264" y="178" fill="#a6a6a6" font-family="Arial,Helvetica,sans-serif" font-size="23" font-weight="600" letter-spacing="5">MODE DILIGENTE.</text>
+</svg>
