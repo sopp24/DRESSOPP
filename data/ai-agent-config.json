@@ -1,0 +1,7 @@
+{
+  "enabled": true,
+  "endpoint": "https://dressopp-agent.asoppelsa.workers.dev",
+  "provider": "Cloudflare Workers AI",
+  "model": "@cf/google/gemma-4-26b-a4b-it",
+  "description": "L’agent IA est activé. L’envoi de préférences nécessite un accord explicite dans DRESSOPP."
+}
