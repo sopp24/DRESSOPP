@@ -1,0 +1,7 @@
+{
+  "apiKey": "",
+  "projectId": "",
+  "enabled": false,
+  "provider": "Firebase Spark / Cloud Firestore",
+  "note": "Laisser enabled à false jusqu'à création du projet Firebase gratuit et déploiement des règles de sécurité."
+}
