@@ -27,11 +27,11 @@ test("the product card includes the product details and original merchant link",
   assert.ok(app.includes("Voir l’article original"));
   assert.ok(app.includes("navigator.share"));
   assert.ok(app.includes("navigator.clipboard"));
-  assert.ok(app.includes('./assets/rewind.webp'));
-  assert.ok(app.includes('./assets/cross.webp'));
-  assert.ok(app.includes('./assets/star.webp'));
-  assert.ok(app.includes('./assets/fav.webp'));
-  assert.ok(app.includes('./assets/share.webp'));
+  assert.ok(app.includes('./assets/rewind.svg'));
+  assert.ok(app.includes('./assets/cross.svg'));
+  assert.ok(app.includes('./assets/star.svg'));
+  assert.ok(app.includes('./assets/fav.svg'));
+  assert.ok(app.includes('./assets/share.svg'));
   assert.ok(css.includes(".deck-action-icon"));
 });
 
@@ -75,13 +75,13 @@ test("all local files referenced by the application shell exist", function() {
 test("the PWA refreshes its cache and preloads the app icons and first catalogue page", function() {
   assert.ok(sw.includes('dressopp-static-v16'));
   for (const path of [
-    "./assets/logo-horizontal.png",
-    "./assets/logo-square.png",
-    "./assets/rewind.webp",
-    "./assets/cross.webp",
-    "./assets/star.webp",
-    "./assets/fav.webp",
-    "./assets/share.webp",
+    "./assets/logo-square.svg",
+    "./assets/logo-square.svg",
+    "./assets/rewind.svg",
+    "./assets/cross.svg",
+    "./assets/star.svg",
+    "./assets/fav.svg",
+    "./assets/share.svg",
     "./data/catalog-pages/page-0001.json"
   ]) {
     assert.ok(sw.includes('"' + path + '"'),"Missing offline cache entry: " + path);
