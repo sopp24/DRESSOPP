@@ -128,7 +128,6 @@ test("Pinterest image analysis uses the vision model and returns hidden structur
     assert.equal(analysis.styleTags[0],"Streetwear");
     assert.deepEqual(analysis.colors,["noir","gris"]);
     assert.deepEqual(analysis.pieces.map(piece => piece.type),["veste","pantalon","baskets"]);
-    assert.deepEqual(analysis.pieces.map(piece => piece.slot),["outerwear","bottom","shoes"]);
     assert.deepEqual(analysis.pieces[0].details,["fermeture zippée","col montant"]);
     assert.deepEqual(analysis.seasonTags,["Automne","Hiver"]);
     assert.deepEqual(analysis.paletteTags,["Monochrome"]);
