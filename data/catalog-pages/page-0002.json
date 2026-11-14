@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "page": 2,
   "pageSize": 120,
-  "totalProducts": 236,
-  "generatedAt": "2026-11-13T18:48:17.840Z",
+  "totalProducts": 259,
+  "generatedAt": "2026-11-14T14:38:48.230Z",
   "products": [
     {
       "id": "web-12ckab4",
@@ -32,7 +32,7 @@
       "availabilityStatus": "available",
       "source": "Armor Lux",
       "sourceType": "public-web",
-      "catalogStatus": "active",
+      "catalogStatus": "stale",
       "verifiedAt": "2026-11-12T08:52:39.987Z",
       "syncedAt": "2026-11-12T08:52:39.987Z",
       "priceUpdatedAt": "2026-11-12T08:52:39.987Z",
@@ -72,7 +72,7 @@
       "availabilityStatus": "available",
       "source": "Armor Lux",
       "sourceType": "public-web",
-      "catalogStatus": "active",
+      "catalogStatus": "stale",
       "verifiedAt": "2026-11-12T08:52:40.743Z",
       "syncedAt": "2026-11-12T08:52:40.743Z",
       "priceUpdatedAt": "2026-11-12T08:52:40.743Z",
@@ -113,7 +113,7 @@
       "availabilityStatus": "available",
       "source": "Armor Lux",
       "sourceType": "public-web",
-      "catalogStatus": "active",
+      "catalogStatus": "stale",
       "verifiedAt": "2026-11-12T08:52:41.366Z",
       "syncedAt": "2026-11-12T08:52:41.366Z",
       "priceUpdatedAt": "2026-11-12T08:52:41.366Z",
@@ -154,7 +154,7 @@
       "availabilityStatus": "available",
       "source": "Armor Lux",
       "sourceType": "public-web",
-      "catalogStatus": "active",
+      "catalogStatus": "stale",
       "verifiedAt": "2026-11-12T08:52:42.081Z",
       "syncedAt": "2026-11-12T08:52:42.081Z",
       "priceUpdatedAt": "2026-11-12T08:52:42.081Z",
@@ -197,7 +197,7 @@
       "availabilityStatus": "available",
       "source": "Armor Lux",
       "sourceType": "public-web",
-      "catalogStatus": "active",
+      "catalogStatus": "stale",
       "verifiedAt": "2026-11-12T08:52:42.756Z",
       "syncedAt": "2026-11-12T08:52:42.756Z",
       "priceUpdatedAt": "2026-11-12T08:52:42.756Z",
@@ -240,7 +240,7 @@
       "availabilityStatus": "available",
       "source": "Armor Lux",
       "sourceType": "public-web",
-      "catalogStatus": "active",
+      "catalogStatus": "stale",
       "verifiedAt": "2026-11-12T08:52:43.544Z",
       "syncedAt": "2026-11-12T08:52:43.544Z",
       "priceUpdatedAt": "2026-11-12T08:52:43.544Z",
@@ -282,7 +282,7 @@
       "availabilityStatus": "available",
       "source": "Armor Lux",
       "sourceType": "public-web",
-      "catalogStatus": "active",
+      "catalogStatus": "stale",
       "verifiedAt": "2026-11-12T08:52:44.229Z",
       "syncedAt": "2026-11-12T08:52:44.229Z",
       "priceUpdatedAt": "2026-11-12T08:52:44.229Z",
@@ -1686,7 +1686,7 @@
       "originalPrice": null,
       "objective": "Vêtements",
       "category": "Pantalon",
-      "gender": "unknown",
+      "gender": "women",
       "genderVerified": false,
       "styleTags": [],
       "seasonTags": [],
@@ -3927,863 +3927,6 @@
       "isBestSeller": false
     },
     {
-      "id": "seed-nike-cw2288-111",
-      "name": "Air Force 1 ’07",
-      "brand": "Nike",
-      "merchant": "Nike",
-      "url": "https://www.nike.com/fr/t/chaussure-air-force-1-07-pour-n8juM1H2/CW2288-111",
-      "imageUrl": "https://static.nike.com/a/images/t_web_pdp_936_v2/f_auto%2Cu_9ddf04c7-2a9a-4d76-add1-d15af8f0263d%2Cc_scale%2Cfl_relative%2Cw_1.0%2Ch_1.0%2Cfl_layer_apply/b7d9211c-26e7-431a-ac24-b0540fb3c00f/AIR%2BFORCE%2B1%2B%2707.png",
-      "price": 119.99,
-      "originalPrice": null,
-      "objective": "Chaussures",
-      "category": "Sneakers",
-      "styleTags": [
-        "Classique",
-        "Streetwear",
-        "Minimaliste",
-        "Casual"
-      ],
-      "seasonTags": [
-        "Toute saison"
-      ],
-      "colors": [
-        "Blanc"
-      ],
-      "materials": [
-        "Cuir"
-      ],
-      "cuts": [
-        "Classique"
-      ],
-      "patterns": [],
-      "description": "Sneaker blanche en cuir, utilisable comme base neutre des looks #13 et #17 du book.",
-      "sizes": [
-        "35.5",
-        "36",
-        "36.5",
-        "37.5",
-        "38",
-        "38.5",
-        "39",
-        "40",
-        "40.5",
-        "41",
-        "42",
-        "42.5",
-        "43",
-        "44",
-        "44.5",
-        "45",
-        "45.5",
-        "46",
-        "47",
-        "47.5",
-        "48.5",
-        "49.5",
-        "50",
-        "50.5",
-        "51.5",
-        "52.5"
-      ],
-      "availability": "Tailles affichées sur Nike FR · vérifier la pointure au moment de l’achat",
-      "availabilityStatus": "available",
-      "source": "Nike",
-      "sourceType": "curated",
-      "catalogStatus": "active",
-      "verifiedAt": "2026-11-05T15:29:00.000Z",
-      "expiresAt": "2026-11-12T15:29:00.000Z",
-      "priceUpdatedAt": "2026-11-05T15:29:00.000Z"
-    },
-    {
-      "id": "seed-uniqlo-e484093-000",
-      "name": "Pantalon large plissé",
-      "brand": "Uniqlo",
-      "merchant": "UNIQLO",
-      "url": "https://www.uniqlo.com/fr/fr/products/E484093-000/00",
-      "imageUrl": "./assets/product-images/16pb19o.avif",
-      "price": 49.9,
-      "originalPrice": null,
-      "objective": "Vêtements",
-      "category": "Pantalon",
-      "styleTags": [
-        "Classique",
-        "Smart Casual",
-        "Preppy",
-        "Heritage"
-      ],
-      "seasonTags": [
-        "Automne",
-        "Hiver",
-        "Printemps"
-      ],
-      "colors": [
-        "Marron"
-      ],
-      "materials": [
-        "Coton",
-        "Polyamide"
-      ],
-      "cuts": [
-        "Ample",
-        "Wide Leg",
-        "À pinces"
-      ],
-      "patterns": [
-        "Plissé"
-      ],
-      "description": "Pantalon homme brun à plis et jambes larges. Équivalent visuel fort des looks du book #01, #02 et #16 : taille structurée, plis devant et volume ample.",
-      "sizes": [
-        "XS",
-        "S",
-        "M",
-        "L",
-        "XL",
-        "XXL",
-        "3XL"
-      ],
-      "availability": "Tailles XS–3XL listées au catalogue UNIQLO FR · stock par taille à confirmer",
-      "availabilityStatus": "listed",
-      "source": "UNIQLO",
-      "sourceType": "curated",
-      "catalogStatus": "active",
-      "productRating": 4.8,
-      "productRatingCount": null,
-      "productRatingSource": "Avis produit UNIQLO",
-      "verifiedAt": "2026-11-05T15:29:00.000Z",
-      "expiresAt": "2026-11-12T15:29:00.000Z",
-      "priceUpdatedAt": "2026-11-05T15:29:00.000Z",
-      "gender": "men",
-      "genderVerified": true,
-      "imageFallbackUrl": "https://image.uniqlo.com/UQ/ST3/eu/imagesgoods/484093/item/eugoods_37_484093_3x4.jpg?width=600"
-    },
-    {
-      "id": "seed-charles-tyrwhitt-knm0017crm",
-      "name": "Pull à col rond en pure laine mérinos – Crème",
-      "brand": "Charles Tyrwhitt",
-      "merchant": "Charles Tyrwhitt",
-      "url": "https://www.charlestyrwhitt.com/fr/pull-%C3%A0-col-rond-en-pure-laine-m%C3%A9rinos---cr%C3%A8me/KNM0017CRM.html",
-      "imageUrl": "https://www.charlestyrwhitt.com/on/demandware.static/-/Sites-ctshirts-master/default/dw0997b900/KNM/KNM0017CRM/KNM0017CRM_MODEL_SEATED_01.jpg",
-      "price": 99.95,
-      "originalPrice": null,
-      "objective": "Vêtements",
-      "category": "Pull",
-      "styleTags": [
-        "Smart Casual",
-        "Preppy",
-        "Heritage",
-        "Classique"
-      ],
-      "seasonTags": [
-        "Automne",
-        "Hiver"
-      ],
-      "colors": [
-        "Crème"
-      ],
-      "materials": [
-        "Laine mérinos"
-      ],
-      "cuts": [
-        "Classique"
-      ],
-      "patterns": [],
-      "description": "Pull en 100 % laine mérinos certifiée Woolmark, col rond, finition côtelée. Taille XS à XXXL affichée.",
-      "sizes": [
-        "XS",
-        "S",
-        "M",
-        "L",
-        "XL",
-        "XXL",
-        "XXXL"
-      ],
-      "availability": "Disponible en ligne selon la fiche produit · tailles à vérifier au panier",
-      "availabilityStatus": "available",
-      "source": "Charles Tyrwhitt",
-      "sourceType": "curated",
-      "catalogStatus": "active",
-      "productRating": 4.9,
-      "productRatingCount": 163,
-      "productRatingSource": "Avis produit Charles Tyrwhitt",
-      "verifiedAt": "2026-11-05T15:29:00.000Z",
-      "expiresAt": "2026-11-12T15:29:00.000Z",
-      "priceUpdatedAt": "2026-11-05T15:29:00.000Z"
-    },
-    {
-      "id": "seed-asos-208036205",
-      "name": "Pull oversize côtelé en maille épaisse avec col polo – Marron",
-      "brand": "ASOS DESIGN",
-      "merchant": "ASOS",
-      "url": "https://www.asos.com/fr/asos-design/asos-design-pull-oversize-cotele-en-maille-epaisse-de-laine-melangee-avec-col-polo-marron/prd/208036205",
-      "imageUrl": "https://images.asos-media.com/products/asos-design-oversized-heavyweight-knit-wool-blend-ribbed-polo-sweater-in-brown/208036205-1-brown?%24n_640w%24=&fit=constrain&wid=513",
-      "price": 49.99,
-      "originalPrice": null,
-      "objective": "Vêtements",
-      "category": "Pull",
-      "styleTags": [
-        "Preppy",
-        "Smart Casual",
-        "Heritage",
-        "Vintage"
-      ],
-      "seasonTags": [
-        "Automne",
-        "Hiver"
-      ],
-      "colors": [
-        "Marron"
-      ],
-      "materials": [
-        "Acrylique",
-        "Laine",
-        "Nylon"
-      ],
-      "cuts": [
-        "Ample",
-        "Col polo"
-      ],
-      "patterns": [
-        "Côtelé"
-      ],
-      "description": "Pull polo marron à maille côtelée épaisse. Col polo et maille côtelée épaisse, sans rayures.",
-      "sizes": [],
-      "availability": "Fiche produit relevée sur ASOS FR ; tailles et disponibilité à confirmer au panier.",
-      "availabilityStatus": "listed",
-      "source": "ASOS FR",
-      "sourceType": "curated",
-      "catalogStatus": "active",
-      "verifiedAt": "2026-11-05T16:33:05.606Z",
-      "expiresAt": "2026-11-12T16:33:05.610Z",
-      "priceUpdatedAt": "2026-11-05T16:33:05.606Z"
-    },
-    {
-      "id": "seed-uniqlo-460938-07",
-      "name": "Pull col roulé 100 % laine mérinos – Gris",
-      "brand": "UNIQLO",
-      "merchant": "UNIQLO",
-      "url": "https://www.uniqlo.com/fr/fr/products/E460938-000/00?colorDisplayCode=07",
-      "imageUrl": "https://image.uniqlo.com/UQ/ST3/eu/imagesgoods/460938/item/eugoods_07_460938_3x4.jpg?width=600",
-      "price": 39.9,
-      "originalPrice": null,
-      "objective": "Vêtements",
-      "category": "Pull",
-      "styleTags": [
-        "Classique",
-        "Smart Casual",
-        "Heritage",
-        "Minimaliste"
-      ],
-      "seasonTags": [
-        "Automne",
-        "Hiver",
-        "Printemps"
-      ],
-      "colors": [
-        "Gris"
-      ],
-      "materials": [
-        "Laine mérinos"
-      ],
-      "cuts": [
-        "Près du corps",
-        "Col roulé"
-      ],
-      "patterns": [],
-      "description": "Col roulé en laine mérinos gris. Maille sombre à porter sous une veste en cuir.",
-      "sizes": [
-        "XXS",
-        "XS",
-        "S",
-        "M",
-        "L",
-        "XL",
-        "XXL",
-        "3XL"
-      ],
-      "availability": "En stock lors du relevé sur UNIQLO FR ; vérifier la disponibilité de la taille et du coloris au panier.",
-      "availabilityStatus": "available",
-      "productRating": 4.7,
-      "productRatingCount": 529,
-      "productRatingSource": "Avis produit UNIQLO",
-      "source": "UNIQLO FR",
-      "sourceType": "curated",
-      "catalogStatus": "active",
-      "verifiedAt": "2026-11-05T16:33:05.606Z",
-      "expiresAt": "2026-11-12T16:33:05.610Z",
-      "priceUpdatedAt": "2026-11-05T16:33:05.606Z"
-    },
-    {
-      "id": "seed-adidas-samba-js3830",
-      "name": "Chaussures Samba OG – Wonder White / Shadow Red / Gum",
-      "brand": "adidas",
-      "merchant": "adidas",
-      "url": "https://www.adidas.fr/chaussures-samba-og/JS3830.html",
-      "imageUrl": "https://assets.adidas.com/images/w_500%2Cf_auto%2Cq_auto/478caedf11a74195924dddcf5cd3f57f_9366/Chaussures_Samba_OG_Blanc_JS3830_01_00_standard.jpg",
-      "price": 120,
-      "originalPrice": null,
-      "objective": "Chaussures",
-      "category": "Sneakers",
-      "styleTags": [
-        "Vintage",
-        "Preppy",
-        "Casual",
-        "Streetwear"
-      ],
-      "seasonTags": [
-        "Toute saison"
-      ],
-      "colors": [
-        "Blanc cassé",
-        "Rouge",
-        "Gomme"
-      ],
-      "materials": [
-        "Cuir",
-        "Daim",
-        "Caoutchouc"
-      ],
-      "cuts": [
-        "Basse",
-        "Classique"
-      ],
-      "patterns": [],
-      "description": "Sneaker basse claire à détails contrastés. Alternative plus rétro aux baskets blanches des looks #13 et #17.",
-      "sizes": [
-        "35 1/2",
-        "36",
-        "36 2/3",
-        "37 1/3",
-        "38",
-        "38 2/3",
-        "39 1/3",
-        "40",
-        "40 2/3",
-        "41 1/3",
-        "42",
-        "42 2/3",
-        "43 1/3",
-        "44",
-        "44 2/3",
-        "45 1/3",
-        "46",
-        "46 2/3",
-        "47 1/3",
-        "48",
-        "48 2/3",
-        "49 1/3"
-      ],
-      "availability": "Tailles indiquées sur la fiche adidas FR ; disponibilité par pointure à confirmer au panier.",
-      "availabilityStatus": "listed",
-      "productRating": 4.8,
-      "productRatingCount": 2694,
-      "productRatingSource": "Avis produit adidas FR",
-      "source": "adidas FR",
-      "sourceType": "curated",
-      "catalogStatus": "active",
-      "verifiedAt": "2026-11-05T16:33:05.606Z",
-      "expiresAt": "2026-11-12T16:33:05.610Z",
-      "priceUpdatedAt": "2026-11-05T16:33:05.606Z"
-    },
-    {
-      "id": "seed-uniqlo-450540-09",
-      "name": "Cardigan col V 100 % laine mérinos – Noir",
-      "brand": "UNIQLO",
-      "merchant": "UNIQLO",
-      "url": "https://www.uniqlo.com/fr/fr/products/E450540-000/00",
-      "imageUrl": "https://image.uniqlo.com/UQ/ST3/eu/imagesgoods/450540/item/eugoods_09_450540_3x4.jpg?width=600",
-      "price": 49.9,
-      "originalPrice": null,
-      "objective": "Vêtements",
-      "category": "Cardigan",
-      "styleTags": [
-        "Preppy",
-        "Smart Casual",
-        "Heritage",
-        "Classique"
-      ],
-      "seasonTags": [
-        "Automne",
-        "Hiver",
-        "Printemps"
-      ],
-      "colors": [
-        "Noir"
-      ],
-      "materials": [
-        "Laine mérinos"
-      ],
-      "cuts": [
-        "Classique"
-      ],
-      "patterns": [],
-      "description": "Cardigan col V en 100 % laine mérinos extra-fine de 19,5 microns, lavable en machine selon les consignes d’entretien UNIQLO.",
-      "sizes": [
-        "XS",
-        "S",
-        "M",
-        "L",
-        "XL",
-        "XXL",
-        "3XL"
-      ],
-      "availability": "Fiche UNIQLO FR avec tailles XS à 3XL et ajout au panier ; vérifier le stock de la taille choisie.",
-      "availabilityStatus": "listed",
-      "productRating": 4.7,
-      "productRatingCount": 48,
-      "productRatingSource": "Avis produit UNIQLO FR",
-      "source": "UNIQLO FR",
-      "sourceType": "curated",
-      "catalogStatus": "active",
-      "verifiedAt": "2026-11-05T16:36:56.203Z",
-      "expiresAt": "2026-11-12T16:36:56.203Z",
-      "priceUpdatedAt": "2026-11-05T16:36:56.203Z"
-    },
-    {
-      "id": "seed-asos-208080131",
-      "name": "Pull oversize côtelé en maille mélange laine – Bordeaux",
-      "brand": "ASOS DESIGN",
-      "merchant": "ASOS",
-      "url": "https://www.asos.com/fr/asos-design/asos-design-pull-oversize-cotele-en-maille-melange-laine-tissu-epais-bordeaux/prd/208080131",
-      "imageUrl": "https://images.asos-media.com/products/asos-design-oversized-heavyweight-knit-wool-blend-ribbed-sweater-in-burgundy/208080131-1-burgundy?%24n_640w%24=&fit=constrain&wid=513",
-      "price": 42.99,
-      "originalPrice": 47.99,
-      "objective": "Vêtements",
-      "category": "Pull",
-      "styleTags": [
-        "Preppy",
-        "Smart Casual",
-        "Heritage",
-        "Casual"
-      ],
-      "seasonTags": [
-        "Automne",
-        "Hiver"
-      ],
-      "colors": [
-        "Bordeaux"
-      ],
-      "materials": [
-        "Acrylique",
-        "Laine",
-        "Nylon"
-      ],
-      "cuts": [
-        "Oversized",
-        "Ample"
-      ],
-      "patterns": [
-        "Côtelé"
-      ],
-      "description": "Pull oversize en maille côtelée épaisse, col rond et épaules tombantes. Composition annoncée : 75 % acrylique, 15 % laine, 10 % nylon.",
-      "sizes": [],
-      "availability": "Fiche ASOS FR avec bouton Ajouter au panier ; disponibilité par taille à confirmer.",
-      "availabilityStatus": "listed",
-      "source": "ASOS FR",
-      "sourceType": "curated",
-      "catalogStatus": "active",
-      "verifiedAt": "2026-11-05T16:36:56.203Z",
-      "expiresAt": "2026-11-12T16:36:56.203Z",
-      "priceUpdatedAt": "2026-11-05T16:36:56.203Z"
-    },
-    {
-      "id": "seed-lookbook-piombo-wool-green",
-      "name": "Crew-Neck Jumper Regular Fit",
-      "brand": "PIOMBO",
-      "merchant": "Zalando · OVS Group",
-      "url": "https://www.zalando.fr/piombo-crew-neck-jumper-regular-fit-pullover-green-pjg22q08l-m11.html",
-      "imageUrl": "./assets/product-images/dvqwho.webp",
-      "price": 56.95,
-      "originalPrice": null,
-      "objective": "Vêtements",
-      "category": "Pull",
-      "styleTags": [
-        "Preppy",
-        "Classique",
-        "Smart Casual",
-        "Heritage"
-      ],
-      "seasonTags": [
-        "Automne",
-        "Hiver"
-      ],
-      "colors": [
-        "Vert foncé"
-      ],
-      "materials": [
-        "Laine"
-      ],
-      "cuts": [
-        "Regular",
-        "Col rond"
-      ],
-      "patterns": [],
-      "description": "Pull homme vert foncé en 100 % laine, col rond et coupe regular. Pull vert à porter sur une chemise claire. Produit listé chez Zalando, vendu et expédié par OVS Group.",
-      "sizes": [],
-      "availability": "Fiche produit active avec sélection de taille ; disponibilité de chaque taille à vérifier sur Zalando.",
-      "availabilityStatus": "listed",
-      "source": "Zalando",
-      "sourceType": "curated",
-      "catalogStatus": "active",
-      "verifiedAt": "2026-11-06T16:18:22.816Z",
-      "expiresAt": "2026-11-13T16:18:22.816Z",
-      "priceUpdatedAt": "2026-11-06T16:18:22.816Z",
-      "gender": "men",
-      "genderVerified": true,
-      "imageFallbackUrl": "https://img01.ztat.net/article/spp-media-p1/e04c7d23e1584a2b9d413da2d70f5c9e/eaf4581d129c4301aef94d4557d3bff1.jpg?imwidth=762"
-    },
-    {
-      "id": "seed-lookbook-kleman-padror-bordeaux",
-      "name": "PADROR Burgundy Leather Tyrolean Shoes",
-      "brand": "KLEMAN",
-      "merchant": "KLEMAN",
-      "url": "https://kleman-france.com/en/products/padror-bordeaux-1",
-      "imageUrl": "https://kleman-france.com/cdn/shop/files/PADROR_ZA72105_07.jpg?v=1771565995&width=1400",
-      "price": 170,
-      "originalPrice": null,
-      "objective": "Chaussures",
-      "category": "Derbies / chaussures à lacets",
-      "styleTags": [
-        "Heritage",
-        "Classique",
-        "Workwear",
-        "Smart Casual"
-      ],
-      "seasonTags": [
-        "Automne",
-        "Hiver",
-        "Toute saison"
-      ],
-      "colors": [
-        "Bordeaux"
-      ],
-      "materials": [
-        "Cuir de vachette"
-      ],
-      "cuts": [
-        "À lacets",
-        "Semelle épaisse"
-      ],
-      "patterns": [],
-      "description": "Chaussure KLEMAN en cuir bordeaux, semelle caoutchouc crantée et piqûres décoratives. Modèle à lacets, pas un mocassin. La marque indique un cuir de tannerie espagnole certifiée LWG.",
-      "sizes": [],
-      "availability": "Sélecteur de pointure présent sur la fiche officielle ; vérifier le stock de la pointure choisie.",
-      "availabilityStatus": "listed",
-      "source": "KLEMAN",
-      "sourceType": "curated",
-      "catalogStatus": "active",
-      "verifiedAt": "2026-11-06T16:18:22.816Z",
-      "expiresAt": "2026-11-13T16:18:22.816Z",
-      "priceUpdatedAt": "2026-11-06T16:18:22.816Z"
-    },
-    {
-      "id": "seed-lookbook-ralph-lauren-pink-knit-rugby",
-      "name": "Polo Sport Ralph Lauren Knit-Rugby-Pullover",
-      "brand": "Polo Sport Ralph Lauren",
-      "merchant": "SNIPES",
-      "url": "https://www.snipes.com/fr-fr/p/polo-sport-ralph-lauren-knit-rugby-pullover-pink-96344",
-      "imageUrl": "./assets/product-images/1x74gpx.jpg",
-      "price": 120,
-      "originalPrice": 164.99,
-      "objective": "Vêtements",
-      "category": "Pull rugby",
-      "styleTags": [
-        "Preppy",
-        "Vintage",
-        "Sport Heritage",
-        "Casual"
-      ],
-      "seasonTags": [
-        "Automne",
-        "Hiver"
-      ],
-      "colors": [
-        "Rose",
-        "Bleu marine",
-        "Blanc"
-      ],
-      "materials": [
-        "Coton"
-      ],
-      "cuts": [
-        "Oversize"
-      ],
-      "patterns": [
-        "Rayures"
-      ],
-      "description": "Pull rugby homme Polo Sport Ralph Lauren rose et bleu marine, col blanc, encolure V et coupe oversize, 100 % coton. Style rugby avec une palette rose et bleu marine.",
-      "sizes": [
-        "S",
-        "M",
-        "L",
-        "XL",
-        "XXL"
-      ],
-      "availability": "Tailles affichées sur la fiche SNIPES : S, M, L, XL et XXL ; stock final à confirmer.",
-      "availabilityStatus": "listed",
-      "source": "SNIPES",
-      "sourceType": "curated",
-      "catalogStatus": "active",
-      "verifiedAt": "2026-11-06T16:18:22.816Z",
-      "expiresAt": "2026-11-13T16:18:22.816Z",
-      "priceUpdatedAt": "2026-11-06T16:18:22.816Z",
-      "gender": "men",
-      "genderVerified": true,
-      "imageFallbackUrl": "https://asset.snipes.com/images/f_auto%2Cq_auto%3Abest%2Cd_fallback-sni.png/b_rgb%3Af8f8f8%2Cc_pad%2Cg_south%2Cw_108%2Ch_108/if_md%3A%21is_ai_generated%21_eq_%21true%21/l_ai_icon/fl_layer_apply%2Cg_south_east%2Cw_16%2Cx_16%2Cy_16/if_end/dpr_1.0/02572151_1/polo-sport-ralph-lauren-knit-rugby-pullover-pink-96344-1"
-    },
-    {
-      "id": "seed-lookbook-samsoe-cream-vneck",
-      "name": "V NECK Pullover · Clear Cream",
-      "brand": "Samsøe Samsøe",
-      "merchant": "Zalando",
-      "url": "https://www.zalando.fr/samsoee-samsoee-v-neck-pullover-clear-cream-sa322q06x-a11.html",
-      "imageUrl": "./assets/product-images/2seix7.webp",
-      "price": 111.95,
-      "originalPrice": 139.95,
-      "objective": "Vêtements",
-      "category": "Pull col V",
-      "styleTags": [
-        "Preppy",
-        "Smart Casual",
-        "Minimaliste",
-        "Classique"
-      ],
-      "seasonTags": [
-        "Automne",
-        "Hiver",
-        "Printemps"
-      ],
-      "colors": [
-        "Crème",
-        "Écru"
-      ],
-      "materials": [
-        "Coton",
-        "Polyamide"
-      ],
-      "cuts": [
-        "Regular",
-        "Col V"
-      ],
-      "patterns": [],
-      "description": "Pull homme crème à col V, maille 90 % coton et 10 % polyamide, coupe regular. À porter sur une chemise blanche.",
-      "sizes": [],
-      "availability": "Fiche produit active avec sélection de taille ; vérifier les tailles disponibles sur Zalando.",
-      "availabilityStatus": "listed",
-      "source": "Zalando",
-      "sourceType": "curated",
-      "catalogStatus": "active",
-      "verifiedAt": "2026-11-06T16:18:22.816Z",
-      "expiresAt": "2026-11-13T16:18:22.816Z",
-      "priceUpdatedAt": "2026-11-06T16:18:22.816Z",
-      "gender": "men",
-      "genderVerified": true,
-      "imageFallbackUrl": "https://img01.ztat.net/article/spp-media-p1/ec01f7acd3314342a68965a91a414810/9e3b595dd26a41eaa8790af2e5170238.jpg?filter=packshot&imwidth=400"
-    },
-    {
-      "id": "seed-lookbook-cos-black-shearling-leather",
-      "name": "Blouson en cuir à col en peau lainée détachable",
-      "brand": "COS",
-      "merchant": "COS",
-      "url": "https://www.cos.com/fr-fr/men/menswear/coatsjackets/jackets/product/detachable-shearling-collar-leather-jacket-black-1362065001",
-      "imageUrl": "./assets/product-images/rrnf6x.avif",
-      "price": 449,
-      "originalPrice": null,
-      "objective": "Vêtements",
-      "category": "Veste en cuir",
-      "styleTags": [
-        "Heritage",
-        "Biker",
-        "Workwear",
-        "Minimaliste"
-      ],
-      "seasonTags": [
-        "Automne",
-        "Hiver"
-      ],
-      "colors": [
-        "Noir"
-      ],
-      "materials": [
-        "Cuir",
-        "Peau lainée"
-      ],
-      "cuts": [
-        "Décontractée",
-        "Ample"
-      ],
-      "patterns": [],
-      "description": "Blouson homme COS en cuir noir patiné, coupe décontractée et col en peau lainée amovible. Col en peau lainée amovible, dans un esprit hivernal.",
-      "sizes": [
-        "XS",
-        "S",
-        "M",
-        "L",
-        "XL"
-      ],
-      "availability": "Tailles XS à XL affichées sur la fiche COS ; stock à vérifier au moment de l'achat.",
-      "availabilityStatus": "listed",
-      "source": "COS",
-      "sourceType": "curated",
-      "catalogStatus": "active",
-      "verifiedAt": "2026-11-06T16:18:22.816Z",
-      "expiresAt": "2026-11-13T16:18:22.816Z",
-      "priceUpdatedAt": "2026-11-06T16:18:22.816Z",
-      "gender": "men",
-      "genderVerified": true,
-      "imageFallbackUrl": "https://media.cos.com/assets/001/07/7f/077f16e0a19f896bff72bbe9a57aee8837e3714d_xxl-1.jpg?imwidth=2160"
-    },
-    {
-      "id": "seed-lookbook-massimo-dutti-striped-knit-zip",
-      "name": "Striped Knit Polo Sweater",
-      "brand": "Massimo Dutti",
-      "merchant": "Zalando · Massimo Dutti",
-      "url": "https://www.zalando.fr/massimo-dutti-t-shirt-a-manches-longues-dark-brown-m3i22q0ve-o11.html",
-      "imageUrl": "./assets/product-images/1917fqf.webp",
-      "price": 70,
-      "originalPrice": null,
-      "objective": "Vêtements",
-      "category": "Pull polo zippé",
-      "styleTags": [
-        "Heritage",
-        "Preppy",
-        "Smart Casual",
-        "Vintage"
-      ],
-      "seasonTags": [
-        "Automne",
-        "Hiver"
-      ],
-      "colors": [
-        "Marron",
-        "Gris",
-        "Bleu marine"
-      ],
-      "materials": [
-        "Laine"
-      ],
-      "cuts": [
-        "Regular",
-        "Col polo",
-        "Demi-zip"
-      ],
-      "patterns": [
-        "Rayures"
-      ],
-      "description": "Pull homme à col polo zippé et rayures, indiqué 100 % laine sur la fiche Zalando, coupe regular. Maille rayée à col polo zippé, dans une palette sombre.",
-      "sizes": [],
-      "availability": "Fiche produit active avec sélection de taille ; vérifier le stock sur Zalando.",
-      "availabilityStatus": "listed",
-      "source": "Zalando",
-      "sourceType": "curated",
-      "catalogStatus": "active",
-      "verifiedAt": "2026-11-06T16:18:22.816Z",
-      "expiresAt": "2026-11-13T16:18:22.816Z",
-      "priceUpdatedAt": "2026-11-06T16:18:22.816Z",
-      "gender": "men",
-      "genderVerified": true,
-      "imageFallbackUrl": "https://img01.ztat.net/article/spp-media-p1/2c65fca24a2e4c3d9c5f9009f91c4eac/8aa3ec8884dd44679e2267be6832f56e.jpg?imwidth=762"
-    },
-    {
-      "id": "seed-lookbook-bangel-wide-denim",
-      "name": "JEANS, LOOSE FIT – Light Blue",
-      "brand": "B.ANGEL",
-      "merchant": "Zalando · OVS Group",
-      "url": "https://www.zalando.fr/bangel-jeans-loose-fit-jean-coupe-decontractee-light-blue-bwx22g00u-k11.html",
-      "imageUrl": "./assets/product-images/ibktcd.webp",
-      "price": 44.95,
-      "originalPrice": null,
-      "objective": "Vêtements",
-      "category": "Jean",
-      "styleTags": [
-        "Casual",
-        "Vintage",
-        "Streetwear",
-        "Workwear"
-      ],
-      "seasonTags": [
-        "Toute saison"
-      ],
-      "colors": [
-        "Bleu clair",
-        "Denim délavé"
-      ],
-      "materials": [
-        "Coton"
-      ],
-      "cuts": [
-        "Loose",
-        "Ample",
-        "Jambe droite"
-      ],
-      "patterns": [
-        "Délavé"
-      ],
-      "description": "Jean homme B.ANGEL en denim bleu clair 100 % coton, coupe loose, taille regular et jambe droite ample. Jean clair délavé à volume ample. La fiche Zalando précise que les visuels sont générés par IA ; la coupe, composition et référence produit sont indiquées sur la fiche.",
-      "sizes": [],
-      "availability": "Fiche produit active avec taille sélectionnable ; stock de la taille à confirmer sur Zalando.",
-      "availabilityStatus": "listed",
-      "source": "Zalando",
-      "sourceType": "curated",
-      "catalogStatus": "active",
-      "verifiedAt": "2026-11-06T16:21:57.182Z",
-      "expiresAt": "2026-11-13T16:21:57.182Z",
-      "priceUpdatedAt": "2026-11-06T16:21:57.182Z",
-      "gender": "men",
-      "genderVerified": true,
-      "imageFallbackUrl": "https://img01.ztat.net/article/spp-media-p1/9bf0177ff5f144dbbe65f165d1c899a8/6ae71ccfe8bf4c8daa01fafef2e9d7f8.jpg?imwidth=762"
-    },
-    {
-      "id": "seed-lookbook-bangel-grey-wide-jogger",
-      "name": "MELANGE OVER-FIT TROUSERS – Grey Marl",
-      "brand": "B.ANGEL",
-      "merchant": "Zalando · OVS Group",
-      "url": "https://www.zalando.fr/bangel-melange-over-fit-trousers-pantalon-de-survetement-grey-marl-bwx22e01z-c11.html",
-      "imageUrl": "./assets/product-images/33mh8s.webp",
-      "price": 44.95,
-      "originalPrice": null,
-      "objective": "Vêtements",
-      "category": "Pantalon de jogging",
-      "styleTags": [
-        "Casual",
-        "Streetwear",
-        "Minimaliste"
-      ],
-      "seasonTags": [
-        "Automne",
-        "Hiver",
-        "Printemps"
-      ],
-      "colors": [
-        "Gris chiné"
-      ],
-      "materials": [
-        "Polyester",
-        "Viscose",
-        "Élasthanne"
-      ],
-      "cuts": [
-        "Over-fit",
-        "Ample",
-        "Jambe droite"
-      ],
-      "patterns": [
-        "Chiné"
-      ],
-      "description": "Pantalon de survêtement homme B.ANGEL gris chiné, coupe over-fit et jambe ample droite, taille élastiquée. Coupe over-fit et jambe ample droite.",
-      "sizes": [],
-      "availability": "Fiche produit active avec taille sélectionnable ; stock de la taille à confirmer sur Zalando.",
-      "availabilityStatus": "listed",
-      "source": "Zalando",
-      "sourceType": "curated",
-      "catalogStatus": "active",
-      "verifiedAt": "2026-11-06T16:21:57.182Z",
-      "expiresAt": "2026-11-13T16:21:57.182Z",
-      "priceUpdatedAt": "2026-11-06T16:21:57.182Z",
-      "gender": "men",
-      "genderVerified": true,
-      "imageFallbackUrl": "https://img01.ztat.net/article/spp-media-p1/c0651324e9e944f48105d672f109a1b8/1e0a435b15714798b5af655f2be3f075.jpg?filter=packshot&imwidth=762"
-    },
-    {
       "id": "web-ke6dku",
       "name": "Whangee Telescopic Umbrella : Black",
       "brand": "Fox Umbrellas",
@@ -5122,6 +4265,1024 @@
       "priceUpdatedAt": "2026-11-13T18:47:30.450Z",
       "stockVerifiedAt": "2026-11-13T18:47:30.450Z",
       "expiresAt": "2026-11-20T18:47:30.450Z",
+      "productRating": null,
+      "productRatingCount": null,
+      "productRatingSource": "",
+      "merchantRating": null,
+      "merchantRatingCount": null,
+      "merchantRatingSource": "",
+      "popularityScore": null,
+      "isBestSeller": false
+    },
+    {
+      "id": "seed-nike-cw2288-111",
+      "name": "Air Force 1 ’07",
+      "brand": "Nike",
+      "merchant": "Nike",
+      "url": "https://www.nike.com/fr/t/chaussure-air-force-1-07-pour-n8juM1H2/CW2288-111",
+      "imageUrl": "https://static.nike.com/a/images/t_web_pdp_936_v2/f_auto%2Cu_9ddf04c7-2a9a-4d76-add1-d15af8f0263d%2Cc_scale%2Cfl_relative%2Cw_1.0%2Ch_1.0%2Cfl_layer_apply/b7d9211c-26e7-431a-ac24-b0540fb3c00f/AIR%2BFORCE%2B1%2B%2707.png",
+      "price": 119.99,
+      "originalPrice": null,
+      "objective": "Chaussures",
+      "category": "Sneakers",
+      "styleTags": [
+        "Classique",
+        "Streetwear",
+        "Minimaliste",
+        "Casual"
+      ],
+      "seasonTags": [
+        "Toute saison"
+      ],
+      "colors": [
+        "Blanc"
+      ],
+      "materials": [
+        "Cuir"
+      ],
+      "cuts": [
+        "Classique"
+      ],
+      "patterns": [],
+      "description": "Sneaker blanche en cuir, utilisable comme base neutre des looks #13 et #17 du book.",
+      "sizes": [
+        "35.5",
+        "36",
+        "36.5",
+        "37.5",
+        "38",
+        "38.5",
+        "39",
+        "40",
+        "40.5",
+        "41",
+        "42",
+        "42.5",
+        "43",
+        "44",
+        "44.5",
+        "45",
+        "45.5",
+        "46",
+        "47",
+        "47.5",
+        "48.5",
+        "49.5",
+        "50",
+        "50.5",
+        "51.5",
+        "52.5"
+      ],
+      "availability": "Tailles affichées sur Nike FR · vérifier la pointure au moment de l’achat",
+      "availabilityStatus": "available",
+      "source": "Nike",
+      "sourceType": "curated",
+      "catalogStatus": "active",
+      "verifiedAt": "2026-11-05T15:29:00.000Z",
+      "expiresAt": "2026-11-12T15:29:00.000Z",
+      "priceUpdatedAt": "2026-11-05T15:29:00.000Z"
+    },
+    {
+      "id": "seed-uniqlo-e484093-000",
+      "name": "Pantalon large plissé",
+      "brand": "Uniqlo",
+      "merchant": "UNIQLO",
+      "url": "https://www.uniqlo.com/fr/fr/products/E484093-000/00",
+      "imageUrl": "https://image.uniqlo.com/UQ/ST3/eu/imagesgoods/484093/item/eugoods_37_484093_3x4.jpg?width=600",
+      "price": 49.9,
+      "originalPrice": null,
+      "objective": "Vêtements",
+      "category": "Pantalon",
+      "styleTags": [
+        "Classique",
+        "Smart Casual",
+        "Preppy",
+        "Heritage"
+      ],
+      "seasonTags": [
+        "Automne",
+        "Hiver",
+        "Printemps"
+      ],
+      "colors": [
+        "Marron"
+      ],
+      "materials": [
+        "Coton",
+        "Polyamide"
+      ],
+      "cuts": [
+        "Ample",
+        "Wide Leg",
+        "À pinces"
+      ],
+      "patterns": [
+        "Plissé"
+      ],
+      "description": "Pantalon homme brun à plis et jambes larges. Équivalent visuel fort des looks du book #01, #02 et #16 : taille structurée, plis devant et volume ample.",
+      "sizes": [
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "XXL",
+        "3XL"
+      ],
+      "availability": "Tailles XS–3XL listées au catalogue UNIQLO FR · stock par taille à confirmer",
+      "availabilityStatus": "listed",
+      "source": "UNIQLO",
+      "sourceType": "curated",
+      "catalogStatus": "active",
+      "productRating": 4.8,
+      "productRatingCount": null,
+      "productRatingSource": "Avis produit UNIQLO",
+      "verifiedAt": "2026-11-05T15:29:00.000Z",
+      "expiresAt": "2026-11-12T15:29:00.000Z",
+      "priceUpdatedAt": "2026-11-05T15:29:00.000Z",
+      "gender": "men",
+      "genderVerified": true
+    },
+    {
+      "id": "seed-charles-tyrwhitt-knm0017crm",
+      "name": "Pull à col rond en pure laine mérinos – Crème",
+      "brand": "Charles Tyrwhitt",
+      "merchant": "Charles Tyrwhitt",
+      "url": "https://www.charlestyrwhitt.com/fr/pull-%C3%A0-col-rond-en-pure-laine-m%C3%A9rinos---cr%C3%A8me/KNM0017CRM.html",
+      "imageUrl": "https://www.charlestyrwhitt.com/on/demandware.static/-/Sites-ctshirts-master/default/dw0997b900/KNM/KNM0017CRM/KNM0017CRM_MODEL_SEATED_01.jpg",
+      "price": 99.95,
+      "originalPrice": null,
+      "objective": "Vêtements",
+      "category": "Pull",
+      "styleTags": [
+        "Smart Casual",
+        "Preppy",
+        "Heritage",
+        "Classique"
+      ],
+      "seasonTags": [
+        "Automne",
+        "Hiver"
+      ],
+      "colors": [
+        "Crème"
+      ],
+      "materials": [
+        "Laine mérinos"
+      ],
+      "cuts": [
+        "Classique"
+      ],
+      "patterns": [],
+      "description": "Pull en 100 % laine mérinos certifiée Woolmark, col rond, finition côtelée. Taille XS à XXXL affichée.",
+      "sizes": [
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "XXL",
+        "XXXL"
+      ],
+      "availability": "Disponible en ligne selon la fiche produit · tailles à vérifier au panier",
+      "availabilityStatus": "available",
+      "source": "Charles Tyrwhitt",
+      "sourceType": "curated",
+      "catalogStatus": "active",
+      "productRating": 4.9,
+      "productRatingCount": 163,
+      "productRatingSource": "Avis produit Charles Tyrwhitt",
+      "verifiedAt": "2026-11-05T15:29:00.000Z",
+      "expiresAt": "2026-11-12T15:29:00.000Z",
+      "priceUpdatedAt": "2026-11-05T15:29:00.000Z"
+    },
+    {
+      "id": "seed-asos-208036205",
+      "name": "Pull oversize côtelé en maille épaisse avec col polo – Marron",
+      "brand": "ASOS DESIGN",
+      "merchant": "ASOS",
+      "url": "https://www.asos.com/fr/asos-design/asos-design-pull-oversize-cotele-en-maille-epaisse-de-laine-melangee-avec-col-polo-marron/prd/208036205",
+      "imageUrl": "https://images.asos-media.com/products/asos-design-oversized-heavyweight-knit-wool-blend-ribbed-polo-sweater-in-brown/208036205-1-brown?%24n_640w%24=&fit=constrain&wid=513",
+      "price": 49.99,
+      "originalPrice": null,
+      "objective": "Vêtements",
+      "category": "Pull",
+      "styleTags": [
+        "Preppy",
+        "Smart Casual",
+        "Heritage",
+        "Vintage"
+      ],
+      "seasonTags": [
+        "Automne",
+        "Hiver"
+      ],
+      "colors": [
+        "Marron"
+      ],
+      "materials": [
+        "Acrylique",
+        "Laine",
+        "Nylon"
+      ],
+      "cuts": [
+        "Ample",
+        "Col polo"
+      ],
+      "patterns": [
+        "Côtelé"
+      ],
+      "description": "Pull polo marron à maille côtelée épaisse. Col polo et maille côtelée épaisse, sans rayures.",
+      "sizes": [],
+      "availability": "Fiche produit relevée sur ASOS FR ; tailles et disponibilité à confirmer au panier.",
+      "availabilityStatus": "listed",
+      "source": "ASOS FR",
+      "sourceType": "curated",
+      "catalogStatus": "active",
+      "verifiedAt": "2026-11-05T16:33:05.606Z",
+      "expiresAt": "2026-11-12T16:33:05.610Z",
+      "priceUpdatedAt": "2026-11-05T16:33:05.606Z"
+    },
+    {
+      "id": "seed-uniqlo-460938-07",
+      "name": "Pull col roulé 100 % laine mérinos – Gris",
+      "brand": "UNIQLO",
+      "merchant": "UNIQLO",
+      "url": "https://www.uniqlo.com/fr/fr/products/E460938-000/00?colorDisplayCode=07",
+      "imageUrl": "https://image.uniqlo.com/UQ/ST3/eu/imagesgoods/460938/item/eugoods_07_460938_3x4.jpg?width=600",
+      "price": 39.9,
+      "originalPrice": null,
+      "objective": "Vêtements",
+      "category": "Pull",
+      "styleTags": [
+        "Classique",
+        "Smart Casual",
+        "Heritage",
+        "Minimaliste"
+      ],
+      "seasonTags": [
+        "Automne",
+        "Hiver",
+        "Printemps"
+      ],
+      "colors": [
+        "Gris"
+      ],
+      "materials": [
+        "Laine mérinos"
+      ],
+      "cuts": [
+        "Près du corps",
+        "Col roulé"
+      ],
+      "patterns": [],
+      "description": "Col roulé en laine mérinos gris. Maille sombre à porter sous une veste en cuir.",
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "XXL",
+        "3XL"
+      ],
+      "availability": "En stock lors du relevé sur UNIQLO FR ; vérifier la disponibilité de la taille et du coloris au panier.",
+      "availabilityStatus": "available",
+      "productRating": 4.7,
+      "productRatingCount": 529,
+      "productRatingSource": "Avis produit UNIQLO",
+      "source": "UNIQLO FR",
+      "sourceType": "curated",
+      "catalogStatus": "active",
+      "verifiedAt": "2026-11-05T16:33:05.606Z",
+      "expiresAt": "2026-11-12T16:33:05.610Z",
+      "priceUpdatedAt": "2026-11-05T16:33:05.606Z"
+    },
+    {
+      "id": "seed-adidas-samba-js3830",
+      "name": "Chaussures Samba OG – Wonder White / Shadow Red / Gum",
+      "brand": "adidas",
+      "merchant": "adidas",
+      "url": "https://www.adidas.fr/chaussures-samba-og/JS3830.html",
+      "imageUrl": "https://assets.adidas.com/images/w_500%2Cf_auto%2Cq_auto/478caedf11a74195924dddcf5cd3f57f_9366/Chaussures_Samba_OG_Blanc_JS3830_01_00_standard.jpg",
+      "price": 120,
+      "originalPrice": null,
+      "objective": "Chaussures",
+      "category": "Sneakers",
+      "styleTags": [
+        "Vintage",
+        "Preppy",
+        "Casual",
+        "Streetwear"
+      ],
+      "seasonTags": [
+        "Toute saison"
+      ],
+      "colors": [
+        "Blanc cassé",
+        "Rouge",
+        "Gomme"
+      ],
+      "materials": [
+        "Cuir",
+        "Daim",
+        "Caoutchouc"
+      ],
+      "cuts": [
+        "Basse",
+        "Classique"
+      ],
+      "patterns": [],
+      "description": "Sneaker basse claire à détails contrastés. Alternative plus rétro aux baskets blanches des looks #13 et #17.",
+      "sizes": [
+        "35 1/2",
+        "36",
+        "36 2/3",
+        "37 1/3",
+        "38",
+        "38 2/3",
+        "39 1/3",
+        "40",
+        "40 2/3",
+        "41 1/3",
+        "42",
+        "42 2/3",
+        "43 1/3",
+        "44",
+        "44 2/3",
+        "45 1/3",
+        "46",
+        "46 2/3",
+        "47 1/3",
+        "48",
+        "48 2/3",
+        "49 1/3"
+      ],
+      "availability": "Tailles indiquées sur la fiche adidas FR ; disponibilité par pointure à confirmer au panier.",
+      "availabilityStatus": "listed",
+      "productRating": 4.8,
+      "productRatingCount": 2694,
+      "productRatingSource": "Avis produit adidas FR",
+      "source": "adidas FR",
+      "sourceType": "curated",
+      "catalogStatus": "active",
+      "verifiedAt": "2026-11-05T16:33:05.606Z",
+      "expiresAt": "2026-11-12T16:33:05.610Z",
+      "priceUpdatedAt": "2026-11-05T16:33:05.606Z"
+    },
+    {
+      "id": "seed-uniqlo-450540-09",
+      "name": "Cardigan col V 100 % laine mérinos – Noir",
+      "brand": "UNIQLO",
+      "merchant": "UNIQLO",
+      "url": "https://www.uniqlo.com/fr/fr/products/E450540-000/00",
+      "imageUrl": "https://image.uniqlo.com/UQ/ST3/eu/imagesgoods/450540/item/eugoods_09_450540_3x4.jpg?width=600",
+      "price": 49.9,
+      "originalPrice": null,
+      "objective": "Vêtements",
+      "category": "Cardigan",
+      "styleTags": [
+        "Preppy",
+        "Smart Casual",
+        "Heritage",
+        "Classique"
+      ],
+      "seasonTags": [
+        "Automne",
+        "Hiver",
+        "Printemps"
+      ],
+      "colors": [
+        "Noir"
+      ],
+      "materials": [
+        "Laine mérinos"
+      ],
+      "cuts": [
+        "Classique"
+      ],
+      "patterns": [],
+      "description": "Cardigan col V en 100 % laine mérinos extra-fine de 19,5 microns, lavable en machine selon les consignes d’entretien UNIQLO.",
+      "sizes": [
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "XXL",
+        "3XL"
+      ],
+      "availability": "Fiche UNIQLO FR avec tailles XS à 3XL et ajout au panier ; vérifier le stock de la taille choisie.",
+      "availabilityStatus": "listed",
+      "productRating": 4.7,
+      "productRatingCount": 48,
+      "productRatingSource": "Avis produit UNIQLO FR",
+      "source": "UNIQLO FR",
+      "sourceType": "curated",
+      "catalogStatus": "active",
+      "verifiedAt": "2026-11-05T16:36:56.203Z",
+      "expiresAt": "2026-11-12T16:36:56.203Z",
+      "priceUpdatedAt": "2026-11-05T16:36:56.203Z"
+    },
+    {
+      "id": "seed-asos-208080131",
+      "name": "Pull oversize côtelé en maille mélange laine – Bordeaux",
+      "brand": "ASOS DESIGN",
+      "merchant": "ASOS",
+      "url": "https://www.asos.com/fr/asos-design/asos-design-pull-oversize-cotele-en-maille-melange-laine-tissu-epais-bordeaux/prd/208080131",
+      "imageUrl": "https://images.asos-media.com/products/asos-design-oversized-heavyweight-knit-wool-blend-ribbed-sweater-in-burgundy/208080131-1-burgundy?%24n_640w%24=&fit=constrain&wid=513",
+      "price": 42.99,
+      "originalPrice": 47.99,
+      "objective": "Vêtements",
+      "category": "Pull",
+      "styleTags": [
+        "Preppy",
+        "Smart Casual",
+        "Heritage",
+        "Casual"
+      ],
+      "seasonTags": [
+        "Automne",
+        "Hiver"
+      ],
+      "colors": [
+        "Bordeaux"
+      ],
+      "materials": [
+        "Acrylique",
+        "Laine",
+        "Nylon"
+      ],
+      "cuts": [
+        "Oversized",
+        "Ample"
+      ],
+      "patterns": [
+        "Côtelé"
+      ],
+      "description": "Pull oversize en maille côtelée épaisse, col rond et épaules tombantes. Composition annoncée : 75 % acrylique, 15 % laine, 10 % nylon.",
+      "sizes": [],
+      "availability": "Fiche ASOS FR avec bouton Ajouter au panier ; disponibilité par taille à confirmer.",
+      "availabilityStatus": "listed",
+      "source": "ASOS FR",
+      "sourceType": "curated",
+      "catalogStatus": "active",
+      "verifiedAt": "2026-11-05T16:36:56.203Z",
+      "expiresAt": "2026-11-12T16:36:56.203Z",
+      "priceUpdatedAt": "2026-11-05T16:36:56.203Z"
+    },
+    {
+      "id": "seed-lookbook-piombo-wool-green",
+      "name": "Crew-Neck Jumper Regular Fit",
+      "brand": "PIOMBO",
+      "merchant": "Zalando · OVS Group",
+      "url": "https://www.zalando.fr/piombo-crew-neck-jumper-regular-fit-pullover-green-pjg22q08l-m11.html",
+      "imageUrl": "https://img01.ztat.net/article/spp-media-p1/e04c7d23e1584a2b9d413da2d70f5c9e/eaf4581d129c4301aef94d4557d3bff1.jpg?imwidth=762",
+      "price": 56.95,
+      "originalPrice": null,
+      "objective": "Vêtements",
+      "category": "Pull",
+      "styleTags": [
+        "Preppy",
+        "Classique",
+        "Smart Casual",
+        "Heritage"
+      ],
+      "seasonTags": [
+        "Automne",
+        "Hiver"
+      ],
+      "colors": [
+        "Vert foncé"
+      ],
+      "materials": [
+        "Laine"
+      ],
+      "cuts": [
+        "Regular",
+        "Col rond"
+      ],
+      "patterns": [],
+      "description": "Pull homme vert foncé en 100 % laine, col rond et coupe regular. Pull vert à porter sur une chemise claire. Produit listé chez Zalando, vendu et expédié par OVS Group.",
+      "sizes": [],
+      "availability": "Fiche produit active avec sélection de taille ; disponibilité de chaque taille à vérifier sur Zalando.",
+      "availabilityStatus": "listed",
+      "source": "Zalando",
+      "sourceType": "curated",
+      "catalogStatus": "active",
+      "verifiedAt": "2026-11-06T16:18:22.816Z",
+      "expiresAt": "2026-11-13T16:18:22.816Z",
+      "priceUpdatedAt": "2026-11-06T16:18:22.816Z",
+      "gender": "men",
+      "genderVerified": true
+    },
+    {
+      "id": "seed-lookbook-kleman-padror-bordeaux",
+      "name": "PADROR Burgundy Leather Tyrolean Shoes",
+      "brand": "KLEMAN",
+      "merchant": "KLEMAN",
+      "url": "https://kleman-france.com/en/products/padror-bordeaux-1",
+      "imageUrl": "https://kleman-france.com/cdn/shop/files/PADROR_ZA72105_07.jpg?v=1771565995&width=1400",
+      "price": 170,
+      "originalPrice": null,
+      "objective": "Chaussures",
+      "category": "Derbies / chaussures à lacets",
+      "styleTags": [
+        "Heritage",
+        "Classique",
+        "Workwear",
+        "Smart Casual"
+      ],
+      "seasonTags": [
+        "Automne",
+        "Hiver",
+        "Toute saison"
+      ],
+      "colors": [
+        "Bordeaux"
+      ],
+      "materials": [
+        "Cuir de vachette"
+      ],
+      "cuts": [
+        "À lacets",
+        "Semelle épaisse"
+      ],
+      "patterns": [],
+      "description": "Chaussure KLEMAN en cuir bordeaux, semelle caoutchouc crantée et piqûres décoratives. Modèle à lacets, pas un mocassin. La marque indique un cuir de tannerie espagnole certifiée LWG.",
+      "sizes": [],
+      "availability": "Sélecteur de pointure présent sur la fiche officielle ; vérifier le stock de la pointure choisie.",
+      "availabilityStatus": "listed",
+      "source": "KLEMAN",
+      "sourceType": "curated",
+      "catalogStatus": "active",
+      "verifiedAt": "2026-11-06T16:18:22.816Z",
+      "expiresAt": "2026-11-13T16:18:22.816Z",
+      "priceUpdatedAt": "2026-11-06T16:18:22.816Z"
+    },
+    {
+      "id": "seed-lookbook-ralph-lauren-pink-knit-rugby",
+      "name": "Polo Sport Ralph Lauren Knit-Rugby-Pullover",
+      "brand": "Polo Sport Ralph Lauren",
+      "merchant": "SNIPES",
+      "url": "https://www.snipes.com/fr-fr/p/polo-sport-ralph-lauren-knit-rugby-pullover-pink-96344",
+      "imageUrl": "https://asset.snipes.com/images/f_auto%2Cq_auto%3Abest%2Cd_fallback-sni.png/b_rgb%3Af8f8f8%2Cc_pad%2Cg_south%2Cw_108%2Ch_108/if_md%3A%21is_ai_generated%21_eq_%21true%21/l_ai_icon/fl_layer_apply%2Cg_south_east%2Cw_16%2Cx_16%2Cy_16/if_end/dpr_1.0/02572151_1/polo-sport-ralph-lauren-knit-rugby-pullover-pink-96344-1",
+      "price": 120,
+      "originalPrice": 164.99,
+      "objective": "Vêtements",
+      "category": "Pull rugby",
+      "styleTags": [
+        "Preppy",
+        "Vintage",
+        "Sport Heritage",
+        "Casual"
+      ],
+      "seasonTags": [
+        "Automne",
+        "Hiver"
+      ],
+      "colors": [
+        "Rose",
+        "Bleu marine",
+        "Blanc"
+      ],
+      "materials": [
+        "Coton"
+      ],
+      "cuts": [
+        "Oversize"
+      ],
+      "patterns": [
+        "Rayures"
+      ],
+      "description": "Pull rugby homme Polo Sport Ralph Lauren rose et bleu marine, col blanc, encolure V et coupe oversize, 100 % coton. Style rugby avec une palette rose et bleu marine.",
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL",
+        "XXL"
+      ],
+      "availability": "Tailles affichées sur la fiche SNIPES : S, M, L, XL et XXL ; stock final à confirmer.",
+      "availabilityStatus": "listed",
+      "source": "SNIPES",
+      "sourceType": "curated",
+      "catalogStatus": "active",
+      "verifiedAt": "2026-11-06T16:18:22.816Z",
+      "expiresAt": "2026-11-13T16:18:22.816Z",
+      "priceUpdatedAt": "2026-11-06T16:18:22.816Z",
+      "gender": "men",
+      "genderVerified": true
+    },
+    {
+      "id": "seed-lookbook-samsoe-cream-vneck",
+      "name": "V NECK Pullover · Clear Cream",
+      "brand": "Samsøe Samsøe",
+      "merchant": "Zalando",
+      "url": "https://www.zalando.fr/samsoee-samsoee-v-neck-pullover-clear-cream-sa322q06x-a11.html",
+      "imageUrl": "https://img01.ztat.net/article/spp-media-p1/ec01f7acd3314342a68965a91a414810/9e3b595dd26a41eaa8790af2e5170238.jpg?filter=packshot&imwidth=400",
+      "price": 111.95,
+      "originalPrice": 139.95,
+      "objective": "Vêtements",
+      "category": "Pull col V",
+      "styleTags": [
+        "Preppy",
+        "Smart Casual",
+        "Minimaliste",
+        "Classique"
+      ],
+      "seasonTags": [
+        "Automne",
+        "Hiver",
+        "Printemps"
+      ],
+      "colors": [
+        "Crème",
+        "Écru"
+      ],
+      "materials": [
+        "Coton",
+        "Polyamide"
+      ],
+      "cuts": [
+        "Regular",
+        "Col V"
+      ],
+      "patterns": [],
+      "description": "Pull homme crème à col V, maille 90 % coton et 10 % polyamide, coupe regular. À porter sur une chemise blanche.",
+      "sizes": [],
+      "availability": "Fiche produit active avec sélection de taille ; vérifier les tailles disponibles sur Zalando.",
+      "availabilityStatus": "listed",
+      "source": "Zalando",
+      "sourceType": "curated",
+      "catalogStatus": "active",
+      "verifiedAt": "2026-11-06T16:18:22.816Z",
+      "expiresAt": "2026-11-13T16:18:22.816Z",
+      "priceUpdatedAt": "2026-11-06T16:18:22.816Z",
+      "gender": "men",
+      "genderVerified": true
+    },
+    {
+      "id": "seed-lookbook-cos-black-shearling-leather",
+      "name": "Blouson en cuir à col en peau lainée détachable",
+      "brand": "COS",
+      "merchant": "COS",
+      "url": "https://www.cos.com/fr-fr/men/menswear/coatsjackets/jackets/product/detachable-shearling-collar-leather-jacket-black-1362065001",
+      "imageUrl": "https://media.cos.com/assets/001/07/7f/077f16e0a19f896bff72bbe9a57aee8837e3714d_xxl-1.jpg?imwidth=2160",
+      "price": 449,
+      "originalPrice": null,
+      "objective": "Vêtements",
+      "category": "Veste en cuir",
+      "styleTags": [
+        "Heritage",
+        "Biker",
+        "Workwear",
+        "Minimaliste"
+      ],
+      "seasonTags": [
+        "Automne",
+        "Hiver"
+      ],
+      "colors": [
+        "Noir"
+      ],
+      "materials": [
+        "Cuir",
+        "Peau lainée"
+      ],
+      "cuts": [
+        "Décontractée",
+        "Ample"
+      ],
+      "patterns": [],
+      "description": "Blouson homme COS en cuir noir patiné, coupe décontractée et col en peau lainée amovible. Col en peau lainée amovible, dans un esprit hivernal.",
+      "sizes": [
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "availability": "Tailles XS à XL affichées sur la fiche COS ; stock à vérifier au moment de l'achat.",
+      "availabilityStatus": "listed",
+      "source": "COS",
+      "sourceType": "curated",
+      "catalogStatus": "active",
+      "verifiedAt": "2026-11-06T16:18:22.816Z",
+      "expiresAt": "2026-11-13T16:18:22.816Z",
+      "priceUpdatedAt": "2026-11-06T16:18:22.816Z",
+      "gender": "men",
+      "genderVerified": true
+    },
+    {
+      "id": "seed-lookbook-massimo-dutti-striped-knit-zip",
+      "name": "Striped Knit Polo Sweater",
+      "brand": "Massimo Dutti",
+      "merchant": "Zalando · Massimo Dutti",
+      "url": "https://www.zalando.fr/massimo-dutti-t-shirt-a-manches-longues-dark-brown-m3i22q0ve-o11.html",
+      "imageUrl": "https://img01.ztat.net/article/spp-media-p1/2c65fca24a2e4c3d9c5f9009f91c4eac/8aa3ec8884dd44679e2267be6832f56e.jpg?imwidth=762",
+      "price": 70,
+      "originalPrice": null,
+      "objective": "Vêtements",
+      "category": "Pull polo zippé",
+      "styleTags": [
+        "Heritage",
+        "Preppy",
+        "Smart Casual",
+        "Vintage"
+      ],
+      "seasonTags": [
+        "Automne",
+        "Hiver"
+      ],
+      "colors": [
+        "Marron",
+        "Gris",
+        "Bleu marine"
+      ],
+      "materials": [
+        "Laine"
+      ],
+      "cuts": [
+        "Regular",
+        "Col polo",
+        "Demi-zip"
+      ],
+      "patterns": [
+        "Rayures"
+      ],
+      "description": "Pull homme à col polo zippé et rayures, indiqué 100 % laine sur la fiche Zalando, coupe regular. Maille rayée à col polo zippé, dans une palette sombre.",
+      "sizes": [],
+      "availability": "Fiche produit active avec sélection de taille ; vérifier le stock sur Zalando.",
+      "availabilityStatus": "listed",
+      "source": "Zalando",
+      "sourceType": "curated",
+      "catalogStatus": "active",
+      "verifiedAt": "2026-11-06T16:18:22.816Z",
+      "expiresAt": "2026-11-13T16:18:22.816Z",
+      "priceUpdatedAt": "2026-11-06T16:18:22.816Z",
+      "gender": "men",
+      "genderVerified": true
+    },
+    {
+      "id": "seed-lookbook-bangel-wide-denim",
+      "name": "JEANS, LOOSE FIT – Light Blue",
+      "brand": "B.ANGEL",
+      "merchant": "Zalando · OVS Group",
+      "url": "https://www.zalando.fr/bangel-jeans-loose-fit-jean-coupe-decontractee-light-blue-bwx22g00u-k11.html",
+      "imageUrl": "https://img01.ztat.net/article/spp-media-p1/9bf0177ff5f144dbbe65f165d1c899a8/6ae71ccfe8bf4c8daa01fafef2e9d7f8.jpg?imwidth=762",
+      "price": 44.95,
+      "originalPrice": null,
+      "objective": "Vêtements",
+      "category": "Jean",
+      "styleTags": [
+        "Casual",
+        "Vintage",
+        "Streetwear",
+        "Workwear"
+      ],
+      "seasonTags": [
+        "Toute saison"
+      ],
+      "colors": [
+        "Bleu clair",
+        "Denim délavé"
+      ],
+      "materials": [
+        "Coton"
+      ],
+      "cuts": [
+        "Loose",
+        "Ample",
+        "Jambe droite"
+      ],
+      "patterns": [
+        "Délavé"
+      ],
+      "description": "Jean homme B.ANGEL en denim bleu clair 100 % coton, coupe loose, taille regular et jambe droite ample. Jean clair délavé à volume ample. La fiche Zalando précise que les visuels sont générés par IA ; la coupe, composition et référence produit sont indiquées sur la fiche.",
+      "sizes": [],
+      "availability": "Fiche produit active avec taille sélectionnable ; stock de la taille à confirmer sur Zalando.",
+      "availabilityStatus": "listed",
+      "source": "Zalando",
+      "sourceType": "curated",
+      "catalogStatus": "active",
+      "verifiedAt": "2026-11-06T16:21:57.182Z",
+      "expiresAt": "2026-11-13T16:21:57.182Z",
+      "priceUpdatedAt": "2026-11-06T16:21:57.182Z",
+      "gender": "men",
+      "genderVerified": true
+    },
+    {
+      "id": "seed-lookbook-bangel-grey-wide-jogger",
+      "name": "MELANGE OVER-FIT TROUSERS – Grey Marl",
+      "brand": "B.ANGEL",
+      "merchant": "Zalando · OVS Group",
+      "url": "https://www.zalando.fr/bangel-melange-over-fit-trousers-pantalon-de-survetement-grey-marl-bwx22e01z-c11.html",
+      "imageUrl": "https://img01.ztat.net/article/spp-media-p1/c0651324e9e944f48105d672f109a1b8/1e0a435b15714798b5af655f2be3f075.jpg?filter=packshot&imwidth=762",
+      "price": 44.95,
+      "originalPrice": null,
+      "objective": "Vêtements",
+      "category": "Pantalon de jogging",
+      "styleTags": [
+        "Casual",
+        "Streetwear",
+        "Minimaliste"
+      ],
+      "seasonTags": [
+        "Automne",
+        "Hiver",
+        "Printemps"
+      ],
+      "colors": [
+        "Gris chiné"
+      ],
+      "materials": [
+        "Polyester",
+        "Viscose",
+        "Élasthanne"
+      ],
+      "cuts": [
+        "Over-fit",
+        "Ample",
+        "Jambe droite"
+      ],
+      "patterns": [
+        "Chiné"
+      ],
+      "description": "Pantalon de survêtement homme B.ANGEL gris chiné, coupe over-fit et jambe ample droite, taille élastiquée. Coupe over-fit et jambe ample droite.",
+      "sizes": [],
+      "availability": "Fiche produit active avec taille sélectionnable ; stock de la taille à confirmer sur Zalando.",
+      "availabilityStatus": "listed",
+      "source": "Zalando",
+      "sourceType": "curated",
+      "catalogStatus": "active",
+      "verifiedAt": "2026-11-06T16:21:57.182Z",
+      "expiresAt": "2026-11-13T16:21:57.182Z",
+      "priceUpdatedAt": "2026-11-06T16:21:57.182Z",
+      "gender": "men",
+      "genderVerified": true
+    },
+    {
+      "id": "web-1uijpt2",
+      "name": "AUTRY - Sneakers Medalist Low pour homme en cuir et daim Blanc et Antilope",
+      "brand": "AUTRY",
+      "merchant": "Lothaire",
+      "url": "https://www.lothaire.fr/products/autry-sneakers-medalist-low-pour-homme-en-cuir-et-daim-blanc-et-antilope",
+      "imageUrl": "https://www.lothaire.fr/cdn/shop/files/autry-sneakers-medalist-low-pour-homme-en-cuir-et-daim-blanc-et-antilope-4250779_1024x1024.webp?v=1774861627",
+      "price": 195,
+      "originalPrice": null,
+      "objective": "Chaussures",
+      "category": "Chaussures",
+      "gender": "men",
+      "genderVerified": true,
+      "audienceEvidence": "product",
+      "styleTags": [
+        "Heritage",
+        "Streetwear",
+        "Vintage",
+        "Classique"
+      ],
+      "seasonTags": [],
+      "colors": [],
+      "materials": [],
+      "cuts": [],
+      "patterns": [],
+      "description": "Les sneakers Medalist Low Autry capturent l'essence du tennis classique avec une interprétation contemporaine. Confectionnées en cuir et daim blanc et antilope, elles allient sophistication rétro et polyvalence moderne. La construction à hauteur de cheville, la doublure cuir et la semelle caoutchouc garantissent confort et stabilité au quotidien. Leur design minimaliste avec lacets traditionnels et contraste chromatique subtil en fait une pièce intemporelle adaptée à tous les styles. Composition et matière Matière extérieure : cuir et daim Matière intérieure : cuir Semelle extérieure : caoutchouc Caractéristiques : Fermeture à lacets Design sneaker rétro inspiré du tennis Tige hauteur cheville Modèle sans talon Coloris Blanc / Antil Entretien Nettoyer avec un chiffon doux et sec Utiliser un produit spécifique pour cuir et daim Éviter le lavage en machine Laisser sécher à l’air libre, loi",
+      "sizes": [],
+      "availability": "En stock lors du dernier contrôle",
+      "availabilityStatus": "available",
+      "source": "Lothaire",
+      "sourceType": "public-web",
+      "catalogStatus": "active",
+      "verifiedAt": "2026-11-14T14:36:48.708Z",
+      "syncedAt": "2026-11-14T14:36:48.708Z",
+      "priceUpdatedAt": "2026-11-14T14:36:48.708Z",
+      "stockVerifiedAt": "2026-11-14T14:36:48.708Z",
+      "expiresAt": "2026-11-21T14:36:48.708Z",
+      "productRating": null,
+      "productRatingCount": null,
+      "productRatingSource": "",
+      "merchantRating": null,
+      "merchantRatingCount": null,
+      "merchantRatingSource": "",
+      "popularityScore": null,
+      "isBestSeller": false
+    },
+    {
+      "id": "web-c4g6sx",
+      "name": "Dark Navy Wool Overshirt | Italian Recycled Wool - Asket",
+      "brand": "ASKET",
+      "merchant": "Asket",
+      "url": "https://www.asket.com/en-de/mens-wool-overshirt-dark-navy",
+      "imageUrl": "https://images.asket.com/products/images/99_WVS-MA-DKN_thumbnail-original.jpg?auto=format&q=80&w=1200&h=630",
+      "price": 240,
+      "originalPrice": null,
+      "objective": "Vêtements",
+      "category": "Vêtements",
+      "gender": "men",
+      "genderVerified": true,
+      "audienceEvidence": "product",
+      "styleTags": [],
+      "seasonTags": [],
+      "colors": [],
+      "materials": [],
+      "cuts": [],
+      "patterns": [],
+      "description": "The Wool Overshirt in Dark Navy is cut from a midweight, felted wool twill made of 100% recycled wool. Warm, temperature regulating and water repellent",
+      "sizes": [],
+      "availability": "Disponibilité à confirmer sur la boutique",
+      "availabilityStatus": "unknown",
+      "source": "Asket",
+      "sourceType": "public-web",
+      "catalogStatus": "active",
+      "verifiedAt": "2026-11-14T14:36:53.034Z",
+      "syncedAt": "2026-11-14T14:36:53.034Z",
+      "priceUpdatedAt": "2026-11-14T14:36:53.034Z",
+      "stockVerifiedAt": "2026-11-14T14:36:53.034Z",
+      "expiresAt": "2026-11-21T14:36:53.034Z",
+      "productRating": null,
+      "productRatingCount": null,
+      "productRatingSource": "",
+      "merchantRating": null,
+      "merchantRatingCount": null,
+      "merchantRatingSource": "",
+      "popularityScore": null,
+      "isBestSeller": false
+    },
+    {
+      "id": "web-mtfimi",
+      "name": "Dark Grey Melange Wool Overshirt | Italian Recycled Wool | Asket",
+      "brand": "ASKET",
+      "merchant": "Asket",
+      "url": "https://www.asket.com/en-de/mens-wool-overshirt-dark-grey-melange",
+      "imageUrl": "https://images.asket.com/products/images/99_WVS-MA-GDM_thumbnail-original.jpg?auto=format&q=80&w=1200&h=630",
+      "price": 240,
+      "originalPrice": null,
+      "objective": "Vêtements",
+      "category": "Vêtements",
+      "gender": "men",
+      "genderVerified": true,
+      "audienceEvidence": "product",
+      "styleTags": [],
+      "seasonTags": [],
+      "colors": [],
+      "materials": [],
+      "cuts": [],
+      "patterns": [],
+      "description": "The Wool Overshirt in Dark Grey Melange is cut from a midweight, felted wool twill made of 100% recycled wool. Warm, temperature regulating and water repellent",
+      "sizes": [],
+      "availability": "Disponibilité à confirmer sur la boutique",
+      "availabilityStatus": "unknown",
+      "source": "Asket",
+      "sourceType": "public-web",
+      "catalogStatus": "active",
+      "verifiedAt": "2026-11-14T14:36:53.937Z",
+      "syncedAt": "2026-11-14T14:36:53.937Z",
+      "priceUpdatedAt": "2026-11-14T14:36:53.937Z",
+      "stockVerifiedAt": "2026-11-14T14:36:53.937Z",
+      "expiresAt": "2026-11-21T14:36:53.937Z",
+      "productRating": null,
+      "productRatingCount": null,
+      "productRatingSource": "",
+      "merchantRating": null,
+      "merchantRatingCount": null,
+      "merchantRatingSource": "",
+      "popularityScore": null,
+      "isBestSeller": false
+    },
+    {
+      "id": "web-rtmqcz",
+      "name": "Dark Navy Wool Overshirt | Italian Recycled Wool - Asket",
+      "brand": "ASKET",
+      "merchant": "Asket",
+      "url": "https://www.asket.com/en-fi/mens-wool-overshirt-dark-navy",
+      "imageUrl": "https://images.asket.com/products/images/99_WVS-MA-DKN_thumbnail-original.jpg?auto=format&q=80&w=1200&h=630",
+      "price": 240,
+      "originalPrice": null,
+      "objective": "Vêtements",
+      "category": "Vêtements",
+      "gender": "men",
+      "genderVerified": true,
+      "audienceEvidence": "product",
+      "styleTags": [],
+      "seasonTags": [],
+      "colors": [],
+      "materials": [],
+      "cuts": [],
+      "patterns": [],
+      "description": "The Wool Overshirt in Dark Navy is cut from a midweight, felted wool twill made of 100% recycled wool. Warm, temperature regulating and water repellent",
+      "sizes": [],
+      "availability": "Disponibilité à confirmer sur la boutique",
+      "availabilityStatus": "unknown",
+      "source": "Asket",
+      "sourceType": "public-web",
+      "catalogStatus": "active",
+      "verifiedAt": "2026-11-14T14:37:03.276Z",
+      "syncedAt": "2026-11-14T14:37:03.276Z",
+      "priceUpdatedAt": "2026-11-14T14:37:03.276Z",
+      "stockVerifiedAt": "2026-11-14T14:37:03.276Z",
+      "expiresAt": "2026-11-21T14:37:03.276Z",
       "productRating": null,
       "productRatingCount": null,
       "productRatingSource": "",
