@@ -2,16 +2,16 @@
   "schemaVersion": 3,
   "provider": "Pages produits publiques autorisées (Schema.org / Open Graph)",
   "status": "partial",
-  "syncedAt": "2026-11-14T14:38:48.230Z",
-  "productCount": 259,
-  "liveProductCount": 201,
-  "publicProductCount": 201,
+  "syncedAt": "2026-11-14T17:58:41.827Z",
+  "productCount": 301,
+  "liveProductCount": 200,
+  "publicProductCount": 200,
   "curatedProductCount": 16,
-  "staleProductCount": 42,
-  "sourceCount": 16,
+  "staleProductCount": 85,
+  "sourceCount": 17,
   "attemptedSourceCount": 236,
   "scannedSourceCount": 36,
-  "pagesChecked": 440,
+  "pagesChecked": 381,
   "sources": [
     "Armor Lux",
     "Asket",
@@ -21,6 +21,7 @@
     "C.P. Company",
     "Carhartt WIP",
     "Courir",
+    "Edwin",
     "Jules",
     "L'Exception",
     "LEMAIRE",
@@ -45,7 +46,7 @@
       "products": 0,
       "pages": 0,
       "reason": "robots.txt inaccessible ou accès refusé",
-      "checkedAt": "2026-11-13T18:40:43.548Z"
+      "checkedAt": "2026-11-14T17:58:41.827Z"
     },
     {
       "name": "Pull & Bear",
@@ -77,7 +78,7 @@
       "products": 0,
       "pages": 0,
       "reason": "robots.txt inaccessible ou accès refusé",
-      "checkedAt": "2026-11-13T18:40:43.548Z"
+      "checkedAt": "2026-11-14T17:58:41.827Z"
     },
     {
       "name": "UNIQLO",
@@ -165,7 +166,7 @@
       "products": 0,
       "pages": 0,
       "reason": "robots.txt inaccessible ou accès refusé",
-      "checkedAt": "2026-11-13T15:27:14.725Z"
+      "checkedAt": "2026-11-14T17:58:41.827Z"
     },
     {
       "name": "Puma",
@@ -173,7 +174,7 @@
       "products": 0,
       "pages": 3,
       "reason": "Aucune fiche produit publique exploitable.",
-      "checkedAt": "2026-11-13T15:27:14.725Z"
+      "checkedAt": "2026-11-14T17:58:41.827Z"
     },
     {
       "name": "adidas",
@@ -181,7 +182,7 @@
       "products": 0,
       "pages": 0,
       "reason": "robots.txt inaccessible ou accès refusé",
-      "checkedAt": "2026-11-13T15:27:14.725Z"
+      "checkedAt": "2026-11-14T17:58:41.827Z"
     },
     {
       "name": "Converse",
@@ -189,7 +190,7 @@
       "products": 0,
       "pages": 0,
       "reason": "robots.txt inaccessible ou accès refusé",
-      "checkedAt": "2026-11-13T15:27:14.725Z"
+      "checkedAt": "2026-11-14T17:58:41.827Z"
     },
     {
       "name": "ARKET",
@@ -213,7 +214,7 @@
       "products": 0,
       "pages": 0,
       "reason": "robots.txt inaccessible ou accès refusé",
-      "checkedAt": "2026-11-13T15:27:14.725Z"
+      "checkedAt": "2026-11-14T17:58:41.827Z"
     },
     {
       "name": "Nike",
@@ -229,7 +230,7 @@
       "products": 0,
       "pages": 0,
       "reason": "robots.txt inaccessible ou accès refusé",
-      "checkedAt": "2026-11-13T15:27:14.725Z"
+      "checkedAt": "2026-11-14T17:58:41.827Z"
     },
     {
       "name": "Louis Vuitton",
@@ -242,10 +243,10 @@
     {
       "name": "Courir",
       "status": "ok",
-      "products": 18,
-      "pages": 19,
+      "products": 16,
+      "pages": 17,
       "reason": "",
-      "checkedAt": "2026-11-13T15:27:14.725Z"
+      "checkedAt": "2026-11-14T17:58:41.827Z"
     },
     {
       "name": "Calvin Klein",
@@ -253,7 +254,7 @@
       "products": 0,
       "pages": 0,
       "reason": "robots.txt inaccessible ou accès refusé",
-      "checkedAt": "2026-11-13T15:27:14.725Z"
+      "checkedAt": "2026-11-14T17:58:41.827Z"
     },
     {
       "name": "Charles Tyrwhitt",
@@ -275,9 +276,9 @@
       "name": "Foot Locker",
       "status": "no-structured-products",
       "products": 0,
-      "pages": 15,
+      "pages": 19,
       "reason": "Aucune fiche produit publique exploitable.",
-      "checkedAt": "2026-11-13T15:27:14.725Z"
+      "checkedAt": "2026-11-14T17:58:41.827Z"
     },
     {
       "name": "Tommy Hilfiger",
@@ -365,7 +366,7 @@
       "products": 0,
       "pages": 19,
       "reason": "Aucune fiche produit publique exploitable.",
-      "checkedAt": "2026-11-13T18:40:43.548Z"
+      "checkedAt": "2026-11-14T17:58:41.827Z"
     },
     {
       "name": "Kiabi",
@@ -757,7 +758,7 @@
       "products": 0,
       "pages": 0,
       "reason": "robots.txt inaccessible ou accès refusé",
-      "checkedAt": "2026-11-12T11:26:32.818Z"
+      "checkedAt": "2026-11-14T17:58:41.827Z"
     },
     {
       "name": "Folk",
@@ -773,7 +774,7 @@
       "products": 0,
       "pages": 19,
       "reason": "Aucune fiche produit publique exploitable.",
-      "checkedAt": "2026-11-12T11:26:32.818Z"
+      "checkedAt": "2026-11-14T17:58:41.827Z"
     },
     {
       "name": "G-Star RAW",
@@ -781,7 +782,7 @@
       "products": 0,
       "pages": 3,
       "reason": "Aucune fiche produit publique exploitable.",
-      "checkedAt": "2026-11-12T11:26:32.818Z"
+      "checkedAt": "2026-11-14T17:58:41.827Z"
     },
     {
       "name": "Wrangler",
@@ -789,7 +790,7 @@
       "products": 0,
       "pages": 0,
       "reason": "robots.txt inaccessible ou accès refusé",
-      "checkedAt": "2026-11-12T11:26:32.818Z"
+      "checkedAt": "2026-11-14T17:58:41.827Z"
     },
     {
       "name": "Lee",
@@ -797,7 +798,7 @@
       "products": 0,
       "pages": 0,
       "reason": "robots.txt inaccessible ou accès refusé",
-      "checkedAt": "2026-11-12T11:26:32.818Z"
+      "checkedAt": "2026-11-14T17:58:41.827Z"
     },
     {
       "name": "Dickies",
@@ -805,7 +806,7 @@
       "products": 0,
       "pages": 0,
       "reason": "robots.txt inaccessible ou accès refusé",
-      "checkedAt": "2026-11-12T11:26:32.818Z"
+      "checkedAt": "2026-11-14T17:58:41.827Z"
     },
     {
       "name": "Nudie Jeans",
@@ -813,7 +814,7 @@
       "products": 0,
       "pages": 19,
       "reason": "Aucune fiche produit publique exploitable.",
-      "checkedAt": "2026-11-12T11:26:32.818Z"
+      "checkedAt": "2026-11-14T17:58:41.827Z"
     },
     {
       "name": "Diesel",
@@ -821,7 +822,7 @@
       "products": 0,
       "pages": 19,
       "reason": "Aucune fiche produit publique exploitable.",
-      "checkedAt": "2026-11-12T11:26:32.818Z"
+      "checkedAt": "2026-11-14T17:58:41.827Z"
     },
     {
       "name": "Filson",
@@ -829,7 +830,7 @@
       "products": 0,
       "pages": 19,
       "reason": "Aucune fiche produit publique exploitable.",
-      "checkedAt": "2026-11-12T11:26:32.818Z"
+      "checkedAt": "2026-11-14T17:58:41.827Z"
     },
     {
       "name": "Gucci",
@@ -845,7 +846,7 @@
       "products": 0,
       "pages": 19,
       "reason": "Aucune fiche produit publique exploitable.",
-      "checkedAt": "2026-11-12T11:26:32.818Z"
+      "checkedAt": "2026-11-14T17:58:41.827Z"
     },
     {
       "name": "Saint Laurent",
@@ -885,7 +886,7 @@
       "products": 0,
       "pages": 19,
       "reason": "Aucune fiche produit publique exploitable.",
-      "checkedAt": "2026-11-12T11:26:32.818Z"
+      "checkedAt": "2026-11-14T17:58:41.827Z"
     },
     {
       "name": "Loewe",
@@ -913,11 +914,11 @@
     },
     {
       "name": "Edwin",
-      "status": "no-structured-products",
-      "products": 0,
+      "status": "ok",
+      "products": 6,
       "pages": 19,
-      "reason": "Aucune fiche produit publique exploitable.",
-      "checkedAt": "2026-11-12T11:26:32.818Z"
+      "reason": "",
+      "checkedAt": "2026-11-14T17:58:41.827Z"
     },
     {
       "name": "Canada Goose",
@@ -1701,7 +1702,7 @@
       "products": 0,
       "pages": 15,
       "reason": "Aucune fiche produit publique exploitable.",
-      "checkedAt": "2026-11-12T11:26:32.818Z"
+      "checkedAt": "2026-11-14T17:58:41.827Z"
     },
     {
       "name": "Homecore",
@@ -1709,7 +1710,7 @@
       "products": 0,
       "pages": 19,
       "reason": "Aucune fiche produit publique exploitable.",
-      "checkedAt": "2026-11-12T11:26:32.818Z"
+      "checkedAt": "2026-11-14T17:58:41.827Z"
     },
     {
       "name": "Hircus",
@@ -1717,7 +1718,7 @@
       "products": 0,
       "pages": 1,
       "reason": "Aucune fiche produit publique exploitable.",
-      "checkedAt": "2026-11-12T11:26:32.818Z"
+      "checkedAt": "2026-11-14T17:58:41.827Z"
     },
     {
       "name": "Officine Générale",
@@ -1725,15 +1726,15 @@
       "products": 18,
       "pages": 19,
       "reason": "",
-      "checkedAt": "2026-11-12T11:26:32.818Z"
+      "checkedAt": "2026-11-14T17:58:41.827Z"
     },
     {
       "name": "Samsøe Samsøe",
       "status": "ok",
-      "products": 7,
+      "products": 2,
       "pages": 19,
       "reason": "",
-      "checkedAt": "2026-11-12T11:26:32.818Z"
+      "checkedAt": "2026-11-14T17:58:41.827Z"
     },
     {
       "name": "mfpen",
@@ -1741,7 +1742,7 @@
       "products": 0,
       "pages": 19,
       "reason": "Aucune fiche produit publique exploitable.",
-      "checkedAt": "2026-11-12T11:26:32.818Z"
+      "checkedAt": "2026-11-14T17:58:41.827Z"
     },
     {
       "name": "NN07",
@@ -1749,7 +1750,7 @@
       "products": 0,
       "pages": 19,
       "reason": "Aucune fiche produit publique exploitable.",
-      "checkedAt": "2026-11-12T11:26:32.818Z"
+      "checkedAt": "2026-11-14T17:58:41.827Z"
     },
     {
       "name": "John Smedley",
@@ -1757,7 +1758,7 @@
       "products": 0,
       "pages": 0,
       "reason": "robots.txt inaccessible ou accès refusé",
-      "checkedAt": "2026-11-12T11:26:32.818Z"
+      "checkedAt": "2026-11-14T17:58:41.827Z"
     },
     {
       "name": "Wax London",
@@ -1765,7 +1766,7 @@
       "products": 0,
       "pages": 19,
       "reason": "Aucune fiche produit publique exploitable.",
-      "checkedAt": "2026-11-12T11:26:32.818Z"
+      "checkedAt": "2026-11-14T17:58:41.827Z"
     },
     {
       "name": "Kestin",
@@ -1773,15 +1774,15 @@
       "products": 0,
       "pages": 19,
       "reason": "Aucune fiche produit publique exploitable.",
-      "checkedAt": "2026-11-12T11:26:32.818Z"
+      "checkedAt": "2026-11-14T17:58:41.827Z"
     },
     {
       "name": "Le Mont Saint Michel",
       "status": "no-structured-products",
       "products": 0,
-      "pages": 18,
+      "pages": 19,
       "reason": "Aucune fiche produit publique exploitable.",
-      "checkedAt": "2026-11-12T11:26:32.818Z"
+      "checkedAt": "2026-11-14T17:58:41.827Z"
     },
     {
       "name": "L'Exception",
@@ -1797,7 +1798,7 @@
       "products": 0,
       "pages": 19,
       "reason": "Aucune fiche produit publique exploitable.",
-      "checkedAt": "2026-11-12T11:30:08.513Z"
+      "checkedAt": "2026-11-14T17:58:41.827Z"
     },
     {
       "name": "Studio Nicholson",
@@ -1928,8 +1929,8 @@
     "Les prix et stocks sont datés ; vérification finale sur la boutique avant achat.",
     "Les notes produit ne sont jamais présentées comme une note de fiabilité du marchand."
   ],
-  "priorityCursor": 36,
-  "regularCursor": 56,
+  "priorityCursor": 3,
+  "regularCursor": 80,
   "directoryCount": 236,
   "nextBatchSize": 36,
   "pageSize": 120,
