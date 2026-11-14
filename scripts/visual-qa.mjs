@@ -131,11 +131,9 @@ async function capture(page, viewportName, viewName, fullPage = false) {
   results.push({ ...layout, viewport:viewportName, viewportSize:layout.viewport, view:viewName, screenshot:path, issues });
 }
 
-async function clickView(page, name, mobile) {
-  const selector = mobile
-    ? '.mobile-nav [data-view="' + name + '"]'
-    : '.main-nav [data-view="' + name + '"], .top-actions [data-view="' + name + '"]';
-  const button = page.locator(selector);
+async function clickView(page, name) {
+  // DRESSOPP uses the same fixed bottom navigation on desktop, tablet and mobile.
+  const button = page.locator('.mobile-nav [data-view="' + name + '"]');
   await button.waitFor({ state:"visible", timeout:12000 });
   await button.click();
   await page.waitForTimeout(220);
