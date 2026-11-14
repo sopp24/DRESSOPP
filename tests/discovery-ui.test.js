@@ -76,6 +76,7 @@ test("the PWA refreshes its cache and preloads the app icons and first catalogue
   assert.ok(sw.includes('dressopp-static-v17'));
   for (const path of [
     "./assets/logo-square.svg",
+    "./assets/logo-horizontal.svg",
     "./assets/rewind.svg",
     "./assets/cross.svg",
     "./assets/star.svg",
