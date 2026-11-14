@@ -1,35 +1,60 @@
-const CACHE_NAME = "dressopp-static-v16";
+const CACHE_NAME = "dressopp-static-v17";
 const CORE_FILES = [
-  "./", "./index.html", "./privacy.html", "./styles.css", "./app.js",
-  "./modules/store.js", "./modules/engine.js", "./modules/integrations.js", "./modules/outfits.js", "./modules/community.js", "./modules/agent.js", "./modules/audience.js",
-  "./data/catalog-pages/page-0001.json",
-  "./assets/logo-horizontal.png",
-  "./assets/rewind.webp", "./assets/cross.webp", "./assets/star.webp", "./assets/fav.webp", "./assets/share.webp",
-  "./assets/logo-square.png",
-  "./assets/fonts/poppins-latin-400-normal.woff2", "./assets/fonts/poppins-latin-500-normal.woff2", "./assets/fonts/poppins-latin-600-normal.woff2",
-  "./assets/fonts/poppins-latin-700-normal.woff2", "./assets/fonts/poppins-latin-800-normal.woff2"
+  "./", "./index.html", "./privacy.html", "./manifest.webmanifest", "./styles.css", "./app.js",
+  "./modules/store.js", "./modules/engine.js", "./modules/integrations.js",
+  "./modules/outfits.js", "./modules/community.js", "./modules/agent.js", "./modules/audience.js",
+  "./data/catalog-manifest.json", "./data/catalog-pages/page-0001.json",
+  "./assets/logo-square.svg", "./assets/logo-horizontal.svg", "./assets/rewind.svg", "./assets/cross.svg",
+  "./assets/star.svg", "./assets/fav.svg", "./assets/share.svg",
+  "./assets/fonts/poppins-latin-400-normal.woff2",
+  "./assets/fonts/poppins-latin-500-normal.woff2",
+  "./assets/fonts/poppins-latin-600-normal.woff2",
+  "./assets/fonts/poppins-latin-700-normal.woff2",
+  "./assets/fonts/poppins-latin-800-normal.woff2"
 ];
+
 self.addEventListener("install", function(event) {
-  event.waitUntil(caches.open(CACHE_NAME).then(function(cache) {
-    return cache.addAll(CORE_FILES).catch(function(error) { console.warn("Cache initial partiel :", error); });
-  }).then(function() { return self.skipWaiting(); }));
+  event.waitUntil((async function() {
+    const cache = await caches.open(CACHE_NAME);
+    await Promise.all(CORE_FILES.map(async function(path) {
+      try {
+        await cache.add(path);
+      } catch (error) {
+        console.warn("Ressource non précachée :", path, error);
+      }
+    }));
+    await self.skipWaiting();
+  })());
 });
+
 self.addEventListener("activate", function(event) {
   event.waitUntil(caches.keys().then(function(keys) {
-    return Promise.all(keys.filter(function(key) { return key !== CACHE_NAME; }).map(function(key) { return caches.delete(key); }));
+    return Promise.all(keys
+      .filter(function(key) { return key !== CACHE_NAME; })
+      .map(function(key) { return caches.delete(key); }));
   }).then(function() { return self.clients.claim(); }));
 });
+
 self.addEventListener("fetch", function(event) {
-  if (event.request.method !== "GET" || new URL(event.request.url).origin !== self.location.origin) return;
-  event.respondWith(fetch(event.request).then(function(response) {
-    if (response && response.status === 200) {
-      const copy = response.clone();
-      caches.open(CACHE_NAME).then(function(cache) { cache.put(event.request, copy); });
+  const request = event.request;
+  if (request.method !== "GET" || new URL(request.url).origin !== self.location.origin) return;
+
+  event.respondWith((async function() {
+    try {
+      const response = await fetch(request);
+      if (response && response.status === 200 && response.type !== "opaque") {
+        const cache = await caches.open(CACHE_NAME);
+        await cache.put(request, response.clone());
+      }
+      return response;
+    } catch (error) {
+      const cached = await caches.match(request);
+      if (cached) return cached;
+      if (request.mode === "navigate") {
+        const fallback = await caches.match("./index.html");
+        if (fallback) return fallback;
+      }
+      return Response.error();
     }
-    return response;
-  }).catch(function() {
-    return caches.match(event.request).then(function(cached) {
-      return cached || (event.request.mode === "navigate" ? caches.match("./index.html") : Response.error());
-    });
-  }));
+  })());
 });

@@ -657,11 +657,11 @@ function renderDeckCard(product, training) {
     '<div class="product-card-links">' + originalLink + '</div></div>' +
     '</article>' +
     '<div class="deck-actions" aria-label="Actions sur cet article">' +
-    '<button class="deck-action deck-action-undo" type="button" data-action="undo" ' + (state.interactions.lastAction ? "" : "disabled") + ' aria-label="Annuler la dernière action" title="Annuler la dernière action"><img class="deck-action-icon" src="./assets/rewind.webp" alt="" aria-hidden="true" draggable="false"></button>' +
-    '<button class="deck-action deck-action-no" type="button" data-action="vote" data-vote="no" data-id="' + esc(product.id) + '" aria-label="Passer" title="Passer"><img class="deck-action-icon" src="./assets/cross.webp" alt="" aria-hidden="true" draggable="false"></button>' +
-    '<button class="deck-action deck-action-save' + (saved ? ' is-selected' : '') + '" type="button" data-action="save-list" data-id="' + esc(product.id) + '" aria-label="' + (saved ? 'Déjà dans ma liste' : 'Ajouter à ma liste') + '" aria-pressed="' + String(saved) + '" title="' + (saved ? 'Dans ma liste' : 'Ajouter à ma liste') + '"><img class="deck-action-icon" src="./assets/star.webp" alt="" aria-hidden="true" draggable="false"></button>' +
-    '<button class="deck-action deck-action-yes" type="button" data-action="vote" data-vote="yes" data-id="' + esc(product.id) + '" aria-label="J’aime" title="J’aime"><img class="deck-action-icon" src="./assets/fav.webp" alt="" aria-hidden="true" draggable="false"></button>' +
-    '<button class="deck-action deck-action-share" type="button" data-action="share-product" data-id="' + esc(product.id) + '" aria-label="Partager cet article" title="Partager"><img class="deck-action-icon" src="./assets/share.webp" alt="" aria-hidden="true" draggable="false"></button>' +
+    '<button class="deck-action deck-action-undo" type="button" data-action="undo" ' + (state.interactions.lastAction ? "" : "disabled") + ' aria-label="Annuler la dernière action" title="Annuler la dernière action"><img class="deck-action-icon" src="./assets/rewind.svg" alt="" aria-hidden="true" draggable="false"></button>' +
+    '<button class="deck-action deck-action-no" type="button" data-action="vote" data-vote="no" data-id="' + esc(product.id) + '" aria-label="Passer" title="Passer"><img class="deck-action-icon" src="./assets/cross.svg" alt="" aria-hidden="true" draggable="false"></button>' +
+    '<button class="deck-action deck-action-save' + (saved ? ' is-selected' : '') + '" type="button" data-action="save-list" data-id="' + esc(product.id) + '" aria-label="' + (saved ? 'Déjà dans ma liste' : 'Ajouter à ma liste') + '" aria-pressed="' + String(saved) + '" title="' + (saved ? 'Dans ma liste' : 'Ajouter à ma liste') + '"><img class="deck-action-icon" src="./assets/star.svg" alt="" aria-hidden="true" draggable="false"></button>' +
+    '<button class="deck-action deck-action-yes" type="button" data-action="vote" data-vote="yes" data-id="' + esc(product.id) + '" aria-label="J’aime" title="J’aime"><img class="deck-action-icon" src="./assets/fav.svg" alt="" aria-hidden="true" draggable="false"></button>' +
+    '<button class="deck-action deck-action-share" type="button" data-action="share-product" data-id="' + esc(product.id) + '" aria-label="Partager cet article" title="Partager"><img class="deck-action-icon" src="./assets/share.svg" alt="" aria-hidden="true" draggable="false"></button>' +
     '</div>' +
     '<p class="deck-hint deck-hint-desktop" id="deck-keyboard-hint">← Passer · ↓ Ajouter à ma liste · → J’aime · Entrée : détails · ⌘/Ctrl + Z : annuler</p>' +
     '<p class="deck-hint deck-hint-touch" id="deck-touch-hint" aria-hidden="true">Glisse à gauche ou à droite · Vers le bas pour ajouter à ta liste</p>' +
@@ -2015,7 +2015,6 @@ async function boot() {
   state.profile = Object.assign(base.profile, state.profile || {});
   state.profile.sizes = Object.assign(base.profile.sizes, state.profile.sizes || {});
   state.settings = Object.assign(base.settings, state.settings || {});
-  state.settings.discoveryView = "cards";
   state.settings.outfitFilters = Object.assign(base.settings.outfitFilters || {},state.settings.outfitFilters || {});
   state.settings.outfitFilters.styles = Array.isArray(state.settings.outfitFilters.styles) ? state.settings.outfitFilters.styles : (state.profile.preferredStyles || []);
   state.settings.outfitFilters.season = state.settings.outfitFilters.season || "Toute saison";

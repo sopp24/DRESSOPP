@@ -3445,3 +3445,190 @@ button, a { touch-action: manipulation; }
 .details-copy .product-review-note span { color: #9a9a9a; }
 .details-copy .product-freshness { margin: 8px 0 0; color: #8d8d8d; text-align: left; }
 .details-copy .product-freshness.is-stale { color: #ff7a7a; }
+
+
+/* Mode paysage mobile : fiche produit compacte en deux colonnes, sans sacrifier la photo ni le prix. */
+@media (orientation: landscape) and (max-height: 600px) and (max-width: 850px) {
+  body.is-discovery-app .discovery-page--app .deck-card-wrap {
+    width: min(100%, 620px);
+    flex: 0 1 auto;
+  }
+  body.is-discovery-app .discovery-page--app .deck-card-wrap .product-card {
+    display: flex;
+    width: 100%;
+    height: 154px;
+    min-height: 154px;
+    max-height: 154px;
+    flex: 0 0 154px;
+    flex-direction: row;
+    align-items: stretch;
+    gap: 0;
+    overflow: hidden;
+    padding: 8px;
+    border: 1px solid rgba(0,0,0,.08);
+    border-radius: 20px;
+    color: #090909;
+    background: #fff;
+  }
+  body.is-discovery-app .discovery-page--app .deck-card-wrap .product-visual {
+    position: relative;
+    inset: auto;
+    width: 38%;
+    height: 100%;
+    min-width: 0;
+    min-height: 0;
+    max-height: none;
+    flex: 0 0 38%;
+    aspect-ratio: auto;
+    overflow: hidden;
+    border-radius: 13px;
+    background: #eee;
+  }
+  body.is-discovery-app .discovery-page--app .deck-card-wrap .product-visual img {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 30%;
+  }
+  body.is-discovery-app .discovery-page--app .deck-card-wrap .product-info {
+    position: relative;
+    inset: auto;
+    display: flex;
+    width: auto;
+    height: 100%;
+    min-width: 0;
+    min-height: 0;
+    flex: 1 1 0;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: center;
+    gap: 0;
+    overflow: hidden;
+    padding: 2px 3px 2px 12px;
+    color: #090909;
+    background: none;
+    text-align: left;
+  }
+  body.is-discovery-app .discovery-page--app .deck-card-wrap .product-copy {
+    width: 100%;
+    min-width: 0;
+    text-align: left;
+  }
+  body.is-discovery-app .discovery-page--app .deck-card-wrap .product-title {
+    display: -webkit-box;
+    margin: 0;
+    overflow: hidden;
+    color: #090909;
+    font-size: clamp(14px, 2.2vw, 18px);
+    font-weight: 800;
+    line-height: 1.12;
+    text-align: left;
+    text-overflow: ellipsis;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+  body.is-discovery-app .discovery-page--app .deck-card-wrap .product-brand-price {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+    gap: 6px;
+    margin: 5px 0 0;
+    color: #333;
+    font-size: 11px;
+    line-height: 1.2;
+    text-align: left;
+  }
+  body.is-discovery-app .discovery-page--app .deck-card-wrap .product-brand-price > span {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  body.is-discovery-app .discovery-page--app .deck-card-wrap .product-brand-price > strong {
+    flex: 0 0 auto;
+    color: #090909;
+    font-weight: 800;
+    white-space: nowrap;
+  }
+  body.is-discovery-app .discovery-page--app .deck-card-wrap .product-attributes {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: 3px 7px;
+    max-height: 25px;
+    overflow: hidden;
+    margin: 5px 0 0;
+    color: #333;
+    font-size: 9px;
+    line-height: 1.2;
+  }
+  body.is-discovery-app .discovery-page--app .deck-card-wrap .product-attribute-group {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+  }
+  body.is-discovery-app .discovery-page--app .deck-card-wrap .product-attribute-group > strong {
+    color: #111;
+    font-size: inherit;
+  }
+  body.is-discovery-app .discovery-page--app .deck-card-wrap .product-attribute-values {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 3px;
+    color: #333;
+  }
+  body.is-discovery-app .discovery-page--app .deck-card-wrap .product-color-value i {
+    width: 10px;
+    height: 10px;
+    min-width: 10px;
+    min-height: 10px;
+  }
+  body.is-discovery-app .discovery-page--app .deck-card-wrap .product-card-links {
+    display: flex;
+    width: 100%;
+    justify-content: flex-start;
+    margin: 6px 0 0;
+  }
+  body.is-discovery-app .discovery-page--app .deck-card-wrap .product-original-link {
+    width: min(100%, 220px);
+    min-height: 34px;
+    gap: 6px;
+    padding: 3px 4px 3px 10px;
+    font-size: 11px;
+  }
+  body.is-discovery-app .discovery-page--app .deck-card-wrap .product-original-link > i {
+    width: 28px;
+    height: 28px;
+  }
+  body.is-discovery-app .discovery-page--app .deck-card-wrap .deck-actions {
+    position: static;
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin: 8px 0 0;
+    padding: 0;
+  }
+  body.is-discovery-app .discovery-page--app .deck-card-wrap .deck-actions .deck-action,
+  body.is-discovery-app .discovery-page--app .deck-card-wrap .deck-actions .deck-action-no,
+  body.is-discovery-app .discovery-page--app .deck-card-wrap .deck-actions .deck-action-yes {
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    min-height: 44px;
+    flex: 0 0 44px;
+  }
+  body.is-discovery-app .discovery-page--app .deck-card-wrap .deck-actions .deck-action-icon {
+    width: 19px;
+    height: 19px;
+  }
+  body.is-discovery-app .discovery-page--app .deck-card-wrap .deck-hint {
+    display: none;
+  }
+}
