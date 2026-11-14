@@ -1,0 +1,9 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "dressopp-agent",
+  "main": "src/index.js",
+  "compatibility_date": "2026-11-06",
+  "ai": { "binding": "AI" },
+  "vars": { "ALLOWED_ORIGINS": "https://sopp24.github.io,http://localhost:8000" },
+  "observability": { "enabled": false }
+}
