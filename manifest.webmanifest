@@ -1,0 +1,14 @@
+{
+  "name": "DRESSOPP",
+  "short_name": "DRESSOPP",
+  "description": "Mode diligente. Ton personal shopper visuel.",
+  "lang": "fr-FR",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#080808",
+  "theme_color": "#080808",
+  "icons": [
+    { "src": "./assets/logo-square.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}

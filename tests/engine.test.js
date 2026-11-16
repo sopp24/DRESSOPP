@@ -1,0 +1,349 @@
+import test from "node:test";
+import assert from "node:assert/strict";
+import { seasonFor, normalizeProduct as normalizeRawProduct, matchesFilters, rankProducts, createInitialState, deriveLearnedPreferences, registerMenMerchants, isMenFit } from "../modules/engine.js";
+
+function normalizeProduct(raw) {
+  return normalizeRawProduct(Object.assign({ gender:"men", genderVerified:true },raw || {}));
+}
+
+test("seasonFor follows northern hemisphere seasons", function() {
+  assert.equal(seasonFor(new Date(2026, 0, 15)), "Hiver");
+  assert.equal(seasonFor(new Date(2026, 3, 15)), "Printemps");
+  assert.equal(seasonFor(new Date(2026, 6, 15)), "Été");
+  assert.equal(seasonFor(new Date(2026, 9, 15)), "Automne");
+});
+
+test("normalizeProduct cleans URLs, prices and attributes", function() {
+  const product = normalizeProduct({
+    name: "Chemise Oxford", brand: "Atelier", merchant: "Boutique",
+    url: "https://shop.example/products/oxford#details", price: "19.90",
+    style: "Classique, Classe", color: "Bleu, Blanc"
+  });
+  assert.equal(product.name, "Chemise Oxford");
+  assert.equal(product.price, 19.9);
+  assert.equal(product.url, "https://shop.example/products/oxford#details");
+  assert.deepEqual(product.styleTags, ["Classique", "Classe"]);
+  assert.deepEqual(product.colors, ["Bleu", "Blanc"]);
+});
+
+test("normalizeProduct rejects unsafe protocols and unknown prices", function() {
+  const product = normalizeProduct({ name: "Article", url: "javascript:alert(1)", price: "unknown" });
+  assert.equal(product.url, "");
+  assert.equal(product.price, null);
+});
+
+test("matchesFilters combines category, style, season and price", function() {
+  const product = normalizeProduct({
+    name: "Sneakers", objective: "Chaussures", styleTags: ["Sport"],
+    seasonTags: ["Toute saison"], price: 75
+  });
+  assert.equal(matchesFilters(product, { objective: "Chaussures", style: "Sport", season: "Hiver", maxPrice: 80 }), true);
+  assert.equal(matchesFilters(product, { objective: "Vêtements", style: "Sport", season: "Hiver", maxPrice: 80 }), false);
+  assert.equal(matchesFilters(product, { objective: "Chaussures", style: "Sport", season: "Hiver", maxPrice: 50 }), false);
+});
+
+test("rankProducts excludes already rated products and respects price cap", function() {
+  const products = [
+    normalizeProduct({ id: "a", name: "T-shirt", objective: "Vêtements", styleTags: ["Classique"], price: 15 }),
+    normalizeProduct({ id: "b", name: "Pantalon", objective: "Vêtements", styleTags: ["Classique"], price: 45 }),
+    normalizeProduct({ id: "c", name: "Sweat", objective: "Vêtements", styleTags: ["Classique"], price: 18 })
+  ];
+  const state = createInitialState(products);
+  state.interactions.likes.push({ productId: "a" });
+  const result = rankProducts(products, state, {
+    filters: { objective: "Vêtements", style: "Classique", season: "Toute saison", maxPrice: 20 }
+  });
+  assert.deepEqual(result.map(function(item) { return item.id; }).sort(), ["c"]);
+});
+
+test("Pinterest board metadata contributes positive learned style signals", function() {
+  const state = createInitialState([]);
+  state.pinterestPins = [
+    { title: "Minimalist beige linen oversized outfit", description: "Clean summer streetwear", visualAnalysis:{version:3,audience:"men",isFashion:true} }
+  ];
+  const learned = deriveLearnedPreferences(state);
+  assert.ok(learned["styleTags:classique"] > 0);
+  assert.ok(learned["colors:beige"] > 0);
+  assert.ok(learned["materials:lin"] > 0);
+  assert.ok(learned["cuts:oversized"] > 0);
+});
+
+
+test("normalizeProduct rejects relative URLs as merchant links", function() {
+  const product = normalizeProduct({ name: "Produit", url: "/produits/chemise" });
+  assert.equal(product.url, "");
+});
+
+test("rankProducts never recommends an item already saved in the wardrobe", function() {
+  const product = normalizeProduct({ id: "saved", name: "Chemise", objective: "Vêtements", price: 15 });
+  const state = createInitialState([product]);
+  state.likedProducts.push({ productId: "saved", addedAt: new Date().toISOString() });
+  state.interactions.saves = [];
+  const result = rankProducts([product], state, {
+    filters: { objective: "Vêtements", style: "Tous", season: "Toute saison", maxPrice: null }
+  });
+  assert.equal(result.length, 0);
+});
+
+test("validating and rejecting an outfit changes learned style preferences", function() {
+  const state = createInitialState([]);
+  state.pinterestPins = [
+    { id: "look-1", title: "Minimalist beige linen oversized outfit", visualAnalysis:{version:3,audience:"men",isFashion:true} }
+  ];
+  const baseline = deriveLearnedPreferences(state);
+  assert.deepEqual(state.outfitFeedback, {});
+
+  state.outfitFeedback = { "look-1": { vote: "yes" } };
+  const approved = deriveLearnedPreferences(state);
+  assert.ok(approved["colors:beige"] > baseline["colors:beige"]);
+  assert.ok(approved["materials:lin"] > baseline["materials:lin"]);
+
+  state.outfitFeedback = { "look-1": { vote: "no" } };
+  const rejected = deriveLearnedPreferences(state);
+  assert.ok(rejected["colors:beige"] < baseline["colors:beige"]);
+  assert.ok(rejected["materials:lin"] < baseline["materials:lin"]);
+});
+
+
+test("rankProducts filters to the profile size when merchant sizes are known", function() {
+  const fitting = normalizeProduct({ id:"fit", name:"Chemise Oxford", objective:"Vêtements", sizes:["S","M","L"], price:45 });
+  const unavailable = normalizeProduct({ id:"no-fit", name:"Chemise Oxford slim", objective:"Vêtements", sizes:["XS","S"], price:45 });
+  const state = createInitialState([fitting, unavailable]);
+  state.profile.sizes.tops = "M";
+  const result = rankProducts([fitting, unavailable], state, {
+    filters:{ objective:"Vêtements", style:"Tous", season:"Toute saison", maxPrice:null }
+  });
+  assert.deepEqual(result.map(item => item.id), ["fit"]);
+});
+
+test("rankProducts never puts withdrawn or expired feed products back in discovery", function() {
+  const withdrawn = normalizeProduct({ id:"withdrawn", name:"Pull", price:40, catalogStatus:"stale", sourceType:"awin" });
+  const expired = normalizeProduct({ id:"expired", name:"Jean", price:50, expiresAt:"2020-01-01T00:00:00.000Z" });
+  const active = normalizeProduct({ id:"active", name:"Pantalon", price:55 });
+  const state = createInitialState([withdrawn, expired, active]);
+  const result = rankProducts([withdrawn, expired, active], state, {
+    filters:{ objective:"Tout", style:"Tous", season:"Toute saison", maxPrice:null }
+  });
+  assert.deepEqual(result.map(item => item.id), ["active"]);
+});
+
+
+test("rankProducts uses merchant reputation separately from product reviews", function() {
+  const trusted = normalizeProduct({
+    id:"trusted", name:"Pull marron", merchant:"Shop A", objective:"Vêtements",
+    price:45, merchantRating:4.9, merchantRatingCount:1200
+  });
+  const unknown = normalizeProduct({
+    id:"unknown", name:"Pull marron", merchant:"Shop B", objective:"Vêtements",
+    price:45
+  });
+  const state = createInitialState([trusted, unknown]);
+  const result = rankProducts([unknown, trusted], state, {
+    includeSeen:true,
+    filters:{ objective:"Vêtements", style:"Tous", season:"Toute saison", maxPrice:null }
+  });
+  assert.equal(result[0].id, "trusted");
+});
+
+test("rankProducts gives a small lift to explicit best-seller signals", function() {
+  const popular = normalizeProduct({
+    id:"popular", name:"Polo maille", merchant:"Shop A", objective:"Vêtements",
+    price:40, popularityScore:95, isBestSeller:true
+  });
+  const standard = normalizeProduct({
+    id:"standard", name:"Polo maille", merchant:"Shop B", objective:"Vêtements",
+    price:40
+  });
+  const state = createInitialState([popular, standard]);
+  const result = rankProducts([standard, popular], state, {
+    includeSeen:true,
+    filters:{ objective:"Vêtements", style:"Tous", season:"Toute saison", maxPrice:null }
+  });
+  assert.equal(result[0].id, "popular");
+});
+
+
+test("Pinterest style signals give a positive starting point that swipes can overturn", function() {
+  const state = createInitialState([]);
+  state.pinterestPins = [{ title:"Minimalist beige linen oversized outfit",visualAnalysis:{version:3,audience:"men",isFashion:true} }];
+  const learned = deriveLearnedPreferences(state);
+  assert.ok(learned["colors:beige"] > 1);
+  assert.ok(learned["materials:lin"] > 1);
+  assert.ok(learned["cuts:oversized"] > 1);
+});
+
+function learningCatalog() {
+  const knit = i => normalizeProduct({ id:"knit-" + i, name:"Pull col rond " + i, brand:"Marque " + i, price:50, url:"https://shop.example/homme/pull-" + i, gender:"men", genderVerified:true });
+  const tee = i => normalizeProduct({ id:"tee-" + i, name:"T-shirt uni " + i, brand:"Marque " + i, price:50, url:"https://shop.example/homme/tee-" + i, gender:"men", genderVerified:true });
+  return [1,2,3,4,5,6].map(knit).concat([1,2,3,4,5,6].map(tee));
+}
+const openFilters = { objective:"Tout", style:"Tous", season:"Toute saison", maxPrice:null };
+function swipe(state, kind, id, offsetSeconds) {
+  const event = { productId:id, createdAt:new Date(Date.UTC(2026,10,14,12,0,offsetSeconds)).toISOString(), view:"discover" };
+  (kind === "like" ? state.interactions.likes : kind === "save" ? state.interactions.saves : state.interactions.dislikes).push(event);
+}
+function meanPosition(list, prefix) {
+  const positions = list.map((item,index) => item.id.startsWith(prefix) ? index : -1).filter(index => index >= 0);
+  return positions.reduce((a,b) => a + b, 0) / positions.length;
+}
+
+test("swipes refine the ranking by garment type, not only by brand or colour", function() {
+  const products = learningCatalog();
+  const state = createInitialState(products);
+  const before = rankProducts(products, state, { filters:openFilters });
+  swipe(state,"like","knit-1",1); swipe(state,"like","knit-2",2); swipe(state,"like","knit-3",3);
+  swipe(state,"dislike","tee-1",4); swipe(state,"dislike","tee-2",5); swipe(state,"dislike","tee-3",6);
+  const after = rankProducts(products, state, { filters:openFilters });
+  assert.ok(after.every(item => !["knit-1","knit-2","knit-3","tee-1","tee-2","tee-3"].includes(item.id)));
+  assert.ok(meanPosition(after,"knit-") < meanPosition(after,"tee-"));
+  const reversed = createInitialState(products);
+  swipe(reversed,"like","tee-1",1); swipe(reversed,"like","tee-2",2); swipe(reversed,"like","tee-3",3);
+  swipe(reversed,"dislike","knit-1",4); swipe(reversed,"dislike","knit-2",5); swipe(reversed,"dislike","knit-3",6);
+  const flipped = rankProducts(products, reversed, { filters:openFilters });
+  assert.ok(meanPosition(flipped,"tee-") < meanPosition(flipped,"knit-"));
+  assert.ok(before.length > 0);
+});
+
+test("saving to the list counts as a strong positive signal and recent swipes weigh more", function() {
+  const products = learningCatalog();
+  const saved = createInitialState(products);
+  swipe(saved,"save","knit-1",1);
+  assert.ok(deriveLearnedPreferences(saved)["family:knit"] > 3);
+  const changedMind = createInitialState(products);
+  swipe(changedMind,"like","knit-1",1); swipe(changedMind,"like","knit-2",2);
+  swipe(changedMind,"dislike","knit-3",3); swipe(changedMind,"dislike","knit-4",4); swipe(changedMind,"dislike","knit-5",5);
+  assert.ok(deriveLearnedPreferences(changedMind)["family:knit"] < 0);
+  const undone = createInitialState(products);
+  assert.equal(deriveLearnedPreferences(undone)["family:knit"], undefined);
+});
+
+
+test("new local state keeps outfit filters and a separate saved outfit collection", function() {
+  const state = createInitialState([]);
+  assert.deepEqual(state.savedOutfits,[]);
+  assert.deepEqual(state.settings.outfitFilters,{styles:[],season:"Toute saison",maxPrice:null});
+  assert.equal(state.settings.outfitLibraryView,"discover");
+});
+
+
+test("product discovery keeps men's and men-compatible unisex pieces, never women's or unknown ones", function() {
+  const men = normalizeProduct({ id:"men", name:"Chemise homme", price:40 });
+  const unisex = normalizeRawProduct({ id:"unisex", name:"T-shirt unisexe", price:25 });
+  const unisexDress = normalizeRawProduct({ id:"unisex-dress", name:"Robe unisexe", price:25 });
+  const women = normalizeRawProduct({ id:"women", name:"Blouse femme", url:"https://shop.example/femme/blouse", price:30 });
+  const unknown = normalizeRawProduct({ id:"unknown", name:"Pull en maille", price:32 });
+  const state = createInitialState([men,unisex,women,unknown]);
+  const result = rankProducts([women,unisex,unisexDress,unknown,men],state,{
+    includeSeen:true,
+    filters:{objective:"Tout",style:"Tous",season:"Toute saison",maxPrice:null}
+  });
+  assert.deepEqual(result.map(item=>item.id).sort(),["men","unisex"]);
+  assert.equal(men.gender,"men");
+  assert.equal(men.menFit,"men");
+  assert.equal(unisex.gender,"unisex");
+  assert.equal(unisex.menFit,"unisex");
+  assert.equal(unisexDress.menFit,"");
+  assert.equal(women.gender,"women");
+  assert.equal(unknown.gender,"unknown");
+});
+
+test("men-only merchants make unlabelled pieces eligible, except typically feminine items", function() {
+  registerMenMerchants([{ name:"Jules", domain:"jules.com", audience:"men" }]);
+  try {
+    const jumper = normalizeRawProduct({ id:"jules-1", name:"Pull col rond", merchant:"Jules", url:"https://www.jules.com/fr/p/pull-1.html", price:30 });
+    const dress = normalizeRawProduct({ id:"jules-2", name:"Robe fluide", merchant:"Jules", price:30 });
+    const other = normalizeRawProduct({ id:"other-1", name:"Pull col rond", merchant:"Autre boutique", price:30 });
+    assert.equal(jumper.gender,"men");
+    assert.equal(jumper.menFit,"men");
+    assert.equal(dress.menFit,"");
+    assert.equal(other.menFit,"");
+    assert.ok(isMenFit(jumper) && !isMenFit(dress) && !isMenFit(other));
+  } finally { registerMenMerchants([]); }
+});
+
+test("missing colours and materials are read from the product title and description", function() {
+  const product = normalizeProduct({ id:"p1", name:"Pull col V en laine mérinos – Crème", description:"Coupe oversize", price:40 });
+  assert.deepEqual(product.colors,["Crème"]);
+  assert.ok(product.materials.includes("Laine"));
+  assert.ok(product.cuts.includes("Oversize"));
+  const declared = normalizeProduct({ id:"p2", name:"Pull noir", colors:["Bleu"], price:40 });
+  assert.deepEqual(declared.colors,["Bleu"]);
+});
+
+test("the Pinterest board ranks the closest pieces first", function() {
+  const pin = { id:"pin-1", title:"Look maille crème", description:"Pull oversize en laine crème avec pantalon marron", visualAnalysis:{
+    version:3, isFashion:true, audience:"men", styleTags:["Smart Casual"], colors:["crème","marron"], materials:["laine"], cuts:["oversize"], patterns:[],
+    pieces:[{type:"pull",color:"crème",material:"laine",cut:"oversize",pattern:"uni",details:["col v"]},{type:"pantalon",color:"marron",material:"",cut:"droit",pattern:"uni",details:[]}], details:["col v"] } };
+  const close = normalizeProduct({ id:"close", name:"Pull col V oversize en laine – Crème", brand:"A", price:50, url:"https://a.example/homme/pull", gender:"men", genderVerified:true });
+  const far = normalizeProduct({ id:"far", name:"Short de bain imprimé homme", brand:"B", price:50, url:"https://b.example/homme/short", gender:"men", genderVerified:true });
+  const state = createInitialState([close,far]);
+  state.pinterestPins = [pin];
+  const ranked = rankProducts([far,close],state,{ includeSeen:true, filters:{objective:"Tout",style:"Tous",season:"Toute saison",maxPrice:null} });
+  assert.equal(ranked[0].id,"close");
+});
+
+
+test("normalizeProduct accepts only safe repository-local cached photo paths", function() {
+  const product = normalizeProduct({
+    imageUrl:"./assets/product-images/abc123.webp",
+    imageFallbackUrl:"https://cdn.example.com/product.webp"
+  });
+  assert.equal(product.imageUrl,"./assets/product-images/abc123.webp");
+  assert.equal(product.imageFallbackUrl,"https://cdn.example.com/product.webp");
+  const unsafe = normalizeProduct({ imageUrl:"../private/photo.jpg" });
+  assert.equal(unsafe.imageUrl,"");
+});
+
+test("curated men's references remain discoverable after their editorial TTL", function() {
+  const product = normalizeProduct({
+    id:"curated-expired",name:"Pull en laine homme",merchant:"Atelier",price:79,
+    objective:"Vêtements",category:"Pull",styleTags:["Heritage"],seasonTags:["Toute saison"],
+    sourceType:"curated",catalogStatus:"active",expiresAt:"2020-01-01T00:00:00.000Z"
+  });
+  const state = createInitialState([product]);
+  const result = rankProducts([product],state,{
+    includeSeen:true,
+    filters:{objective:"Vêtements",style:"Tous",season:"Toute saison",maxPrice:null}
+  });
+  assert.deepEqual(result.map(item=>item.id),["curated-expired"]);
+});
+
+test("default discovery interleaves merchants and balances style and price bands", function() {
+  const products = [
+    normalizeProduct({id:"a1",name:"Pull preppy 1",merchant:"Boutique A",brand:"A",price:24,category:"Pull",styleTags:["Preppy"],seasonTags:["Toute saison"]}),
+    normalizeProduct({id:"a2",name:"Pull preppy 2",merchant:"Boutique A",brand:"A",price:29,category:"Pull",styleTags:["Preppy"],seasonTags:["Toute saison"]}),
+    normalizeProduct({id:"a3",name:"Pull preppy 3",merchant:"Boutique A",brand:"A",price:35,category:"Pull",styleTags:["Preppy"],seasonTags:["Toute saison"]}),
+    normalizeProduct({id:"b1",name:"Veste streetwear",merchant:"Boutique B",brand:"B",price:75,category:"Veste",styleTags:["Streetwear"],seasonTags:["Toute saison"]}),
+    normalizeProduct({id:"c1",name:"Derbies heritage",merchant:"Boutique C",brand:"C",price:160,objective:"Chaussures",category:"Derbies",styleTags:["Heritage"],seasonTags:["Toute saison"]}),
+    normalizeProduct({id:"d1",name:"Chemise workwear",merchant:"Boutique D",brand:"D",price:49,category:"Chemise",styleTags:["Workwear"],seasonTags:["Toute saison"]})
+  ];
+  const state = createInitialState(products);
+  const result = rankProducts(products,state,{
+    includeSeen:true,
+    filters:{objective:"Tout",style:"Tous",season:"Toute saison",maxPrice:null}
+  });
+  const firstFour = result.slice(0,4);
+  assert.equal(new Set(firstFour.map(item=>item.merchant)).size,4);
+  assert.ok(new Set(firstFour.map(item=>item.styleTags[0])).size >= 3);
+  assert.ok(new Set(firstFour.map(item=>item.price < 40 ? "budget" : item.price < 100 ? "mid" : "premium")).size >= 3);
+});
+
+
+// A marketplace with multiple sellers must not count as several distinct boutiques.
+test("merchant diversity treats seller labels on one marketplace as the same shop", function() {
+  const products = [
+    normalizeProduct({id:"z1",name:"Pull OVS",merchant:"Zalando · OVS Group",brand:"OVS",price:50,category:"Pull",seasonTags:["Toute saison"]}),
+    normalizeProduct({id:"z2",name:"Jean OVS",merchant:"Zalando · OVS Group",brand:"OVS",price:65,category:"Pantalon",seasonTags:["Toute saison"]}),
+    normalizeProduct({id:"z3",name:"Pull Massimo",merchant:"Zalando · Massimo Dutti",brand:"Massimo Dutti",price:85,category:"Pull",seasonTags:["Toute saison"]}),
+    normalizeProduct({id:"c1",name:"Veste COS",merchant:"COS",brand:"COS",price:190,category:"Veste",seasonTags:["Toute saison"]}),
+    normalizeProduct({id:"s1",name:"Sneakers SNIPES",merchant:"SNIPES",brand:"Nike",price:110,objective:"Chaussures",category:"Chaussures",seasonTags:["Toute saison"]}),
+    normalizeProduct({id:"u1",name:"Pantalon UNIQLO",merchant:"UNIQLO",brand:"UNIQLO",price:49,category:"Pantalon",seasonTags:["Toute saison"]})
+  ];
+  const state = createInitialState(products);
+  const result = rankProducts(products,state,{
+    includeSeen:true,
+    filters:{objective:"Tout",style:"Tous",season:"Toute saison",maxPrice:null}
+  });
+  const firstFour = result.slice(0,4).map(item=>String(item.merchant).split(" · ")[0]);
+  assert.equal(new Set(firstFour).size,4);
+});
