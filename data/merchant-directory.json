@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-11-12",
+  "updatedAt": "2026-11-16",
   "selection": "Répertoire éditorial de 200 enseignes pertinentes pour trouver des pièces de mode masculine ; seules les fiches produits dont le public masculin est confirmé sont proposées. Les ajouts sont orientés par les styles, couleurs, matières et coupes extraits du tableau Pinterest sopppx24/mode : casual, smart casual, streetwear, héritage, maille, workwear, silhouettes amples et palettes faciles à associer. Il ne s'agit pas d'un classement mondial par chiffre d'affaires.",
   "note": "La présence d'une enseigne ne garantit pas l'accès technique au catalogue ni la livraison dans tous les pays. Les connecteurs officiels, flux partenaires et collectes publiques autorisées sont testés séparément. Le champ audience=\"men\" signale une boutique masculine par défaut (ou exclusivement masculine) dont les pièces femme sont explicitement étiquetées : ses fiches sans mention de genre sont acceptées, hors pièces typiquement féminines ; une mention « femme » les exclut toujours.",
   "entries": [
@@ -311,6 +311,50 @@
       "type": "multi-brand",
       "priceTier": "mid",
       "region": "France",
+      "priority": 2,
+      "crawl": "candidate"
+    },
+    {
+      "name": "Goodhood",
+      "domain": "goodhoodstore.com",
+      "url": "https://goodhoodstore.com/",
+      "segment": "Multi-marques & grands magasins",
+      "type": "multi-brand",
+      "priceTier": "mid",
+      "region": "UK",
+      "priority": 1,
+      "crawl": "candidate"
+    },
+    {
+      "name": "Slam Jam",
+      "domain": "slamjam.com",
+      "url": "https://slamjam.com/",
+      "segment": "Multi-marques & grands magasins",
+      "type": "multi-brand",
+      "priceTier": "premium",
+      "region": "Italy",
+      "priority": 1,
+      "crawl": "candidate"
+    },
+    {
+      "name": "Très Bien",
+      "domain": "tres-bien.com",
+      "url": "https://tres-bien.com/",
+      "segment": "Multi-marques & grands magasins",
+      "type": "multi-brand",
+      "priceTier": "premium",
+      "region": "Sweden",
+      "priority": 1,
+      "crawl": "candidate"
+    },
+    {
+      "name": "Kolroy Studio",
+      "domain": "kolroystudio.com",
+      "url": "https://www.kolroystudio.com/",
+      "segment": "Multi-marques & grands magasins",
+      "type": "multi-brand",
+      "priceTier": "premium",
+      "region": "International",
       "priority": 2,
       "crawl": "candidate"
     },
@@ -1250,6 +1294,84 @@
       "crawl": "candidate"
     },
     {
+      "name": "Drôle de Monsieur",
+      "domain": "droledemonsieur.com",
+      "url": "https://droledemonsieur.com/fr/",
+      "segment": "Premium, heritage & créateurs",
+      "type": "premium-brand",
+      "priceTier": "premium",
+      "region": "France",
+      "priority": 1,
+      "crawl": "candidate",
+      "audience": "men"
+    },
+    {
+      "name": "Études Studio",
+      "domain": "etudes-studio.com",
+      "url": "https://www.etudes-studio.com/fr/",
+      "segment": "Premium, heritage & créateurs",
+      "type": "premium-brand",
+      "priceTier": "premium",
+      "region": "France",
+      "priority": 1,
+      "crawl": "candidate"
+    },
+    {
+      "name": "OAS",
+      "domain": "oascompany.com",
+      "url": "https://oascompany.com/en-global/men/new-in",
+      "segment": "Premium, heritage & créateurs",
+      "type": "premium-brand",
+      "priceTier": "premium",
+      "region": "Sweden",
+      "priority": 1,
+      "crawl": "candidate"
+    },
+    {
+      "name": "A Kind of Guise",
+      "domain": "akindofguise.com",
+      "url": "https://akindofguise.com/",
+      "segment": "Premium, heritage & créateurs",
+      "type": "premium-brand",
+      "priceTier": "premium",
+      "region": "Germany",
+      "priority": 2,
+      "crawl": "candidate"
+    },
+    {
+      "name": "Adsum",
+      "domain": "adsumnyc.com",
+      "url": "https://adsumnyc.com/",
+      "segment": "Premium, heritage & créateurs",
+      "type": "premium-brand",
+      "priceTier": "premium",
+      "region": "United States",
+      "priority": 2,
+      "crawl": "candidate"
+    },
+    {
+      "name": "Corridor",
+      "domain": "corridornyc.com",
+      "url": "https://corridornyc.com/",
+      "segment": "Premium, heritage & créateurs",
+      "type": "premium-brand",
+      "priceTier": "premium",
+      "region": "United States",
+      "priority": 2,
+      "crawl": "candidate"
+    },
+    {
+      "name": "Kardo",
+      "domain": "kardo.co",
+      "url": "https://kardo.co/",
+      "segment": "Premium, heritage & créateurs",
+      "type": "premium-brand",
+      "priceTier": "premium",
+      "region": "India",
+      "priority": 2,
+      "crawl": "candidate"
+    },
+    {
       "name": "Louis Vuitton",
       "domain": "louisvuitton.com",
       "url": "https://louisvuitton.com/",
@@ -1558,6 +1680,62 @@
       "priority": 2,
       "crawl": "candidate",
       "audience": "men"
+    },
+    {
+      "name": "Marni",
+      "domain": "marni.com",
+      "url": "https://www.marni.com/fr-fr/homme/",
+      "segment": "Luxe & maisons de mode",
+      "type": "luxury-brand",
+      "priceTier": "luxury",
+      "region": "Italy",
+      "priority": 1,
+      "crawl": "candidate"
+    },
+    {
+      "name": "Casablanca",
+      "domain": "casablancaparis.com",
+      "url": "https://casablancaparis.com/collections/menswear-homepage",
+      "segment": "Luxe & maisons de mode",
+      "type": "luxury-brand",
+      "priceTier": "luxury",
+      "region": "France",
+      "priority": 1,
+      "crawl": "candidate"
+    },
+    {
+      "name": "JW Anderson",
+      "domain": "jwanderson.com",
+      "url": "https://jwanderson.com/en-fr",
+      "segment": "Luxe & maisons de mode",
+      "type": "luxury-brand",
+      "priceTier": "luxury",
+      "region": "UK",
+      "priority": 1,
+      "crawl": "candidate"
+    },
+    {
+      "name": "Martine Rose",
+      "domain": "martine-rose.com",
+      "url": "https://www.martine-rose.com/",
+      "segment": "Luxe & maisons de mode",
+      "type": "luxury-brand",
+      "priceTier": "luxury",
+      "region": "UK",
+      "priority": 1,
+      "crawl": "candidate",
+      "audience": "men"
+    },
+    {
+      "name": "BODE",
+      "domain": "bode.com",
+      "url": "https://bode.com/",
+      "segment": "Luxe & maisons de mode",
+      "type": "luxury-brand",
+      "priceTier": "luxury",
+      "region": "United States",
+      "priority": 2,
+      "crawl": "candidate"
     },
     {
       "name": "Nike",
@@ -2319,6 +2497,39 @@
       "type": "streetwear-brand",
       "priceTier": "premium",
       "region": "Japan",
+      "priority": 2,
+      "crawl": "candidate"
+    },
+    {
+      "name": "Brain Dead",
+      "domain": "wearebraindead.com",
+      "url": "https://wearebraindead.com/collections/apparel",
+      "segment": "Streetwear & labels asiatiques",
+      "type": "streetwear-brand",
+      "priceTier": "premium",
+      "region": "United States",
+      "priority": 1,
+      "crawl": "candidate"
+    },
+    {
+      "name": "Dime",
+      "domain": "dimemtl.com",
+      "url": "https://dimemtl.com/fr/collections/all",
+      "segment": "Streetwear & labels asiatiques",
+      "type": "streetwear-brand",
+      "priceTier": "mid",
+      "region": "Canada",
+      "priority": 2,
+      "crawl": "candidate"
+    },
+    {
+      "name": "Golf Wang",
+      "domain": "golfwang.com",
+      "url": "https://golfwang.com/",
+      "segment": "Streetwear & labels asiatiques",
+      "type": "streetwear-brand",
+      "priceTier": "premium",
+      "region": "United States",
       "priority": 2,
       "crawl": "candidate"
     },
