@@ -88,10 +88,21 @@ async function getLayout(page) {
       actionsPosition:actions ? getComputedStyle(actions).position : null
     } : null;
     const cardBottom = card ? card.getBoundingClientRect().bottom : 0;
+    const visualBox = visual ? visual.getBoundingClientRect() : null;
+    const infoBox = info ? info.getBoundingClientRect() : null;
+    const actionsBox = actions ? actions.getBoundingClientRect() : null;
+    // En paysage, la photo et les informations sont côte à côte : comparer
+    // leurs rectangles complets évite de confondre leur chevauchement vertical
+    // avec un vrai recouvrement horizontal.
+    const visualInfoOverlap = Boolean(visualBox && infoBox &&
+      visualBox.left < infoBox.right - 2 &&
+      visualBox.right > infoBox.left + 2 &&
+      visualBox.top < infoBox.bottom - 2 &&
+      visualBox.bottom > infoBox.top + 2);
     const cardSectionsOverlap = Boolean(visual && info && actions &&
-      (visual.getBoundingClientRect().bottom > info.getBoundingClientRect().top + 2 ||
-       info.getBoundingClientRect().bottom > cardBottom + 2 ||
-       actions.getBoundingClientRect().top < cardBottom + 1));
+      (visualInfoOverlap ||
+       infoBox.bottom > cardBottom + 2 ||
+       actionsBox.top < cardBottom + 1));
     const actionSizes = Array.from(document.querySelectorAll(".deck-action")).map(button => {
       const box = button.getBoundingClientRect();
       return { label:button.getAttribute("aria-label"), width:Math.round(box.width), height:Math.round(box.height) };
