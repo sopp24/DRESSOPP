@@ -2,16 +2,16 @@
   "schemaVersion": 3,
   "provider": "Pages produits publiques autorisées (Schema.org / Open Graph)",
   "status": "partial",
-  "syncedAt": "2026-11-16T17:06:21.421Z",
-  "productCount": 403,
-  "liveProductCount": 221,
-  "publicProductCount": 221,
+  "syncedAt": "2026-11-17T16:56:34.362Z",
+  "productCount": 411,
+  "liveProductCount": 216,
+  "publicProductCount": 216,
   "curatedProductCount": 16,
-  "staleProductCount": 166,
+  "staleProductCount": 179,
   "sourceCount": 18,
-  "attemptedSourceCount": 240,
+  "attemptedSourceCount": 246,
   "scannedSourceCount": 36,
-  "pagesChecked": 450,
+  "pagesChecked": 320,
   "sources": [
     "Armor Lux",
     "Asket",
@@ -168,7 +168,7 @@
       "products": 0,
       "pages": 0,
       "reason": "robots.txt inaccessible ou accès refusé",
-      "checkedAt": "2026-11-14T17:58:41.827Z"
+      "checkedAt": "2026-11-17T16:56:34.362Z"
     },
     {
       "name": "Puma",
@@ -176,7 +176,7 @@
       "products": 0,
       "pages": 3,
       "reason": "Aucune fiche produit publique exploitable.",
-      "checkedAt": "2026-11-14T17:58:41.827Z"
+      "checkedAt": "2026-11-17T16:56:34.362Z"
     },
     {
       "name": "adidas",
@@ -184,7 +184,7 @@
       "products": 0,
       "pages": 0,
       "reason": "robots.txt inaccessible ou accès refusé",
-      "checkedAt": "2026-11-14T17:58:41.827Z"
+      "checkedAt": "2026-11-17T16:56:34.362Z"
     },
     {
       "name": "Converse",
@@ -192,7 +192,7 @@
       "products": 0,
       "pages": 0,
       "reason": "robots.txt inaccessible ou accès refusé",
-      "checkedAt": "2026-11-14T17:58:41.827Z"
+      "checkedAt": "2026-11-17T16:56:34.362Z"
     },
     {
       "name": "ARKET",
@@ -224,7 +224,7 @@
       "products": 0,
       "pages": 19,
       "reason": "Aucune fiche produit publique exploitable.",
-      "checkedAt": "2026-11-14T14:38:48.230Z"
+      "checkedAt": "2026-11-17T16:56:34.362Z"
     },
     {
       "name": "Undiz",
@@ -245,10 +245,10 @@
     {
       "name": "Courir",
       "status": "ok",
-      "products": 16,
-      "pages": 17,
+      "products": 18,
+      "pages": 19,
       "reason": "",
-      "checkedAt": "2026-11-14T17:58:41.827Z"
+      "checkedAt": "2026-11-17T16:56:34.362Z"
     },
     {
       "name": "Calvin Klein",
@@ -360,7 +360,7 @@
       "products": 0,
       "pages": 0,
       "reason": "robots.txt inaccessible ou accès refusé",
-      "checkedAt": "2026-11-13T15:27:14.725Z"
+      "checkedAt": "2026-11-17T16:56:34.362Z"
     },
     {
       "name": "ABOUT YOU",
@@ -392,7 +392,7 @@
       "products": 0,
       "pages": 19,
       "reason": "Aucune fiche produit publique exploitable.",
-      "checkedAt": "2026-11-14T14:38:48.230Z"
+      "checkedAt": "2026-11-17T16:56:34.362Z"
     },
     {
       "name": "Mango Man",
@@ -744,7 +744,7 @@
       "products": 0,
       "pages": 0,
       "reason": "robots.txt inaccessible ou accès refusé",
-      "checkedAt": "2026-11-14T14:38:48.230Z"
+      "checkedAt": "2026-11-17T16:56:34.362Z"
     },
     {
       "name": "AMI Paris",
@@ -1320,7 +1320,7 @@
       "products": 0,
       "pages": 0,
       "reason": "Aucune fiche produit publique exploitable.",
-      "checkedAt": "2026-11-13T11:02:30.769Z"
+      "checkedAt": "2026-11-17T16:56:34.362Z"
     },
     {
       "name": "thisisneverthat",
@@ -1328,7 +1328,7 @@
       "products": 0,
       "pages": 10,
       "reason": "Aucune fiche produit publique exploitable.",
-      "checkedAt": "2026-11-13T11:02:30.769Z"
+      "checkedAt": "2026-11-17T16:56:34.362Z"
     },
     {
       "name": "United Arrows",
@@ -1336,7 +1336,7 @@
       "products": 0,
       "pages": 0,
       "reason": "robots.txt inaccessible ou accès refusé",
-      "checkedAt": "2026-11-13T15:27:14.725Z"
+      "checkedAt": "2026-11-17T16:56:34.362Z"
     },
     {
       "name": "BEAMS",
@@ -1344,7 +1344,7 @@
       "products": 0,
       "pages": 0,
       "reason": "robots.txt inaccessible ou accès refusé",
-      "checkedAt": "2026-11-13T11:02:30.769Z"
+      "checkedAt": "2026-11-17T16:56:34.362Z"
     },
     {
       "name": "NANO universe",
@@ -1352,7 +1352,7 @@
       "products": 0,
       "pages": 1,
       "reason": "Aucune fiche produit publique exploitable.",
-      "checkedAt": "2026-11-13T15:27:14.725Z"
+      "checkedAt": "2026-11-17T16:56:34.362Z"
     },
     {
       "name": "ISSEY MIYAKE",
@@ -1360,7 +1360,7 @@
       "products": 0,
       "pages": 19,
       "reason": "Aucune fiche produit publique exploitable.",
-      "checkedAt": "2026-11-13T11:02:30.769Z"
+      "checkedAt": "2026-11-17T16:56:34.362Z"
     },
     {
       "name": "Supreme",
@@ -1368,7 +1368,7 @@
       "products": 0,
       "pages": 0,
       "reason": "robots.txt inaccessible ou accès refusé",
-      "checkedAt": "2026-11-13T15:27:14.725Z"
+      "checkedAt": "2026-11-17T16:56:34.362Z"
     },
     {
       "name": "Ader Error",
@@ -1376,7 +1376,7 @@
       "products": 0,
       "pages": 17,
       "reason": "Aucune fiche produit publique exploitable.",
-      "checkedAt": "2026-11-13T11:02:30.769Z"
+      "checkedAt": "2026-11-17T16:56:34.362Z"
     },
     {
       "name": "Urban Research",
@@ -1384,7 +1384,7 @@
       "products": 0,
       "pages": 0,
       "reason": "robots.txt inaccessible ou accès refusé",
-      "checkedAt": "2026-11-13T15:27:14.725Z"
+      "checkedAt": "2026-11-17T16:56:34.362Z"
     },
     {
       "name": "Stüssy",
@@ -1392,7 +1392,7 @@
       "products": 0,
       "pages": 19,
       "reason": "Aucune fiche produit publique exploitable.",
-      "checkedAt": "2026-11-13T15:27:14.725Z"
+      "checkedAt": "2026-11-17T16:56:34.362Z"
     },
     {
       "name": "Palace",
@@ -1400,7 +1400,7 @@
       "products": 0,
       "pages": 19,
       "reason": "Aucune fiche produit publique exploitable.",
-      "checkedAt": "2026-11-13T15:27:14.725Z"
+      "checkedAt": "2026-11-17T16:56:34.362Z"
     },
     {
       "name": "Dover Street Market",
@@ -1408,7 +1408,7 @@
       "products": 0,
       "pages": 1,
       "reason": "Aucune fiche produit publique exploitable.",
-      "checkedAt": "2026-11-13T15:27:14.725Z"
+      "checkedAt": "2026-11-17T16:56:34.362Z"
     },
     {
       "name": "Depop",
@@ -1416,7 +1416,7 @@
       "products": 0,
       "pages": 0,
       "reason": "robots.txt inaccessible ou accès refusé",
-      "checkedAt": "2026-11-13T15:27:14.725Z"
+      "checkedAt": "2026-11-17T16:56:34.362Z"
     },
     {
       "name": "Grailed",
@@ -1424,7 +1424,7 @@
       "products": 0,
       "pages": 0,
       "reason": "robots.txt inaccessible ou accès refusé",
-      "checkedAt": "2026-11-13T15:27:14.725Z"
+      "checkedAt": "2026-11-17T16:56:34.362Z"
     },
     {
       "name": "StockX",
@@ -1448,7 +1448,7 @@
       "products": 0,
       "pages": 19,
       "reason": "Aucune fiche produit publique exploitable.",
-      "checkedAt": "2026-11-13T15:27:14.725Z"
+      "checkedAt": "2026-11-17T16:56:34.362Z"
     },
     {
       "name": "The RealReal",
@@ -1464,7 +1464,7 @@
       "products": 0,
       "pages": 19,
       "reason": "Aucune fiche produit publique exploitable.",
-      "checkedAt": "2026-11-13T15:27:14.725Z"
+      "checkedAt": "2026-11-17T16:56:34.362Z"
     },
     {
       "name": "Myntra",
@@ -1494,9 +1494,9 @@
       "name": "Vinted",
       "status": "no-structured-products",
       "products": 0,
-      "pages": 16,
+      "pages": 19,
       "reason": "Aucune fiche produit publique exploitable.",
-      "checkedAt": "2026-11-13T15:27:14.725Z"
+      "checkedAt": "2026-11-17T16:56:34.362Z"
     },
     {
       "name": "Tata CLiQ Fashion",
@@ -1880,7 +1880,7 @@
       "products": 0,
       "pages": 0,
       "reason": "Aucune fiche produit publique exploitable.",
-      "checkedAt": "2026-11-13T15:27:14.725Z"
+      "checkedAt": "2026-11-17T16:56:34.362Z"
     },
     {
       "name": "Manastash",
@@ -1888,15 +1888,15 @@
       "products": 0,
       "pages": 3,
       "reason": "Aucune fiche produit publique exploitable.",
-      "checkedAt": "2026-11-13T15:27:14.725Z"
+      "checkedAt": "2026-11-17T16:56:34.362Z"
     },
     {
       "name": "Patta",
       "status": "ok",
-      "products": 14,
+      "products": 7,
       "pages": 19,
       "reason": "",
-      "checkedAt": "2026-11-13T15:27:14.725Z"
+      "checkedAt": "2026-11-17T16:56:34.362Z"
     },
     {
       "name": "Arte Antwerp",
@@ -1904,7 +1904,7 @@
       "products": 0,
       "pages": 19,
       "reason": "Aucune fiche produit publique exploitable.",
-      "checkedAt": "2026-11-13T15:27:14.725Z"
+      "checkedAt": "2026-11-17T16:56:34.362Z"
     },
     {
       "name": "LYNDI",
@@ -1953,6 +1953,54 @@
       "pages": 19,
       "reason": "Aucune fiche produit publique exploitable.",
       "checkedAt": "2026-11-16T17:06:21.421Z"
+    },
+    {
+      "name": "Marni",
+      "status": "blocked",
+      "products": 0,
+      "pages": 0,
+      "reason": "robots.txt inaccessible ou accès refusé",
+      "checkedAt": "2026-11-17T16:56:34.362Z"
+    },
+    {
+      "name": "Martine Rose",
+      "status": "no-structured-products",
+      "products": 0,
+      "pages": 19,
+      "reason": "Aucune fiche produit publique exploitable.",
+      "checkedAt": "2026-11-17T16:56:34.362Z"
+    },
+    {
+      "name": "Casablanca",
+      "status": "no-structured-products",
+      "products": 0,
+      "pages": 19,
+      "reason": "Aucune fiche produit publique exploitable.",
+      "checkedAt": "2026-11-17T16:56:34.362Z"
+    },
+    {
+      "name": "JW Anderson",
+      "status": "no-structured-products",
+      "products": 0,
+      "pages": 19,
+      "reason": "Aucune fiche produit publique exploitable.",
+      "checkedAt": "2026-11-17T16:56:34.362Z"
+    },
+    {
+      "name": "Dime",
+      "status": "blocked",
+      "products": 0,
+      "pages": 0,
+      "reason": "robots.txt inaccessible ou accès refusé",
+      "checkedAt": "2026-11-17T16:56:34.362Z"
+    },
+    {
+      "name": "Golf Wang",
+      "status": "no-structured-products",
+      "products": 0,
+      "pages": 19,
+      "reason": "Aucune fiche produit publique exploitable.",
+      "checkedAt": "2026-11-17T16:56:34.362Z"
     }
   ],
   "refreshCadence": "Rotation quotidienne de 36 enseignes parmi 200 ; chaque enseigne est revisitée à tour de rôle.",
@@ -1963,8 +2011,8 @@
     "Les prix et stocks sont datés ; vérification finale sur la boutique avant achat.",
     "Les notes produit ne sont jamais présentées comme une note de fiabilité du marchand."
   ],
-  "priorityCursor": 39,
-  "regularCursor": 152,
+  "priorityCursor": 51,
+  "regularCursor": 176,
   "directoryCount": 255,
   "nextBatchSize": 36,
   "pageSize": 120,
