@@ -2,16 +2,16 @@
   "schemaVersion": 3,
   "provider": "Pages produits publiques autorisées (Schema.org / Open Graph)",
   "status": "partial",
-  "syncedAt": "2026-11-18T16:30:36.388Z",
-  "productCount": 418,
-  "liveProductCount": 220,
-  "publicProductCount": 220,
+  "syncedAt": "2026-11-19T16:37:35.333Z",
+  "productCount": 441,
+  "liveProductCount": 233,
+  "publicProductCount": 233,
   "curatedProductCount": 16,
-  "staleProductCount": 182,
-  "sourceCount": 18,
-  "attemptedSourceCount": 248,
+  "staleProductCount": 192,
+  "sourceCount": 20,
+  "attemptedSourceCount": 251,
   "scannedSourceCount": 36,
-  "pagesChecked": 219,
+  "pagesChecked": 241,
   "sources": [
     "Armor Lux",
     "Asket",
@@ -19,6 +19,7 @@
     "BZB",
     "Beige Habilleur",
     "C.P. Company",
+    "Care of Carl",
     "Carhartt WIP",
     "Courir",
     "Drôle de Monsieur",
@@ -30,6 +31,7 @@
     "Officine Générale",
     "Patta",
     "Samsøe Samsøe",
+    "Slam Jam",
     "VEJA",
     "Valentino"
   ],
@@ -40,7 +42,7 @@
       "products": 0,
       "pages": 0,
       "reason": "robots.txt inaccessible ou accès refusé",
-      "checkedAt": "2026-11-16T08:46:44.081Z"
+      "checkedAt": "2026-11-19T16:37:35.333Z"
     },
     {
       "name": "Zalando",
@@ -56,7 +58,7 @@
       "products": 0,
       "pages": 0,
       "reason": "robots.txt inaccessible ou accès refusé",
-      "checkedAt": "2026-11-16T08:46:44.081Z"
+      "checkedAt": "2026-11-19T16:37:35.333Z"
     },
     {
       "name": "Bershka",
@@ -64,7 +66,7 @@
       "products": 0,
       "pages": 0,
       "reason": "robots.txt inaccessible ou accès refusé",
-      "checkedAt": "2026-11-16T08:46:44.081Z"
+      "checkedAt": "2026-11-19T16:37:35.333Z"
     },
     {
       "name": "H&M",
@@ -72,7 +74,7 @@
       "products": 0,
       "pages": 0,
       "reason": "robots.txt inaccessible ou accès refusé",
-      "checkedAt": "2026-11-16T08:46:44.081Z"
+      "checkedAt": "2026-11-19T16:37:35.333Z"
     },
     {
       "name": "ASOS",
@@ -88,7 +90,7 @@
       "products": 0,
       "pages": 0,
       "reason": "robots.txt inaccessible ou accès refusé",
-      "checkedAt": "2026-11-16T08:46:44.081Z"
+      "checkedAt": "2026-11-19T16:37:35.333Z"
     },
     {
       "name": "Massimo Dutti",
@@ -104,7 +106,7 @@
       "products": 0,
       "pages": 19,
       "reason": "Aucune fiche produit publique exploitable.",
-      "checkedAt": "2026-11-16T08:46:44.081Z"
+      "checkedAt": "2026-11-19T16:37:35.333Z"
     },
     {
       "name": "Levi's",
@@ -120,7 +122,7 @@
       "products": 0,
       "pages": 1,
       "reason": "Aucune fiche produit publique exploitable.",
-      "checkedAt": "2026-11-16T13:54:23.600Z"
+      "checkedAt": "2026-11-19T16:37:35.333Z"
     },
     {
       "name": "Celio",
@@ -128,7 +130,7 @@
       "products": 0,
       "pages": 0,
       "reason": "robots.txt inaccessible ou accès refusé",
-      "checkedAt": "2026-11-16T13:54:23.600Z"
+      "checkedAt": "2026-11-19T16:37:35.333Z"
     },
     {
       "name": "COS",
@@ -157,10 +159,10 @@
     {
       "name": "Jules",
       "status": "ok",
-      "products": 18,
-      "pages": 21,
+      "products": 16,
+      "pages": 19,
       "reason": "",
-      "checkedAt": "2026-11-16T13:54:23.600Z"
+      "checkedAt": "2026-11-19T16:37:35.333Z"
     },
     {
       "name": "New Balance",
@@ -328,7 +330,7 @@
       "products": 0,
       "pages": 0,
       "reason": "robots.txt inaccessible ou accès refusé",
-      "checkedAt": "2026-11-13T18:40:43.548Z"
+      "checkedAt": "2026-11-19T16:37:35.333Z"
     },
     {
       "name": "Fred Perry",
@@ -344,7 +346,7 @@
       "products": 0,
       "pages": 3,
       "reason": "Aucune fiche produit publique exploitable.",
-      "checkedAt": "2026-11-13T18:48:17.840Z"
+      "checkedAt": "2026-11-19T16:37:35.333Z"
     },
     {
       "name": "24S",
@@ -352,7 +354,7 @@
       "products": 0,
       "pages": 0,
       "reason": "robots.txt inaccessible ou accès refusé",
-      "checkedAt": "2026-11-13T18:40:43.548Z"
+      "checkedAt": "2026-11-19T16:37:35.333Z"
     },
     {
       "name": "Vestiaire Collective",
@@ -376,7 +378,7 @@
       "products": 0,
       "pages": 18,
       "reason": "Aucune fiche produit publique exploitable.",
-      "checkedAt": "2026-11-13T18:48:17.840Z"
+      "checkedAt": "2026-11-19T16:37:35.333Z"
     },
     {
       "name": "Decathlon",
@@ -400,7 +402,7 @@
       "products": 0,
       "pages": 0,
       "reason": "robots.txt inaccessible ou accès refusé",
-      "checkedAt": "2026-11-16T13:54:23.600Z"
+      "checkedAt": "2026-11-19T16:37:35.333Z"
     },
     {
       "name": "END.",
@@ -416,7 +418,7 @@
       "products": 0,
       "pages": 0,
       "reason": "robots.txt inaccessible ou accès refusé",
-      "checkedAt": "2026-11-13T18:40:43.548Z"
+      "checkedAt": "2026-11-19T16:37:35.333Z"
     },
     {
       "name": "Mytheresa",
@@ -424,7 +426,7 @@
       "products": 0,
       "pages": 1,
       "reason": "Aucune fiche produit publique exploitable.",
-      "checkedAt": "2026-11-13T18:40:43.548Z"
+      "checkedAt": "2026-11-19T16:37:35.333Z"
     },
     {
       "name": "Farfetch",
@@ -432,7 +434,7 @@
       "products": 0,
       "pages": 0,
       "reason": "robots.txt inaccessible ou accès refusé",
-      "checkedAt": "2026-11-13T18:40:43.548Z"
+      "checkedAt": "2026-11-19T16:37:35.333Z"
     },
     {
       "name": "YOOX",
@@ -440,7 +442,7 @@
       "products": 0,
       "pages": 0,
       "reason": "robots.txt inaccessible ou accès refusé",
-      "checkedAt": "2026-11-13T18:48:17.840Z"
+      "checkedAt": "2026-11-19T16:37:35.333Z"
     },
     {
       "name": "LUISAVIAROMA",
@@ -448,7 +450,7 @@
       "products": 0,
       "pages": 0,
       "reason": "Aucune fiche produit publique exploitable.",
-      "checkedAt": "2026-11-13T18:40:43.548Z"
+      "checkedAt": "2026-11-19T16:37:35.333Z"
     },
     {
       "name": "Selfridges",
@@ -456,7 +458,7 @@
       "products": 0,
       "pages": 0,
       "reason": "robots.txt inaccessible ou accès refusé",
-      "checkedAt": "2026-11-13T18:48:17.840Z"
+      "checkedAt": "2026-11-19T16:37:35.333Z"
     },
     {
       "name": "Harrods",
@@ -464,7 +466,7 @@
       "products": 0,
       "pages": 0,
       "reason": "robots.txt inaccessible ou accès refusé",
-      "checkedAt": "2026-11-13T18:48:17.840Z"
+      "checkedAt": "2026-11-19T16:37:35.333Z"
     },
     {
       "name": "SSENSE",
@@ -472,7 +474,7 @@
       "products": 0,
       "pages": 20,
       "reason": "Aucune fiche produit publique exploitable.",
-      "checkedAt": "2026-11-13T18:40:43.548Z"
+      "checkedAt": "2026-11-19T16:37:35.333Z"
     },
     {
       "name": "Macy's",
@@ -480,7 +482,7 @@
       "products": 0,
       "pages": 0,
       "reason": "robots.txt inaccessible ou accès refusé",
-      "checkedAt": "2026-11-13T18:48:17.840Z"
+      "checkedAt": "2026-11-19T16:37:35.333Z"
     },
     {
       "name": "Urban Outfitters",
@@ -488,7 +490,7 @@
       "products": 0,
       "pages": 0,
       "reason": "robots.txt inaccessible ou accès refusé",
-      "checkedAt": "2026-11-13T18:48:17.840Z"
+      "checkedAt": "2026-11-19T16:37:35.333Z"
     },
     {
       "name": "NEXT",
@@ -496,7 +498,7 @@
       "products": 0,
       "pages": 0,
       "reason": "robots.txt inaccessible ou accès refusé",
-      "checkedAt": "2026-11-13T18:48:17.840Z"
+      "checkedAt": "2026-11-19T16:37:35.333Z"
     },
     {
       "name": "Flannels",
@@ -504,7 +506,7 @@
       "products": 0,
       "pages": 19,
       "reason": "Aucune fiche produit publique exploitable.",
-      "checkedAt": "2026-11-13T18:48:17.840Z"
+      "checkedAt": "2026-11-19T16:37:35.333Z"
     },
     {
       "name": "Boozt",
@@ -512,7 +514,7 @@
       "products": 0,
       "pages": 1,
       "reason": "Aucune fiche produit publique exploitable.",
-      "checkedAt": "2026-11-13T18:48:17.840Z"
+      "checkedAt": "2026-11-19T16:37:35.333Z"
     },
     {
       "name": "Browns",
@@ -520,7 +522,7 @@
       "products": 0,
       "pages": 19,
       "reason": "Aucune fiche produit publique exploitable.",
-      "checkedAt": "2026-11-13T18:48:17.840Z"
+      "checkedAt": "2026-11-19T16:37:35.333Z"
     },
     {
       "name": "Nordstrom",
@@ -528,7 +530,7 @@
       "products": 0,
       "pages": 19,
       "reason": "Aucune fiche produit publique exploitable.",
-      "checkedAt": "2026-11-13T18:48:17.840Z"
+      "checkedAt": "2026-11-19T16:37:35.333Z"
     },
     {
       "name": "Marks & Spencer",
@@ -536,7 +538,7 @@
       "products": 0,
       "pages": 19,
       "reason": "Aucune fiche produit publique exploitable.",
-      "checkedAt": "2026-11-13T18:48:17.840Z"
+      "checkedAt": "2026-11-19T16:37:35.333Z"
     },
     {
       "name": "GAP",
@@ -556,11 +558,11 @@
     },
     {
       "name": "Care of Carl",
-      "status": "no-structured-products",
-      "products": 0,
+      "status": "ok",
+      "products": 8,
       "pages": 19,
-      "reason": "Aucune fiche produit publique exploitable.",
-      "checkedAt": "2026-11-13T18:48:17.840Z"
+      "reason": "",
+      "checkedAt": "2026-11-19T16:37:35.333Z"
     },
     {
       "name": "Abercrombie & Fitch",
@@ -1912,15 +1914,15 @@
       "products": 0,
       "pages": 3,
       "reason": "Aucune fiche produit publique exploitable.",
-      "checkedAt": "2026-11-13T18:48:17.840Z"
+      "checkedAt": "2026-11-19T16:37:35.333Z"
     },
     {
       "name": "Beige Habilleur",
       "status": "ok",
-      "products": 8,
+      "products": 6,
       "pages": 19,
       "reason": "",
-      "checkedAt": "2026-11-13T18:48:17.840Z"
+      "checkedAt": "2026-11-19T16:37:35.333Z"
     },
     {
       "name": "BODE",
@@ -2017,6 +2019,30 @@
       "pages": 19,
       "reason": "Aucune fiche produit publique exploitable.",
       "checkedAt": "2026-11-18T16:30:36.388Z"
+    },
+    {
+      "name": "Très Bien",
+      "status": "no-structured-products",
+      "products": 0,
+      "pages": 19,
+      "reason": "Aucune fiche produit publique exploitable.",
+      "checkedAt": "2026-11-19T16:37:35.333Z"
+    },
+    {
+      "name": "Slam Jam",
+      "status": "ok",
+      "products": 9,
+      "pages": 19,
+      "reason": "",
+      "checkedAt": "2026-11-19T16:37:35.333Z"
+    },
+    {
+      "name": "Kolroy Studio",
+      "status": "no-structured-products",
+      "products": 0,
+      "pages": 4,
+      "reason": "Aucune fiche produit publique exploitable.",
+      "checkedAt": "2026-11-19T16:37:35.333Z"
     }
   ],
   "refreshCadence": "Rotation quotidienne de 36 enseignes parmi 200 ; chaque enseigne est revisitée à tour de rôle.",
@@ -2027,8 +2053,8 @@
     "Les prix et stocks sont datés ; vérification finale sur la boutique avant achat.",
     "Les notes produit ne sont jamais présentées comme une note de fiabilité du marchand."
   ],
-  "priorityCursor": 7,
-  "regularCursor": 1,
+  "priorityCursor": 19,
+  "regularCursor": 25,
   "directoryCount": 255,
   "nextBatchSize": 36,
   "pageSize": 120,
