@@ -2,21 +2,20 @@
   "schemaVersion": 3,
   "provider": "Pages produits publiques autorisées (Schema.org / Open Graph)",
   "status": "partial",
-  "syncedAt": "2026-11-20T16:13:05.905Z",
-  "productCount": 449,
-  "liveProductCount": 230,
-  "publicProductCount": 230,
+  "syncedAt": "2026-11-21T15:26:36.643Z",
+  "productCount": 454,
+  "liveProductCount": 213,
+  "publicProductCount": 213,
   "curatedProductCount": 16,
-  "staleProductCount": 203,
+  "staleProductCount": 225,
   "sourceCount": 21,
   "attemptedSourceCount": 251,
   "scannedSourceCount": 36,
-  "pagesChecked": 323,
+  "pagesChecked": 473,
   "sources": [
     "Armor Lux",
     "Asket",
     "Asphalte",
-    "BZB",
     "Beige Habilleur",
     "C.P. Company",
     "Care of Carl",
@@ -243,7 +242,7 @@
       "products": 0,
       "pages": 0,
       "reason": "robots.txt inaccessible ou accès refusé",
-      "checkedAt": "2026-11-16T17:06:21.421Z"
+      "checkedAt": "2026-11-21T15:26:36.643Z"
     },
     {
       "name": "Courir",
@@ -307,7 +306,7 @@
       "products": 1,
       "pages": 19,
       "reason": "",
-      "checkedAt": "2026-11-16T17:06:21.421Z"
+      "checkedAt": "2026-11-21T15:26:36.643Z"
     },
     {
       "name": "La Redoute",
@@ -395,7 +394,7 @@
       "products": 0,
       "pages": 19,
       "reason": "Aucune fiche produit publique exploitable.",
-      "checkedAt": "2026-11-17T16:56:34.362Z"
+      "checkedAt": "2026-11-21T15:26:36.643Z"
     },
     {
       "name": "Mango Man",
@@ -691,15 +690,15 @@
       "products": 0,
       "pages": 0,
       "reason": "robots.txt inaccessible ou accès refusé",
-      "checkedAt": "2026-11-14T14:38:48.230Z"
+      "checkedAt": "2026-11-21T15:26:36.643Z"
     },
     {
       "name": "Paul Smith",
       "status": "no-structured-products",
       "products": 0,
-      "pages": 16,
+      "pages": 19,
       "reason": "Aucune fiche produit publique exploitable.",
-      "checkedAt": "2026-11-14T14:38:48.230Z"
+      "checkedAt": "2026-11-21T15:26:36.643Z"
     },
     {
       "name": "Sandro",
@@ -707,7 +706,7 @@
       "products": 0,
       "pages": 20,
       "reason": "Aucune fiche produit publique exploitable.",
-      "checkedAt": "2026-11-14T14:38:48.230Z"
+      "checkedAt": "2026-11-21T15:26:36.643Z"
     },
     {
       "name": "A.P.C.",
@@ -715,7 +714,7 @@
       "products": 0,
       "pages": 19,
       "reason": "Aucune fiche produit publique exploitable.",
-      "checkedAt": "2026-11-14T14:38:48.230Z"
+      "checkedAt": "2026-11-21T15:26:36.643Z"
     },
     {
       "name": "Our Legacy",
@@ -723,7 +722,7 @@
       "products": 0,
       "pages": 18,
       "reason": "Aucune fiche produit publique exploitable.",
-      "checkedAt": "2026-11-14T14:38:48.230Z"
+      "checkedAt": "2026-11-21T15:26:36.643Z"
     },
     {
       "name": "Acne Studios",
@@ -731,7 +730,7 @@
       "products": 0,
       "pages": 19,
       "reason": "Aucune fiche produit publique exploitable.",
-      "checkedAt": "2026-11-14T14:38:48.230Z"
+      "checkedAt": "2026-11-21T15:26:36.643Z"
     },
     {
       "name": "Norse Projects",
@@ -739,7 +738,7 @@
       "products": 0,
       "pages": 19,
       "reason": "Aucune fiche produit publique exploitable.",
-      "checkedAt": "2026-11-14T14:38:48.230Z"
+      "checkedAt": "2026-11-21T15:26:36.643Z"
     },
     {
       "name": "Stone Island",
@@ -747,7 +746,7 @@
       "products": 0,
       "pages": 0,
       "reason": "robots.txt inaccessible ou accès refusé",
-      "checkedAt": "2026-11-17T16:56:34.362Z"
+      "checkedAt": "2026-11-21T15:26:36.643Z"
     },
     {
       "name": "AMI Paris",
@@ -763,7 +762,7 @@
       "products": 0,
       "pages": 0,
       "reason": "robots.txt inaccessible ou accès refusé",
-      "checkedAt": "2026-11-14T17:58:41.827Z"
+      "checkedAt": "2026-11-21T15:26:36.643Z"
     },
     {
       "name": "Folk",
@@ -771,7 +770,7 @@
       "products": 0,
       "pages": 19,
       "reason": "Aucune fiche produit publique exploitable.",
-      "checkedAt": "2026-11-14T14:38:48.230Z"
+      "checkedAt": "2026-11-21T15:26:36.643Z"
     },
     {
       "name": "Percival",
@@ -779,7 +778,7 @@
       "products": 0,
       "pages": 19,
       "reason": "Aucune fiche produit publique exploitable.",
-      "checkedAt": "2026-11-14T17:58:41.827Z"
+      "checkedAt": "2026-11-21T15:26:36.643Z"
     },
     {
       "name": "G-Star RAW",
@@ -787,7 +786,7 @@
       "products": 0,
       "pages": 3,
       "reason": "Aucune fiche produit publique exploitable.",
-      "checkedAt": "2026-11-14T17:58:41.827Z"
+      "checkedAt": "2026-11-21T15:26:36.643Z"
     },
     {
       "name": "Wrangler",
@@ -795,7 +794,7 @@
       "products": 0,
       "pages": 0,
       "reason": "robots.txt inaccessible ou accès refusé",
-      "checkedAt": "2026-11-14T17:58:41.827Z"
+      "checkedAt": "2026-11-21T15:26:36.643Z"
     },
     {
       "name": "Lee",
@@ -803,7 +802,7 @@
       "products": 0,
       "pages": 0,
       "reason": "robots.txt inaccessible ou accès refusé",
-      "checkedAt": "2026-11-14T17:58:41.827Z"
+      "checkedAt": "2026-11-21T15:26:36.643Z"
     },
     {
       "name": "Dickies",
@@ -811,7 +810,7 @@
       "products": 0,
       "pages": 0,
       "reason": "robots.txt inaccessible ou accès refusé",
-      "checkedAt": "2026-11-14T17:58:41.827Z"
+      "checkedAt": "2026-11-21T15:26:36.643Z"
     },
     {
       "name": "Nudie Jeans",
@@ -819,15 +818,15 @@
       "products": 0,
       "pages": 19,
       "reason": "Aucune fiche produit publique exploitable.",
-      "checkedAt": "2026-11-14T17:58:41.827Z"
+      "checkedAt": "2026-11-21T15:26:36.643Z"
     },
     {
       "name": "Diesel",
-      "status": "no-structured-products",
+      "status": "blocked",
       "products": 0,
-      "pages": 19,
-      "reason": "Aucune fiche produit publique exploitable.",
-      "checkedAt": "2026-11-14T17:58:41.827Z"
+      "pages": 0,
+      "reason": "robots.txt inaccessible ou accès refusé",
+      "checkedAt": "2026-11-21T15:26:36.643Z"
     },
     {
       "name": "Filson",
@@ -835,7 +834,7 @@
       "products": 0,
       "pages": 19,
       "reason": "Aucune fiche produit publique exploitable.",
-      "checkedAt": "2026-11-14T17:58:41.827Z"
+      "checkedAt": "2026-11-21T15:26:36.643Z"
     },
     {
       "name": "Gucci",
@@ -851,7 +850,7 @@
       "products": 0,
       "pages": 19,
       "reason": "Aucune fiche produit publique exploitable.",
-      "checkedAt": "2026-11-14T17:58:41.827Z"
+      "checkedAt": "2026-11-21T15:26:36.643Z"
     },
     {
       "name": "Saint Laurent",
@@ -891,7 +890,7 @@
       "products": 0,
       "pages": 19,
       "reason": "Aucune fiche produit publique exploitable.",
-      "checkedAt": "2026-11-14T17:58:41.827Z"
+      "checkedAt": "2026-11-21T15:26:36.643Z"
     },
     {
       "name": "Loewe",
@@ -923,7 +922,7 @@
       "products": 6,
       "pages": 19,
       "reason": "",
-      "checkedAt": "2026-11-14T17:58:41.827Z"
+      "checkedAt": "2026-11-21T15:26:36.643Z"
     },
     {
       "name": "Canada Goose",
@@ -1643,7 +1642,7 @@
       "products": 2,
       "pages": 19,
       "reason": "",
-      "checkedAt": "2026-11-16T17:06:21.421Z"
+      "checkedAt": "2026-11-21T15:26:36.643Z"
     },
     {
       "name": "FAGUO",
@@ -1691,7 +1690,7 @@
       "products": 0,
       "pages": 19,
       "reason": "Aucune fiche produit publique exploitable.",
-      "checkedAt": "2026-11-16T17:06:21.421Z"
+      "checkedAt": "2026-11-21T15:26:36.643Z"
     },
     {
       "name": "BonneGueule",
@@ -1699,15 +1698,15 @@
       "products": 0,
       "pages": 19,
       "reason": "Aucune fiche produit publique exploitable.",
-      "checkedAt": "2026-11-16T17:06:21.421Z"
+      "checkedAt": "2026-11-21T15:26:36.643Z"
     },
     {
       "name": "A Day's March",
       "status": "no-structured-products",
       "products": 0,
-      "pages": 15,
+      "pages": 13,
       "reason": "Aucune fiche produit publique exploitable.",
-      "checkedAt": "2026-11-14T17:58:41.827Z"
+      "checkedAt": "2026-11-21T15:26:36.643Z"
     },
     {
       "name": "Homecore",
@@ -1715,7 +1714,7 @@
       "products": 0,
       "pages": 19,
       "reason": "Aucune fiche produit publique exploitable.",
-      "checkedAt": "2026-11-14T17:58:41.827Z"
+      "checkedAt": "2026-11-21T15:26:36.643Z"
     },
     {
       "name": "Hircus",
@@ -1723,7 +1722,7 @@
       "products": 0,
       "pages": 1,
       "reason": "Aucune fiche produit publique exploitable.",
-      "checkedAt": "2026-11-14T17:58:41.827Z"
+      "checkedAt": "2026-11-21T15:26:36.643Z"
     },
     {
       "name": "Officine Générale",
@@ -1731,7 +1730,7 @@
       "products": 18,
       "pages": 19,
       "reason": "",
-      "checkedAt": "2026-11-14T17:58:41.827Z"
+      "checkedAt": "2026-11-21T15:26:36.643Z"
     },
     {
       "name": "Samsøe Samsøe",
@@ -1936,10 +1935,10 @@
     {
       "name": "Drôle de Monsieur",
       "status": "ok",
-      "products": 14,
+      "products": 15,
       "pages": 19,
       "reason": "",
-      "checkedAt": "2026-11-16T17:06:21.421Z"
+      "checkedAt": "2026-11-21T15:26:36.643Z"
     },
     {
       "name": "Études Studio",
@@ -1947,7 +1946,7 @@
       "products": 0,
       "pages": 19,
       "reason": "Aucune fiche produit publique exploitable.",
-      "checkedAt": "2026-11-16T17:06:21.421Z"
+      "checkedAt": "2026-11-21T15:26:36.643Z"
     },
     {
       "name": "OAS",
@@ -1955,7 +1954,7 @@
       "products": 0,
       "pages": 19,
       "reason": "Aucune fiche produit publique exploitable.",
-      "checkedAt": "2026-11-16T17:06:21.421Z"
+      "checkedAt": "2026-11-21T15:26:36.643Z"
     },
     {
       "name": "Marni",
@@ -1963,7 +1962,7 @@
       "products": 0,
       "pages": 0,
       "reason": "robots.txt inaccessible ou accès refusé",
-      "checkedAt": "2026-11-17T16:56:34.362Z"
+      "checkedAt": "2026-11-21T15:26:36.643Z"
     },
     {
       "name": "Martine Rose",
@@ -1979,7 +1978,7 @@
       "products": 0,
       "pages": 19,
       "reason": "Aucune fiche produit publique exploitable.",
-      "checkedAt": "2026-11-17T16:56:34.362Z"
+      "checkedAt": "2026-11-21T15:26:36.643Z"
     },
     {
       "name": "JW Anderson",
@@ -2054,8 +2053,8 @@
     "Les prix et stocks sont datés ; vérification finale sur la boutique avant achat.",
     "Les notes produit ne sont jamais présentées comme une note de fiabilité du marchand."
   ],
-  "priorityCursor": 31,
-  "regularCursor": 49,
+  "priorityCursor": 43,
+  "regularCursor": 73,
   "directoryCount": 255,
   "nextBatchSize": 36,
   "pageSize": 120,

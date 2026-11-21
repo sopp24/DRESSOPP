@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-11-20T16:13:05.905Z",
-  "totalProducts": 449,
+  "generatedAt": "2026-11-21T15:26:36.643Z",
+  "totalProducts": 454,
   "pageSize": 120,
   "pageCount": 4,
   "pages": [
@@ -19,7 +19,7 @@
     },
     {
       "file": "catalog-pages/page-0004.json",
-      "count": 89
+      "count": 94
     }
   ]
 }
