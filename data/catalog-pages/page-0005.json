@@ -3,97 +3,107 @@
   "page": 5,
   "pageSize": 120,
   "totalProducts": 482,
-  "generatedAt": "2026-11-22T15:25:04.180Z",
+  "generatedAt": "2026-11-23T19:18:00.574Z",
   "products": [
     {
-      "id": "web-xwwyhb",
-      "name": "Metropolis Series Extrafine Merino Wool Waffle Crewneck Sweater",
-      "brand": "Metropolis Series Extrafine Merino Wool Waffle Crewneck Sweater",
-      "merchant": "C.P. Company",
-      "url": "https://www.cpcompany.com/en-ad/metropolis-series-extrafine-merino-wool-waffle-crewneck-sweater/21CLKN040A005528A.html",
-      "imageUrl": "./assets/product-images/1trivar.jpg",
-      "imageFallbackUrl": "https://www.cpcompany.com/on/demandware.static/-/Sites-cpc-master-catalog/default/dw4067f1e9/images/hi-res-1/21CLKN040A005528A661.1.H1.jpg",
-      "price": 345,
+      "id": "seed-lookbook-bangel-wide-denim",
+      "name": "JEANS, LOOSE FIT – Light Blue",
+      "brand": "B.ANGEL",
+      "merchant": "Zalando · OVS Group",
+      "url": "https://www.zalando.fr/bangel-jeans-loose-fit-jean-coupe-decontractee-light-blue-bwx22g00u-k11.html",
+      "imageUrl": "./assets/product-images/ibktcd.webp",
+      "price": 44.95,
       "originalPrice": null,
       "objective": "Vêtements",
-      "category": "Pull",
+      "category": "Jean",
+      "styleTags": [
+        "Casual",
+        "Vintage",
+        "Streetwear",
+        "Workwear"
+      ],
+      "seasonTags": [
+        "Toute saison"
+      ],
+      "colors": [
+        "Bleu clair",
+        "Denim délavé"
+      ],
+      "materials": [
+        "Coton"
+      ],
+      "cuts": [
+        "Loose",
+        "Ample",
+        "Jambe droite"
+      ],
+      "patterns": [
+        "Délavé"
+      ],
+      "description": "Jean homme B.ANGEL en denim bleu clair 100 % coton, coupe loose, taille regular et jambe droite ample. Jean clair délavé à volume ample. La fiche Zalando précise que les visuels sont générés par IA ; la coupe, composition et référence produit sont indiquées sur la fiche.",
+      "sizes": [],
+      "availability": "Fiche produit active avec taille sélectionnable ; stock de la taille à confirmer sur Zalando.",
+      "availabilityStatus": "listed",
+      "source": "Zalando",
+      "sourceType": "curated",
+      "catalogStatus": "active",
+      "verifiedAt": "2026-11-06T16:21:57.182Z",
+      "expiresAt": "2026-11-13T16:21:57.182Z",
+      "priceUpdatedAt": "2026-11-06T16:21:57.182Z",
       "gender": "men",
       "genderVerified": true,
-      "audienceEvidence": "merchant",
-      "styleTags": [
-        "Smart Casual",
-        "Classique"
-      ],
-      "seasonTags": [],
-      "colors": [],
-      "materials": [],
-      "cuts": [],
-      "patterns": [],
-      "description": "Sweater crafted in extrafine merino wool with a waffle knit construction. The style features a ribbed crewneck, cuffs and hem. A sleeve flap pocket with rubberized logo badge defines the design. Gauge 14. Regular fit.",
-      "sizes": [],
-      "availability": "En stock lors du dernier contrôle",
-      "availabilityStatus": "available",
-      "source": "C.P. Company",
-      "sourceType": "public-web",
-      "catalogStatus": "active",
-      "verifiedAt": "2026-11-22T15:24:59.400Z",
-      "syncedAt": "2026-11-22T15:24:59.400Z",
-      "priceUpdatedAt": "2026-11-22T15:24:59.400Z",
-      "stockVerifiedAt": "2026-11-22T15:24:59.400Z",
-      "expiresAt": "2026-11-29T15:24:59.400Z",
-      "productRating": null,
-      "productRatingCount": null,
-      "productRatingSource": "",
-      "merchantRating": null,
-      "merchantRatingCount": null,
-      "merchantRatingSource": "",
-      "popularityScore": null,
-      "isBestSeller": false
+      "imageFallbackUrl": "https://img01.ztat.net/article/spp-media-p1/9bf0177ff5f144dbbe65f165d1c899a8/6ae71ccfe8bf4c8daa01fafef2e9d7f8.jpg?imwidth=762"
     },
     {
-      "id": "web-1mbwlxb",
-      "name": "Metropolis Series Extrafine Merino Wool Waffle Crewneck Sweater",
-      "brand": "Metropolis Series Extrafine Merino Wool Waffle Crewneck Sweater",
-      "merchant": "C.P. Company",
-      "url": "https://www.cpcompany.com/en-by/metropolis-series-extrafine-merino-wool-waffle-crewneck-sweater/21CLKN040A005528A.html",
-      "imageUrl": "./assets/product-images/1w0bpy5.jpg",
-      "imageFallbackUrl": "https://www.cpcompany.com/on/demandware.static/-/Sites-cpc-master-catalog/default/dw4067f1e9/images/hi-res-1/21CLKN040A005528A661.1.H1.jpg",
-      "price": 345,
+      "id": "seed-lookbook-bangel-grey-wide-jogger",
+      "name": "MELANGE OVER-FIT TROUSERS – Grey Marl",
+      "brand": "B.ANGEL",
+      "merchant": "Zalando · OVS Group",
+      "url": "https://www.zalando.fr/bangel-melange-over-fit-trousers-pantalon-de-survetement-grey-marl-bwx22e01z-c11.html",
+      "imageUrl": "./assets/product-images/33mh8s.webp",
+      "price": 44.95,
       "originalPrice": null,
       "objective": "Vêtements",
-      "category": "Pull",
+      "category": "Pantalon de jogging",
+      "styleTags": [
+        "Casual",
+        "Streetwear",
+        "Minimaliste"
+      ],
+      "seasonTags": [
+        "Automne",
+        "Hiver",
+        "Printemps"
+      ],
+      "colors": [
+        "Gris chiné"
+      ],
+      "materials": [
+        "Polyester",
+        "Viscose",
+        "Élasthanne"
+      ],
+      "cuts": [
+        "Over-fit",
+        "Ample",
+        "Jambe droite"
+      ],
+      "patterns": [
+        "Chiné"
+      ],
+      "description": "Pantalon de survêtement homme B.ANGEL gris chiné, coupe over-fit et jambe ample droite, taille élastiquée. Coupe over-fit et jambe ample droite.",
+      "sizes": [],
+      "availability": "Fiche produit active avec taille sélectionnable ; stock de la taille à confirmer sur Zalando.",
+      "availabilityStatus": "listed",
+      "source": "Zalando",
+      "sourceType": "curated",
+      "catalogStatus": "active",
+      "verifiedAt": "2026-11-06T16:21:57.182Z",
+      "expiresAt": "2026-11-13T16:21:57.182Z",
+      "priceUpdatedAt": "2026-11-06T16:21:57.182Z",
       "gender": "men",
       "genderVerified": true,
-      "audienceEvidence": "merchant",
-      "styleTags": [
-        "Smart Casual",
-        "Classique"
-      ],
-      "seasonTags": [],
-      "colors": [],
-      "materials": [],
-      "cuts": [],
-      "patterns": [],
-      "description": "Sweater crafted in extrafine merino wool with a waffle knit construction. The style features a ribbed crewneck, cuffs and hem. A sleeve flap pocket with rubberized logo badge defines the design. Gauge 14. Regular fit.",
-      "sizes": [],
-      "availability": "En stock lors du dernier contrôle",
-      "availabilityStatus": "available",
-      "source": "C.P. Company",
-      "sourceType": "public-web",
-      "catalogStatus": "active",
-      "verifiedAt": "2026-11-22T15:25:00.077Z",
-      "syncedAt": "2026-11-22T15:25:00.077Z",
-      "priceUpdatedAt": "2026-11-22T15:25:00.077Z",
-      "stockVerifiedAt": "2026-11-22T15:25:00.077Z",
-      "expiresAt": "2026-11-29T15:25:00.077Z",
-      "productRating": null,
-      "productRatingCount": null,
-      "productRatingSource": "",
-      "merchantRating": null,
-      "merchantRatingCount": null,
-      "merchantRatingSource": "",
-      "popularityScore": null,
-      "isBestSeller": false
+      "imageFallbackUrl": "https://img01.ztat.net/article/spp-media-p1/c0651324e9e944f48105d672f109a1b8/1e0a435b15714798b5af655f2be3f075.jpg?filter=packshot&imwidth=762"
     }
   ]
 }
