@@ -66,6 +66,10 @@ export function isMenswearPin(pin) {
 function unique(values) {
   return Array.from(new Set(values.filter(Boolean)));
 }
+// Une analyse peut être partielle ou abîmée : on ne garde que les pièces qui sont de vrais objets.
+export function visualPieces(visual) {
+  return visual && Array.isArray(visual.pieces) ? visual.pieces.filter(piece => piece && typeof piece === "object") : [];
+}
 export function pinterestText(pin) {
   return [pin.title, pin.description, pin.altText, pin.alt_text, ...(pin.tags || [])].filter(Boolean).join(" ");
 }
@@ -95,7 +99,7 @@ function mergeVisualValues(target, values, allowed) {
 }
 export function inferPinterestFeatures(pin) {
   const visual = pin && pin.visualAnalysis && pin.visualAnalysis.isFashion !== false ? pin.visualAnalysis : null;
-  const pieces = visual && Array.isArray(visual.pieces) ? visual.pieces : [];
+  const pieces = visualPieces(visual);
   const pieceText = pieces.flatMap(function(piece) {
     return [piece.type,piece.color,piece.material,piece.cut,piece.pattern,...(Array.isArray(piece.details) ? piece.details : [])];
   });
@@ -176,8 +180,92 @@ export function familySlot(family) { return FAMILY_SLOTS[family] || ""; }
 // Familles des pièces visibles sur un Pin analysé.
 export function pinGarmentFamilies(pin) {
   const visual = pin && pin.visualAnalysis && pin.visualAnalysis.isFashion !== false ? pin.visualAnalysis : null;
-  const pieces = visual && Array.isArray(visual.pieces) ? visual.pieces : [];
+  const pieces = visualPieces(visual);
   return Array.from(new Set(pieces.map(function(piece) { return garmentFamily(piece && piece.type); }).filter(Boolean)));
+}
+
+// Familles de couleurs : « bleu marine », « navy » et « bleu nuit » parlent de la même teinte.
+const COLOR_FAMILY_RULES = [
+  ["black", /noir|black|anthracite|charbon/], ["white", /blanc|white|ecru|creme|cream|ivoire|ivory|naturel/],
+  ["grey", /gris|grey|gray|argent|silver/], ["navy", /marine|navy/], ["blue", /bleu|blue|indigo|denim/],
+  ["olive", /kaki|khaki|olive|sauge|militaire/], ["green", /vert|green|emeraude/],
+  ["brown", /marron|brown|chocolat|camel|cognac|tabac|taupe|moka|caramel/], ["beige", /beige|sable|sand|stone|pierre/],
+  ["orange", /orange|terracotta|rouille/], ["red", /rouge|red|bordeaux|burgundy|brique/], ["pink", /rose|pink|fuchsia/],
+  ["yellow", /jaune|yellow|moutarde|mustard/], ["purple", /violet|purple|prune|mauve|lilas/]
+];
+const NEUTRAL_COLOR_FAMILIES = new Set(["black", "white", "grey", "navy", "blue", "olive", "brown", "beige"]);
+export function colorFamily(value) {
+  const text = clean(value);
+  if (!text) return "";
+  for (const rule of COLOR_FAMILY_RULES) if (rule[1].test(text)) return rule[0];
+  return "";
+}
+function primaryColorFamily(product) {
+  const fromColors = (Array.isArray(product && product.colors) ? product.colors : []).map(colorFamily).filter(Boolean)[0];
+  return fromColors || colorFamily(product && product.name);
+}
+
+// Poids d'un Pin : un Pin récent compte un peu plus qu'un Pin ancien, une analyse peu sûre un peu moins.
+// Un Pin sans date ou sans indice de confiance garde le poids 1 (données historiques inchangées).
+export function pinWeight(pin, now) {
+  const created = Date.parse(pin && (pin.createdAt || pin.created_at || pin.savedAt) || "");
+  const reference = Number.isFinite(Number(now)) ? Number(now) : Date.now();
+  let recency = 1;
+  if (Number.isFinite(created)) recency = .55 + .45 * Math.pow(.5, Math.max(0, reference - created) / 864e5 / 75);
+  const confidence = Number(pin && pin.visualAnalysis && pin.visualAnalysis.confidence);
+  const certainty = Number.isFinite(confidence) && confidence > 0 && confidence <= 1 ? .75 + .25 * confidence : 1;
+  return recency * certainty;
+}
+
+// Pins quasi identiques (même image, même titre et mêmes pièces, ou mêmes pièces sur une analyse complète) :
+// un seul compte, le plus récent, pour ne pas surpondérer une même tenue enregistrée deux fois.
+const PIN_SIGNATURES = new WeakMap();
+function pinSignature(pin) {
+  if (pin && typeof pin === "object" && PIN_SIGNATURES.has(pin)) return PIN_SIGNATURES.get(pin);
+  const imageMatch = /([0-9a-f]{24,})\.[a-z0-9]+(?:\?|$)/i.exec(String(pin && pin.imageUrl || ""));
+  const visual = pin && pin.visualAnalysis && pin.visualAnalysis.isFashion !== false ? pin.visualAnalysis : null;
+  const signature = {
+    image: imageMatch ? imageMatch[1].toLowerCase() : "",
+    title: new Set(clean(pin && pin.title).split(/[^a-z0-9]+/).filter(word => word.length > 2)),
+    pieces: new Set(visualPieces(visual).map(piece => (garmentFamily(piece.type) || clean(piece.type)) + "|" + colorFamily(piece.color)).filter(entry => entry !== "|"))
+  };
+  if (pin && typeof pin === "object") PIN_SIGNATURES.set(pin, signature);
+  return signature;
+}
+function jaccard(a, b) {
+  if (!a.size || !b.size) return 0;
+  let shared = 0;
+  a.forEach(value => { if (b.has(value)) shared += 1; });
+  return shared / (a.size + b.size - shared);
+}
+function nearIdenticalPins(a, b) {
+  const first = pinSignature(a), second = pinSignature(b);
+  if (first.image && first.image === second.image) return true;
+  const pieceSimilarity = jaccard(first.pieces, second.pieces);
+  if (first.pieces.size >= 3 && second.pieces.size >= 3 && pieceSimilarity >= .8) return true;
+  if (first.title.size >= 3 && second.title.size >= 3 && jaccard(first.title, second.title) >= .85) {
+    return first.pieces.size && second.pieces.size ? pieceSimilarity >= .5 : true;
+  }
+  return false;
+}
+export function dedupePins(pins) {
+  const list = (Array.isArray(pins) ? pins : []).filter(Boolean).map((pin, index) => ({
+    pin, index, time: Date.parse(pin.createdAt || pin.created_at || "") || 0
+  }));
+  const kept = [];
+  list.slice().sort((a, b) => b.time - a.time || a.index - b.index).forEach(item => {
+    if (!kept.some(other => nearIdenticalPins(other.pin, item.pin))) kept.push(item);
+  });
+  return kept.sort((a, b) => a.index - b.index).map(item => item.pin);
+}
+
+// Marques citées dans le texte d'un Pin (titre, description, légende) : à partir d'un lexique fourni (marques du catalogue).
+export function pinBrandMentions(pin, brands) {
+  const padded = " " + clean([pinterestText(pin), pin && pin.visualAnalysis && pin.visualAnalysis.summary].filter(Boolean).join(" ")).replace(/[^a-z0-9]+/g, " ").trim() + " ";
+  return unique((Array.isArray(brands) ? brands : []).filter(brand => {
+    const normalized = clean(brand).replace(/[^a-z0-9]+/g, " ").trim();
+    return normalized.length >= 4 && padded.includes(" " + normalized + " ");
+  }).map(clean));
 }
 
 const PRODUCT_TERMS = new WeakMap();
@@ -196,7 +284,7 @@ const PIN_PROFILES = new WeakMap();
 function pinProfile(pin) {
   if (pin && typeof pin === "object" && PIN_PROFILES.has(pin)) return PIN_PROFILES.get(pin);
   const visual = pin && pin.visualAnalysis && pin.visualAnalysis.isFashion !== false ? pin.visualAnalysis : null;
-  const pieces = visual && Array.isArray(visual.pieces) ? visual.pieces : [];
+  const pieces = visualPieces(visual);
   const visualText = visual ? [
     visual.summary,visual.layering,visual.outfitFormula,visual.silhouetteTags,
     visual.details,pieces.flatMap(piece => [piece.type,piece.color,piece.material,piece.cut,piece.pattern,...(piece.details || [])])
@@ -517,7 +605,7 @@ export function buildOutfitIdeas(pins, wardrobe, catalogue, dislikedIds, outfitF
 
     const pieces = items.filter(entry => entry.isSaved);
     const suggestions = items.filter(entry => !entry.isSaved);
-    const visibleSlots = unique((pin.visualAnalysis && Array.isArray(pin.visualAnalysis.pieces) ? pin.visualAnalysis.pieces : [])
+    const visibleSlots = unique(visualPieces(pin.visualAnalysis && pin.visualAnalysis.isFashion !== false ? pin.visualAnalysis : null)
       .map(visualPieceSlot).filter(slot => ["top","bottom","shoes","outerwear","accessory"].includes(slot)));
     const expectedSlots = visibleSlots.length ? visibleSlots : coreSlots;
     const missingSlots = expectedSlots.filter(slot => !items.some(entry => entry.slot === slot));
