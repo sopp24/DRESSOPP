@@ -2,9 +2,261 @@
   "schemaVersion": 1,
   "page": 5,
   "pageSize": 120,
-  "totalProducts": 487,
-  "generatedAt": "2026-11-24T18:56:28.152Z",
+  "totalProducts": 489,
+  "generatedAt": "2026-11-25T18:01:35.597Z",
   "products": [
+    {
+      "id": "seed-lookbook-kleman-padror-bordeaux",
+      "name": "PADROR Burgundy Leather Tyrolean Shoes",
+      "brand": "KLEMAN",
+      "merchant": "KLEMAN",
+      "url": "https://kleman-france.com/en/products/padror-bordeaux-1",
+      "imageUrl": "https://kleman-france.com/cdn/shop/files/PADROR_ZA72105_07.jpg?v=1771565995&width=1400",
+      "price": 170,
+      "originalPrice": null,
+      "objective": "Chaussures",
+      "category": "Derbies / chaussures à lacets",
+      "styleTags": [
+        "Heritage",
+        "Classique",
+        "Workwear",
+        "Smart Casual"
+      ],
+      "seasonTags": [
+        "Automne",
+        "Hiver",
+        "Toute saison"
+      ],
+      "colors": [
+        "Bordeaux"
+      ],
+      "materials": [
+        "Cuir de vachette"
+      ],
+      "cuts": [
+        "À lacets",
+        "Semelle épaisse"
+      ],
+      "patterns": [],
+      "description": "Chaussure KLEMAN en cuir bordeaux, semelle caoutchouc crantée et piqûres décoratives. Modèle à lacets, pas un mocassin. La marque indique un cuir de tannerie espagnole certifiée LWG.",
+      "sizes": [],
+      "availability": "Sélecteur de pointure présent sur la fiche officielle ; vérifier le stock de la pointure choisie.",
+      "availabilityStatus": "listed",
+      "source": "KLEMAN",
+      "sourceType": "curated",
+      "catalogStatus": "active",
+      "verifiedAt": "2026-11-06T16:18:22.816Z",
+      "expiresAt": "2026-11-13T16:18:22.816Z",
+      "priceUpdatedAt": "2026-11-06T16:18:22.816Z"
+    },
+    {
+      "id": "seed-lookbook-ralph-lauren-pink-knit-rugby",
+      "name": "Polo Sport Ralph Lauren Knit-Rugby-Pullover",
+      "brand": "Polo Sport Ralph Lauren",
+      "merchant": "SNIPES",
+      "url": "https://www.snipes.com/fr-fr/p/polo-sport-ralph-lauren-knit-rugby-pullover-pink-96344",
+      "imageUrl": "./assets/product-images/1x74gpx.jpg",
+      "price": 120,
+      "originalPrice": 164.99,
+      "objective": "Vêtements",
+      "category": "Pull rugby",
+      "styleTags": [
+        "Preppy",
+        "Vintage",
+        "Sport Heritage",
+        "Casual"
+      ],
+      "seasonTags": [
+        "Automne",
+        "Hiver"
+      ],
+      "colors": [
+        "Rose",
+        "Bleu marine",
+        "Blanc"
+      ],
+      "materials": [
+        "Coton"
+      ],
+      "cuts": [
+        "Oversize"
+      ],
+      "patterns": [
+        "Rayures"
+      ],
+      "description": "Pull rugby homme Polo Sport Ralph Lauren rose et bleu marine, col blanc, encolure V et coupe oversize, 100 % coton. Style rugby avec une palette rose et bleu marine.",
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL",
+        "XXL"
+      ],
+      "availability": "Tailles affichées sur la fiche SNIPES : S, M, L, XL et XXL ; stock final à confirmer.",
+      "availabilityStatus": "listed",
+      "source": "SNIPES",
+      "sourceType": "curated",
+      "catalogStatus": "active",
+      "verifiedAt": "2026-11-06T16:18:22.816Z",
+      "expiresAt": "2026-11-13T16:18:22.816Z",
+      "priceUpdatedAt": "2026-11-06T16:18:22.816Z",
+      "gender": "men",
+      "genderVerified": true,
+      "imageFallbackUrl": "https://asset.snipes.com/images/f_auto%2Cq_auto%3Abest%2Cd_fallback-sni.png/b_rgb%3Af8f8f8%2Cc_pad%2Cg_south%2Cw_108%2Ch_108/if_md%3A%21is_ai_generated%21_eq_%21true%21/l_ai_icon/fl_layer_apply%2Cg_south_east%2Cw_16%2Cx_16%2Cy_16/if_end/dpr_1.0/02572151_1/polo-sport-ralph-lauren-knit-rugby-pullover-pink-96344-1"
+    },
+    {
+      "id": "seed-lookbook-samsoe-cream-vneck",
+      "name": "V NECK Pullover · Clear Cream",
+      "brand": "Samsøe Samsøe",
+      "merchant": "Zalando",
+      "url": "https://www.zalando.fr/samsoee-samsoee-v-neck-pullover-clear-cream-sa322q06x-a11.html",
+      "imageUrl": "./assets/product-images/2seix7.webp",
+      "price": 111.95,
+      "originalPrice": 139.95,
+      "objective": "Vêtements",
+      "category": "Pull col V",
+      "styleTags": [
+        "Preppy",
+        "Smart Casual",
+        "Minimaliste",
+        "Classique"
+      ],
+      "seasonTags": [
+        "Automne",
+        "Hiver",
+        "Printemps"
+      ],
+      "colors": [
+        "Crème",
+        "Écru"
+      ],
+      "materials": [
+        "Coton",
+        "Polyamide"
+      ],
+      "cuts": [
+        "Regular",
+        "Col V"
+      ],
+      "patterns": [],
+      "description": "Pull homme crème à col V, maille 90 % coton et 10 % polyamide, coupe regular. À porter sur une chemise blanche.",
+      "sizes": [],
+      "availability": "Fiche produit active avec sélection de taille ; vérifier les tailles disponibles sur Zalando.",
+      "availabilityStatus": "listed",
+      "source": "Zalando",
+      "sourceType": "curated",
+      "catalogStatus": "active",
+      "verifiedAt": "2026-11-06T16:18:22.816Z",
+      "expiresAt": "2026-11-13T16:18:22.816Z",
+      "priceUpdatedAt": "2026-11-06T16:18:22.816Z",
+      "gender": "men",
+      "genderVerified": true,
+      "imageFallbackUrl": "https://img01.ztat.net/article/spp-media-p1/ec01f7acd3314342a68965a91a414810/9e3b595dd26a41eaa8790af2e5170238.jpg?filter=packshot&imwidth=400"
+    },
+    {
+      "id": "seed-lookbook-cos-black-shearling-leather",
+      "name": "Blouson en cuir à col en peau lainée détachable",
+      "brand": "COS",
+      "merchant": "COS",
+      "url": "https://www.cos.com/fr-fr/men/menswear/coatsjackets/jackets/product/detachable-shearling-collar-leather-jacket-black-1362065001",
+      "imageUrl": "./assets/product-images/rrnf6x.avif",
+      "price": 449,
+      "originalPrice": null,
+      "objective": "Vêtements",
+      "category": "Veste en cuir",
+      "styleTags": [
+        "Heritage",
+        "Biker",
+        "Workwear",
+        "Minimaliste"
+      ],
+      "seasonTags": [
+        "Automne",
+        "Hiver"
+      ],
+      "colors": [
+        "Noir"
+      ],
+      "materials": [
+        "Cuir",
+        "Peau lainée"
+      ],
+      "cuts": [
+        "Décontractée",
+        "Ample"
+      ],
+      "patterns": [],
+      "description": "Blouson homme COS en cuir noir patiné, coupe décontractée et col en peau lainée amovible. Col en peau lainée amovible, dans un esprit hivernal.",
+      "sizes": [
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "availability": "Tailles XS à XL affichées sur la fiche COS ; stock à vérifier au moment de l'achat.",
+      "availabilityStatus": "listed",
+      "source": "COS",
+      "sourceType": "curated",
+      "catalogStatus": "active",
+      "verifiedAt": "2026-11-06T16:18:22.816Z",
+      "expiresAt": "2026-11-13T16:18:22.816Z",
+      "priceUpdatedAt": "2026-11-06T16:18:22.816Z",
+      "gender": "men",
+      "genderVerified": true,
+      "imageFallbackUrl": "https://media.cos.com/assets/001/07/7f/077f16e0a19f896bff72bbe9a57aee8837e3714d_xxl-1.jpg?imwidth=2160"
+    },
+    {
+      "id": "seed-lookbook-massimo-dutti-striped-knit-zip",
+      "name": "Striped Knit Polo Sweater",
+      "brand": "Massimo Dutti",
+      "merchant": "Zalando · Massimo Dutti",
+      "url": "https://www.zalando.fr/massimo-dutti-t-shirt-a-manches-longues-dark-brown-m3i22q0ve-o11.html",
+      "imageUrl": "./assets/product-images/1917fqf.webp",
+      "price": 70,
+      "originalPrice": null,
+      "objective": "Vêtements",
+      "category": "Pull polo zippé",
+      "styleTags": [
+        "Heritage",
+        "Preppy",
+        "Smart Casual",
+        "Vintage"
+      ],
+      "seasonTags": [
+        "Automne",
+        "Hiver"
+      ],
+      "colors": [
+        "Marron",
+        "Gris",
+        "Bleu marine"
+      ],
+      "materials": [
+        "Laine"
+      ],
+      "cuts": [
+        "Regular",
+        "Col polo",
+        "Demi-zip"
+      ],
+      "patterns": [
+        "Rayures"
+      ],
+      "description": "Pull homme à col polo zippé et rayures, indiqué 100 % laine sur la fiche Zalando, coupe regular. Maille rayée à col polo zippé, dans une palette sombre.",
+      "sizes": [],
+      "availability": "Fiche produit active avec sélection de taille ; vérifier le stock sur Zalando.",
+      "availabilityStatus": "listed",
+      "source": "Zalando",
+      "sourceType": "curated",
+      "catalogStatus": "active",
+      "verifiedAt": "2026-11-06T16:18:22.816Z",
+      "expiresAt": "2026-11-13T16:18:22.816Z",
+      "priceUpdatedAt": "2026-11-06T16:18:22.816Z",
+      "gender": "men",
+      "genderVerified": true,
+      "imageFallbackUrl": "https://img01.ztat.net/article/spp-media-p1/2c65fca24a2e4c3d9c5f9009f91c4eac/8aa3ec8884dd44679e2267be6832f56e.jpg?imwidth=762"
+    },
     {
       "id": "seed-lookbook-bangel-wide-denim",
       "name": "JEANS, LOOSE FIT – Light Blue",
@@ -106,139 +358,44 @@
       "imageFallbackUrl": "https://img01.ztat.net/article/spp-media-p1/c0651324e9e944f48105d672f109a1b8/1e0a435b15714798b5af655f2be3f075.jpg?filter=packshot&imwidth=762"
     },
     {
-      "id": "web-2yxnhr",
-      "name": "Pull col camionneur mousseux",
-      "brand": "Jules",
-      "merchant": "Jules",
-      "url": "https://www.jules.com/fr-fr/p/100904716344.html",
-      "imageUrl": "./assets/product-images/13mjtad.avif",
-      "imageFallbackUrl": "https://www.jules.com/dw/image/v2/AAHK_PRD/on/demandware.static/-/Sites-core-master-catalog/default/dwb4493665/images/1009047_16344_V5.jpg?sw=1562&sh=1800&sm=fit",
-      "price": 32.19,
+      "id": "web-1g9d35k",
+      "name": "Cold Heart Glass Mug",
+      "brand": "Carhartt WIP",
+      "merchant": "Carhartt WIP",
+      "url": "https://www.carhartt-wip.com/en-de/p/cold-heart-glass-mug-clear-1345",
+      "imageUrl": "./assets/product-images/15e6smy.jpg",
+      "imageFallbackUrl": "https://cdn.media.amplience.net/i/carhartt_wip/I037685_1B6_XX-ST-01?$facebook$",
+      "price": 19,
       "originalPrice": null,
       "objective": "Vêtements",
-      "category": "Pantalon",
-      "gender": "men",
-      "genderVerified": true,
-      "audienceEvidence": "merchant",
-      "styleTags": [
-        "Classique"
-      ],
-      "seasonTags": [],
-      "colors": [
-        "Vert kaki"
-      ],
-      "materials": [
-        "WO"
-      ],
-      "cuts": [],
-      "patterns": [],
-      "description": "Adoptez ce pull col camionneur &agrave; l'aspect mousseux, un essentiel de votre vestiaire. Ce pull est une pi&egrave;ce ma&icirc;tresse pour un look casual et soign&eacute;. Coupe regular : coupe intemporelle, ni trop ajust&eacute;e, ni trop large Col camionneur Bords c&ocirc;tes en bas de corps et bas de manches 25% polyester recycl&eacute; Associez-le &agrave; un jean brut et des mocassins pour une silhouette &eacute;l&eacute;gante et d&eacute;contract&eacute;e. Pour une protection suppl&eacute;mentaire contre le froid, il se superpose parfaitement sous une veste en cuir, cr&eacute;ant un jeu de mati&egrave;res int&eacute;ressant et un style r&eacute;solument moderne, id&eacute;al pour le quotidien. Le mannequin mesure 1m86 et porte du L.",
-      "sizes": [],
-      "availability": "En stock lors du dernier contrôle",
-      "availabilityStatus": "available",
-      "source": "Jules",
-      "sourceType": "public-web",
-      "catalogStatus": "active",
-      "verifiedAt": "2026-11-24T18:55:04.465Z",
-      "syncedAt": "2026-11-24T18:55:04.465Z",
-      "priceUpdatedAt": "2026-11-24T18:55:04.465Z",
-      "stockVerifiedAt": "2026-11-24T18:55:04.465Z",
-      "expiresAt": "2026-12-01T18:55:04.465Z",
-      "productRating": null,
-      "productRatingCount": null,
-      "productRatingSource": "",
-      "merchantRating": null,
-      "merchantRatingCount": null,
-      "merchantRatingSource": "",
-      "popularityScore": null,
-      "isBestSeller": false
-    },
-    {
-      "id": "web-v01wrn",
-      "name": "Jean loose 100% coton",
-      "brand": "Jules",
-      "merchant": "Jules",
-      "url": "https://www.jules.com/fr-fr/p/100800711234.html",
-      "imageUrl": "./assets/product-images/1c9j1c2.avif",
-      "imageFallbackUrl": "https://www.jules.com/dw/image/v2/AAHK_PRD/on/demandware.static/-/Sites-core-master-catalog/default/dwed1e46fe/images/1008007_11234_V5.jpg?sw=1562&sh=1800&sm=fit",
-      "price": 20.99,
-      "originalPrice": null,
-      "objective": "Accessoires",
-      "category": "Accessoires",
-      "gender": "men",
-      "genderVerified": true,
-      "audienceEvidence": "merchant",
-      "styleTags": [
-        "Smart Casual",
-        "Classique"
-      ],
-      "seasonTags": [],
-      "colors": [
-        "Bleu moyen"
-      ],
-      "materials": [
-        "CO"
-      ],
-      "cuts": [],
-      "patterns": [],
-      "description": "Découvrez le jean loose, un incontournable pour un style décontracté et tendance. Ce jean offre une coupe ample pour une liberté de mouvement optimale. Coupe loose : coupe large du bas bassin jusqu au bas de jambe 2 poches à l'avant avec une poche ticket 2 poches plaquées à l'arrière Longueur 34 Jacron Jules au dos Passants pour ceinture Fermeture zippée Longueur entrejambe : 82cm 80% de coton issu de l'agriculture régénérative : il imite les cycles naturellement présents dans la nature. L'agriculture régénérative aide à accroître la biodiversité, enrichir les sols et atténuer le réchauffement climatique 20% de coton recyclé Ce jean loose peut être porté avec un t-shirt basique et une chemise ouverte pour un look décontracté. On peut aussi l'associer avec une veste plus habillée pour un style plus travaillé. Le mannequin mesure 1m86 et porte du 40.",
-      "sizes": [],
-      "availability": "En stock lors du dernier contrôle",
-      "availabilityStatus": "available",
-      "source": "Jules",
-      "sourceType": "public-web",
-      "catalogStatus": "active",
-      "verifiedAt": "2026-11-24T18:55:05.749Z",
-      "syncedAt": "2026-11-24T18:55:05.749Z",
-      "priceUpdatedAt": "2026-11-24T18:55:05.749Z",
-      "stockVerifiedAt": "2026-11-24T18:55:05.749Z",
-      "expiresAt": "2026-12-01T18:55:05.749Z",
-      "productRating": 4.2,
-      "productRatingCount": 10,
-      "productRatingSource": "Avis produit · fiche officielle",
-      "merchantRating": null,
-      "merchantRatingCount": null,
-      "merchantRatingSource": "",
-      "popularityScore": null,
-      "isBestSeller": false
-    },
-    {
-      "id": "web-26kkxq",
-      "name": "Blouson à capuche zippé",
-      "brand": "Jules",
-      "merchant": "Jules",
-      "url": "https://www.jules.com/fr-fr/p/100877816332.html",
-      "imageUrl": "./assets/product-images/1a6gqkl.avif",
-      "imageFallbackUrl": "https://www.jules.com/dw/image/v2/AAHK_PRD/on/demandware.static/-/Sites-core-master-catalog/default/dw18ae9599/images/1008778_16332_V5.jpg?sw=1562&sh=1800&sm=fit",
-      "price": 55.99,
-      "originalPrice": null,
-      "objective": "Vêtements",
-      "category": "Veste",
+      "category": "Vêtements",
       "gender": "men",
       "genderVerified": true,
       "audienceEvidence": "merchant",
       "styleTags": [],
       "seasonTags": [],
       "colors": [
-        "Vert kaki"
+        "Clear"
       ],
       "materials": [
-        "PES"
+        "Glass"
       ],
       "cuts": [],
       "patterns": [],
-      "description": "Affrontez le froid avec style gr&acirc;ce &agrave; ce blouson &agrave; capuche zipp&eacute;. Technique et moderne, il vous prot&egrave;ge du vent et de la pluie tout en restant l&eacute;ger gr&acirc;ce &agrave; son rembourrage Sorona&reg;. Mati&egrave;re principale coupe-vent Mati&egrave;re principale d&eacute;perlante : Traitement appliqu&eacute; sur la mati&egrave;re permettant &agrave; l'eau de ruisseler et de ne pas la p&eacute;n&eacute;trer Mati&egrave;re principale waterproof : Petite pluie ou grosse averse, cette mati&egrave;re est con&ccedil;ue pour emp&ecirc;cher l'eau de p&eacute;n&eacute;trer Rembourrage Sorona&reg; : Rembourrage chaud, respirant et l&eacute;ger Col montant avec capuche ajustable Int&eacute;rieur matelass&eacute; Fermeture &agrave; zip fantaisie 2 poches zipp&eacute;es devant 2 poches int&eacute;rieures, dont une zipp&eacute;e Poignets en bord-c&ocirc;te 28% p",
-      "sizes": [],
+      "description": "",
+      "sizes": [
+        "0"
+      ],
       "availability": "En stock lors du dernier contrôle",
       "availabilityStatus": "available",
-      "source": "Jules",
+      "source": "Carhartt WIP",
       "sourceType": "public-web",
       "catalogStatus": "active",
-      "verifiedAt": "2026-11-24T18:55:06.496Z",
-      "syncedAt": "2026-11-24T18:55:06.496Z",
-      "priceUpdatedAt": "2026-11-24T18:55:06.496Z",
-      "stockVerifiedAt": "2026-11-24T18:55:06.496Z",
-      "expiresAt": "2026-12-01T18:55:06.496Z",
+      "verifiedAt": "2026-11-25T17:59:24.190Z",
+      "syncedAt": "2026-11-25T17:59:24.190Z",
+      "priceUpdatedAt": "2026-11-25T17:59:24.190Z",
+      "stockVerifiedAt": "2026-11-25T17:59:24.190Z",
+      "expiresAt": "2026-12-02T17:59:24.190Z",
       "productRating": null,
       "productRatingCount": null,
       "productRatingSource": "",
@@ -249,94 +406,40 @@
       "isBestSeller": false
     },
     {
-      "id": "web-1alc3hn",
-      "name": "Veste zippée sherpa contrastée",
-      "brand": "Jules",
-      "merchant": "Jules",
-      "url": "https://www.jules.com/fr-fr/p/100755010149.html",
-      "imageUrl": "./assets/product-images/11llyzm.avif",
-      "imageFallbackUrl": "https://www.jules.com/dw/image/v2/AAHK_PRD/on/demandware.static/-/Sites-core-master-catalog/default/dw3ef2ad63/images/1007550_10149_V5.jpg?sw=1562&sh=1800&sm=fit",
-      "price": 39.99,
+      "id": "web-12ywndf",
+      "name": "ALEXANDER MCQUEEN - Caban En Feutre De Laine pour Homme en Noir",
+      "brand": "ALEXANDER MCQUEEN",
+      "merchant": "Lothaire",
+      "url": "https://www.lothaire.fr/products/alexander-mcqueen-caban-en-feutre-de-laine-pour-homme-en-noir",
+      "imageUrl": "./assets/product-images/xuu7xd.webp",
+      "imageFallbackUrl": "https://www.lothaire.fr/cdn/shop/files/alexander-mcqueen-caban-en-feutre-de-laine-pour-homme-en-noir-8407917.webp?v=1772340669&width=1080",
+      "price": 1743,
       "originalPrice": null,
       "objective": "Vêtements",
       "category": "Veste",
       "gender": "men",
       "genderVerified": true,
-      "audienceEvidence": "merchant",
+      "audienceEvidence": "product",
       "styleTags": [
-        "Classique"
+        "Smart Casual"
       ],
       "seasonTags": [],
-      "colors": [
-        "Naturel"
-      ],
-      "materials": [
-        "CO"
-      ],
+      "colors": [],
+      "materials": [],
       "cuts": [],
       "patterns": [],
-      "description": "Craquez pour cette veste zippée en sherpa contrastée, idéale pour un look tendance et chaleureux. Son style bi-matière et ses détails en velours en font une pièce unique. Coupe regular : une coupe intemporelle, ni trop ajustée, ni trop large Veste zippée en sherpa Détails en velours Bi-matière Étiquette sur la poitrine Poche zippée sur la poitrine Poches latérales zippées Poche intérieure Col montant 100% polyester recyclé Le mannequin mesure 1m86 et porte du L.",
+      "description": "Caban En Feutre De Laine pour Homme en Noir Caban à double boutonnage en feutre de laine noire, larges revers crantés et deux poches passepoilées. Le manteau est doté d'une chaîne Cross-Bar au milieu de la nuque. Larges revers crantés Poches passepoilées Fermeture boutonnée Code produit : 801635QVAAD1000 Matière: 100% Laine Pays de fabrication : Italie ID LOTHAIRE : 801635qvaad 1000 black.",
       "sizes": [],
       "availability": "En stock lors du dernier contrôle",
       "availabilityStatus": "available",
-      "source": "Jules",
+      "source": "Lothaire",
       "sourceType": "public-web",
       "catalogStatus": "active",
-      "verifiedAt": "2026-11-24T18:55:07.153Z",
-      "syncedAt": "2026-11-24T18:55:07.153Z",
-      "priceUpdatedAt": "2026-11-24T18:55:07.153Z",
-      "stockVerifiedAt": "2026-11-24T18:55:07.153Z",
-      "expiresAt": "2026-12-01T18:55:07.153Z",
-      "productRating": null,
-      "productRatingCount": null,
-      "productRatingSource": "",
-      "merchantRating": null,
-      "merchantRatingCount": null,
-      "merchantRatingSource": "",
-      "popularityScore": null,
-      "isBestSeller": false
-    },
-    {
-      "id": "web-epmujv",
-      "name": "Chemise 100% coton chambray",
-      "brand": "Jules",
-      "merchant": "Jules",
-      "url": "https://www.jules.com/fr-fr/p/100868711214.html",
-      "imageUrl": "./assets/product-images/152jbbj.avif",
-      "imageFallbackUrl": "https://www.jules.com/dw/image/v2/AAHK_PRD/on/demandware.static/-/Sites-core-master-catalog/default/dw93167f2f/images/1008687_11214_V5.jpg?sw=1562&sh=1800&sm=fit",
-      "price": 20,
-      "originalPrice": null,
-      "objective": "Vêtements",
-      "category": "Pull",
-      "gender": "men",
-      "genderVerified": true,
-      "audienceEvidence": "merchant",
-      "styleTags": [
-        "Preppy",
-        "Smart Casual",
-        "Classique"
-      ],
-      "seasonTags": [],
-      "colors": [
-        "Bleu moyen"
-      ],
-      "materials": [
-        "CO"
-      ],
-      "cuts": [],
-      "patterns": [],
-      "description": "Essentielle et polyvalente, d&eacute;couvrez cette chemise 100% coton chambray. Avec son aspect authentique, ses manches longues et son col fran&ccedil;ais, elle est parfaite pour un style d&eacute;contract&eacute; et soign&eacute;. Coupe regular : une coupe intemporelle, ni trop ajust&eacute;e, ni trop large Col fran&ccedil;ais Manches longues Une poche poitrine plaqu&eacute;e Bas de manches boutonn&eacute;s Fermeture enti&egrave;rement boutonn&eacute;e Chambray : Tissu l&eacute;ger &agrave; l'aspect denim 100% coton : Le coton offre un confort, doux et agr&eacute;able au quotidien Cette chemise est un basique incontournable et polyvalent. Pour un look casual et tendance, portez-la ouverte sur un t-shirt uni avec un chino. Pour une silhouette plus nette, portez-la ferm&eacute;e, seule ou sous un pull. C'est la pi&egrave;ce parfaite pour passer du bureau &agrave; une sortie entre amis av",
-      "sizes": [],
-      "availability": "En stock lors du dernier contrôle",
-      "availabilityStatus": "available",
-      "source": "Jules",
-      "sourceType": "public-web",
-      "catalogStatus": "active",
-      "verifiedAt": "2026-11-24T18:55:07.896Z",
-      "syncedAt": "2026-11-24T18:55:07.896Z",
-      "priceUpdatedAt": "2026-11-24T18:55:07.896Z",
-      "stockVerifiedAt": "2026-11-24T18:55:07.896Z",
-      "expiresAt": "2026-12-01T18:55:07.896Z",
+      "verifiedAt": "2026-11-25T17:59:40.763Z",
+      "syncedAt": "2026-11-25T17:59:40.763Z",
+      "priceUpdatedAt": "2026-11-25T17:59:40.763Z",
+      "stockVerifiedAt": "2026-11-25T17:59:40.763Z",
+      "expiresAt": "2026-12-02T17:59:40.763Z",
       "productRating": null,
       "productRatingCount": null,
       "productRatingSource": "",
