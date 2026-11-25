@@ -1,4 +1,4 @@
-import { inferPinterestFeatures, isMenswearPin, inferTextFeatures, pinterestAffinity, garmentFamily, familySlot, pinGarmentFamilies } from "./outfits.js";
+import { inferPinterestFeatures, isMenswearPin, inferTextFeatures, pinterestAffinity, garmentFamily, familySlot, visualPieces, dedupePins, pinWeight, pinBrandMentions } from "./outfits.js";
 import { inferProductGender, inferMenFit, isMenFit, registerMenMerchants, isMenMerchant } from "./audience.js";
 import { diversifyDeck, diversifyProducts, createRng, brandKey, familyKey } from "./diversify.js";
 
@@ -218,27 +218,47 @@ export function deriveLearnedPreferences(state) {
     add(event.kind === "dislike" ? negative : positive, featureTokens(product), SIGNAL_STRENGTH[event.kind] * recency);
   });
 
-  const pins = (source.inspirations || []).concat(source.pinterestPins || []).filter(isMenswearPin);
+  const allPins = (source.inspirations || []).concat(source.pinterestPins || []).filter(isMenswearPin);
+  // Lexique des marques du catalogue : un Pin qui en cite une (titre, description) laisse un petit signal de marque.
+  const brandLexicon = Array.from(new Set((source.products || []).map(function(product) { return text(product && product.brand); }).filter(function(brand) {
+    return brand.length >= 4 && brand.split(/\s+/).length <= 3;
+  })));
   const pinsById = new Map();
-  function pinTokens(pin) {
-    const tokens = [];
+  // Poids de chaque signal d'un Pin : les pièces « hero » comptent plus que les pièces d'appoint.
+  function pinTokenWeights(pin) {
+    const weights = new Map();
+    const put = function(token, weight) { weights.set(token, Math.max(weights.get(token) || 0, weight)); };
     Object.entries(inferPinterestFeatures(pin)).forEach(function(entry) {
-      entry[1].forEach(function(value) { tokens.push(entry[0] + ":" + normalizeText(value)); });
+      entry[1].forEach(function(value) { put(entry[0] + ":" + normalizeText(value), 1); });
     });
-    (pin.tags || []).forEach(function(value) { tokens.push("styleTags:" + normalizeText(value)); });
-    pinGarmentFamilies(pin).forEach(function(family) { tokens.push("family:" + family); if (familySlot(family)) tokens.push("slot:" + familySlot(family)); });
-    return Array.from(new Set(tokens));
+    (pin.tags || []).forEach(function(value) { put("styleTags:" + normalizeText(value), 1); });
+    const visual = pin.visualAnalysis && pin.visualAnalysis.isFashion !== false ? pin.visualAnalysis : null;
+    visualPieces(visual).forEach(function(piece) {
+      const multiplier = piece.prominence === "hero" ? 1.35 : piece.prominence === "supporting" ? .85 : 1;
+      const family = garmentFamily(piece.type);
+      if (family) { put("family:" + family, multiplier); if (familySlot(family)) put("slot:" + familySlot(family), multiplier); }
+      if (piece.prominence === "hero" && text(piece.color)) put("colors:" + normalizeText(piece.color), 1.25);
+    });
+    pinBrandMentions(pin, brandLexicon).forEach(function(brand) { put("brand:" + brand, .8); });
+    return weights;
   }
-  pins.forEach(function(pin) {
+  allPins.forEach(function(pin) {
     const id = String(pin.pinId || pin.id || pin.sourceUrl || pin.pinUrl || "");
     if (id) pinsById.set(id, pin);
-    add(positive, pinTokens(pin), PIN_PRIOR_WEIGHT);
+  });
+  // Deux Pins quasi identiques ne comptent qu'une fois dans le point de départ ; les plus récents pèsent un peu plus.
+  const now = Date.now();
+  dedupePins(allPins).forEach(function(pin) {
+    const weight = pinWeight(pin, now);
+    pinTokenWeights(pin).forEach(function(multiplier, token) { add(positive, [token], PIN_PRIOR_WEIGHT * multiplier * weight); });
   });
   Object.entries(source.outfitFeedback && typeof source.outfitFeedback === "object" ? source.outfitFeedback : {}).forEach(function(entry) {
     const pin = pinsById.get(String(entry[0]));
     const vote = entry[1] && entry[1].vote;
     if (!pin || (vote !== "yes" && vote !== "no")) return;
-    add(vote === "yes" ? positive : negative, pinTokens(pin), vote === "yes" ? 2.2 : 2.6);
+    pinTokenWeights(pin).forEach(function(multiplier, token) {
+      add(vote === "yes" ? positive : negative, [token], (vote === "yes" ? 2.2 : 2.6) * (.7 + .3 * multiplier));
+    });
   });
 
   const totals = {};
@@ -347,7 +367,7 @@ export function rankProducts(products, state, options) {
     (state.likedProducts || []).forEach(function(item) { seen.add(item.productId); });
   }
   const profile = state.profile || {};
-  const pins = (state.inspirations || []).concat(state.pinterestPins || []).filter(isMenswearPin);
+  const pins = dedupePins((state.inspirations || []).concat(state.pinterestPins || []).filter(isMenswearPin));
   const pinterestWeight = training ? 1 : 1.8;
   const interactionCounts = state.interactions || {};
   const swipeConfidence = Math.min(1, ((interactionCounts.likes || []).length + (interactionCounts.dislikes || []).length + (interactionCounts.saves || []).length) / 10);

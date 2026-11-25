@@ -252,9 +252,11 @@ export function dedupePins(pins) {
   const list = (Array.isArray(pins) ? pins : []).filter(Boolean).map((pin, index) => ({
     pin, index, time: Date.parse(pin.createdAt || pin.created_at || "") || 0
   }));
-  const kept = [];
+  const kept = [], visited = [];
   list.slice().sort((a, b) => b.time - a.time || a.index - b.index).forEach(item => {
-    if (!kept.some(other => nearIdenticalPins(other.pin, item.pin))) kept.push(item);
+    // On compare aussi aux doublons déjà écartés : A ≈ B et B ≈ C suffisent à écarter C.
+    if (!visited.some(other => nearIdenticalPins(other.pin, item.pin))) kept.push(item);
+    visited.push(item);
   });
   return kept.sort((a, b) => a.index - b.index).map(item => item.pin);
 }
@@ -287,12 +289,14 @@ function pinProfile(pin) {
   const pieces = visualPieces(visual);
   const visualText = visual ? [
     visual.summary,visual.layering,visual.outfitFormula,visual.silhouetteTags,
-    visual.details,pieces.flatMap(piece => [piece.type,piece.color,piece.material,piece.cut,piece.pattern,...(piece.details || [])])
+    visual.details,pieces.flatMap(piece => [piece.type,piece.color,piece.material,piece.cut,piece.pattern,...(Array.isArray(piece.details) ? piece.details : [])])
   ].flat().filter(Boolean) : [];
   const features = inferPinterestFeatures(pin);
+  const pinText = clean([pinterestText(pin),...visualText].filter(Boolean).join(" "));
   const profile = {
     pieces,
-    pinText: clean([pinterestText(pin),...visualText].filter(Boolean).join(" ")),
+    pinText,
+    paddedText: " " + pinText.replace(/[^a-z0-9]+/g, " ").trim() + " ",
     tags: unique([].concat(features.styleTags,features.colors,features.materials,features.cuts,features.patterns)).map(clean),
     queries: unique((visual && Array.isArray(visual.searchQueries) ? visual.searchQueries : []).map(clean).filter(Boolean)),
     pieceTypes: unique(pieces.map(piece => clean(piece.type)).filter(Boolean)),
@@ -306,7 +310,7 @@ function pinProfile(pin) {
 }
 
 function matchScore(product, pin) {
-  const { pieces, pinText, tags, pieceTypes, details, queries } = pinProfile(pin);
+  const { pieces, pinText, paddedText, tags, pieceTypes, details, queries } = pinProfile(pin);
   const fields = [
     ...(product.styleTags || []), ...(product.colors || []),
     ...(product.materials || []), ...(product.cuts || []), ...(product.patterns || [])
@@ -356,6 +360,9 @@ function matchScore(product, pin) {
   (product.colors || []).forEach(function(color) {
     if (pinText.includes(clean(color))) score += 2;
   });
+  // Marque citée noir sur blanc dans le texte du Pin : signal fort, mais jamais inventé (le texte doit la nommer).
+  const brandName = clean(product.brand).replace(/[^a-z0-9]+/g, " ").trim();
+  if (brandName.length >= 4 && paddedText.includes(" " + brandName + " ")) score += 4;
   (product.styleTags || []).forEach(function(style) {
     if (pinText.includes(clean(style))) score += 3;
   });
@@ -363,8 +370,8 @@ function matchScore(product, pin) {
 }
 
 // Proximité d'une pièce avec les tenues du tableau Pinterest : les meilleures correspondances comptent le plus.
-export function pinterestAffinity(product, pins) {
-  const scores = (Array.isArray(pins) ? pins : []).map(pin => matchScore(product, pin)).sort((a, b) => b - a);
+export function pinterestAffinity(product, pins, now) {
+  const scores = (Array.isArray(pins) ? pins : []).filter(Boolean).map(pin => matchScore(product, pin) * pinWeight(pin, now)).sort((a, b) => b - a);
   if (!scores.length) return 0;
   return scores[0] * .6 + (scores[1] || 0) * .25 + (scores[2] || 0) * .15;
 }
@@ -544,6 +551,64 @@ export function outfitTotalPrice(items) {
   return entries.reduce((sum,entry) => sum + Number(entry.product.price),0);
 }
 
+// Cohérence d'une tenue : une pièce candidate est jugée avec celles déjà retenues (couleurs, registre, saison).
+const FORMAL_STYLES = new Set(["classe", "classique", "smart casual", "heritage"]);
+const SPORT_STYLES = new Set(["sport", "streetwear"]);
+function styleRegister(product) {
+  const tags = (product.styleTags || []).map(clean);
+  const formal = tags.some(tag => FORMAL_STYLES.has(tag)), sporty = tags.some(tag => SPORT_STYLES.has(tag));
+  return formal && !sporty ? "formal" : sporty && !formal ? "sporty" : "";
+}
+function outfitContext(pin, filterSeason) {
+  const visual = pin && pin.visualAnalysis && pin.visualAnalysis.isFashion !== false ? pin.visualAnalysis : null;
+  const palette = new Set((visual && Array.isArray(visual.paletteTags) ? visual.paletteTags : []).map(clean));
+  const styles = new Set(((visual && Array.isArray(visual.styleTags) ? visual.styleTags : []).concat(inferPinterestFeatures(pin).styleTags)).map(clean));
+  const sportyPin = Array.from(styles).some(style => SPORT_STYLES.has(style)), formalPin = Array.from(styles).some(style => FORMAL_STYLES.has(style));
+  const requested = clean(filterSeason || "");
+  let tags = requested && requested !== "toute saison" ? [requested] : (visual && Array.isArray(visual.seasonTags) ? visual.seasonTags : []).map(clean);
+  tags = tags.filter(tag => tag && tag !== "toute saison");
+  const cold = tags.some(tag => tag === "hiver" || tag === "automne"), hot = tags.some(tag => tag === "ete" || tag === "printemps");
+  const pinLoud = new Set(visualPieces(visual).map(piece => colorFamily(piece.color)).filter(family => family && !NEUTRAL_COLOR_FAMILIES.has(family)));
+  return {
+    // Un look qui assume deux couleurs vives (ou une palette « color block ») n'est pas pénalisé comme un faux pas.
+    colorBlock: palette.has("color block") || palette.has("contraste fort") || pinLoud.size >= 2,
+    tonal: palette.has("monochrome") || palette.has("ton sur ton"),
+    mixedStyle: sportyPin && formalPin,
+    season: cold && !hot ? "cold" : hot && !cold && tags.includes("ete") ? "hot" : ""
+  };
+}
+// Ajustement de score (points) pour la pièce `candidate` compte tenu des pièces déjà choisies dans la tenue.
+export function outfitCoherenceAdjustment(candidate, chosen, context) {
+  const ctx = context || {};
+  const product = candidate.product, family = garmentFamily(clean(product.name) + " " + clean(product.category));
+  const color = primaryColorFamily(product), loud = color && !NEUTRAL_COLOR_FAMILIES.has(color);
+  const others = (chosen || []).map(entry => ({ color: primaryColorFamily(entry.product), register: styleRegister(entry.product), slot: entry.slot, name: clean(entry.product.name) }));
+  let adjustment = 0;
+  const otherLoud = others.map(entry => entry.color).filter(value => value && !NEUTRAL_COLOR_FAMILIES.has(value));
+  if (loud) {
+    if (otherLoud.some(value => value !== color)) adjustment -= ctx.colorBlock ? 3 : 9;
+    else if (otherLoud.includes(color)) adjustment += 2;
+  }
+  if (ctx.tonal && color) {
+    if (others.some(entry => entry.color === color)) adjustment += 3;
+    else if (loud && others.some(entry => entry.color && !NEUTRAL_COLOR_FAMILIES.has(entry.color))) adjustment -= 3;
+  }
+  if (candidate.slot === "accessory" && /ceinture|belt/.test(clean(product.name)) && (color === "black" || color === "brown")) {
+    const shoes = others.find(entry => entry.slot === "shoes");
+    if (shoes && (shoes.color === "black" || shoes.color === "brown") && shoes.color !== color) adjustment -= 4;
+  }
+  const register = styleRegister(product);
+  if (register && !ctx.mixedStyle && others.some(entry => entry.register && entry.register !== register)) adjustment -= 6;
+  if (ctx.season === "cold") {
+    if (family === "shorts") adjustment -= 14;
+    if (/sandale|sandal|tong/.test(clean(product.name))) adjustment -= 10;
+  } else if (ctx.season === "hot") {
+    if (family === "coat") adjustment -= 14;
+    if (family === "knit") adjustment -= 6;
+  }
+  return adjustment;
+}
+
 export function buildOutfitIdeas(pins, wardrobe, catalogue, dislikedIds, outfitFeedback, filters) {
   const options = filters || {};
   const profile = options.profile || {};
@@ -567,7 +632,7 @@ export function buildOutfitIdeas(pins, wardrobe, catalogue, dislikedIds, outfitF
   });
   const ideas = [];
 
-  (pins || []).filter(pin => pin && isMenswearPin(pin) && pin.kind !== "detail" && pinMatchesOutfitFilters(pin,options)).forEach(pin => {
+  dedupePins((pins || []).filter(pin => pin && isMenswearPin(pin) && pin.kind !== "detail" && pinMatchesOutfitFilters(pin,options))).forEach(pin => {
     const featureSet = inferPinterestFeatures(pin);
     const ranked = candidates.map(product => {
       const slot = productSlot(product);
@@ -586,14 +651,19 @@ export function buildOutfitIdeas(pins, wardrobe, catalogue, dislikedIds, outfitF
     let remainingBudget = budget;
     const coreSlots = ["top","bottom","shoes"];
     const optionalSlots = ["outerwear","accessory"];
-    coreSlots.concat(optionalSlots).forEach(slot => {
+    const visibleSlots = unique(visualPieces(pin.visualAnalysis && pin.visualAnalysis.isFashion !== false ? pin.visualAnalysis : null)
+      .map(visualPieceSlot).filter(slot => ["top","bottom","shoes","outerwear","accessory"].includes(slot)));
+    const context = outfitContext(pin,season);
+    // Une veste ou un accessoire n'est ajouté que si la tenue d'origine en montre un : pas de manteau sur un look estival.
+    const slotsToFill = coreSlots.concat(optionalSlots.filter(slot => !visibleSlots.length || visibleSlots.includes(slot)));
+    slotsToFill.forEach(slot => {
       const slotCandidates = ranked.filter(entry => entry.slot === slot && !used.has(entry.product.id))
-        .sort((a,b) => {
-          const affordabilityA = budget !== null ? (Number(a.product.price || 0) / Math.max(1,budget)) * 2 : 0;
-          const affordabilityB = budget !== null ? (Number(b.product.price || 0) / Math.max(1,budget)) * 2 : 0;
-          return (b.score - affordabilityB) - (a.score - affordabilityA);
-        });
-      const chosen = slotCandidates.find(entry => {
+        .map(entry => {
+          const affordability = budget !== null ? (Number(entry.product.price || 0) / Math.max(1,budget)) * 2 : 0;
+          return {entry,rank:entry.score - affordability + outfitCoherenceAdjustment(entry,items,context)};
+        })
+        .sort((a,b) => b.rank - a.rank);
+      const chosen = slotCandidates.map(candidate => candidate.entry).find(entry => {
         if (remainingBudget === null) return true;
         return Number(entry.product.price) <= remainingBudget;
       });
@@ -605,8 +675,6 @@ export function buildOutfitIdeas(pins, wardrobe, catalogue, dislikedIds, outfitF
 
     const pieces = items.filter(entry => entry.isSaved);
     const suggestions = items.filter(entry => !entry.isSaved);
-    const visibleSlots = unique(visualPieces(pin.visualAnalysis && pin.visualAnalysis.isFashion !== false ? pin.visualAnalysis : null)
-      .map(visualPieceSlot).filter(slot => ["top","bottom","shoes","outerwear","accessory"].includes(slot)));
     const expectedSlots = visibleSlots.length ? visibleSlots : coreSlots;
     const missingSlots = expectedSlots.filter(slot => !items.some(entry => entry.slot === slot));
     const totalPrice = outfitTotalPrice(items);

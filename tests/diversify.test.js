@@ -48,7 +48,8 @@ test("brand, merchant and family keys are canonical", function() {
   assert.equal(familyKey({ name: "Pull col roulé", category: "Pull" }), "knit");
   assert.equal(familyKey({ name: "Truc", category: "Vêtements" }), "autre");
   assert.equal(productKeys({ price: 120, colors: ["Bleu marine"], styleTags: ["Preppy"] }).price, "premium");
-  assert.equal(productKeys({ colors: ["Bleu marine"] }).color, "blue");
+  assert.equal(productKeys({ colors: ["Bleu marine"] }).color, "navy");
+  assert.equal(productKeys({ colors: ["Vert kaki"] }).color, "olive");
 });
 
 test("diversifyDeck breaks long runs of one brand while keeping the most relevant card first", function() {

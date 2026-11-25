@@ -1,4 +1,4 @@
-import { garmentFamily } from "./outfits.js";
+import { garmentFamily, colorFamily } from "./outfits.js";
 
 // Diversification du paquet de cartes : la pertinence reste le critère principal, la diversité est une
 // contrainte posée par-dessus. À chaque position, on ne choisit que parmi les pièces proches du meilleur
@@ -27,21 +27,13 @@ export function createRng(seed) {
   };
 }
 
-const COLOR_FAMILIES = [
-  ["black", /noir|black|anthracite|charbon/], ["white", /blanc|white|ecru|creme|cream|ivoire|ivory|naturel/],
-  ["grey", /gris|grey|gray|argent|silver/], ["blue", /bleu|blue|marine|navy|indigo|denim/],
-  ["green", /vert|green|kaki|khaki|olive|sauge/], ["brown", /marron|brown|chocolat|camel|cognac|tabac|taupe|moka/],
-  ["beige", /beige|sable|sand|stone|pierre/], ["red", /rouge|red|bordeaux|burgundy|brique/],
-  ["pink", /rose|pink|fuchsia/], ["yellow", /jaune|yellow|moutarde|mustard/],
-  ["orange", /orange|rouille|terracotta/], ["purple", /violet|purple|prune|mauve|lilas/]
-];
 const GENERIC_CATEGORIES = new Set(["vetements", "vetement", "accessoires", "chaussures", "sous-vetements", "autre", ""]);
 
 export function colorKey(product) {
   const colors = Array.isArray(product && product.colors) ? product.colors : [];
   for (const color of colors) {
-    const value = normalizeText(color);
-    for (const entry of COLOR_FAMILIES) if (entry[1].test(value)) return entry[0];
+    const family = colorFamily(color);
+    if (family) return family;
   }
   return "";
 }
