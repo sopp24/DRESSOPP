@@ -1,7 +1,7 @@
 import { loadState, saveState, clearState } from "./modules/store.js";
 import { createInitialState, normalizeProduct, productIdentity, seasonFor, rankProducts, deriveLearnedPreferences, matchesFilters, isMenFit, registerMenMerchants, decisionHistory, diversifyProducts } from "./modules/engine.js";
 import { getPersistenceNotice, PINTEREST_BOARD_URL } from "./modules/integrations.js";
-import { inferPinterestTags, inferPinterestFeatures, isMenswearPin, buildOutfitIdeas, productSlot, outfitTotalPrice } from "./modules/outfits.js";
+import { inferPinterestTags, inferPinterestFeatures, isMenswearPin, buildOutfitIdeas, productSlot, outfitTotalPrice, visualPieces } from "./modules/outfits.js";
 import { syncCommunityProfile, deleteCommunityProfile, buildCommunitySignals } from "./modules/community.js";
 import { requestAgentRecommendations, orderProductsByAgent, selectAgentCandidates, recommendLocally } from "./modules/agent.js";
 
@@ -253,7 +253,7 @@ function aiAgentInspirations() {
     const visual = pin.visualAnalysis && pin.visualAnalysis.isFashion !== false ? pin.visualAnalysis : {};
     const visualFeatures = inferPinterestFeatures(pin);
     const hiddenSignals = Object.values(visualFeatures).flat();
-    const pieces = (Array.isArray(visual.pieces) ? visual.pieces : []).slice(0,12).map(function(piece) {
+    const pieces = visualPieces(visual).slice(0,12).map(function(piece) {
       return { type:piece.type || "", slot:piece.slot || productSlot({name:piece.type || ""}),
         color:piece.color || "", material:piece.material || "", cut:piece.cut || "",
         pattern:piece.pattern || "", details:Array.isArray(piece.details) ? piece.details.slice(0,6) : [],
@@ -893,7 +893,7 @@ function pinterestPinCards() {
 }
 function renderPinterestPieceAnalysis(pin) {
   const visual = pin && pin.visualAnalysis;
-  const pieces = visual && Array.isArray(visual.pieces) ? visual.pieces.slice(0,12) : [];
+  const pieces = visualPieces(visual).slice(0,12);
   if (!pieces.length) return "";
   const labels = {outerwear:"Veste / manteau",top:"Haut",bottom:"Bas",shoes:"Chaussures",accessory:"Accessoire"};
   const rows = pieces.map(function(piece) {
@@ -1100,6 +1100,7 @@ function openOutfitDetail(idea) {
   const backdrop = modalRoot.querySelector(".modal-backdrop");
   backdrop.addEventListener("click",function(event) { if(event.target === backdrop) closeModal(); });
   attachImageFallbacks(modalRoot);
+  focusModal();
 }
 function saveOutfitPiece(productId, pinId) {
   const product = productById(productId);
@@ -1245,6 +1246,36 @@ function renderSettings() {
     '<section class="panel section-panel"><h2 class="section-title">Catalogue personnel</h2><p class="field-hint">Les compléments de tenues proviennent uniquement de fiches produit vérifiables ou de tes importations manuelles.</p><div class="form-actions"><button class="button-secondary" type="button" data-action="import-catalog">Importer un catalogue JSON</button></div><input id="catalog-file" type="file" accept=".json,application/json" hidden></section>' +
     '<section class="panel section-panel"><h2 class="section-title">Zone sensible</h2><p class="field-hint">La réinitialisation supprime les données enregistrées sur cet appareil. Exporte d’abord une copie de sécurité.</p><div class="form-actions"><button class="button-danger button-small" type="button" data-action="delete-data">Supprimer toutes mes données locales</button></div></section>' + renderDiscoveryInsights();
 }
+// render() reconstruit tout le contenu : on rend le focus à l'élément qui l'avait (carte, bouton d'action, filtre)
+// pour que la navigation au clavier ne reparte pas du début de la page après chaque décision.
+function attrSelector(name, value) { return "[" + name + '="' + String(value).replace(/["\\]/g, "\\$&") + '"]'; }
+function captureFocus() {
+  const element = document.activeElement;
+  if (!element || element === main || !main.contains(element)) return null;
+  if (element.id) return "#" + (window.CSS && CSS.escape ? CSS.escape(element.id) : element.id);
+  const data = element.dataset || {};
+  if (data.filter) return attrSelector("data-filter", data.filter);
+  if (data.action) {
+    // Les boutons du paquet gardent leur rôle d'une carte à l'autre ; ailleurs (grille, listes) l'identifiant distingue les boutons.
+    const inDeck = Boolean(element.closest(".deck-actions"));
+    return attrSelector("data-action", data.action) + (data.vote ? attrSelector("data-vote", data.vote) : "") + (data.id && !inDeck ? attrSelector("data-id", data.id) : "");
+  }
+  return null;
+}
+function restoreFocus(selector) {
+  if (!selector) return;
+  let target = null;
+  try { target = main.querySelector(selector); } catch (error) { target = null; }
+  if (target && !target.disabled && typeof target.focus === "function") target.focus({ preventScroll: true });
+}
+// Un dialogue ouvert reçoit le focus (premier champ ou bouton), faute de quoi le clavier reste derrière la fenêtre.
+function focusModal() {
+  const dialog = modalRoot.querySelector('[role="dialog"]');
+  if (!dialog) return;
+  dialog.setAttribute("tabindex", "-1");
+  const first = dialog.querySelector('input:not([type="hidden"]):not([disabled]),select:not([disabled]),textarea:not([disabled]),a[href],button:not([disabled])');
+  window.requestAnimationFrame(function() { (first || dialog).focus({ preventScroll: true }); });
+}
 // Précharge les photos des trois prochaines cartes pour qu'elles s'affichent sans attente après chaque décision.
 function preloadDeckImages() {
   if (currentView !== "discover" && currentView !== "training") return;
@@ -1260,6 +1291,7 @@ function preloadDeckImages() {
   });
 }
 function render() {
+  const focusedSelector = captureFocus();
   document.body.classList.toggle("is-discovery-app", currentView === "discover");
   document.querySelectorAll("[data-view]").forEach(function(button) {
     const isActive = button.dataset.view === currentView;
@@ -1281,6 +1313,7 @@ function render() {
   else main.innerHTML = renderDiscover(false);
   attachImageFallbacks(main);
   attachSwipe();
+  restoreFocus(focusedSelector);
   preloadDeckImages();
   maybePrefetchCatalog();
   main.querySelectorAll("[data-mark-seen-on-open]").forEach(function(link) {
@@ -1491,6 +1524,7 @@ function openProductDetails(productId) {
     if (event.target.classList.contains("modal-backdrop")) closeModal();
   });
   attachImageFallbacks(modalRoot);
+  focusModal();
 }
 function closeModal() {
   modalRoot.innerHTML = "";
@@ -1545,6 +1579,7 @@ function openProductForm() {
   modalRoot.querySelector(".modal-backdrop").addEventListener("click", function(event) {
     if (event.target.classList.contains("modal-backdrop")) closeModal();
   });
+  focusModal();
 }
 function openInspirationForm() {
   modalRoot.innerHTML = '<div class="modal-backdrop"><section class="modal" role="dialog" aria-modal="true" aria-labelledby="add-inspiration-title" data-modal-content>' +
@@ -1557,6 +1592,7 @@ function openInspirationForm() {
   modalRoot.querySelector(".modal-backdrop").addEventListener("click", function(event) {
     if (event.target.classList.contains("modal-backdrop")) closeModal();
   });
+  focusModal();
 }
 function fileToDataUrl(file) {
   return new Promise(function(resolve, reject) {
@@ -1925,14 +1961,8 @@ function handleChange(event) {
       aiAgentState.message = "Tes filtres ont changé. Relance l’agent pour actualiser la sélection.";
       aiAgentState.recommendations = [];
     }
-    const hadFocus = document.activeElement === target;
     persist();
     render();
-    // Le panneau est reconstruit : on rend le focus au réglage modifié pour ne pas perdre le clavier.
-    if (hadFocus && key !== "preset") {
-      const again = document.querySelector('[data-filter="' + key + '"]');
-      if (again) again.focus({ preventScroll: true });
-    }
   }
   if (target.matches("[data-wardrobe-filter]")) {
     const key = target.dataset.wardrobeFilter;

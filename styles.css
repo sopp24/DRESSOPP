@@ -3532,3 +3532,6 @@ input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px
   background: radial-gradient(circle at 50% 20%, #2b2b2b 0%, #171717 58%, #0e0e0e 100%);
   box-shadow: inset 0 1px 0 rgba(255,255,255,.1);
 }
+
+/* Swipe : pas de bulle d'aperçu iOS ni de glisser-déposer natif de la photo pendant le geste. */
+.product-card, .product-card img { -webkit-touch-callout: none; -webkit-user-drag: none; }

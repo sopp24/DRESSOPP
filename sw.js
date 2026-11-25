@@ -1,6 +1,6 @@
 const CACHE_NAME = "dressopp-static-v22";
 const CORE_FILES = [
-  "./", "./index.html", "./privacy.html", "./manifest.webmanifest", "./styles.css", "./app.js",
+  "./", "./index.html", "./privacy.html", "./manifest.webmanifest", "./styles.css", "./app.js", "./sopp-gate.js",
   "./modules/store.js", "./modules/engine.js", "./modules/integrations.js", "./modules/outfits.js", "./modules/community.js", "./modules/agent.js", "./modules/audience.js", "./modules/diversify.js",
   "./data/catalog-pages/page-0001.json",
   "./assets/logo-horizontal.png",

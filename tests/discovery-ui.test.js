@@ -289,7 +289,7 @@ test("Pinterest inspiration cards expose a separate inventory of visible outfit 
   assert.ok(app.includes("function renderPinterestPieceAnalysis(pin)"));
   assert.ok(app.includes("Pièces repérées dans la photo"));
   assert.ok(app.includes("renderPinterestPieceAnalysis(item)"));
-  assert.ok(app.includes("const pieces = (Array.isArray(visual.pieces) ? visual.pieces : []).slice(0,12)"));
+  assert.ok(app.includes("const pieces = visualPieces(visual).slice(0,12)"));
   assert.ok(app.includes("slot:piece.slot || productSlot({name:piece.type || \"\"})"));
 });
 
@@ -316,4 +316,21 @@ test("Pinterest vision analyses each visible garment in its own outfit slot", fu
 
 test("the selected discovery layout is retained across reloads", function() {
   assert.ok(!app.includes('state.settings.discoveryView = "cards";'));
+});
+
+test("le verrou d'accès SOPP Agents est chargé en premier sur chaque page et précaché", function() {
+  const privacy = readFileSync(new URL("../privacy.html", import.meta.url), "utf8");
+  for (const [name, html] of [["index.html", index], ["privacy.html", privacy]]) {
+    const firstScript = html.indexOf("<script");
+    assert.ok(firstScript > -1 && html.slice(firstScript).startsWith('<script src="sopp-gate.js"></script>'), name + " : le verrou doit être le premier script");
+    assert.ok(html.includes('<meta name="robots" content="noindex, nofollow">'), name + " : noindex attendu");
+  }
+  assert.ok(existsSync(new URL("sopp-gate.js", root)));
+  assert.ok(sw.includes('"./sopp-gate.js"'), "le verrou fait partie du précache");
+  assert.ok(existsSync(new URL("LICENSE", root)));
+});
+
+test("le service worker précache le module de diversification des cartes", function() {
+  assert.ok(sw.includes('"./modules/diversify.js"'));
+  assert.ok(existsSync(new URL("modules/diversify.js", root)));
 });
