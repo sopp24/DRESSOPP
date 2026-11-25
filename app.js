@@ -1290,7 +1290,21 @@ function preloadDeckImages() {
     if (preloadedDeckImages.size > 24) preloadedDeckImages.delete(preloadedDeckImages.keys().next().value);
   });
 }
+// render() est protégé contre la réentrance : retirer un champ modifié du DOM déclenche parfois un dernier « change »
+// qui rappellerait render() au beau milieu du remplacement du contenu (erreur « node to be removed »).
+let rendering = false, renderQueued = false, renderTimer = 0, panelPressUntil = 0;
 function render() {
+  clearTimeout(renderTimer);
+  if (rendering) { renderQueued = true; return; }
+  rendering = true;
+  try { renderNow(); } finally { rendering = false; }
+  if (renderQueued) { renderQueued = false; render(); }
+}
+function deferRender(delay) {
+  clearTimeout(renderTimer);
+  renderTimer = setTimeout(render, delay);
+}
+function renderNow() {
   const focusedSelector = captureFocus();
   document.body.classList.toggle("is-discovery-app", currentView === "discover");
   document.querySelectorAll("[data-view]").forEach(function(button) {
@@ -1952,6 +1966,16 @@ function handleChange(event) {
     } else if (key === "maxPrice") {
       const price = Number(target.value);
       state.settings.maxPrice = target.value.trim() === "" || !Number.isFinite(price) ? null : Math.max(0, price);
+      // Le « change » du budget part au moment où le champ perd le focus, parfois parce qu'on appuie sur « Appliquer » :
+      // reconstruire le panneau tout de suite ferait disparaître le bouton avant le clic. On laisse donc le clic se terminer.
+      if (aiAgentState.status === "ready") {
+        aiAgentState.status = "stale";
+        aiAgentState.message = "Tes filtres ont changé. Relance l’agent pour actualiser la sélection.";
+        aiAgentState.recommendations = [];
+      }
+      persist();
+      deferRender(Date.now() < panelPressUntil ? 900 : 0);
+      return;
     } else {
       state.settings[key] = key.toLowerCase().includes("level") ? Number(target.value) : target.value;
       if (key === "season") state.settings.seasonAuto = target.value === seasonFor(new Date());
@@ -2136,6 +2160,9 @@ function attachSwipe() {
     if(dragging && inputMode==="pointer" && event.pointerId===pointerId) clear(true);
   },{capture:true,signal});
 }
+document.addEventListener("pointerdown", function(event) {
+  if (event.target && event.target.closest && event.target.closest("#discovery-filter-panel button")) panelPressUntil = Date.now() + 1500;
+}, true);
 document.addEventListener("click", handleClick);
 document.addEventListener("change", handleChange);
 document.addEventListener("input", handleInput);

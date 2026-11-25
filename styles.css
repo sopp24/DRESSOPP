@@ -3535,3 +3535,9 @@ input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px
 
 /* Swipe : pas de bulle d'aperçu iOS ni de glisser-déposer natif de la photo pendant le geste. */
 .product-card, .product-card img { -webkit-touch-callout: none; -webkit-user-drag: none; }
+
+/* Bureau : la barre d'outils est alignée à gauche, le panneau de filtres s'ouvre donc vers la droite
+   (il était ancré à droite du bouton et sortait de l'écran). */
+@media (min-width: 851px) {
+  .discovery-app-controls .discovery-filter-menu .filter-bar { right: auto; left: 0; }
+}
