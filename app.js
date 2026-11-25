@@ -1,5 +1,5 @@
 import { loadState, saveState, clearState } from "./modules/store.js";
-import { createInitialState, normalizeProduct, productIdentity, seasonFor, rankProducts, deriveLearnedPreferences, matchesFilters, isMenFit, registerMenMerchants } from "./modules/engine.js";
+import { createInitialState, normalizeProduct, productIdentity, seasonFor, rankProducts, deriveLearnedPreferences, matchesFilters, isMenFit, registerMenMerchants, decisionHistory, diversifyProducts } from "./modules/engine.js";
 import { getPersistenceNotice, PINTEREST_BOARD_URL } from "./modules/integrations.js";
 import { inferPinterestTags, inferPinterestFeatures, isMenswearPin, buildOutfitIdeas, productSlot, outfitTotalPrice } from "./modules/outfits.js";
 import { syncCommunityProfile, deleteCommunityProfile, buildCommunitySignals } from "./modules/community.js";
@@ -69,6 +69,23 @@ let catalogPagePending = false;
 let catalogNextPending = false;
 let catalogLastManifestCheck = 0;
 let catalogRetryAfter = 0;
+// Graine propre à chaque session : l'ordre des cartes varie d'une session à l'autre, mais reste stable tant que rien ne change.
+const SESSION_SEED = (function() {
+  let seed = "";
+  try { seed = sessionStorage.getItem("dressopp.sessionSeed") || ""; } catch (error) { seed = ""; }
+  if (!seed) {
+    seed = Math.random().toString(36).slice(2) + Date.now().toString(36);
+    try { sessionStorage.setItem("dressopp.sessionSeed", seed); } catch (error) { /* stockage indisponible : la graine reste en mémoire */ }
+  }
+  return seed;
+})();
+let undoPinnedId = null;
+let undoChain = 0;
+let deckPreviewProducts = [];
+const preloadedDeckImages = new Map();
+function deckRankOptions(training) {
+  return { training: training, communitySignals: communitySignals, seed: SESSION_SEED, pinFirstId: undoPinnedId };
+}
 
 
 const RETAILER_GROUPS = [
@@ -462,7 +479,7 @@ function renderFilterBar(training) {
       '</select></div>' +
     '<div class="field"><label for="season-filter">Saison</label><select id="season-filter" data-filter="season">' +
       selectOption(seasonFor(new Date()), settings.season, "Saison actuelle · " + seasonFor(new Date())) +
-      SEASONS.map(function(item) { return selectOption(item, settings.season); }).join("") +
+      SEASONS.filter(function(item) { return item !== seasonFor(new Date()); }).map(function(item) { return selectOption(item, settings.season); }).join("") +
       '</select></div>' +
     '<div class="field"><label for="price-filter">Budget maximum</label><div class="price-input-wrap"><input id="price-filter" data-filter="maxPrice" type="number" min="0" step="1" value="' + (settings.maxPrice == null ? "" : esc(settings.maxPrice)) + '" placeholder="Sans limite"><span class="price-input-currency" aria-hidden="true">€</span></div></div>' +
     '<div class="field"><label for="preset-filter">Mes filtres enregistrés</label><select id="preset-filter" data-filter="preset">' +
@@ -472,14 +489,48 @@ function renderFilterBar(training) {
     '<div class="filter-footer"><label class="discovery-level"><span>Mes goûts</span><input type="range" min="0" max="100" step="1" data-filter="' + (training ? "trainingDiscoveryLevel" : "discoveryLevel") + '" value="' + esc(selectedLevel) + '"><span>Découverte</span><output id="discovery-output">' + esc(selectedLevel) + '%</output></label>' +
     '<div class="filter-tools"><button class="button-quiet button-small" type="button" data-action="save-filters">＋ Enregistrer ces filtres</button><button class="button-primary button-small" type="button" data-action="toggle-filters">Appliquer</button></div></div></section></div>';
 }
+const DEFAULT_DISCOVERY_FILTERS = function() { return { objective: "Vêtements", style: "Tous", season: seasonFor(new Date()), maxPrice: null }; };
+function filtersAreDefault(settings) {
+  const defaults = DEFAULT_DISCOVERY_FILTERS();
+  return settings.objective === defaults.objective && settings.style === defaults.style &&
+    settings.season === defaults.season && (settings.maxPrice == null || settings.maxPrice === "");
+}
+// Quand les filtres sont trop étroits : combien d'articles reviendraient en en retirant un seul ?
+function relaxedFilterHints(training) {
+  const current = { objective: state.settings.objective, style: state.settings.style, season: state.settings.season, maxPrice: state.settings.maxPrice };
+  const attempts = [
+    ["maxPrice", null, "sans limite de budget"], ["style", "Tous", "tous styles confondus"],
+    ["season", "Toute saison", "toutes saisons"], ["objective", "Tout", "toutes catégories"]
+  ];
+  return attempts.filter(function(attempt) { return current[attempt[0]] !== attempt[1] && current[attempt[0]] != null && current[attempt[0]] !== ""; }).map(function(attempt) {
+    const relaxed = Object.assign({}, current); relaxed[attempt[0]] = attempt[1];
+    const count = rankProducts(state.products, state, { training: training, filters: relaxed, skipDiversify: true }).length;
+    return count ? count + " article" + (count > 1 ? "s" : "") + " " + attempt[2] : "";
+  }).filter(Boolean);
+}
 function renderEmptyProducts(training) {
-  const title = catalogPagePending ? "On prépare la suite" : (state.products.length ? "Aucun article ne correspond à ces filtres" : "Ton dressing commence ici");
-  const body = catalogPagePending
-    ? "DRESSOPP charge le prochain lot de produits vérifiés."
-    : (state.products.length
-      ? "Élargis ton budget, change de style ou sélectionne une autre saison pour relancer la découverte."
-      : "Le catalogue se remplit par rotations de boutiques et se charge par pages. Tu peux aussi ajouter une fiche vérifiable manuellement.");
-  return '<div class="empty-state"><div class="empty-mark">＋</div><h2>' + title + '</h2><p>' + body + '</p><div class="empty-actions">' +
+  let title, body, extra = "";
+  if (catalogPagePending) {
+    title = "On prépare la suite";
+    body = "DRESSOPP charge le prochain lot de produits vérifiés.";
+  } else if (!state.products.length) {
+    title = "Ton dressing commence ici";
+    body = "Le catalogue se remplit par rotations de boutiques et se charge par pages. Tu peux aussi ajouter une fiche vérifiable manuellement.";
+  } else {
+    const matching = rankProducts(state.products, state, { training: training, includeSeen: true, skipDiversify: true }).length;
+    if (matching) {
+      title = "Tu as tout parcouru";
+      body = "Tous les articles disponibles avec ces filtres ont déjà reçu une réponse. Élargis ta sélection ou reviens après la prochaine collecte.";
+    } else {
+      title = "Aucun article ne correspond à ces filtres";
+      body = "Élargis ton budget, change de style ou sélectionne une autre saison pour relancer la découverte.";
+    }
+    const hints = relaxedFilterHints(training);
+    if (hints.length) extra = '<p class="empty-hints">En assouplissant : ' + esc(hints.join(" · ")) + '.</p>';
+  }
+  const canReset = Boolean(state.products.length) && !catalogPagePending && !filtersAreDefault(state.settings);
+  return '<div class="empty-state"><div class="empty-mark">＋</div><h2>' + title + '</h2><p>' + body + '</p>' + extra + '<div class="empty-actions">' +
+    (canReset ? '<button class="button-secondary" type="button" data-action="reset-discovery-filters">Réinitialiser les filtres</button>' : '') +
     '<button class="button-primary" type="button" data-action="add-product">Ajouter un article</button>' +
     '<button class="button-secondary" type="button" data-action="import-catalog">Importer un catalogue JSON</button></div></div>';
 }
@@ -644,7 +695,7 @@ async function loadNextCatalogPage() {
       // ce qu'il reste un vrai tampon de propositions, ou que les pages soient épuisées.
       if (isDiscovering) {
         const available = rankProducts(state.products,state,{
-          training:currentView === "training",communitySignals:communitySignals
+          training:currentView === "training",communitySignals:communitySignals,skipDiversify:true
         }).length;
         if (available >= 8) break;
       } else if (added) {
@@ -660,7 +711,7 @@ async function loadNextCatalogPage() {
 function maybePrefetchCatalog() {
   if (!state || (currentView !== "discover" && currentView !== "training") || catalogPagePending || catalogNextPending) return;
   const available = rankProducts(state.products,state,{
-    training:currentView === "training",communitySignals:communitySignals
+    training:currentView === "training",communitySignals:communitySignals,skipDiversify:true
   }).length;
   if (available <= 8) loadNextCatalogPage();
 }
@@ -758,10 +809,14 @@ function renderGridCards(products, options) {
   }).join("") + '</div>';
 }
 function renderDiscover(training) {
-  const locallyRanked = rankProducts(state.products, state, { training: training, communitySignals: communitySignals });
+  const locallyRanked = rankProducts(state.products, state, deckRankOptions(training));
   const products = aiAgentState.status === "ready"
-    ? orderProductsByAgent(locallyRanked, aiAgentState.recommendations)
+    ? diversifyProducts(orderProductsByAgent(locallyRanked, aiAgentState.recommendations), {
+        seed: SESSION_SEED + ":" + decisionHistory(state).length, exploration: 0, limit: 40,
+        history: decisionHistory(state).map(function(event) { return { product: event.product, at: event.at }; })
+      })
     : locallyRanked;
+  deckPreviewProducts = products.slice(1, 4);
   const yesCount = state.interactions.likes.length;
   const savedCount = state.likedProducts.length;
   const rejected = state.interactions.dislikes.length;
@@ -1190,6 +1245,20 @@ function renderSettings() {
     '<section class="panel section-panel"><h2 class="section-title">Catalogue personnel</h2><p class="field-hint">Les compléments de tenues proviennent uniquement de fiches produit vérifiables ou de tes importations manuelles.</p><div class="form-actions"><button class="button-secondary" type="button" data-action="import-catalog">Importer un catalogue JSON</button></div><input id="catalog-file" type="file" accept=".json,application/json" hidden></section>' +
     '<section class="panel section-panel"><h2 class="section-title">Zone sensible</h2><p class="field-hint">La réinitialisation supprime les données enregistrées sur cet appareil. Exporte d’abord une copie de sécurité.</p><div class="form-actions"><button class="button-danger button-small" type="button" data-action="delete-data">Supprimer toutes mes données locales</button></div></section>' + renderDiscoveryInsights();
 }
+// Précharge les photos des trois prochaines cartes pour qu'elles s'affichent sans attente après chaque décision.
+function preloadDeckImages() {
+  if (currentView !== "discover" && currentView !== "training") return;
+  deckPreviewProducts.forEach(function(product) {
+    const url = productImageCandidates(product).urls[0];
+    if (!url || preloadedDeckImages.has(url) || /^data:/i.test(url)) return;
+    const image = new Image();
+    image.referrerPolicy = "strict-origin-when-cross-origin";
+    image.decoding = "async";
+    image.src = url;
+    preloadedDeckImages.set(url, image);
+    if (preloadedDeckImages.size > 24) preloadedDeckImages.delete(preloadedDeckImages.keys().next().value);
+  });
+}
 function render() {
   document.body.classList.toggle("is-discovery-app", currentView === "discover");
   document.querySelectorAll("[data-view]").forEach(function(button) {
@@ -1212,6 +1281,7 @@ function render() {
   else main.innerHTML = renderDiscover(false);
   attachImageFallbacks(main);
   attachSwipe();
+  preloadDeckImages();
   maybePrefetchCatalog();
   main.querySelectorAll("[data-mark-seen-on-open]").forEach(function(link) {
     link.addEventListener("click", function() {
@@ -1263,6 +1333,7 @@ function vote(productId, value) {
   const product = productById(productId);
   if (!product || hasRated(productId)) return;
   invalidateAiAgentResults();
+  undoPinnedId = null; undoChain = 0;
   const event = { productId: productId, createdAt: new Date().toISOString(), view: currentView };
   if (value === "yes" || value === "like") {
     state.interactions.likes.push(event);
@@ -1278,6 +1349,7 @@ function saveToList(productId) {
   const product = productById(productId);
   if (!product || isLiked(productId)) return;
   invalidateAiAgentResults();
+  undoPinnedId = null; undoChain = 0;
   const createdAt = new Date().toISOString();
   state.likedProducts.push({ productId: productId, addedAt: createdAt });
   state.interactions.saves = Array.isArray(state.interactions.saves) ? state.interactions.saves : [];
@@ -1342,6 +1414,17 @@ function rateOutfit(pinId, vote) {
   persist();
   render();
 }
+function previousDecision() {
+  const events = [];
+  [["yes", state.interactions.likes], ["no", state.interactions.dislikes], ["save", state.interactions.saves]].forEach(function(entry) {
+    (Array.isArray(entry[1]) ? entry[1] : []).forEach(function(item, order) {
+      if (item && item.productId && item.createdAt) events.push({ productId: item.productId, action: entry[0], createdAt: item.createdAt, at: Date.parse(item.createdAt) || 0, order: order });
+    });
+  });
+  events.sort(function(a, b) { return a.at - b.at || a.order - b.order; });
+  const last = events[events.length - 1];
+  return last ? { productId: last.productId, action: last.action, createdAt: last.createdAt } : null;
+}
 function undoLast() {
   const action = state.interactions.lastAction;
   if (!action) return;
@@ -1355,7 +1438,10 @@ function undoLast() {
     state.interactions.dislikes = state.interactions.dislikes.filter(function(item) { return item.productId !== action.productId || item.createdAt !== action.createdAt; });
   }
   state.interactions.undoEvents.push({ productId: action.productId, action: action.action, undoneAt: new Date().toISOString() });
-  state.interactions.lastAction = null;
+  // Annulations successives : la décision précédente devient la prochaine à pouvoir être annulée (10 d'affilée au plus).
+  undoChain += 1;
+  state.interactions.lastAction = undoChain < 10 ? previousDecision() : null;
+  undoPinnedId = action.productId;
   state.learnedPreferences = deriveLearnedPreferences(state);
   persist();
   render();
@@ -1739,6 +1825,11 @@ function handleClick(event) {
   else if (action === "toggle-discovery-view") toggleDiscoveryView();
   else if (action === "toggle-filters") { discoveryFiltersOpen = !discoveryFiltersOpen; render(); }
   else if (action === "save-filters") saveFilters();
+  else if (action === "reset-discovery-filters") {
+    Object.assign(state.settings, DEFAULT_DISCOVERY_FILTERS(), { seasonAuto: true });
+    invalidateAiAgentResults();
+    persist(); render(); showToast("Filtres réinitialisés", false);
+  }
   else if (action === "export") exportData();
   else if (action === "import-backup") document.querySelector("#backup-file").click();
   else if (action === "import-catalog") document.querySelector("#catalog-file")?.click();
@@ -1817,18 +1908,31 @@ function handleChange(event) {
       const presets = Array.isArray(state.settings.savedFilters) ? state.settings.savedFilters : [];
       const preset = presets[Number(target.value)];
       if (preset) {
-        ["objective","style","season","maxPrice"].forEach(function(field) { state.settings[field] = preset[field]; });
+        // Un filtre enregistré incomplet ne doit pas laisser de champ vide : les valeurs manquantes reviennent au réglage par défaut.
+        const defaults = DEFAULT_DISCOVERY_FILTERS();
+        ["objective","style","season","maxPrice"].forEach(function(field) { state.settings[field] = preset[field] == null || preset[field] === "" ? defaults[field] : preset[field]; });
+        state.settings.seasonAuto = state.settings.season === seasonFor(new Date());
       }
     } else if (key === "maxPrice") {
-      state.settings.maxPrice = target.value.trim() === "" ? null : Math.max(0, Number(target.value));
-    } else state.settings[key] = key.toLowerCase().includes("level") ? Number(target.value) : target.value;
+      const price = Number(target.value);
+      state.settings.maxPrice = target.value.trim() === "" || !Number.isFinite(price) ? null : Math.max(0, price);
+    } else {
+      state.settings[key] = key.toLowerCase().includes("level") ? Number(target.value) : target.value;
+      if (key === "season") state.settings.seasonAuto = target.value === seasonFor(new Date());
+    }
     if (aiAgentState.status === "ready") {
       aiAgentState.status = "stale";
       aiAgentState.message = "Tes filtres ont changé. Relance l’agent pour actualiser la sélection.";
       aiAgentState.recommendations = [];
     }
+    const hadFocus = document.activeElement === target;
     persist();
     render();
+    // Le panneau est reconstruit : on rend le focus au réglage modifié pour ne pas perdre le clavier.
+    if (hadFocus && key !== "preset") {
+      const again = document.querySelector('[data-filter="' + key + '"]');
+      if (again) again.focus({ preventScroll: true });
+    }
   }
   if (target.matches("[data-wardrobe-filter]")) {
     const key = target.dataset.wardrobeFilter;
@@ -1946,7 +2050,7 @@ function attachSwipe() {
   }
   function finish(x,y,mode,id,event) {
     if (!dragging || mode!==inputMode || (mode==="touch" && id!==activeTouchId) || (mode==="pointer" && id!==pointerId)) return;
-    if (Number.isFinite(x) && Number.isFinite(y)) move(x,y,event);
+    if (Number.isFinite(x) && Number.isFinite(y)) move(x,y,null);
     if (!dragging) return;
     const width=Math.max(1,card.getBoundingClientRect().width), height=Math.max(1,card.getBoundingClientRect().height);
     const elapsed=Math.max(1,performance.now()-startTime);
@@ -2118,6 +2222,12 @@ async function boot() {
   state.profile = Object.assign(base.profile, state.profile || {});
   state.profile.sizes = Object.assign(base.profile.sizes, state.profile.sizes || {});
   state.settings = Object.assign(base.settings, state.settings || {});
+  // La saison « par défaut » suit la saison réelle : un réglage hérité d'une saison passée ne filtre plus en silence.
+  const todaySeason = seasonFor(new Date());
+  if (typeof state.settings.seasonAuto !== "boolean") {
+    state.settings.seasonAuto = state.settings.season === seasonFor(new Date(state.updatedAt || Date.now()));
+  }
+  if (state.settings.seasonAuto && state.settings.season !== todaySeason) state.settings.season = todaySeason;
   state.settings.outfitFilters = Object.assign(base.settings.outfitFilters || {},state.settings.outfitFilters || {});
   state.settings.outfitFilters.styles = Array.isArray(state.settings.outfitFilters.styles) ? state.settings.outfitFilters.styles : (state.profile.preferredStyles || []);
   state.settings.outfitFilters.season = state.settings.outfitFilters.season || "Toute saison";

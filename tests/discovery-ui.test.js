@@ -78,7 +78,7 @@ test("all local files referenced by the application shell exist", function() {
 });
 
 test("the PWA refreshes its cache and preloads the app icons and first catalogue page", function() {
-  assert.ok(sw.includes('dressopp-static-v21'));
+  assert.ok(sw.includes('dressopp-static-v22'));
   for (const path of [
     "./assets/logo-horizontal.png",
     "./assets/logo-square.png",

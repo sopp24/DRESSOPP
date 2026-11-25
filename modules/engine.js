@@ -1,7 +1,8 @@
 import { inferPinterestFeatures, isMenswearPin, inferTextFeatures, pinterestAffinity, garmentFamily, familySlot, pinGarmentFamilies } from "./outfits.js";
 import { inferProductGender, inferMenFit, isMenFit, registerMenMerchants, isMenMerchant } from "./audience.js";
+import { diversifyDeck, diversifyProducts, createRng, brandKey, familyKey } from "./diversify.js";
 
-export { inferProductGender, inferMenFit, isMenFit, registerMenMerchants, isMenMerchant };
+export { inferProductGender, inferMenFit, isMenFit, registerMenMerchants, isMenMerchant, diversifyDeck, diversifyProducts, createRng };
 
 const FEATURE_FIELDS = ["styleTags", "colors", "materials", "cuts", "patterns", "categories"];
 
@@ -50,7 +51,7 @@ export function createInitialState(products) {
       preferredStyles: [], comfort: "Sans préférence", fit: "Sans préférence", notes: ""
     },
     settings: {
-      objective: "Vêtements", style: "Tous", season: seasonFor(new Date()), maxPrice: null,
+      objective: "Vêtements", style: "Tous", season: seasonFor(new Date()), seasonAuto: true, maxPrice: null,
       communitySharing: false, aiAgentConsent: false, aiAgentAutoRefresh: false, discoveryLevel: 30, trainingDiscoveryLevel: 75, discoveryView: "cards", savedFilters: [], wardrobeFilters: { objective: "Tout", style: "Tous", season: "Toute saison", maxPrice: null }, wardrobeSort: "recent",
       outfitFilters: { styles: [], season: "Toute saison", maxPrice: null }, outfitLibraryView: "discover"
     },
@@ -287,63 +288,49 @@ function noveltyScore(product, learned) {
   return 100 - (known / tokens.length) * 100;
 }
 
+// Conservé pour l'agent local : mêmes critères que le paquet de cartes, sans hasard ni historique.
 export function diversifyScoredProducts(entries, limit) {
-  const remaining = (Array.isArray(entries) ? entries : []).map((entry,index) => ({
-    entry,index,product:entry && entry.product ? entry.product : entry,
-    score:Number(entry && entry.score) || 0
-  }));
-  const merchantKey = product => normalizeText(product && (product.merchant || product.source || product.brand) || "sans boutique")
-    .split(" · ")[0].trim();
-  const brandKey = product => normalizeText(product && product.brand || "");
-  const categoryKey = product => normalizeText(product && (product.category || product.objective) || "autre");
-  const priceBand = product => {
-    const price = Number(product && product.price);
-    if (!Number.isFinite(price)) return "unknown";
-    return price < 40 ? "budget" : price < 100 ? "mid" : "premium";
-  };
-  const styles = product => (Array.isArray(product && product.styleTags) ? product.styleTags : [])
-    .map(normalizeText).filter(Boolean);
-  const distinctMerchants = new Set(remaining.map(item => merchantKey(item.product)));
-  const firstPass = Math.min(8,distinctMerchants.size);
-  const cap = Number.isFinite(Number(limit)) ? Math.max(0,Math.floor(Number(limit))) : remaining.length;
-  const selected = [];
-  const merchantCounts = new Map(), brandCounts = new Map(), categoryCounts = new Map();
-  const priceCounts = new Map(), styleCounts = new Map();
+  const list = Array.isArray(entries) ? entries : [];
+  const cap = Number.isFinite(Number(limit)) ? Math.max(0, Math.floor(Number(limit))) : list.length;
+  return diversifyDeck(list, { limit: Math.max(cap, 0), poolSize: Math.max(list.length, 1), band: 1e9 }).slice(0, cap);
+}
 
-  while (selected.length < cap && remaining.length) {
-    const unusedMerchants = remaining.filter(item => !merchantCounts.has(merchantKey(item.product)));
-    const pool = selected.length < firstPass && unusedMerchants.length ? unusedMerchants : remaining;
-    let best = pool[0], bestScore = -Infinity;
-    for (const item of pool) {
-      const product = item.product;
-      const merchant = merchantKey(product), brand = brandKey(product);
-      const category = categoryKey(product), price = priceBand(product);
-      const productStyles = styles(product);
-      const stylePressure = productStyles.reduce((max,style) => Math.max(max,styleCounts.get(style) || 0),0);
-      const penalty =
-        (merchantCounts.get(merchant) || 0) * 16 +
-        (brand ? (brandCounts.get(brand) || 0) * 3 : 0) +
-        (categoryCounts.get(category) || 0) * 2.2 +
-        (priceCounts.get(price) || 0) * 2.5 +
-        stylePressure * 1.8;
-      const adjusted = item.score - penalty;
-      if (adjusted > bestScore || (adjusted === bestScore && item.index < best.index)) {
-        best = item; bestScore = adjusted;
-      }
-    }
-    const index = remaining.indexOf(best);
-    remaining.splice(index,1);
-    selected.push(best.entry);
-    const product = best.product;
-    const merchant = merchantKey(product), brand = brandKey(product);
-    const category = categoryKey(product), price = priceBand(product);
-    merchantCounts.set(merchant,(merchantCounts.get(merchant) || 0)+1);
-    if (brand) brandCounts.set(brand,(brandCounts.get(brand) || 0)+1);
-    categoryCounts.set(category,(categoryCounts.get(category) || 0)+1);
-    priceCounts.set(price,(priceCounts.get(price) || 0)+1);
-    styles(product).forEach(style => styleCounts.set(style,(styleCounts.get(style) || 0)+1));
+// Décisions récentes (Oui, Non, ajouts), de la plus ancienne à la plus récente, pour que la diversité
+// tienne compte de ce que l'utilisateur vient de voir, y compris lors d'une session précédente.
+export function decisionHistory(state, limit) {
+  const source = state || {};
+  const interactions = source.interactions || {};
+  const byId = new Map((source.products || []).map(function(product) { return [product.id, product]; }));
+  const events = [];
+  [["like", interactions.likes], ["dislike", interactions.dislikes], ["save", interactions.saves]].forEach(function(entry) {
+    (Array.isArray(entry[1]) ? entry[1] : []).forEach(function(item, order) {
+      const product = byId.get(item && item.productId);
+      if (!product) return;
+      events.push({ kind: entry[0], product: product, at: Date.parse(item.createdAt || item.addedAt || "") || 0, order: order });
+    });
+  });
+  events.sort(function(a, b) { return a.at - b.at || a.order - b.order; });
+  return events.slice(-Math.max(1, Number(limit) || 80));
+}
+
+// Marques et types de pièces que l'utilisateur a refusés sans jamais en accepter : on ne les remet pas en avant.
+function rejectionProfile(history) {
+  const brands = new Map(), families = new Map();
+  history.forEach(function(event) {
+    const delta = event.kind === "dislike" ? [1, 0] : [0, 1];
+    [[brands, brandKey(event.product)], [families, familyKey(event.product)]].forEach(function(pair) {
+      const row = pair[0].get(pair[1]) || [0, 0];
+      row[0] += delta[0]; row[1] += delta[1];
+      pair[0].set(pair[1], row);
+    });
+  });
+  function penaltyFor(row, threshold, unit) {
+    if (!row || row[1] > 0 || row[0] < threshold) return 0;
+    return -unit * Math.min(3, row[0] - threshold + 1);
   }
-  return selected;
+  return function(product) {
+    return penaltyFor(brands.get(brandKey(product)), 2, 8) + penaltyFor(families.get(familyKey(product)), 4, 5);
+  };
 }
 
 export function rankProducts(products, state, options) {
@@ -426,24 +413,55 @@ export function rankProducts(products, state, options) {
     }
     return Math.max(-14, Math.min(14, score));
   }
+  const activeFilters = opts.filters || config;
+  const history = decisionHistory(state, 120);
+  const rejectionPenalty = rejectionProfile(history);
+  const styleFilter = normalizeText(activeFilters.style || "Tous");
+  const seasonFilter = normalizeText(activeFilters.season || "Toute saison");
+  // Dans un jeu de filtres, les pièces qui portent explicitement le style ou la saison choisis passent avant celles dont l'étiquette est vide.
+  function filterBoost(product) {
+    let boost = 0;
+    if (styleFilter && styleFilter !== "tous" && (product.styleTags || []).some(function(tag) { return normalizeText(tag) === styleFilter; })) boost += 10;
+    if (seasonFilter && seasonFilter !== "toute saison" && (product.seasonTags || []).some(function(tag) { return normalizeText(tag) === seasonFilter; })) boost += 4;
+    return boost;
+  }
   const scored = (products || []).filter(function(product) {
     const expired = product.catalogStatus === "expired" ||
       (product.sourceType !== "curated" && product.expiresAt && Date.parse(product.expiresAt) <= Date.now());
     const stale = product.catalogStatus === "stale";
     const unavailable = product.availabilityStatus === "out_of_stock";
     return isMenFit(product) && !expired && !stale && !unavailable && sizeMatches(product) &&
-      matchesFilters(product, opts.filters || config) && !seen.has(product.id);
+      matchesFilters(product, activeFilters) && !seen.has(product.id);
   }).map(function(product) {
     // Plus tu swipes, plus le profil appris pèse : 10 décisions suffisent à lui donner presque deux fois plus d'influence.
-    const familiarity = preferenceScore(product, learned) * (1 + .8 * swipeConfidence) + explicitProfileScore(product, profile);
+    const affinity = preferenceScore(product, learned);
+    const explicit = explicitProfileScore(product, profile);
+    const familiarity = affinity * (1 + .8 * swipeConfidence) + explicit;
     const novelty = noveltyScore(product, learned);
     const baseScore = familiarity * (1 - discovery / 100) + novelty * (discovery / 100) * (training ? 1.25 : 1);
     // Le tableau Pinterest guide le classement : plus une pièce ressemble aux tenues analysées, plus elle monte.
     const pinterest = Math.min(36, pinterestAffinity(product, pins) * pinterestWeight) + (product.menFit === "men" ? 1.5 : 0);
+    const rejected = rejectionPenalty(product);
     const score = baseScore + pinterest + freshnessBoost(product) + reviewBoost(product) +
-      merchantTrustBoost(product) + popularityBoost(product) + communityBoost(product);
-    return { product: product, score: score };
+      merchantTrustBoost(product) + popularityBoost(product) + communityBoost(product) + filterBoost(product) + rejected;
+    return { product: product, score: score, affinity: affinity, blocked: rejected < 0 || explicit < 0 };
   });
   scored.sort(function(a, b) { return b.score - a.score; });
-  return diversifyScoredProducts(scored).map(function(entry) { return entry.product; });
+  let ordered = scored;
+  if (!opts.skipDiversify) {
+    const seed = opts.seed == null || opts.seed === "" ? null : String(opts.seed) + ":" + history.length;
+    ordered = diversifyDeck(scored, {
+      history: history.map(function(event) { return { product: event.product, at: event.at }; }),
+      seed: seed, rng: typeof opts.rng === "function" ? opts.rng : (seed == null ? undefined : createRng(seed)),
+      exploration: opts.exploration != null ? Number(opts.exploration) : (seed == null && typeof opts.rng !== "function" ? 0 : .18),
+      limit: opts.diversityDepth || 60
+    });
+  }
+  const result = ordered.map(function(entry) { return entry.product; });
+  // Après un « Annuler », la pièce défaite revient en tête du paquet.
+  if (opts.pinFirstId) {
+    const position = result.findIndex(function(product) { return product.id === opts.pinFirstId; });
+    if (position > 0) result.unshift(result.splice(position, 1)[0]);
+  }
+  return result;
 }
