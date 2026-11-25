@@ -2078,9 +2078,9 @@
       "checkedAt": "2026-11-22T15:25:04.180Z"
     }
   ],
-  "refreshCadence": "Rotation quotidienne de 36 enseignes parmi 200 ; chaque enseigne est revisitée à tour de rôle.",
+  "refreshCadence": "Rotation quotidienne de 36 enseignes parmi 255 ; chaque enseigne est revisitée à tour de rôle.",
   "notes": [
-    "Répertoire de 200 enseignes dans data/merchant-directory.json ; l'accès produit dépend des flux et autorisations de chaque boutique.",
+    "Répertoire de 255 enseignes dans data/merchant-directory.json ; l'accès produit dépend des flux et autorisations de chaque boutique.",
     "Le robot respecte robots.txt et n'accède qu'aux pages publiques autorisées.",
     "Les fiches nécessitent un nom, un prix EUR, un lien produit HTTPS et une image HTTPS.",
     "Les prix et stocks sont datés ; vérification finale sur la boutique avant achat.",

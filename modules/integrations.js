@@ -4,7 +4,7 @@ export const INTEGRATIONS = [
     id: "pinterest",
     name: "Pinterest",
     status: "API officielle — configuration requise",
-    detail: "Le tableau mode est la seule source d'inspiration. Une synchronisation quotidienne récupère les nouveaux Pins via Pinterest API v5 lorsque le secret GitHub est configuré."
+    detail: "Le tableau mode est la seule source d’inspiration. Une synchronisation quotidienne récupère les nouveaux Pins via Pinterest API v5 lorsque le secret GitHub est configuré."
   }
 ];
 

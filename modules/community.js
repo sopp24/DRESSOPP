@@ -72,7 +72,7 @@ async function authRequest(path, body, apiKey) {
   return payload;
 }
 async function getAuth(config) {
-  if (!config || !config.enabled || !config.apiKey || !config.projectId) throw new Error("La communauté gratuite n'est pas encore configurée.");
+  if (!config || !config.enabled || !config.apiKey || !config.projectId) throw new Error("La communauté gratuite n’est pas encore configurée.");
   let token = readToken();
   if (token && token.expiresAt > Date.now() + 60000 && token.idToken && token.localId) return token;
   if (token && token.refreshToken) {

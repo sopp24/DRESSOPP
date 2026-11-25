@@ -213,7 +213,7 @@ async function refreshCommunity(showFeedback) {
   if (!state || !state.settings.communitySharing) return;
   if (!communityConfig.enabled || !communityConfig.apiKey || !communityConfig.projectId) {
     communityStatus = "À configurer · voir le guide communautaire gratuit";
-    if (showFeedback) showToast("Configure d'abord Firebase gratuit en suivant le guide communautaire.", false);
+    if (showFeedback) showToast("Configure d’abord Firebase gratuit en suivant le guide communautaire.", false);
     return;
   }
   if (communitySyncPending) return;
@@ -235,7 +235,7 @@ async function refreshCommunity(showFeedback) {
     if (currentView === "settings") render();
   } catch (error) {
     communityStatus = "Synchronisation indisponible · " + error.message;
-    if (showFeedback) showToast("La communauté n'a pas pu être synchronisée : " + error.message, false);
+    if (showFeedback) showToast("La communauté n’a pas pu être synchronisée : " + error.message, false);
   } finally {
     communitySyncPending = false;
   }
@@ -290,7 +290,7 @@ async function runAiAgent(showFeedback) {
   const ranked = rankProducts(state.products,state,{training:training,communitySignals:communitySignals});
   const candidates = selectAgentCandidates(ranked,50);
   if (!candidates.length) {
-    aiAgentState = { status:"empty", recommendations:[], message:"Aucun article n'est disponible avec ces filtres. Élargis la catégorie, le style ou le budget, ou attends la prochaine collecte.", searchHints:[], candidateCount:0, provider:"local" };
+    aiAgentState = { status:"empty", recommendations:[], message:"Aucun article n’est disponible avec ces filtres. Élargis la catégorie, le style ou le budget, ou attends la prochaine collecte.", searchHints:[], candidateCount:0, provider:"local" };
     render();
     return;
   }
@@ -317,7 +317,7 @@ async function runAiAgent(showFeedback) {
         provider = "cloudflare";
       } catch (error) {
         if (error && error.name === "AbortError") throw error;
-        remoteNotice = " Le service Cloudflare n’a pas répondu (" + error.message + ") ; la sélection locale prend le relais.";
+        remoteNotice = " Le service Cloudflare n’a pas répondu (" + error.message + ") ; la sélection locale prend le relais.";
         result = localResult;
         provider = "local";
       } finally {
@@ -344,8 +344,8 @@ async function runAiAgent(showFeedback) {
         candidateCount:localResult.candidateCount, provider:"local"
       };
     } else {
-      aiAgentState = { status:"error", recommendations:[], message:"L’analyse locale a rencontré un problème : " + error.message + ". Le classement normal reste actif.", searchHints:[], candidateCount:candidates.length, provider:"local" };
-      if (showFeedback) showToast("L’agent n’a pas pu terminer l’analyse : " + error.message,false);
+      aiAgentState = { status:"error", recommendations:[], message:"L’analyse locale a rencontré un problème : " + error.message + ". Le classement normal reste actif.", searchHints:[], candidateCount:candidates.length, provider:"local" };
+      if (showFeedback) showToast("L’agent n’a pas pu terminer l’analyse : " + error.message,false);
     }
   } finally {
     aiAgentController = null;
@@ -369,23 +369,23 @@ function renderAiAgentPanel() {
     configured ? (consent ? "Cloudflare autorisé · mode hybride" : "Mode local privé") : "Mode local privé";
   const consentControl = configured
     ? '<label class="ai-agent-consent"><input id="ai-agent-consent" type="checkbox" ' + (consent ? "checked" : "") + '><span>Autoriser aussi l’envoi temporaire de mes préférences générales, de mes derniers retours et des résumés des articles candidats à Cloudflare pour utiliser le modèle génératif. Sans cette case, l’analyse reste entièrement sur cet appareil.</span></label>'
-    : '<p class="ai-agent-help">Le personal shopper local est actif sans compte, clé API ni transfert de données. Le modèle génératif distant n’est pas configuré ; tu peux déjà utiliser l’agent local.</p>';
+    : '<p class="ai-agent-help">Le personal shopper local est actif sans compte, clé API ni transfert de données. Le modèle génératif distant n’est pas configuré ; tu peux déjà utiliser l’agent local.</p>';
   const autoControl = '<label class="ai-agent-auto"><input id="ai-agent-auto" type="checkbox" ' + (state.settings.aiAgentAutoRefresh ? "checked" : "") + '> Actualiser l’analyse après trois nouvelles décisions (localement, ou avec Cloudflare si autorisé)</label>';
   const button = '<button class="button-primary button-small" type="button" data-action="run-ai-agent" ' + (aiAgentPending ? "disabled" : "") + '>' + (aiAgentPending ? "Analyse…" : ready ? "Actualiser mes recommandations" : "Lancer mon personal shopper") + '</button>';
   const hints = ready && aiAgentState.searchHints.length
-    ? '<div class="ai-agent-hints"><span>Signaux retenus :</span>' + aiAgentState.searchHints.map(function(item) { return "<span>" + esc(item) + "</span>"; }).join("") + "</div>" : "";
+    ? '<div class="ai-agent-hints"><span>Signaux retenus :</span>' + aiAgentState.searchHints.map(function(item) { return "<span>" + esc(item) + "</span>"; }).join("") + "</div>" : "";
   const note = ready ? '<p class="ai-agent-result-note">' + aiAgentState.recommendations.length + " articles classés parmi " + aiAgentState.candidateCount + " candidats · " + (aiAgentState.provider === "cloudflare" ? "modèle génératif Cloudflare" : "analyse locale privée") + ".</p>" : "";
   return '<section class="panel ai-agent-panel" aria-label="Personal shopper IA"><div class="ai-agent-top"><div><span class="eyebrow">Ton personal shopper</span><h2>Agent IA DRESSOPP</h2><p>Il croise tes inspirations, ton profil, ta garde-robe et tes décisions pour sélectionner les prochaines pièces.</p></div><span class="ai-agent-status ' + (ready ? "is-ready" : aiAgentPending ? "is-loading" : "") + '">' + esc(status) + '</span></div>' +
     consentControl +
     '<div class="ai-agent-controls">' + button + autoControl + '</div>' +
     (aiAgentState.message ? '<p class="ai-agent-message">' + esc(aiAgentState.message) + '</p>' : "") + note + hints +
-    '<p class="ai-agent-disclaimer">Le mode local ne transmet aucune donnée. Le mode Cloudflare est facultatif et n’est utilisé qu’après ton accord. L’agent classe uniquement des produits réels déjà présents dans DRESSOPP : il ne fabrique ni article, ni prix, ni disponibilité.</p>' +
+    '<p class="ai-agent-disclaimer">Le mode local ne transmet aucune donnée. Le mode Cloudflare est facultatif et n’est utilisé qu’après ton accord. L’agent classe uniquement des produits réels déjà présents dans DRESSOPP : il ne fabrique ni article, ni prix, ni disponibilité.</p>' +
     '<a class="ai-agent-guide" href="https://github.com/sopp24/DRESSOPP/blob/main/docs/AI-AGENT.md" target="_blank" rel="noopener noreferrer">Détails de l’agent et confidentialité ↗</a></section>';
 }
 function aiAgentReason(productId) {
   if (aiAgentState.status !== "ready") return "";
   const item = aiAgentState.recommendations.find(function(entry) { return entry.productId === productId; });
-  return item && item.reason ? '<p class="ai-agent-product-reason"><strong>Pourquoi l’IA le propose :</strong> ' + esc(item.reason) + '</p>' : "";
+  return item && item.reason ? '<p class="ai-agent-product-reason"><strong>Pourquoi l’IA le propose :</strong> ' + esc(item.reason) + '</p>' : "";
 }
 function invalidateAiAgentResults() {
   if (aiAgentState.status !== "ready" && !aiAgentPending) return;
@@ -436,7 +436,7 @@ function persist() {
       return result;
     } catch (error) {
       updateSaveStatus("Échec de la sauvegarde", "error");
-      showToast("Erreur de sauvegarde : " + error.message, false);
+      showToast("Erreur de sauvegarde : " + error.message, false);
       return { ok: false, error: error.message };
     } finally {
       persistPending = false;
@@ -526,7 +526,7 @@ function renderEmptyProducts(training) {
       body = "Élargis ton budget, change de style ou sélectionne une autre saison pour relancer la découverte.";
     }
     const hints = relaxedFilterHints(training);
-    if (hints.length) extra = '<p class="empty-hints">En assouplissant : ' + esc(hints.join(" · ")) + '.</p>';
+    if (hints.length) extra = '<p class="empty-hints">En assouplissant : ' + esc(hints.join(" · ")) + '.</p>';
   }
   const canReset = Boolean(state.products.length) && !catalogPagePending && !filtersAreDefault(state.settings);
   return '<div class="empty-state"><div class="empty-mark">＋</div><h2>' + title + '</h2><p>' + body + '</p>' + extra + '<div class="empty-actions">' +
@@ -562,8 +562,8 @@ function renderProductAttributes(product) {
     ? materials.map(function(material) { return esc(material); }).join('<span class="attribute-separator">·</span>')
     : '<span class="product-attribute-missing">Non renseignée</span>';
   return '<div class="product-attributes">' +
-    '<div class="product-attribute-group"><strong>Couleurs (' + colors.length + ') :</strong><span class="product-attribute-values">' + colorValues + '</span></div>' +
-    '<div class="product-attribute-group"><strong>Matière (' + materials.length + ') :</strong><span class="product-attribute-values">' + materialValues + '</span></div>' +
+    '<div class="product-attribute-group"><strong>Couleurs (' + colors.length + ') :</strong><span class="product-attribute-values">' + colorValues + '</span></div>' +
+    '<div class="product-attribute-group"><strong>Matière (' + materials.length + ') :</strong><span class="product-attribute-values">' + materialValues + '</span></div>' +
     '</div>';
 }
 function renderProductReview(product) {
@@ -581,7 +581,7 @@ function renderProductReview(product) {
   const merchantCount = Number(product.merchantRatingCount);
   const merchantSource = product.merchantRatingSource || "Source marchand";
   const merchantRatingText = hasMerchantRating
-    ? '<p class="product-review-note merchant-review-note"><strong>Fiabilité marchand : ★ ' + merchantRating.toFixed(1).replace(".", ",") + '/5</strong>' +
+    ? '<p class="product-review-note merchant-review-note"><strong>Fiabilité marchand : ★ ' + merchantRating.toFixed(1).replace(".", ",") + '/5</strong>' +
       (Number.isFinite(merchantCount) && merchantCount > 0 ? ' · ' + merchantCount.toLocaleString("fr-FR") + ' avis' : '') +
       ' <span>· ' + esc(merchantSource) + '</span></p>'
     : '';
@@ -660,7 +660,7 @@ async function loadCatalogPage(pageIndex) {
     if (added) await persist();
     return added;
   } catch (error) {
-    console.warn("Chargement d'une page catalogue impossible.", error);
+    console.warn("Chargement d’une page catalogue impossible.", error);
     catalogRetryAfter = Date.now() + 30000;
     return 0;
   } finally {
@@ -729,8 +729,8 @@ function renderCatalogStatus() {
     ? catalogMeta.sources.slice(0, 8).join(" · ") + (catalogMeta.sources.length > 8 ? " · +" + (catalogMeta.sources.length - 8) : "")
     : "Les boutiques accessibles seront détectées automatiquement";
   const message = connected
-    ? "Dernière rotation : " + syncedAt + " · " + Number(catalogMeta.scannedSourceCount || catalogMeta.attemptedSourceCount || 0) + " boutique(s) explorée(s) sur " + directoryCount
-    : "Catalogue de " + directoryCount + " enseignes en rotation ; les premières collectes sont publiées progressivement.";
+    ? "Dernière rotation : " + syncedAt + " · " + Number(catalogMeta.scannedSourceCount || catalogMeta.attemptedSourceCount || 0) + " boutique(s) explorée(s) sur " + directoryCount
+    : "Catalogue de " + directoryCount + " enseignes en rotation ; les premières collectes sont publiées progressivement.";
   return '<section class="catalog-status panel ' + (connected ? "is-connected" : "is-pending") + '" aria-label="État du catalogue public">' +
     '<div class="catalog-status-main"><span class="eyebrow">Catalogue public multi-boutiques</span><strong>' + liveCount + ' article(s) publics exploitables</strong>' +
     '<p>' + esc(message) + '</p><small>' + esc(sourceLabel) + '</small></div><div class="catalog-status-side"><span>' +
@@ -789,7 +789,7 @@ function renderDeckCard(product, training) {
     '<button class="deck-action deck-action-yes" type="button" data-action="vote" data-vote="yes" data-id="' + esc(product.id) + '" aria-label="J’aime" title="J’aime"><img class="deck-action-icon" src="./assets/fav.webp" alt="" aria-hidden="true" draggable="false"></button>' +
     '<button class="deck-action deck-action-share" type="button" data-action="share-product" data-id="' + esc(product.id) + '" aria-label="Partager cet article" title="Partager"><img class="deck-action-icon" src="./assets/share.webp" alt="" aria-hidden="true" draggable="false"></button>' +
     '</div>' +
-    '<p class="deck-hint deck-hint-desktop" id="deck-keyboard-hint">← Passer · ↓ Ajouter à ma liste · → J’aime · Entrée : détails · ⌘/Ctrl + Z : annuler</p>' +
+    '<p class="deck-hint deck-hint-desktop" id="deck-keyboard-hint">← Passer · ↓ Ajouter à ma liste · → J’aime · Entrée : détails · ⌘/Ctrl + Z : annuler</p>' +
     '<p class="deck-hint deck-hint-touch" id="deck-touch-hint" aria-hidden="true">Glisse à gauche ou à droite · Vers le bas pour ajouter à ta liste</p>' +
     '</div>';
 }
@@ -798,7 +798,7 @@ function renderGridCards(products, options) {
   if (!products.length) return renderEmptyProducts(false);
   return '<div class="product-grid">' + products.map(function(product) {
     const liked = isLiked(product.id);
-    return '<article class="grid-card"><button class="grid-image" type="button" data-action="details" data-id="' + esc(product.id) + '" aria-label="Voir la fiche produit : ' + esc(product.name) + '" title="Voir les détails">' +
+    return '<article class="grid-card"><button class="grid-image" type="button" data-action="details" data-id="' + esc(product.id) + '" aria-label="Voir la fiche produit : ' + esc(product.name) + '" title="Voir les détails">' +
       productImageMarkup(product, product.name) + '</button><div class="grid-content"><span class="product-brand">' + esc(product.brand || "Marque non renseignée") + '</span>' +
       '<h3 class="product-title">' + esc(product.name) + '</h3>' + aiAgentReason(product.id) + '<div class="product-meta"><span>' + esc(product.merchant || product.source) + '</span><i class="meta-dot"></i><span>' + esc(product.objective) + '</span></div>' +
       '<div class="grid-bottom"><span class="grid-price">' + esc(formatPrice(product.price)) + '</span><div class="grid-actions">' +
@@ -831,7 +831,7 @@ function renderDiscover(training) {
   const trainingExtras = training
     ? '<div class="deck-topline"><span><strong>Exploration active</strong> · ' + products.length + ' article(s) à découvrir</span><span>Nouveauté prioritaire</span></div>' +
       '<aside class="deck-aside"><section class="panel aside-card"><h2 class="aside-title">Ton évolution <span>en direct</span></h2>' +
-      '<p>Chaque décision affine ton profil. Une consultation reste un signal léger ; tes réponses Oui et Non comptent davantage.</p>' +
+      '<p>Chaque décision affine ton profil. Une consultation reste un signal léger ; tes réponses Oui et Non comptent davantage.</p>' +
       '<div class="aside-stat"><div class="stat-box"><strong>' + yesCount + '</strong><small>Oui</small></div><div class="stat-box"><strong>' + rejected + '</strong><small>Non</small></div><div class="stat-box"><strong>' + savedCount + '</strong><small>Dans ma liste</small></div></div></section>' +
       '<section class="panel aside-card"><h2 class="aside-title">Équilibre du moment <span>' + esc(state.settings.trainingDiscoveryLevel) + '% découverte</span></h2>' +
       '<p>Le mode Entraînement donne plus de poids à la nouveauté pour élargir ton terrain de jeu.</p></section></aside>' +
@@ -932,7 +932,7 @@ function renderInspirations() {
     ? "Tableau Pinterest confirmé par l’API"
     : "En attente de la prochaine synchronisation Pinterest";
   return heading +
-    '<div class="pinterest-status-strip"><div><strong>' + items.length + '</strong><span>épingle(s) disponibles</span><strong>' + unseen.length + '</strong><span>nouvelle(s) épingle(s)</span></div><div><small>' + esc(pinterestStatus) + '</small><small>Dernière synchronisation : ' + esc(lastSync) + '</small></div></div>' +
+    '<div class="pinterest-status-strip"><div><strong>' + items.length + '</strong><span>épingle(s) disponibles</span><strong>' + unseen.length + '</strong><span>nouvelle(s) épingle(s)</span></div><div><small>' + esc(pinterestStatus) + '</small><small>Dernière synchronisation : ' + esc(lastSync) + '</small></div></div>' +
     '<div class="source-note pinterest-notice">Les photos, descriptions et caractéristiques visuelles des Pins servent à personnaliser les propositions. Les inspirations ne sont pas présentées comme des articles marchands et ne reçoivent jamais de faux prix ou liens.</div>' +
     cards;
 }
@@ -954,7 +954,7 @@ function renderOutfitFilters() {
   const filters = getOutfitFilters();
   const selected = new Set(filters.styles);
   return '<section class="panel outfit-filter-panel">' +
-    '<div class="outfit-filter-heading"><div><span class="eyebrow">Personnalise les propositions</span><strong>Quels looks te correspondent ?</strong><small>Pinterest reste la seule source d’inspiration des tenues.</small></div>' +
+    '<div class="outfit-filter-heading"><div><span class="eyebrow">Personnalise les propositions</span><strong>Quels looks te correspondent ?</strong><small>Pinterest reste la seule source d’inspiration des tenues.</small></div>' +
     '<button class="button-quiet button-small" type="button" data-action="reset-outfit-filters">Réinitialiser</button></div>' +
     '<div class="outfit-filter-row"><div class="outfit-style-filter"><span class="outfit-filter-label">Styles</span><div class="outfit-style-options">' +
     STYLES.map(function(style) {
@@ -985,7 +985,7 @@ function renderOutfitProposalCard(idea) {
     (summary ? '<p>' + esc(String(summary).slice(0,130)) + '</p>' : '') +
     '<div class="inspiration-tags">' + tags + '</div><div class="outfit-proposal-preview">' + productPreviews + '</div>' +
     '<div class="outfit-proposal-meta"><strong>' + esc(total) + '</strong><span>' + idea.items.length + ' articles associés</span></div>' +
-    (missingLabels ? '<small class="outfit-missing-note">À compléter : ' + esc(missingLabels) + '</small>' : '<small class="outfit-missing-note is-complete">✓ Les 3 pièces essentielles sont réunies</small>') +
+    (missingLabels ? '<small class="outfit-missing-note">À compléter : ' + esc(missingLabels) + '</small>' : '<small class="outfit-missing-note is-complete">✓ Les 3 pièces essentielles sont réunies</small>') +
     '</div></button>' +
     '<div class="outfit-proposal-actions">' +
     '<button class="button-primary button-small" type="button" data-action="show-outfit" data-id="' + esc(pinId) + '">Voir la tenue <span aria-hidden="true">↗</span></button>' +
@@ -1039,13 +1039,13 @@ function renderOutfits() {
   if (savedView) {
     return heading + tabs + (savedOutfits.length
       ? '<div class="outfit-proposal-grid">' + savedOutfits.slice().sort(function(a,b) { return new Date(b.savedAt || 0) - new Date(a.savedAt || 0); }).map(function(saved) { return renderSavedOutfitCard(saved,pinsById); }).join("") + '</div>'
-      : '<div class="empty-state"><div class="empty-mark">♡</div><h2>Pas encore de tenue favorite</h2><p>Ouvre un look dans « Pour toi », puis enregistre la tenue complète. Ses pièces rejoindront aussi ta garde-robe.</p><div class="empty-actions"><button class="button-primary" type="button" data-action="toggle-outfit-library" data-view-mode="discover">Découvrir les tenues</button></div></div>');
+      : '<div class="empty-state"><div class="empty-mark">♡</div><h2>Pas encore de tenue favorite</h2><p>Ouvre un look dans « Pour toi », puis enregistre la tenue complète. Ses pièces rejoindront aussi ta garde-robe.</p><div class="empty-actions"><button class="button-primary" type="button" data-action="toggle-outfit-library" data-view-mode="discover">Découvrir les tenues</button></div></div>');
   }
   if (!pinterestPins.length) {
     return heading + tabs + '<div class="empty-state"><div class="empty-mark">⌁</div><h2>Aucune inspiration Pinterest disponible</h2><p>Les propositions de tenues sont exclusivement générées depuis les épingles Pinterest synchronisées ou ajoutées manuellement dans tes inspirations. </p><div class="empty-actions"><button class="button-primary" type="button" data-view="inspirations">Voir mes inspirations Pinterest</button><a class="button-secondary" href="' + esc(PINTEREST_BOARD_URL) + '" target="_blank" rel="noopener noreferrer">Ouvrir Pinterest ↗</a></div></div>';
   }
   const intro = '<div class="outfit-intro panel"><div><strong>' + ideas.length + ' look(s) correspondant aux critères</strong><p>' +
-    (filters.styles.length ? "Styles : " + esc(filters.styles.join(", ")) + " · " : "Tous les styles · ") +
+    (filters.styles.length ? "Styles : " + esc(filters.styles.join(", ")) + " · " : "Tous les styles · ") +
     esc(filters.season) + (filters.maxPrice == null ? " · Sans budget maximum" : " · " + esc(formatPrice(filters.maxPrice)) + " maximum par tenue") +
     '</p><div class="outfit-feedback-summary"><span>' + approvedCount + ' style(s) aimé(s)</span><span>' + rejectedCount + ' à éviter</span></div></div><button class="button-secondary button-small" type="button" data-view="wardrobe">Voir mes vêtements · ' + wardrobe.length + '</button></div>';
   const cards = ideas.map(renderOutfitProposalCard).join("");
@@ -1087,7 +1087,7 @@ function openOutfitDetail(idea) {
     (summary ? '<p>' + esc(String(summary).slice(0,220)) + '</p>' : '') +
     '<div class="inspiration-tags">' + (idea.tags || []).slice(0,6).map(function(tag) { return '<span>' + esc(tag) + '</span>'; }).join("") + '</div>' +
     '<strong class="outfit-detail-total">' + esc(total) + '</strong>' +
-    (missingLabels ? '<p class="outfit-missing-note">Pièces essentielles à compléter : ' + esc(missingLabels) + '.</p>' : '<p class="outfit-missing-note is-complete">✓ Haut, bas et chaussures réunis</p>') +
+    (missingLabels ? '<p class="outfit-missing-note">Pièces essentielles à compléter : ' + esc(missingLabels) + '.</p>' : '<p class="outfit-missing-note is-complete">✓ Haut, bas et chaussures réunis</p>') +
     '</div></div>' +
     '<button class="close-button" type="button" data-action="close-modal" aria-label="Fermer">×</button></div>' +
     '<div class="outfit-detail-toolbar"><div><strong>Les pièces de ce look</strong><small>' + items.length + ' article(s) · fais défiler pour les découvrir</small></div><div class="outfit-carousel-controls">' +
@@ -1173,7 +1173,7 @@ function removeSavedOutfit(pinId) {
   persist();
   render();
   closeModal();
-  showToast("Tenue retirée de Mes tenues ; les pièces restent dans Vêtements",false);
+  showToast("Tenue retirée de Mes tenues ; les pièces restent dans Vêtements",false);
 }
 function scrollOutfitCarousel(direction) {
   const track = modalRoot.querySelector("#outfit-product-carousel");
@@ -1214,7 +1214,7 @@ function renderDiscoveryInsights() {
   const level = state.settings.discoveryLevel;
   return '<section class="discovery-insights-settings"><div class="discovery-insights-heading"><span class="eyebrow">Toutes les informations de Pour toi</span><h2>Ton expérience de découverte</h2><p>Retrouve ici les statistiques, le fonctionnement du personal shopper, l’état du catalogue et les boutiques disponibles. Ces informations ne prennent plus de place dans le swipe.</p></div>' +
     '<div class="discovery-insights-grid"><section class="panel aside-card"><h2 class="aside-title">Ton évolution <span>en direct</span></h2>' +
-    '<p>Chaque décision affine ton profil. Une consultation reste un signal léger ; tes réponses Oui et Non comptent davantage.</p>' +
+    '<p>Chaque décision affine ton profil. Une consultation reste un signal léger ; tes réponses Oui et Non comptent davantage.</p>' +
     '<div class="aside-stat"><div class="stat-box"><strong>' + yesCount + '</strong><small>Oui</small></div><div class="stat-box"><strong>' + rejectedCount + '</strong><small>Non</small></div><div class="stat-box"><strong>' + savedCount + '</strong><small>Dans ma liste</small></div></div></section>' +
     '<section class="panel aside-card"><h2 class="aside-title">Équilibre du moment <span>' + esc(level) + '% découverte</span></h2>' +
     '<p>Le curseur mélange tes goûts identifiés et des propositions plus inattendues. Ajuste-le depuis les filtres de Pour toi.</p></section></div>' +
@@ -1234,13 +1234,13 @@ function renderSettings() {
   const communityLabel = state.settings.communitySharing ? communityStatus : "Partage désactivé";
   return renderPageHeading("Contrôle & confidentialité", "Paramètres", "Gère tes inspirations, le catalogue multi-boutiques et les données utilisées par ton algorithme.", "") +
     '<section class="panel section-panel"><h2 class="section-title">Pinterest · mon tableau mode</h2><div class="connector-item pinterest-connector"><div><strong>Pinterest</strong><small>' + esc(pinterestStatus) + '</small></div><p>Le tableau sopppx24/mode reste la référence stylistique principale. La synchronisation quotidienne utilise l’API officielle Pinterest v5 lorsque l’application est autorisée et ses secrets sont configurés sur GitHub.</p><a class="button-secondary button-small" href="' + esc(PINTEREST_BOARD_URL) + '" target="_blank" rel="noopener noreferrer">Ouvrir le tableau ↗</a></div>' +
-    '<p class="field-hint">Dernière synchronisation : ' + esc(lastPinterestSync) + '</p><div class="form-actions"><a class="button-primary button-small" href="https://github.com/sopp24/DRESSOPP/actions/workflows/pinterest-daily.yml" target="_blank" rel="noopener noreferrer">Voir / lancer le workflow ↗</a><a class="button-quiet button-small" href="https://github.com/sopp24/DRESSOPP/blob/main/docs/PINTEREST.md" target="_blank" rel="noopener noreferrer">Guide Pinterest ↗</a></div></section>' +
-    '<section class="panel section-panel"><h2 class="section-title">Catalogue gratuit multi-boutiques</h2><div class="connector-item"><div><strong>' + (catalogMeta.status === "connected" ? "Exploration terminée" : catalogMeta.status === "partial" ? "Certaines boutiques accessibles" : "Prêt à explorer les sources publiques") + '</strong><small>' + publicCount + ' fiche(s) produit publique(s) · ' + storeCount + ' boutique(s) productive(s)</small></div><p>DRESSOPP explore un répertoire de boutiques françaises et internationales, sans compte éditeur, affiliation, abonnement ni clé API payante. Le robot respecte robots.txt et importe uniquement les pages publiques qui exposent un prix en euros, une photo HTTPS et un lien produit exploitable. Les boutiques qui bloquent l’accès restent consultables par leurs liens officiels.</p><p class="field-hint">Dernière exploration : ' + esc(syncText) + '</p><p class="field-hint">Boutiques ayant fourni des produits : ' + esc((catalogMeta.sources || []).join(" · ") || "En attente du premier passage") + '</p><div class="form-actions"><a class="button-primary button-small" href="https://github.com/sopp24/DRESSOPP/actions/workflows/refresh-public-catalog.yml" target="_blank" rel="noopener noreferrer">Lancer / consulter l’exploration ↗</a><a class="button-quiet button-small" href="https://github.com/sopp24/DRESSOPP/blob/main/docs/SOURCES.md" target="_blank" rel="noopener noreferrer">Liste des sources & limites ↗</a></div></section>' +
-    '<section class="panel section-panel"><h2 class="section-title">Recommandations communautaires</h2><div class="connector-item"><div><strong>' + (communityConfigured ? "Firebase gratuit configuré" : "Configuration gratuite facultative") + '</strong><small>' + esc(communityLabel) + '</small></div><p>Avec ton accord, DRESSOPP compare des étiquettes générales de goûts et des identifiants hachés de fiches publiques aimées ou refusées par d’autres membres. Cela aide à recommander les mêmes articles aux profils proches. Aucun nom, e-mail, taille, budget, historique brut, URL de produit ou lien Pinterest n’est envoyé. Attention : ces identifiants ne sont pas chiffrés ; un membre qui connaît le code peut les rapprocher du catalogue public et déduire certains articles évalués. Sans Firebase, ton apprentissage individuel reste local.</p><label class="field-hint" style="display:flex;align-items:center;gap:10px;margin-top:12px"><input id="community-sharing" type="checkbox" ' + (state.settings.communitySharing ? "checked" : "") + '> J’accepte de partager mes goûts et des identifiants d’articles évalués</label><div class="form-actions"><a class="button-quiet button-small" href="https://github.com/sopp24/DRESSOPP/blob/main/docs/COMMUNITY.md" target="_blank" rel="noopener noreferrer">Guide Firebase gratuit & confidentialité ↗</a></div></div></section>' +
+    '<p class="field-hint">Dernière synchronisation : ' + esc(lastPinterestSync) + '</p><div class="form-actions"><a class="button-primary button-small" href="https://github.com/sopp24/DRESSOPP/actions/workflows/pinterest-daily.yml" target="_blank" rel="noopener noreferrer">Voir / lancer le workflow ↗</a><a class="button-quiet button-small" href="https://github.com/sopp24/DRESSOPP/blob/main/docs/PINTEREST.md" target="_blank" rel="noopener noreferrer">Guide Pinterest ↗</a></div></section>' +
+    '<section class="panel section-panel"><h2 class="section-title">Catalogue gratuit multi-boutiques</h2><div class="connector-item"><div><strong>' + (catalogMeta.status === "connected" ? "Exploration terminée" : catalogMeta.status === "partial" ? "Certaines boutiques accessibles" : "Prêt à explorer les sources publiques") + '</strong><small>' + publicCount + ' fiche(s) produit publique(s) · ' + storeCount + ' boutique(s) productive(s)</small></div><p>DRESSOPP explore un répertoire de boutiques françaises et internationales, sans compte éditeur, affiliation, abonnement ni clé API payante. Le robot respecte robots.txt et importe uniquement les pages publiques qui exposent un prix en euros, une photo HTTPS et un lien produit exploitable. Les boutiques qui bloquent l’accès restent consultables par leurs liens officiels.</p><p class="field-hint">Dernière exploration : ' + esc(syncText) + '</p><p class="field-hint">Boutiques ayant fourni des produits : ' + esc((catalogMeta.sources || []).join(" · ") || "En attente du premier passage") + '</p><div class="form-actions"><a class="button-primary button-small" href="https://github.com/sopp24/DRESSOPP/actions/workflows/refresh-public-catalog.yml" target="_blank" rel="noopener noreferrer">Lancer / consulter l’exploration ↗</a><a class="button-quiet button-small" href="https://github.com/sopp24/DRESSOPP/blob/main/docs/SOURCES.md" target="_blank" rel="noopener noreferrer">Liste des sources & limites ↗</a></div></section>' +
+    '<section class="panel section-panel"><h2 class="section-title">Recommandations communautaires</h2><div class="connector-item"><div><strong>' + (communityConfigured ? "Firebase gratuit configuré" : "Configuration gratuite facultative") + '</strong><small>' + esc(communityLabel) + '</small></div><p>Avec ton accord, DRESSOPP compare des étiquettes générales de goûts et des identifiants hachés de fiches publiques aimées ou refusées par d’autres membres. Cela aide à recommander les mêmes articles aux profils proches. Aucun nom, e-mail, taille, budget, historique brut, URL de produit ou lien Pinterest n’est envoyé. Attention : ces identifiants ne sont pas chiffrés ; un membre qui connaît le code peut les rapprocher du catalogue public et déduire certains articles évalués. Sans Firebase, ton apprentissage individuel reste local.</p><label class="field-hint" style="display:flex;align-items:center;gap:10px;margin-top:12px"><input id="community-sharing" type="checkbox" ' + (state.settings.communitySharing ? "checked" : "") + '> J’accepte de partager mes goûts et des identifiants d’articles évalués</label><div class="form-actions"><a class="button-quiet button-small" href="https://github.com/sopp24/DRESSOPP/blob/main/docs/COMMUNITY.md" target="_blank" rel="noopener noreferrer">Guide Firebase gratuit & confidentialité ↗</a></div></div></section>' +
     '<section class="panel section-panel"><h2 class="section-title">Fiabilité et avis</h2><p class="field-hint">DRESSOPP conserve séparément les notes d’un produit et les avis concernant une boutique. Les notes sont affichées uniquement lorsqu’elles sont publiées dans une source produit autorisée. Les scores Trustpilot, Google, Avis Vérifiés, Trusted Shops et Custplace ne sont jamais inventés ni extraits par contournement.</p></section>' +
     '<section class="panel section-panel"><h2 class="section-title">Publicités Instagram</h2><p class="field-hint">L’application ne peut pas lire ton fil publicitaire personnalisé. La Meta Ad Library permet uniquement de consulter des campagnes publiques. Les produits repérés manuellement peuvent être ajoutés à tes inspirations ou à ton catalogue.</p><div class="form-actions"><a class="button-secondary button-small" href="https://www.facebook.com/ads/library/?active_status=active&ad_type=ALL&country=FR" target="_blank" rel="noopener noreferrer">Ouvrir Meta Ad Library ↗</a></div></section>' +
     '<section class="panel section-panel"><h2 class="section-title">Sauvegarde des données</h2><div class="source-note">' + esc(getPersistenceNotice()) + '</div>' +
-    '<div class="form-grid" style="margin-top:16px"><div class="preference-block"><h3>État local</h3><p class="field-hint">Dernière modification : ' + esc(updated) + '</p><p class="field-hint">Produits : ' + state.products.length + ' · Articles dans ma liste : ' + state.likedProducts.length + ' · Décisions Oui : ' + state.interactions.likes.length + ' · Décisions Non : ' + state.interactions.dislikes.length + '</p></div>' +
+    '<div class="form-grid" style="margin-top:16px"><div class="preference-block"><h3>État local</h3><p class="field-hint">Dernière modification : ' + esc(updated) + '</p><p class="field-hint">Produits : ' + state.products.length + ' · Articles dans ma liste : ' + state.likedProducts.length + ' · Décisions Oui : ' + state.interactions.likes.length + ' · Décisions Non : ' + state.interactions.dislikes.length + '</p></div>' +
     '<div class="preference-block"><h3>Copie de sécurité</h3><p class="field-hint">Exporte régulièrement ton fichier JSON. Il contient tes articles, préférences, votes, avis sur les tenues et Pins ajoutés manuellement.</p><div class="form-actions"><button class="button-primary button-small" type="button" data-action="export">Exporter mes données</button><button class="button-secondary button-small" type="button" data-action="import-backup">Importer une sauvegarde</button></div></div></div>' +
     '<input id="backup-file" type="file" accept=".json,application/json" hidden></section>' +
     '<section class="panel section-panel"><h2 class="section-title">Catalogue personnel</h2><p class="field-hint">Les compléments de tenues proviennent uniquement de fiches produit vérifiables ou de tes importations manuelles.</p><div class="form-actions"><button class="button-secondary" type="button" data-action="import-catalog">Importer un catalogue JSON</button></div><input id="catalog-file" type="file" accept=".json,application/json" hidden></section>' +
@@ -1455,7 +1455,7 @@ function rateOutfit(pinId, vote) {
     showToast("Ton avis sur cette tenue a été retiré", false);
   } else {
     state.outfitFeedback[id] = { vote: vote, createdAt: new Date().toISOString() };
-    showToast(vote === "yes" ? "Tenue validée : ce style sera davantage privilégié" : "Tenue refusée : ce style sera moins proposé", false);
+    showToast(vote === "yes" ? "Tenue validée : ce style sera davantage privilégié" : "Tenue refusée : ce style sera moins proposé", false);
   }
   state.learnedPreferences = deriveLearnedPreferences(state);
   persist();
@@ -1612,7 +1612,7 @@ function fileToDataUrl(file) {
   return new Promise(function(resolve, reject) {
     if (!file) { resolve(""); return; }
     if (!file.type.startsWith("image/")) { reject(new Error("Le fichier doit être une image.")); return; }
-    if (file.size > 5 * 1024 * 1024) { reject(new Error("Image trop volumineuse : 5 Mo maximum.")); return; }
+    if (file.size > 5 * 1024 * 1024) { reject(new Error("Image trop volumineuse : 5 Mo maximum.")); return; }
     const reader = new FileReader();
     reader.onload = function() { resolve(String(reader.result)); };
     reader.onerror = function() { reject(new Error("Lecture de l’image impossible.")); };
@@ -1713,7 +1713,7 @@ function saveProfile(form) {
   showToast("Profil enregistré", false);
 }
 function saveFilters() {
-  const name = window.prompt("Nom de cette combinaison de filtres :", "Ma sélection");
+  const name = window.prompt("Nom de cette combinaison de filtres :", "Ma sélection");
   if (!name || !name.trim()) return;
   state.settings.savedFilters = state.settings.savedFilters || [];
   state.settings.savedFilters.push({
@@ -1762,7 +1762,7 @@ async function importCatalogFile(file) {
 async function importBackupFile(file) {
   const imported = await readJsonFile(file);
   if (!imported || !Array.isArray(imported.products) || !imported.profile || !imported.settings) throw new Error("Cette sauvegarde ne correspond pas au format DRESSOPP.");
-  if (!window.confirm("Remplacer les données actuelles par cette sauvegarde ? Exporte d’abord une copie de sécurité si nécessaire.")) return;
+  if (!window.confirm("Remplacer les données actuelles par cette sauvegarde ? Exporte d’abord une copie de sécurité si nécessaire.")) return;
   const base = createInitialState([]);
   state = Object.assign(base, imported);
   state.profile = Object.assign(base.profile, imported.profile || {});
@@ -1781,7 +1781,7 @@ async function importBackupFile(file) {
   showToast("Sauvegarde restaurée", false);
 }
 function resetProfile() {
-  if (!window.confirm("Réinitialiser les préférences apprises, le profil et les avis sur les tenues ? Les favoris et le catalogue seront conservés.")) return;
+  if (!window.confirm("Réinitialiser les préférences apprises, le profil et les avis sur les tenues ? Les favoris et le catalogue seront conservés.")) return;
   const base = createInitialState(state.products);
   state.profile = base.profile;
   const previousInteractions = state.interactions || {};
@@ -1800,7 +1800,7 @@ function resetProfile() {
   showToast("Profil algorithmique réinitialisé", false);
 }
 async function deleteAllData() {
-  if (!window.confirm("Supprimer définitivement toutes les données DRESSOPP enregistrées sur cet appareil ? Exporte une sauvegarde avant de continuer.")) return;
+  if (!window.confirm("Supprimer définitivement toutes les données DRESSOPP enregistrées sur cet appareil ? Exporte une sauvegarde avant de continuer.")) return;
   await persistPromise.catch(function() {});
   if (aiAgentController) aiAgentController.abort();
   let communityRemovalFailed = false;
@@ -1816,7 +1816,7 @@ async function deleteAllData() {
   render();
   updateSaveStatus("Données locales supprimées", "ok");
   showToast(communityRemovalFailed
-    ? "Données locales supprimées. Le profil communautaire distant n'a pas pu être supprimé."
+    ? "Données locales supprimées. Le profil communautaire distant n’a pas pu être supprimé."
     : "Les données locales ont été supprimées", false);
 }
 function setView(nextView) {
@@ -2055,9 +2055,13 @@ function attachSwipe() {
   let dragging = false, inputMode = "", activeTouchId = null, pointerId = null;
   let startX = 0, startY = 0, startTime = 0, deltaX = 0, deltaY = 0;
   let horizontalIntent = false, verticalSaveIntent = false;
+  // Dimensions de la carte lues une seule fois au début du geste : pas de lecture de mise en page à chaque mouvement du doigt.
+  let cardWidth = 1, cardHeight = 1;
 
   function begin(x,y,mode,id) {
     if (deckActionPending) return;
+    const rect = card.getBoundingClientRect();
+    cardWidth = Math.max(1,rect.width); cardHeight = Math.max(1,rect.height);
     startX=x; startY=y; startTime=performance.now(); deltaX=0; deltaY=0;
     inputMode=mode; activeTouchId=mode==="touch"?id:null; pointerId=mode==="pointer"?id:null;
     horizontalIntent=false; verticalSaveIntent=false; dragging=true;
@@ -2084,7 +2088,7 @@ function attachSwipe() {
       else return;
     }
     if (event && event.cancelable) event.preventDefault();
-    const width=Math.max(1,card.getBoundingClientRect().width), height=Math.max(1,card.getBoundingClientRect().height);
+    const width=cardWidth, height=cardHeight;
     const progress=Math.min(1,Math.abs(deltaX)/(width*.42));
     const rotation=Math.max(-15,Math.min(15,deltaX/width*19));
     const lift=Math.min(9,Math.abs(deltaX)/width*10);
@@ -2106,7 +2110,7 @@ function attachSwipe() {
     if (!dragging || mode!==inputMode || (mode==="touch" && id!==activeTouchId) || (mode==="pointer" && id!==pointerId)) return;
     if (Number.isFinite(x) && Number.isFinite(y)) move(x,y,null);
     if (!dragging) return;
-    const width=Math.max(1,card.getBoundingClientRect().width), height=Math.max(1,card.getBoundingClientRect().height);
+    const width=cardWidth, height=cardHeight;
     const elapsed=Math.max(1,performance.now()-startTime);
     const hVelocity=deltaX/elapsed, vVelocity=deltaY/elapsed;
     const hThreshold=Math.max(78,Math.min(132,width*.22));
@@ -2357,6 +2361,6 @@ async function boot() {
   }
 }
 boot().catch(function(error) {
-  console.error("Initialisation DRESSOPP impossible :", error);
+  console.error("Initialisation DRESSOPP impossible :", error);
   main.innerHTML = '<div class="empty-state"><h2>Impossible de charger DRESSOPP</h2><p>' + esc(error.message) + '</p><button class="button-primary" type="button" onclick="location.reload()">Réessayer</button></div>';
 });

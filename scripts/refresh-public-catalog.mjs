@@ -689,6 +689,11 @@ export async function main() {
   merged.meta.regularCursor = rotation.nextCursors.regularCursor;
   merged.meta.directoryCount = sources.length;
   merged.meta.nextBatchSize = rotation.sources.length;
+  // Les libellés suivent la taille réelle du répertoire et du lot (plus de « 200 » figé).
+  merged.meta.refreshCadence = "Rotation quotidienne de " + rotation.sources.length + " enseignes parmi " + sources.length + " ; chaque enseigne est revisitée à tour de rôle.";
+  merged.meta.notes = (merged.meta.notes || []).map(note => /^Répertoire de \d+ enseignes/.test(note)
+    ? "Répertoire de " + sources.length + " enseignes dans data/merchant-directory.json ; l'accès produit dépend des flux et autorisations de chaque boutique."
+    : note);
   const manifest = await writeCatalogPages(merged.products,merged.meta.syncedAt);
   merged.meta.pageSize = PAGE_SIZE;
   merged.meta.pageCount = manifest.pageCount;
