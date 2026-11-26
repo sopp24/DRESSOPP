@@ -3,8 +3,101 @@
   "page": 5,
   "pageSize": 120,
   "totalProducts": 489,
-  "generatedAt": "2026-11-25T18:01:35.597Z",
+  "generatedAt": "2026-11-26T17:46:13.350Z",
   "products": [
+    {
+      "id": "seed-asos-208080131",
+      "name": "Pull oversize côtelé en maille mélange laine – Bordeaux",
+      "brand": "ASOS DESIGN",
+      "merchant": "ASOS",
+      "url": "https://www.asos.com/fr/asos-design/asos-design-pull-oversize-cotele-en-maille-melange-laine-tissu-epais-bordeaux/prd/208080131",
+      "imageUrl": "https://images.asos-media.com/products/asos-design-oversized-heavyweight-knit-wool-blend-ribbed-sweater-in-burgundy/208080131-1-burgundy?%24n_640w%24=&fit=constrain&wid=513",
+      "price": 42.99,
+      "originalPrice": 47.99,
+      "objective": "Vêtements",
+      "category": "Pull",
+      "styleTags": [
+        "Preppy",
+        "Smart Casual",
+        "Heritage",
+        "Casual"
+      ],
+      "seasonTags": [
+        "Automne",
+        "Hiver"
+      ],
+      "colors": [
+        "Bordeaux"
+      ],
+      "materials": [
+        "Acrylique",
+        "Laine",
+        "Nylon"
+      ],
+      "cuts": [
+        "Oversized",
+        "Ample"
+      ],
+      "patterns": [
+        "Côtelé"
+      ],
+      "description": "Pull oversize en maille côtelée épaisse, col rond et épaules tombantes. Composition annoncée : 75 % acrylique, 15 % laine, 10 % nylon.",
+      "sizes": [],
+      "availability": "Fiche ASOS FR avec bouton Ajouter au panier ; disponibilité par taille à confirmer.",
+      "availabilityStatus": "listed",
+      "source": "ASOS FR",
+      "sourceType": "curated",
+      "catalogStatus": "active",
+      "verifiedAt": "2026-11-05T16:36:56.203Z",
+      "expiresAt": "2026-11-12T16:36:56.203Z",
+      "priceUpdatedAt": "2026-11-05T16:36:56.203Z"
+    },
+    {
+      "id": "seed-lookbook-piombo-wool-green",
+      "name": "Crew-Neck Jumper Regular Fit",
+      "brand": "PIOMBO",
+      "merchant": "Zalando · OVS Group",
+      "url": "https://www.zalando.fr/piombo-crew-neck-jumper-regular-fit-pullover-green-pjg22q08l-m11.html",
+      "imageUrl": "./assets/product-images/dvqwho.webp",
+      "price": 56.95,
+      "originalPrice": null,
+      "objective": "Vêtements",
+      "category": "Pull",
+      "styleTags": [
+        "Preppy",
+        "Classique",
+        "Smart Casual",
+        "Heritage"
+      ],
+      "seasonTags": [
+        "Automne",
+        "Hiver"
+      ],
+      "colors": [
+        "Vert foncé"
+      ],
+      "materials": [
+        "Laine"
+      ],
+      "cuts": [
+        "Regular",
+        "Col rond"
+      ],
+      "patterns": [],
+      "description": "Pull homme vert foncé en 100 % laine, col rond et coupe regular. Pull vert à porter sur une chemise claire. Produit listé chez Zalando, vendu et expédié par OVS Group.",
+      "sizes": [],
+      "availability": "Fiche produit active avec sélection de taille ; disponibilité de chaque taille à vérifier sur Zalando.",
+      "availabilityStatus": "listed",
+      "source": "Zalando",
+      "sourceType": "curated",
+      "catalogStatus": "active",
+      "verifiedAt": "2026-11-06T16:18:22.816Z",
+      "expiresAt": "2026-11-13T16:18:22.816Z",
+      "priceUpdatedAt": "2026-11-06T16:18:22.816Z",
+      "gender": "men",
+      "genderVerified": true,
+      "imageFallbackUrl": "https://img01.ztat.net/article/spp-media-p1/e04c7d23e1584a2b9d413da2d70f5c9e/eaf4581d129c4301aef94d4557d3bff1.jpg?imwidth=762"
+    },
     {
       "id": "seed-lookbook-kleman-padror-bordeaux",
       "name": "PADROR Burgundy Leather Tyrolean Shoes",
@@ -356,98 +449,6 @@
       "gender": "men",
       "genderVerified": true,
       "imageFallbackUrl": "https://img01.ztat.net/article/spp-media-p1/c0651324e9e944f48105d672f109a1b8/1e0a435b15714798b5af655f2be3f075.jpg?filter=packshot&imwidth=762"
-    },
-    {
-      "id": "web-1g9d35k",
-      "name": "Cold Heart Glass Mug",
-      "brand": "Carhartt WIP",
-      "merchant": "Carhartt WIP",
-      "url": "https://www.carhartt-wip.com/en-de/p/cold-heart-glass-mug-clear-1345",
-      "imageUrl": "./assets/product-images/15e6smy.jpg",
-      "imageFallbackUrl": "https://cdn.media.amplience.net/i/carhartt_wip/I037685_1B6_XX-ST-01?$facebook$",
-      "price": 19,
-      "originalPrice": null,
-      "objective": "Vêtements",
-      "category": "Vêtements",
-      "gender": "men",
-      "genderVerified": true,
-      "audienceEvidence": "merchant",
-      "styleTags": [],
-      "seasonTags": [],
-      "colors": [
-        "Clear"
-      ],
-      "materials": [
-        "Glass"
-      ],
-      "cuts": [],
-      "patterns": [],
-      "description": "",
-      "sizes": [
-        "0"
-      ],
-      "availability": "En stock lors du dernier contrôle",
-      "availabilityStatus": "available",
-      "source": "Carhartt WIP",
-      "sourceType": "public-web",
-      "catalogStatus": "active",
-      "verifiedAt": "2026-11-25T17:59:24.190Z",
-      "syncedAt": "2026-11-25T17:59:24.190Z",
-      "priceUpdatedAt": "2026-11-25T17:59:24.190Z",
-      "stockVerifiedAt": "2026-11-25T17:59:24.190Z",
-      "expiresAt": "2026-12-02T17:59:24.190Z",
-      "productRating": null,
-      "productRatingCount": null,
-      "productRatingSource": "",
-      "merchantRating": null,
-      "merchantRatingCount": null,
-      "merchantRatingSource": "",
-      "popularityScore": null,
-      "isBestSeller": false
-    },
-    {
-      "id": "web-12ywndf",
-      "name": "ALEXANDER MCQUEEN - Caban En Feutre De Laine pour Homme en Noir",
-      "brand": "ALEXANDER MCQUEEN",
-      "merchant": "Lothaire",
-      "url": "https://www.lothaire.fr/products/alexander-mcqueen-caban-en-feutre-de-laine-pour-homme-en-noir",
-      "imageUrl": "./assets/product-images/xuu7xd.webp",
-      "imageFallbackUrl": "https://www.lothaire.fr/cdn/shop/files/alexander-mcqueen-caban-en-feutre-de-laine-pour-homme-en-noir-8407917.webp?v=1772340669&width=1080",
-      "price": 1743,
-      "originalPrice": null,
-      "objective": "Vêtements",
-      "category": "Veste",
-      "gender": "men",
-      "genderVerified": true,
-      "audienceEvidence": "product",
-      "styleTags": [
-        "Smart Casual"
-      ],
-      "seasonTags": [],
-      "colors": [],
-      "materials": [],
-      "cuts": [],
-      "patterns": [],
-      "description": "Caban En Feutre De Laine pour Homme en Noir Caban à double boutonnage en feutre de laine noire, larges revers crantés et deux poches passepoilées. Le manteau est doté d'une chaîne Cross-Bar au milieu de la nuque. Larges revers crantés Poches passepoilées Fermeture boutonnée Code produit : 801635QVAAD1000 Matière: 100% Laine Pays de fabrication : Italie ID LOTHAIRE : 801635qvaad 1000 black.",
-      "sizes": [],
-      "availability": "En stock lors du dernier contrôle",
-      "availabilityStatus": "available",
-      "source": "Lothaire",
-      "sourceType": "public-web",
-      "catalogStatus": "active",
-      "verifiedAt": "2026-11-25T17:59:40.763Z",
-      "syncedAt": "2026-11-25T17:59:40.763Z",
-      "priceUpdatedAt": "2026-11-25T17:59:40.763Z",
-      "stockVerifiedAt": "2026-11-25T17:59:40.763Z",
-      "expiresAt": "2026-12-02T17:59:40.763Z",
-      "productRating": null,
-      "productRatingCount": null,
-      "productRatingSource": "",
-      "merchantRating": null,
-      "merchantRatingCount": null,
-      "merchantRatingSource": "",
-      "popularityScore": null,
-      "isBestSeller": false
     }
   ]
 }
