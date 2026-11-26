@@ -27,6 +27,13 @@ document.addEventListener("pointermove", updateLiquidGlassLight, { passive:true 
 document.addEventListener("pointerdown", updateLiquidGlassLight, { passive:true });
 let state = null;
 let currentView = "discover";
+const showcaseRequestedView = new URLSearchParams(window.location.search).get("showcase");
+const showcaseView = ["discover", "training", "wardrobe", "outfits"].includes(showcaseRequestedView) ? showcaseRequestedView : null;
+if (showcaseView) {
+  currentView = showcaseView;
+  document.body.classList.add("showcase-embed");
+  if (window.matchMedia("(max-width: 850px)").matches) document.body.classList.add("showcase-embed--mobile");
+}
 let deckActionPending = false;
 let currentOutfitIdeas = [];
 let discoveryFiltersOpen = false;
@@ -2110,7 +2117,9 @@ async function boot() {
     const response = await fetch("./data/ai-agent-config.json", { cache: "no-store" });
     if (response.ok) aiAgentConfig = await response.json();
   } catch (error) { console.warn("Configuration du personal shopper IA non chargée.", error); }
-  const stored = await loadState();
+  // Les vues embarquées du board utilisent un état de démonstration éphémère.
+  // Elles ne lisent ni n'écrivent jamais les favoris, tailles ou interactions personnels.
+  const stored = showcaseView ? null : await loadState();
   const base = createInitialState(catalogProducts);
   state = stored ? Object.assign(base, stored) : base;
   // Keep only products with explicit men's evidence or a confirmed men's-only manual entry.
@@ -2180,6 +2189,34 @@ async function boot() {
       const page = catalogManifest.pages[pageIndex];
       if (page && !catalogLoadedPages.has(page.file)) await loadCatalogPage(pageIndex);
     }
+  }
+  if (showcaseView) {
+    const showcaseProducts = state.products.filter(function(product) {
+      return isMenFit(product) && product.catalogStatus !== "stale" && product.imageUrl;
+    });
+    const showcaseSaved = showcaseProducts.slice(0, 4);
+    state.likedProducts = showcaseSaved.map(function(product, index) {
+      return { productId: product.id, savedAt: new Date(Date.UTC(2026, 10, 25 - index, 12, 0, 0)).toISOString() };
+    });
+    state.interactions.likes = showcaseProducts.slice(4, 8).map(function(product, index) {
+      return { productId: product.id, createdAt: new Date(Date.UTC(2026, 10, 24 - index, 12, 0, 0)).toISOString() };
+    });
+    state.interactions.dislikes = showcaseProducts.slice(8, 10).map(function(product, index) {
+      return { productId: product.id, createdAt: new Date(Date.UTC(2026, 10, 23 - index, 12, 0, 0)).toISOString() };
+    });
+    state.interactions.views = [];
+    state.interactions.saves = state.likedProducts.map(function(item) {
+      return { productId: item.productId, createdAt: item.savedAt };
+    });
+    state.interactions.undoEvents = [];
+    state.removedFavorites = [];
+    state.savedOutfits = [];
+    state.outfitFeedback = {};
+    state.seenPinterestPins = [];
+    state.settings.discoveryView = "cards";
+    state.settings.objective = "Vêtements";
+    state.settings.style = "Tous";
+    state.settings.maxPrice = null;
   }
   aiAgentLastActionCount = aiAgentActionCount();
   render();
