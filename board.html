@@ -20,7 +20,7 @@ html,body{margin:0;min-height:100%;background:#080808;color:var(--white);font-fa
 body{padding:0}
 .board-toolbar{position:sticky;z-index:10;top:0;display:flex;justify-content:flex-end;gap:10px;padding:12px 20px;background:rgba(8,8,8,.94);border-bottom:1px solid #252525}
 .board-toolbar a,.board-toolbar button{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:38px;padding:0 15px;border:1px solid #3a3a3a;border-radius:999px;color:#fff;background:#171717;font:700 11px Poppins,sans-serif;text-decoration:none;cursor:pointer}
-.board-toolbar button{border-color:var(--red);background:var(--red)}
+.board-toolbar .pdf-reader-button{border-color:var(--red);background:var(--red)}
 .board{width:420mm;height:297mm;margin:22px auto;padding:8mm 10mm;overflow:hidden;background:#090909;display:grid;grid-template-rows:29mm 1fr 48mm 14mm;gap:4mm;position:relative;isolation:isolate}
 .board:before{content:"";position:absolute;z-index:-1;inset:0;background:radial-gradient(ellipse at 53% 23%,rgba(130,0,0,.16),transparent 40%),linear-gradient(135deg,#090909 0%,#111 52%,#080808 100%)}
 .board-head{display:grid;grid-template-columns:42mm 1fr auto;align-items:center;gap:7mm;border-bottom:1px solid rgba(255,255,255,.18);padding-bottom:3mm}
@@ -118,8 +118,7 @@ body{padding:0}
 <body>
 <div class="board-toolbar">
   <a href="./" aria-label="Retour à DRESSOPP">← Retour à l'application</a>
-  <a href="./board.pdf" download="DRESSOPP-The-Style-Hack-A3.pdf">↓ Télécharger le PDF A3</a>
-  <button type="button" onclick="window.print()">↗ Imprimer</button>
+  <a class="pdf-reader-button" href="./board.pdf" target="_blank" rel="noopener noreferrer" aria-label="Ouvrir le PDF A3 dans le lecteur PDF">↗ Ouvrir le PDF A3</a>
 </div>
 <main class="board" aria-label="Board de présentation DRESSOPP au format A3 paysage">
   <header class="board-head">
