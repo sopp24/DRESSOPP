@@ -2213,7 +2213,7 @@ async function boot() {
     state.savedOutfits = [];
     state.outfitFeedback = {};
     state.seenPinterestPins = [];
-    state.settings.discoveryView = "cards";
+    state.settings.discoveryView = String("cards");
     state.settings.objective = "Vêtements";
     state.settings.style = "Tous";
     state.settings.maxPrice = null;
