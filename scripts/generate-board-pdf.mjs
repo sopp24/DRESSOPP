@@ -76,19 +76,29 @@ try {
     });
   }
 
-  // Laisser les photos et polices des captures se stabiliser avant export.
+  // Stabiliser les polices et les visuels visibles sans attendre les 60 Pins hors écran.
   await page.evaluate(async () => {
-    await document.fonts.ready;
+    const withDeadline = (promise, ms) => Promise.race([
+      promise.catch(() => undefined),
+      new Promise(resolve => setTimeout(resolve, ms))
+    ]);
+    await withDeadline(document.fonts.ready, 8000);
     const frames = Array.from(document.querySelectorAll("iframe"));
     for (const frame of frames) {
       try {
         const win = frame.contentWindow;
-        if (win && win.document.fonts) await win.document.fonts.ready;
-        const images = Array.from(win.document.images || []);
-        await Promise.all(images.map(img => img.decode().catch(() => undefined)));
+        if (!win || !win.document) continue;
+        await withDeadline(win.document.fonts.ready, 5000);
+        const viewportHeight = win.innerHeight || 844;
+        const images = Array.from(win.document.images || []).filter(img => {
+          const rect = img.getBoundingClientRect();
+          return rect.width > 0 && rect.height > 0 && rect.top < viewportHeight * 1.25 && rect.bottom > 0;
+        }).slice(0, 6);
+        await withDeadline(Promise.all(images.map(img => img.decode().catch(() => undefined))), 9000);
       } catch {}
     }
   });
+  console.log("Visible board screens and product imagery are ready for A3 export.");
 
   await page.emulateMedia({ media: "print" });
   await page.pdf({
