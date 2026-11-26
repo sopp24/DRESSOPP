@@ -29,6 +29,12 @@ jobs:
           node-version: "22"
       - name: Run tests
         run: npm test
+      - name: Install Chromium for A3 PDF export
+        run: |
+          npm install --no-save --no-package-lock playwright
+          npx playwright install --with-deps chromium
+      - name: Generate printable A3 landscape PDF
+        run: node scripts/generate-board-pdf.mjs
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
       - name: Upload site
