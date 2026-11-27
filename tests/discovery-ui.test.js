@@ -456,13 +456,13 @@ test("le board web conserve le format de référence A3 paysage", function() {
 });
 
 test("les trois titres de fonctionnalité et leurs sous-titres sont lisibles sur le board A3", function() {
-  assert.ok(board.includes("font-size:clamp(16px,1vw,18px)"));
-  assert.ok(board.includes("font-size:clamp(13px,.82vw,15px)"));
+  assert.ok(board.includes("font-size:clamp(18px,1.2vw,20px)"));
+  assert.ok(board.includes("font-size:clamp(15px,1vw,17px)"));
   assert.ok(board.includes("min-height:48px"));
-  assert.ok(board.includes("font-size:13px;letter-spacing:.11em"));
+  assert.ok(board.includes("font-size:15px;letter-spacing:.1em"));
   assert.ok(boardPdfScript.includes("async function verifyBoardTypography"));
-  assert.ok(boardPdfScript.includes('["desktopTitle", 16]'));
-  assert.ok(boardPdfScript.includes('["outfitsSubtitle", 13]'));
+  assert.ok(boardPdfScript.includes('["desktopTitle", 18]'));
+  assert.ok(boardPdfScript.includes('["outfitsSubtitle", 15]'));
 });
 
 test("les nouveaux PDF disposent de noms propres, de fond perdu et de traits de coupe", function() {
