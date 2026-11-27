@@ -3633,36 +3633,5 @@ body.showcase-embed .discovery-page--app .deck-card-wrap .deck-actions .deck-act
 }
 
 
-/* Board — session de démonstration isolée */
-body.showcase-embed .topbar { position: sticky; }
-body.showcase-embed .showcase-demo-badge {
-  position: absolute;
-  top: 4px;
-  right: 10px;
-  z-index: 35;
-  display: inline-flex;
-  align-items: center;
-  min-height: 16px;
-  max-width: calc(100% - 20px);
-  overflow: hidden;
-  padding: 2px 7px;
-  border: 1px solid rgba(255, 45, 45, .42);
-  border-radius: 999px;
-  color: #ffdede;
-  background: rgba(100, 0, 0, .72);
-  font-size: 7px;
-  font-weight: 800;
-  letter-spacing: .08em;
-  line-height: 1;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  pointer-events: none;
-}
-@media (max-width: 850px) {
-  body.showcase-embed .showcase-demo-badge {
-    top: 3px;
-    right: 6px;
-    min-height: 15px;
-    font-size: 6px;
-  }
-}
+/* Board embeds hide the save indicator; the interactive notice appears once above the board. */
+body.showcase-embed #save-status { display:none !important; }

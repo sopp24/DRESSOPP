@@ -32,15 +32,7 @@ const showcaseView = ["discover", "training", "wardrobe", "outfits"].includes(sh
 if (showcaseView) {
   currentView = showcaseView;
   document.body.classList.add("showcase-embed");
-  document.body.dataset.showcaseMode = "demo";
   if (window.matchMedia("(max-width: 850px)").matches) document.body.classList.add("showcase-embed--mobile");
-  const demoBadge = document.createElement("span");
-  demoBadge.className = "showcase-demo-badge";
-  demoBadge.textContent = "MODE DÉMO · 10 ARTICLES FIXES";
-  demoBadge.setAttribute("role", "status");
-  demoBadge.setAttribute("aria-label", "Mode démonstration : les choix sont temporaires et ne sont jamais enregistrés.");
-  const showcaseTopbar = document.querySelector(".topbar");
-  if (showcaseTopbar) showcaseTopbar.appendChild(demoBadge);
 }
 let deckActionPending = false;
 let currentOutfitIdeas = [];
@@ -396,7 +388,7 @@ function invalidateAiAgentResults() {
 function persist() {
   // Une session board/demo travaille uniquement en mémoire : aucun accès à IndexedDB ou localStorage.
   if (showcaseView) {
-    updateSaveStatus("Mode démo · rien n'est enregistré", "ok");
+    updateSaveStatus("Prêt", "ok");
     return Promise.resolve({ ok:true, demo:true, persisted:false });
   }
   persistRevision += 1;
@@ -1685,7 +1677,7 @@ function resetProfile() {
 }
 async function deleteAllData() {
   if (showcaseView) {
-    showToast("Mode démo : les données réelles de cet appareil ne peuvent pas être supprimées ici.", false);
+    showToast("Cette action n'est pas disponible depuis cet écran.", false);
     return;
   }
   if (!window.confirm("Supprimer définitivement toutes les données DRESSOPP enregistrées sur cet appareil ? Exporte une sauvegarde avant de continuer.")) return;
