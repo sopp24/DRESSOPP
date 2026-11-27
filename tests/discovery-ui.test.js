@@ -426,8 +426,11 @@ test("le board reprend la composition du document A3 fourni", function() {
 
 
 test("la vue ordinateur et les vues mobiles gardent leurs largeurs propres", function() {
-  assert.ok(board.includes("width:950px;height:950px;transform:scale(var(--preview-scale,.48))"));
+  assert.ok(board.includes("width:1200px;height:1152px;transform:scale(var(--preview-scale,.48))"));
   assert.ok(board.includes("width:390px;height:844px;transform:scale(var(--preview-scale,.58))"));
+  assert.ok(board.includes('const viewportWidth = desktopPreview ? 1200 : 390'));
+  assert.ok(board.includes('const viewportHeight = desktopPreview ? 1152 : 844'));
+  assert.ok(board.includes("availableHeight / viewportHeight"));
   assert.ok(board.includes("container.clientWidth"));
   assert.ok(board.includes("new ResizeObserver(fit)"));
   assert.ok(board.includes("@media (max-width:760px)"));
