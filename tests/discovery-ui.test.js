@@ -499,5 +499,9 @@ test("la démo affiche un écran de fin après les dix articles et peut être re
   assert.ok(app.includes("Tu as parcouru les ' + count + ' articles de la démo !"));
   assert.ok(app.includes('data-action="restart-demo"'));
   assert.ok(app.includes('action === "restart-demo" && showcaseView)'));
+  assert.ok(app.includes("function renderShowcaseNoMatches()"));
+  assert.ok(app.includes('data-action="reset-demo-filters"'));
+  assert.ok(app.includes('action === "reset-demo-filters" && showcaseView'));
+  assert.ok(app.includes('(action === "add-product" || action === "import-catalog") && showcaseView'));
   assert.ok(app.includes("state.products = state.products.slice(0, 10);"));
 });
