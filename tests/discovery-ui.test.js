@@ -339,3 +339,34 @@ test("les vues embarquées signalent visiblement leur mode démo", function() {
   assert.ok(app.includes("CHOIX TEMPORAIRES"));
   assert.ok(css.includes("body.showcase-embed .showcase-demo-badge"));
 });
+
+
+test("la démonstration utilise une base fixe de dix articles et six inspirations", function() {
+  const demoCatalog = JSON.parse(readFileSync(new URL("../data/demo-catalog.json", import.meta.url), "utf8"));
+  const demoPins = JSON.parse(readFileSync(new URL("../data/demo-pinterest-pins.json", import.meta.url), "utf8"));
+  assert.equal(demoCatalog.products.length, 10);
+  assert.equal(new Set(demoCatalog.products.map(product => product.id)).size, 10);
+  assert.ok(demoCatalog.products.every(product => product.imageUrl && product.url && Number.isFinite(Number(product.price))));
+  assert.ok(demoCatalog.products.every(product => product.gender === "men" && product.catalogStatus === "active"));
+  assert.ok(new Set(demoCatalog.products.map(product => product.category)).size >= 9);
+  assert.equal(demoPins.pins.length, 6);
+  assert.equal(new Set(demoPins.pins.map(pin => String(pin.id))).size, 6);
+});
+
+test("les aperçus du board ne chargent que les fichiers démo et ne paginent jamais le catalogue réel", function() {
+  const start = app.indexOf("async function boot()");
+  const end = app.indexOf("boot().catch", start);
+  const boot = app.slice(start, end);
+  const demoStart = boot.indexOf("if (showcaseView) {");
+  const demoEnd = boot.indexOf("} else {", demoStart);
+  const demoBranch = boot.slice(demoStart, demoEnd);
+  assert.ok(demoBranch.includes('fetch("./data/demo-catalog.json"'));
+  assert.ok(demoBranch.includes('fetch("./data/demo-pinterest-pins.json"'));
+  assert.ok(demoBranch.includes("catalogManifest = null;"));
+  assert.ok(!demoBranch.includes("refreshCatalogManifest("));
+  assert.ok(!demoBranch.includes("catalog-pages/"));
+  assert.ok(app.includes("state.products = state.products.slice(0, 10);"));
+  assert.ok(app.includes('state.settings.objective = "Tout";'));
+  assert.ok(app.includes('state.settings.season = "Toute saison";'));
+  assert.ok(app.includes('demoBadge.textContent = "MODE DÉMO · 10 ARTICLES FIXES"'));
+});

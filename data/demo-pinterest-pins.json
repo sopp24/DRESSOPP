@@ -1,0 +1,897 @@
+{
+  "schemaVersion": 1,
+  "privacy": "PUBLIC",
+  "totalPins": 6,
+  "lastSync": "2026-11-26T19:54:57.594Z",
+  "newPinIds": [],
+  "pins": [
+    {
+      "id": "780952391682036018",
+      "title": "How to Style a Cream Quarter-Zip Sweater with Baggy Denim | Men’s Outfit Idea",
+      "description": "Mixing refined knitwear with street-ready proportions. Upgrade an off-white half-zip cable pullover with wide-leg acid-wash black jeans and retro sneakers for a clean, standout silhouette.\n👉 Click through to grab the knitwear and shop the full layered look!\n#MensStreetstyle #BaggyJeansMen #CasualDapper #KnitwearForMen #MensOutfitInspo #ShopTheLook",
+      "altText": "",
+      "link": "https://myntr.it/bc4BlBq",
+      "pinUrl": "https://www.pinterest.com/pin/780952391682036018/",
+      "imageUrl": "https://i.pinimg.com/1200x/f9/fc/2c/f9fc2c548fafcfb7140c4facdcf13b74.jpg",
+      "dominantColor": "#bdb3a5",
+      "createdAt": "2026-11-13T14:06:11",
+      "boardId": "780952460324562575",
+      "visualAnalysis": {
+        "version": 5,
+        "audience": "men",
+        "analyzedAt": "2026-11-16T08:53:37.586Z",
+        "sourceImageUrl": "https://i.pinimg.com/1200x/f9/fc/2c/f9fc2c548fafcfb7140c4facdcf13b74.jpg",
+        "model": "@cf/google/gemma-4-26b-a4b-it",
+        "isFashion": true,
+        "summary": "Tenue masculine superposée composée d'un pull en maille torsadée crème à demi-zip porté sur une chemise blanche et une cravate rouge, associée à un jean large noir délavé et des baskets noires.",
+        "styleTags": [
+          "Smart Casual",
+          "Streetwear",
+          "Preppy"
+        ],
+        "colors": [
+          "crème",
+          "blanc",
+          "rouge",
+          "noir"
+        ],
+        "materials": [
+          "laine",
+          "coton",
+          "denim"
+        ],
+        "cuts": [
+          "oversized",
+          "large",
+          "regular"
+        ],
+        "patterns": [
+          "uni"
+        ],
+        "pieces": [
+          {
+            "slot": "top",
+            "type": "pull",
+            "color": "crème",
+            "material": "laine",
+            "cut": "regular",
+            "pattern": "uni",
+            "details": [
+              "demi-zip",
+              "maille texturée"
+            ],
+            "keywords": [
+              "pull demi-zip maille crème",
+              "pull torsadé crème"
+            ],
+            "prominence": "hero"
+          },
+          {
+            "slot": "top",
+            "type": "chemise",
+            "color": "blanc",
+            "material": "coton",
+            "cut": "regular",
+            "pattern": "uni",
+            "details": [],
+            "keywords": [
+              "chemise blanche col"
+            ],
+            "prominence": "supporting"
+          },
+          {
+            "slot": "accessory",
+            "type": "cravate",
+            "color": "rouge",
+            "material": "soie",
+            "cut": "regular",
+            "pattern": "uni",
+            "details": [
+              "boutonnage"
+            ],
+            "keywords": [
+              "cravate rouge"
+            ],
+            "prominence": "supporting"
+          },
+          {
+            "slot": "bottom",
+            "type": "jean",
+            "color": "noir",
+            "material": "denim",
+            "cut": "wide leg",
+            "pattern": "uni",
+            "details": [
+              "effet délavé"
+            ],
+            "keywords": [
+              "jean large noir",
+              "jean baggy noir"
+            ],
+            "prominence": "hero"
+          },
+          {
+            "slot": "shoes",
+            "type": "baskets",
+            "color": "noir",
+            "material": "coton",
+            "cut": "regular",
+            "pattern": "uni",
+            "details": [
+              "lacets"
+            ],
+            "keywords": [
+              "baskets noires"
+            ],
+            "prominence": "supporting"
+          },
+          {
+            "slot": "accessory",
+            "type": "montre",
+            "color": "noir",
+            "material": "polyamide",
+            "cut": "regular",
+            "pattern": "uni",
+            "details": [],
+            "keywords": [
+              "montre noire"
+            ],
+            "prominence": "supporting"
+          }
+        ],
+        "searchQueries": [
+          "pull demi-zip maille crème homme",
+          "jean large noir délavé homme",
+          "baskets noires homme",
+          "cravate rouge homme"
+        ],
+        "details": [],
+        "silhouetteTags": [
+          "ample",
+          "superposée",
+          "équilibrée"
+        ],
+        "seasonTags": [
+          "Automne",
+          "Hiver"
+        ],
+        "occasionTags": [
+          "Sortie",
+          "Quotidien"
+        ],
+        "paletteTags": [
+          "Contraste fort"
+        ],
+        "layering": "Pull demi-zip sur chemise et cravate.",
+        "outfitFormula": "pull + chemise + cravate + jean + baskets",
+        "confidence": 0.95
+      }
+    },
+    {
+      "id": "780952391682036013",
+      "title": "Elegant Slate Blue Monochrome Knitwear | Luxury Street Fashion for Men",
+      "description": "A timeless monochrome slate blue outfit featuring textured knitwear, relaxed-fit denim, premium accessories, and elevated streetwear styling. Perfect for anyone looking for luxury men's fashion. Follow for inspiration, minimalist outfits, oversized denim trends, monochrome aesthetics, and modern streetwear looks for 2026.",
+      "altText": "",
+      "link": "",
+      "pinUrl": "https://www.pinterest.com/pin/780952391682036013/",
+      "imageUrl": "https://i.pinimg.com/1200x/4c/2d/b2/4c2db26a1d380fc1611e289ffb5dce28.jpg",
+      "dominantColor": "#454c56",
+      "createdAt": "2026-11-13T14:06:02",
+      "boardId": "780952460324562575",
+      "visualAnalysis": {
+        "version": 5,
+        "audience": "men",
+        "analyzedAt": "2026-11-16T08:53:36.481Z",
+        "sourceImageUrl": "https://i.pinimg.com/1200x/4c/2d/b2/4c2db26a1d380fc1611e289ffb5dce28.jpg",
+        "model": "@cf/google/gemma-4-26b-a4b-it",
+        "isFashion": true,
+        "summary": "Tenue monochrome bleu acier composée d'un cardigan en maille côtelée avec graphisme, d'un jean large à revers et de baskets bicolores. La silhouette est décontractée et superposée.",
+        "styleTags": [
+          "Streetwear",
+          "Casual"
+        ],
+        "colors": [
+          "bleu"
+        ],
+        "materials": [
+          "maille",
+          "denim"
+        ],
+        "cuts": [
+          "oversized",
+          "large"
+        ],
+        "patterns": [
+          "uni"
+        ],
+        "pieces": [
+          {
+            "slot": "outerwear",
+            "type": "cardigan",
+            "color": "bleu",
+            "material": "maille",
+            "cut": "oversized",
+            "pattern": "uni",
+            "details": [
+              "fermeture zippée",
+              "maille texturée",
+              "col montant"
+            ],
+            "keywords": [
+              "cardigan maille bleue zippé"
+            ],
+            "prominence": "hero"
+          },
+          {
+            "slot": "bottom",
+            "type": "jean",
+            "color": "bleu",
+            "material": "denim",
+            "cut": "large",
+            "pattern": "uni",
+            "details": [
+              "revers",
+              "poches latérales"
+            ],
+            "keywords": [
+              "jean large bleu",
+              "denim large bleu"
+            ],
+            "prominence": "hero"
+          },
+          {
+            "slot": "top",
+            "type": "chemise",
+            "color": "bleu",
+            "material": "coton",
+            "cut": "regular",
+            "pattern": "uni",
+            "details": [],
+            "keywords": [
+              "chemise bleue"
+            ],
+            "prominence": "supporting"
+          },
+          {
+            "slot": "shoes",
+            "type": "baskets",
+            "color": "blanc",
+            "material": "cuir",
+            "cut": "regular",
+            "pattern": "uni",
+            "details": [
+              "semelle épaisse"
+            ],
+            "keywords": [
+              "baskets bicolores bleu et blanc"
+            ],
+            "prominence": "supporting"
+          },
+          {
+            "slot": "accessory",
+            "type": "ceinture",
+            "color": "bleu",
+            "material": "denim",
+            "cut": "regular",
+            "pattern": "uni",
+            "details": [],
+            "keywords": [
+              "ceinture bleue avec bijoux"
+            ],
+            "prominence": "supporting"
+          },
+          {
+            "slot": "accessory",
+            "type": "bijoux",
+            "color": "",
+            "material": "",
+            "cut": "regular",
+            "pattern": "uni",
+            "details": [],
+            "keywords": [
+              "collier argent avec croix"
+            ],
+            "prominence": "supporting"
+          },
+          {
+            "slot": "accessory",
+            "type": "sac",
+            "color": "bleu",
+            "material": "cuir",
+            "cut": "regular",
+            "pattern": "uni",
+            "details": [],
+            "keywords": [
+              "sac bleu cuir"
+            ],
+            "prominence": "supporting"
+          }
+        ],
+        "searchQueries": [
+          "cardigan maille bleue zippé homme",
+          "jean large bleu denim homme",
+          "baskets bicolores bleu et blanc homme"
+        ],
+        "details": [],
+        "silhouetteTags": [
+          "oversize",
+          "ample",
+          "superposée"
+        ],
+        "seasonTags": [
+          "Printemps"
+        ],
+        "occasionTags": [
+          "Sortie",
+          "Quotidien"
+        ],
+        "paletteTags": [
+          "Monochrome",
+          "Ton sur ton"
+        ],
+        "layering": "Superposition d'une chemise sous un cardigan zippé.",
+        "outfitFormula": "cardigan + chemise + jean + baskets",
+        "confidence": 0.95
+      }
+    },
+    {
+      "id": "780952391682036004",
+      "title": "",
+      "description": " ",
+      "altText": "",
+      "link": "https://www.instagram.com/avanika_2030?psln=Nm05ZmtnMjB5a3Br",
+      "pinUrl": "https://www.pinterest.com/pin/780952391682036004/",
+      "imageUrl": "https://i.pinimg.com/1200x/f5/34/a1/f534a1e3d42e54dc01b24ffedcb77237.jpg",
+      "dominantColor": "#646667",
+      "createdAt": "2026-11-13T14:05:25",
+      "boardId": "780952460324562575",
+      "visualAnalysis": {
+        "version": 5,
+        "audience": "men",
+        "analyzedAt": "2026-11-16T08:54:01.979Z",
+        "sourceImageUrl": "https://i.pinimg.com/1200x/f5/34/a1/f534a1e3d42e54dc01b24ffedcb77237.jpg",
+        "model": "@cf/google/gemma-4-26b-a4b-it",
+        "isFashion": true,
+        "summary": "Tenue décontractée composée d'une veste en daim marron chocolat, d'un t-shirt blanc et d'un pantalon cargo large écru, complétée par des baskets blanches.",
+        "styleTags": [
+          "Casual",
+          "Streetwear",
+          "Workwear"
+        ],
+        "colors": [
+          "marron",
+          "blanc",
+          "écru"
+        ],
+        "materials": [
+          "daim",
+          "coton"
+        ],
+        "cuts": [
+          "oversize",
+          "large",
+          "droit"
+        ],
+        "patterns": [
+          "uni"
+        ],
+        "pieces": [
+          {
+            "slot": "outerwear",
+            "type": "veste",
+            "color": "marron",
+            "material": "daim",
+            "cut": "regular",
+            "pattern": "uni",
+            "details": [
+              "revers",
+              "boutonnage"
+            ],
+            "keywords": [
+              "veste daim marron",
+              "blouson daim chocolat"
+            ],
+            "prominence": "hero"
+          },
+          {
+            "slot": "top",
+            "type": "t-shirt",
+            "color": "blanc",
+            "material": "coton",
+            "cut": "regular",
+            "pattern": "uni",
+            "details": [
+              "col rond"
+            ],
+            "keywords": [
+              "t-shirt blanc coton",
+              "t-shirt col rond"
+            ],
+            "prominence": "supporting"
+          },
+          {
+            "slot": "bottom",
+            "type": "pantalon",
+            "color": "écru",
+            "material": "coton",
+            "cut": "wide leg",
+            "pattern": "uni",
+            "details": [
+              "poches cargo"
+            ],
+            "keywords": [
+              "pantalon cargo écru",
+              "pantalon large beige"
+            ],
+            "prominence": "hero"
+          },
+          {
+            "slot": "shoes",
+            "type": "baskets",
+            "color": "blanc",
+            "material": "coton",
+            "cut": "regular",
+            "pattern": "uni",
+            "details": [
+              "lacets"
+            ],
+            "keywords": [
+              "baskets blanches",
+              "sneakers blanches"
+            ],
+            "prominence": "supporting"
+          },
+          {
+            "slot": "accessory",
+            "type": "sac",
+            "color": "marron",
+            "material": "daim",
+            "cut": "regular",
+            "pattern": "uni",
+            "details": [],
+            "keywords": [
+              "sac voyage daim marron"
+            ],
+            "prominence": "supporting"
+          },
+          {
+            "slot": "accessory",
+            "type": "lunettes",
+            "color": "noir",
+            "material": "",
+            "cut": "",
+            "pattern": "",
+            "details": [],
+            "keywords": [
+              "lunettes de soleil noires"
+            ],
+            "prominence": "supporting"
+          },
+          {
+            "slot": "accessory",
+            "type": "montre",
+            "color": "",
+            "material": "",
+            "cut": "",
+            "pattern": "",
+            "details": [],
+            "keywords": [
+              "montre argentée"
+            ],
+            "prominence": "supporting"
+          }
+        ],
+        "searchQueries": [
+          "veste daim marron homme",
+          "pantalon cargo écru homme",
+          "t-shirt blanc coton homme",
+          "baskets blanches homme"
+        ],
+        "details": [],
+        "silhouetteTags": [
+          "ample",
+          "équilibrée"
+        ],
+        "seasonTags": [
+          "Printemps",
+          "Automne"
+        ],
+        "occasionTags": [
+          "Quotidien",
+          "Sortie",
+          "Voyage"
+        ],
+        "paletteTags": [
+          "Contraste doux",
+          "Terreux"
+        ],
+        "layering": "Veste sur t-shirt",
+        "outfitFormula": "veste + t-shirt + pantalon",
+        "confidence": 0.95
+      }
+    },
+    {
+      "id": "780952391682035996",
+      "title": "Nb sneakers",
+      "description": " ",
+      "altText": "",
+      "link": "",
+      "pinUrl": "https://www.pinterest.com/pin/780952391682035996/",
+      "imageUrl": "https://i.pinimg.com/1200x/bb/ec/70/bbec708eb1b52743f906986e97f95ad3.jpg",
+      "dominantColor": "#565964",
+      "createdAt": "2026-11-13T14:05:00",
+      "boardId": "780952460324562575",
+      "visualAnalysis": {
+        "version": 5,
+        "audience": "men",
+        "analyzedAt": "2026-11-16T08:54:13.045Z",
+        "sourceImageUrl": "https://i.pinimg.com/1200x/bb/ec/70/bbec708eb1b52743f906986e97f95ad3.jpg",
+        "model": "@cf/google/gemma-4-26b-a4b-it",
+        "isFashion": true,
+        "summary": "Une paire de baskets de sport bleu vif avec des détails texturés et des empiècements de différentes nuances de bleu, portée avec un jean délavé et un haut bleu clair.",
+        "styleTags": [
+          "Sport",
+          "Streetwear",
+          "Casual"
+        ],
+        "colors": [
+          "bleu"
+        ],
+        "materials": [
+          "polyester"
+        ],
+        "cuts": [],
+        "patterns": [
+          "uni"
+        ],
+        "pieces": [
+          {
+            "slot": "shoes",
+            "type": "baskets",
+            "color": "bleu",
+            "material": "",
+            "cut": "",
+            "pattern": "uni",
+            "details": [
+              "lacets",
+              "semelle épaisse"
+            ],
+            "keywords": [
+              "baskets bleues sport"
+            ],
+            "prominence": "hero"
+          },
+          {
+            "slot": "bottom",
+            "type": "jean",
+            "color": "bleu",
+            "material": "denim",
+            "cut": "",
+            "pattern": "uni",
+            "details": [
+              "effet délavé"
+            ],
+            "keywords": [
+              "jean bleu délavé"
+            ],
+            "prominence": "supporting"
+          },
+          {
+            "slot": "top",
+            "type": "t-shirt",
+            "color": "bleu",
+            "material": "coton",
+            "cut": "",
+            "pattern": "uni",
+            "details": [],
+            "keywords": [
+              "t-shirt bleu clair"
+            ],
+            "prominence": "supporting"
+          },
+          {
+            "slot": "accessory",
+            "type": "montre",
+            "color": "",
+            "material": "",
+            "cut": "",
+            "pattern": "",
+            "details": [],
+            "keywords": [
+              "montre argentée métal"
+            ],
+            "prominence": "supporting"
+          }
+        ],
+        "searchQueries": [
+          "baskets bleues mesh homme",
+          "jean bleu délavé homme",
+          "t-shirt bleu clair homme"
+        ],
+        "details": [],
+        "silhouetteTags": [],
+        "seasonTags": [],
+        "occasionTags": [
+          "Quotidien",
+          "Sport",
+          "Extérieur"
+        ],
+        "paletteTags": [
+          "Ton sur ton"
+        ],
+        "layering": "",
+        "outfitFormula": "t-shirt + jean + baskets",
+        "confidence": 0.9
+      }
+    },
+    {
+      "id": "780952391682015452",
+      "title": "Roy - Noir Intense",
+      "description": "- Mocassins à pampilles\n\n- Fabriqués à la main au Portugal\n\n- Extérieur en cuir (tannerie : Espagne)\n\n- Doublure en cuir\n\n- Semelle crantée en caoutchouc cousue Blake\n\n- Trépointe en cuir",
+      "altText": "",
+      "link": "https://www.bobbies.com/fr/new-category-25/4000785372-roy-noir-intense.html",
+      "pinUrl": "https://www.pinterest.com/pin/780952391682015452/",
+      "imageUrl": "https://i.pinimg.com/1200x/47/75/1c/47751cc8ae531e4e02930c8134f268af.jpg",
+      "dominantColor": "#404149",
+      "createdAt": "2026-11-12T09:00:11",
+      "boardId": "780952460324562575",
+      "visualAnalysis": {
+        "version": 5,
+        "audience": "men",
+        "analyzedAt": "2026-11-16T08:54:58.291Z",
+        "sourceImageUrl": "https://i.pinimg.com/1200x/47/75/1c/47751cc8ae531e4e02930c8134f268af.jpg",
+        "model": "@cf/google/gemma-4-26b-a4b-it",
+        "isFashion": true,
+        "summary": "Mocassins à pampilles en cuir noir à semelle crantée, portés avec des chaussettes blanches et un pantalon noir à coupe droite.",
+        "styleTags": [
+          "Classique",
+          "Smart Casual"
+        ],
+        "colors": [
+          "noir",
+          "blanc"
+        ],
+        "materials": [
+          "cuir"
+        ],
+        "cuts": [
+          "droit"
+        ],
+        "patterns": [
+          "uni"
+        ],
+        "pieces": [
+          {
+            "slot": "shoes",
+            "type": "mocassins",
+            "color": "noir",
+            "material": "cuir",
+            "cut": "regular",
+            "pattern": "uni",
+            "details": [
+              "semelle épaisse",
+              "boutonnage"
+            ],
+            "keywords": [
+              "mocassins pampilles cuir noir",
+              "mocassins à glands noir"
+            ],
+            "prominence": "hero"
+          },
+          {
+            "slot": "accessory",
+            "type": "chaussettes",
+            "color": "blanc",
+            "material": "coton",
+            "cut": "regular",
+            "pattern": "uni",
+            "details": [],
+            "keywords": [
+              "chaussettes blanches côtelées"
+            ],
+            "prominence": "supporting"
+          },
+          {
+            "slot": "bottom",
+            "type": "pantalon",
+            "color": "noir",
+            "material": "laine",
+            "cut": "droit",
+            "pattern": "uni",
+            "details": [
+              "coupe structurée"
+            ],
+            "keywords": [
+              "pantalon noir droit"
+            ],
+            "prominence": "supporting"
+          }
+        ],
+        "searchQueries": [
+          "mocassins pampilles cuir noir homme",
+          "mocassins à glands noir homme",
+          "chaussettes blanches coton homme",
+          "pantalon noir droit homme"
+        ],
+        "details": [],
+        "silhouetteTags": [
+          "équilibrée"
+        ],
+        "seasonTags": [
+          "Toute saison"
+        ],
+        "occasionTags": [
+          "Travail",
+          "Sortie",
+          "Cérémonie"
+        ],
+        "paletteTags": [
+          "Contraste fort"
+        ],
+        "layering": "",
+        "outfitFormula": "pantalon + chaussettes + mocassins",
+        "confidence": 0.95
+      }
+    },
+    {
+      "id": "780952391681858012",
+      "title": "",
+      "description": "Blending classic vintage rugby prep with a heavy, relaxed street silhouette. Watch until the end to see the full layout breakdown of the individual pieces.\n\nLoafers or retro sneakers with this fit? Let me know below\n\n#menswear\n\n#streetwearstyle\n\n#aestheticmenswear",
+      "altText": "",
+      "link": "",
+      "pinUrl": "https://www.pinterest.com/pin/780952391681858012/",
+      "imageUrl": "https://i.pinimg.com/1200x/b0/9b/b5/b09bb59a34a8b2c7c95c42a760f673f9.jpg",
+      "dominantColor": "#867975",
+      "createdAt": "2026-11-03T14:23:49",
+      "boardId": "780952460324562575",
+      "visualAnalysis": {
+        "version": 5,
+        "audience": "men",
+        "analyzedAt": "2026-11-16T08:56:50.169Z",
+        "sourceImageUrl": "https://i.pinimg.com/1200x/b0/9b/b5/b09bb59a34a8b2c7c95c42a760f673f9.jpg",
+        "model": "@cf/google/gemma-4-26b-a4b-it",
+        "isFashion": true,
+        "summary": "Tenue de style rugby vintage et streetwear avec un pull à rayures horizontales rose et marron, un pantalon cargo marron large et une casquette assortie. La silhouette est ample et décontractée.",
+        "styleTags": [
+          "Vintage",
+          "Streetwear",
+          "Preppy",
+          "Casual"
+        ],
+        "colors": [
+          "rose",
+          "marron",
+          "blanc"
+        ],
+        "materials": [
+          "coton"
+        ],
+        "cuts": [
+          "oversize",
+          "large"
+        ],
+        "patterns": [
+          "rayures",
+          "uni"
+        ],
+        "pieces": [
+          {
+            "slot": "top",
+            "type": "pull",
+            "color": "rose",
+            "material": "coton",
+            "cut": "oversize",
+            "pattern": "rayures",
+            "details": [
+              "col polo",
+              "boutonnage"
+            ],
+            "keywords": [
+              "pull rugby rayé rose marron",
+              "pull col polo vintage"
+            ],
+            "prominence": "hero"
+          },
+          {
+            "slot": "bottom",
+            "type": "pantalon",
+            "color": "marron",
+            "material": "denim",
+            "cut": "large",
+            "pattern": "uni",
+            "details": [
+              "poches cargo"
+            ],
+            "keywords": [
+              "pantalon cargo marron large",
+              "pantalon baggy marron"
+            ],
+            "prominence": "hero"
+          },
+          {
+            "slot": "accessory",
+            "type": "casquette",
+            "color": "marron",
+            "material": "coton",
+            "cut": "regular",
+            "pattern": "uni",
+            "details": [
+              "logo apparent"
+            ],
+            "keywords": [
+              "casquette marron logo",
+              "casquette vintage"
+            ],
+            "prominence": "supporting"
+          },
+          {
+            "slot": "accessory",
+            "type": "lunettes",
+            "color": "noir",
+            "material": "",
+            "cut": "",
+            "pattern": "",
+            "details": [],
+            "keywords": [
+              "lunettes de vue noires"
+            ],
+            "prominence": "supporting"
+          },
+          {
+            "slot": "accessory",
+            "type": "montre",
+            "color": "noir",
+            "material": "",
+            "cut": "",
+            "pattern": "",
+            "details": [],
+            "keywords": [
+              "montre bracelet noir"
+            ],
+            "prominence": "supporting"
+          },
+          {
+            "slot": "shoes",
+            "type": "chaussures",
+            "color": "rose",
+            "material": "",
+            "cut": "",
+            "pattern": "graphique",
+            "details": [
+              "effet délavé"
+            ],
+            "keywords": [
+              "chaussures roses délavées"
+            ],
+            "prominence": "supporting"
+          }
+        ],
+        "searchQueries": [
+          "pull rugby rayé rose et marron homme",
+          "pantalon cargo marron large homme",
+          "casquette marron logo homme"
+        ],
+        "details": [],
+        "silhouetteTags": [
+          "ample",
+          "oversize",
+          "superposée"
+        ],
+        "seasonTags": [
+          "Automne"
+        ],
+        "occasionTags": [
+          "Quotidien",
+          "Sortie"
+        ],
+        "paletteTags": [
+          "Terreux",
+          "Contraste doux"
+        ],
+        "layering": "Un pull à col polo porté seul sur un pantalon large.",
+        "outfitFormula": "pull + pantalon + casquette",
+        "confidence": 0.95
+      }
+    }
+  ]
+}

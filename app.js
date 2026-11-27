@@ -36,7 +36,7 @@ if (showcaseView) {
   if (window.matchMedia("(max-width: 850px)").matches) document.body.classList.add("showcase-embed--mobile");
   const demoBadge = document.createElement("span");
   demoBadge.className = "showcase-demo-badge";
-  demoBadge.textContent = "MODE DÉMO · CHOIX TEMPORAIRES";
+  demoBadge.textContent = "MODE DÉMO · 10 ARTICLES FIXES";
   demoBadge.setAttribute("role", "status");
   demoBadge.setAttribute("aria-label", "Mode démonstration : les choix sont temporaires et ne sont jamais enregistrés.");
   const showcaseTopbar = document.querySelector(".topbar");
@@ -2084,6 +2084,37 @@ document.addEventListener("keydown", function(event) {
 async function boot() {
   catalogProducts = [];
   let catalogLoaded = false;
+  if (showcaseView) {
+    // La démo ne charge que deux fichiers figés : 10 articles et 6 inspirations.
+    // Aucun manifeste, flux marchand, répertoire ou catalogue réel n'est consulté.
+    const responses = await Promise.all([
+      fetch("./data/demo-catalog.json", { cache:"no-store" }),
+      fetch("./data/demo-pinterest-pins.json", { cache:"no-store" })
+    ]);
+    if (!responses[0].ok) throw new Error("Base de démonstration indisponible.");
+    if (!responses[1].ok) throw new Error("Inspirations de démonstration indisponibles.");
+    const demoCatalog = await responses[0].json();
+    const demoProducts = (Array.isArray(demoCatalog.products) ? demoCatalog.products : [])
+      .map(normalizeProduct).filter(function(product) { return isMenFit(product); });
+    if (demoProducts.length !== 10 || new Set(demoProducts.map(function(product) { return product.id; })).size !== 10) {
+      throw new Error("La base de démonstration doit contenir exactement 10 articles distincts.");
+    }
+    const demoPins = await responses[1].json();
+    if (demoPins.privacy !== "PUBLIC" || !Array.isArray(demoPins.pins) || demoPins.pins.length !== 6) {
+      throw new Error("La base d'inspirations de démonstration doit contenir exactement 6 épingles publiques.");
+    }
+    catalogProducts = demoProducts;
+    catalogLoaded = true;
+    catalogManifest = null;
+    catalogDirectory = [];
+    pinterestFeed = demoPins;
+    catalogMeta = {
+      status:"demo", productCount:10, liveProductCount:10, curatedProductCount:0,
+      staleProductCount:0, sourceCount:demoCatalog.brandCount || 0, sources:[],
+      syncedAt:demoCatalog.snapshotDate || null,
+      message:"Base de démonstration fixe · 10 articles."
+    };
+  } else {
   try {
     const pinResponse = await fetch("./data/pinterest-pins.json", { cache: "no-store" });
     if (pinResponse.ok) {
@@ -2126,6 +2157,7 @@ async function boot() {
     const response = await fetch("./data/catalog-meta.json", { cache: "no-store" });
     if (response.ok) catalogMeta = await response.json();
   } catch (error) { console.warn("État du catalogue marchand non chargé.", error); }
+  }
   // Les configurations personnelles/externes ne sont pas chargées dans la démonstration.
   if (!showcaseView) {
     try {
@@ -2211,31 +2243,24 @@ async function boot() {
     }
   }
   if (showcaseView) {
-    const showcaseProducts = state.products.filter(function(product) {
-      return isMenFit(product) && product.catalogStatus !== "stale" && product.imageUrl;
-    });
-    const showcaseSaved = showcaseProducts.slice(0, 4);
-    state.likedProducts = showcaseSaved.map(function(product, index) {
-      return { productId: product.id, savedAt: new Date(Date.UTC(2026, 10, 25 - index, 12, 0, 0)).toISOString() };
-    });
-    state.interactions.likes = showcaseProducts.slice(4, 8).map(function(product, index) {
-      return { productId: product.id, createdAt: new Date(Date.UTC(2026, 10, 24 - index, 12, 0, 0)).toISOString() };
-    });
-    state.interactions.dislikes = showcaseProducts.slice(8, 10).map(function(product, index) {
-      return { productId: product.id, createdAt: new Date(Date.UTC(2026, 10, 23 - index, 12, 0, 0)).toISOString() };
-    });
+    // Les dix références sont disponibles dès le départ ; les essais modifient seulement la RAM.
+    state.products = state.products.slice(0, 10);
+    state.likedProducts = [];
+    state.interactions.likes = [];
+    state.interactions.dislikes = [];
     state.interactions.views = [];
-    state.interactions.saves = state.likedProducts.map(function(item) {
-      return { productId: item.productId, createdAt: item.savedAt };
-    });
+    state.interactions.saves = [];
     state.interactions.undoEvents = [];
+    state.interactions.lastAction = null;
     state.removedFavorites = [];
     state.savedOutfits = [];
     state.outfitFeedback = {};
+    state.inspirations = [];
     state.seenPinterestPins = [];
     state.settings.discoveryView = String("cards");
-    state.settings.objective = "Vêtements";
+    state.settings.objective = "Tout";
     state.settings.style = "Tous";
+    state.settings.season = "Toute saison";
     state.settings.maxPrice = null;
     state.settings.communitySharing = false;
     state.settings.aiAgentConsent = false;
