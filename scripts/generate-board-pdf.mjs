@@ -129,6 +129,59 @@ async function verifyBoardTypography(page) {
   console.log("Board typography verified: three feature titles >=18px and subtitles >=15px.", metrics);
 }
 
+async function verifyExportEmbedVisibility(page) {
+  const frames = page.frames();
+  const desktop = frames.find(frame => { try { return new URL(frame.url()).searchParams.get("showcase") === "discover"; } catch { return false; } });
+  const phones = frames.filter(frame => { try { return ["training","outfits"].includes(new URL(frame.url()).searchParams.get("showcase")); } catch { return false; } });
+  if (!desktop || phones.length !== 2) throw new Error("Les aperçus exportables ne sont pas tous chargés.");
+  const read = async frame => frame.evaluate(() => {
+    const font = selector => {
+      const node=document.querySelector(selector);return node?Number.parseFloat(getComputedStyle(node).fontSize):0;
+    };
+    const rect = selector => {
+      const node=document.querySelector(selector);if(!node)return null;const r=node.getBoundingClientRect();return {width:r.width,height:r.height};
+    };
+    const params=new URL(window.location.href).searchParams;
+    const view=params.get("showcase");
+    const firstNav=document.querySelector(".mobile-nav button span");
+    const navLabel=document.querySelector(".mobile-nav button small");
+    const actionSelector=view==="training"?".deck-actions .deck-action":".outfit-proposal-actions button, .outfit-quick-feedback button";
+    const firstAction=document.querySelector(actionSelector);
+    const filter=document.querySelector(".filter-menu-trigger");
+    const styleOption=document.querySelector(".outfit-style-option span");
+    return {
+      view,
+      exportMode:document.body.classList.contains("showcase-embed--export"),
+      mobileMode:document.body.classList.contains("showcase-embed--mobile"),
+      navIcon:firstNav?Number.parseFloat(getComputedStyle(firstNav).fontSize):0,
+      navLabel:navLabel?Number.parseFloat(getComputedStyle(navLabel).fontSize):0,
+      navButton:rect(".mobile-nav button"),
+      action:rect(actionSelector),
+      actionFont:firstAction?Number.parseFloat(getComputedStyle(firstAction).fontSize):0,
+      filterHeight:filter?rect(".filter-menu-trigger").height:(styleOption?rect(".outfit-style-option span").height:0),
+      filterFont:filter?font(".filter-menu-trigger"):font(".outfit-style-option span"),
+      productTitle:font(".product-title"),
+      outfitHeading:font(".outfit-filter-heading strong")
+    };
+  });
+  const desktopMetrics=await read(desktop);
+  const desktopUrl=new URL(desktop.url());
+  if(!desktopMetrics.exportMode || desktopUrl.searchParams.get("boardExport")!=="1" || desktopMetrics.productTitle<25 || desktopMetrics.filterHeight<47) {
+    throw new Error("L'aperçu ordinateur export n'est pas assez lisible : "+JSON.stringify(desktopMetrics));
+  }
+  for(const frame of phones){
+    const m=await read(frame);
+    const commonFail=!m.exportMode||!m.mobileMode||!new URL(frame.url()).searchParams.get("boardExport")||m.navIcon<22||m.navLabel<10.5||!m.navButton||m.navButton.height<52||!m.action||m.action.height<32;
+    const viewFail=m.view==="training"
+      ? m.filterHeight<43||m.filterFont<13||m.productTitle<21
+      : m.filterHeight<32||m.filterFont<11||m.outfitHeading<14;
+    if(commonFail||viewFail){
+      throw new Error("Un aperçu téléphone export n'a pas ses tailles renforcées : "+JSON.stringify(m));
+    }
+  }
+  console.log("Export embed visibility passed: desktop product/menu and mobile navigation/actions/icons are enlarged.", {desktop:desktopMetrics,phones:await Promise.all(phones.map(read))});
+}
+
 async function verifyPrintGeometry(page) {
   await page.emulateMedia({ media: "print" });
   const metrics = await page.evaluate(() => {
@@ -275,17 +328,20 @@ try {
   if (process.env.DRESSOPP_BOARD_QA_ONLY === "1") {
     await loadBoard(page, "http://127.0.0.1:4173/board.html");
     await verifyShowcaseViews(page);
+    await verifyExportEmbedVisibility(page);
     await verifyBoardTypography(page);
     console.log("Interactive board QA and feature-label typography checks passed; PDF files are generated in the full export job.");
   } else {
     await loadBoard(page, "http://127.0.0.1:4173/board.html");
     await verifyShowcaseViews(page);
+    await verifyExportEmbedVisibility(page);
     await writePdf(page, path.join(root, "DRESSOPP-Board-A3.pdf"), 420, 297);
 
     // Imprimeur : format SRA3 (450 x 320 mm), coupe A3 (420 x 297 mm),
     // fond perdu réel de 3 mm sur les quatre côtés et repères hors coupe.
     await loadBoard(page, "http://127.0.0.1:4173/board.html?cropMarks=1");
     await verifyShowcaseViews(page);
+    await verifyExportEmbedVisibility(page);
     if (!(await page.locator(".crop-sheet").count())) throw new Error("Les traits de coupe sont absents.");
     if (!(await page.locator(".bleed-underlay").count())) throw new Error("Le fond perdu est absent.");
     await verifyPrintGeometry(page);
