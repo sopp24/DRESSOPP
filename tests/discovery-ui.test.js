@@ -465,6 +465,9 @@ test("les fenêtres des deux PDF agrandissent menus, textes et icônes uniquemen
   assert.ok(css.includes("body.showcase-embed--export .topbar .nav-link"));
   assert.ok(css.includes("body.showcase-embed--export .mobile-nav button span { font-size: 23px"));
   assert.ok(css.includes("body.showcase-embed--export .discovery-page--app .deck-action-icon"));
+  assert.ok(css.includes("body.showcase-embed--export:not(.showcase-embed--mobile) .discovery-layout--swipe .deck-actions .deck-action-icon"));
+  assert.ok(css.includes("font-size: clamp(26px,2.45vw,32px) !important"));
+  assert.ok(boardPdfScript.includes('desktopMetrics.action.height<90'));
   assert.ok(boardPdfScript.includes("async function verifyExportEmbedVisibility"));
   assert.ok(boardPdfScript.includes("desktopMetrics.productTitle<25"));
 });
