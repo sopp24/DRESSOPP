@@ -336,7 +336,7 @@ test("les vues de démonstration du board n'écrivent jamais dans le stockage pe
 
 test("les vues embarquées signalent visiblement leur mode démo", function() {
   assert.ok(app.includes('demoBadge.className = "showcase-demo-badge"'));
-  assert.ok(app.includes("CHOIX TEMPORAIRES"));
+  assert.ok(app.includes("10 ARTICLES FIXES"));
   assert.ok(css.includes("body.showcase-embed .showcase-demo-badge"));
 });
 
