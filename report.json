@@ -1,0 +1,2506 @@
+{
+  "testedUrl": "http://127.0.0.1:4173/",
+  "testedAt": "2026-11-27T19:52:28.841Z",
+  "viewports": 6,
+  "screenshots": 36,
+  "pageErrors": [],
+  "issues": [],
+  "results": [
+    {
+      "viewport": "desktop-1440",
+      "document": {
+        "width": 1440,
+        "height": 900
+      },
+      "horizontalOverflow": false,
+      "main": {
+        "x": 0,
+        "y": 70,
+        "width": 1440,
+        "height": 830,
+        "top": 70,
+        "right": 1440,
+        "bottom": 900
+      },
+      "card": {
+        "x": 450,
+        "y": 142,
+        "width": 440,
+        "height": 549,
+        "top": 142,
+        "right": 890,
+        "bottom": 691
+      },
+      "actions": {
+        "x": 450,
+        "y": 703,
+        "width": 440,
+        "height": 74,
+        "top": 703,
+        "right": 890,
+        "bottom": 777
+      },
+      "mobileNav": {
+        "x": 360,
+        "y": 816,
+        "width": 720,
+        "height": 72,
+        "top": 816,
+        "right": 1080,
+        "bottom": 888
+      },
+      "productImage": {
+        "productId": "web-1dkokqh",
+        "url": "./assets/product-images/1r0j2t5.avif",
+        "loaded": true,
+        "fallback": false,
+        "requestedSrc": "http://127.0.0.1:4173/assets/product-images/1r0j2t5.avif",
+        "naturalWidth": 1562,
+        "visual": {
+          "x": 468,
+          "y": 162,
+          "width": 404,
+          "height": 312,
+          "top": 162,
+          "right": 872,
+          "bottom": 474
+        },
+        "info": {
+          "x": 468,
+          "y": 474,
+          "width": 404,
+          "height": 196,
+          "top": 474,
+          "right": 872,
+          "bottom": 670
+        }
+      },
+      "cardStyles": {
+        "bodyApp": true,
+        "appPage": true,
+        "wrapperDisplay": "flex",
+        "wrapperRows": "none",
+        "cardHeight": "548.578px",
+        "cardPosition": "relative",
+        "visualPosition": "relative",
+        "visualMinHeight": "93.6px",
+        "infoPosition": "static",
+        "actionsPosition": "static"
+      },
+      "imageDebug": {
+        "catalogCount": 251,
+        "requestedId": "web-1dkokqh",
+        "matchFound": true,
+        "matchedId": "web-1dkokqh",
+        "matchedImage": "./assets/product-images/1r0j2t5.avif",
+        "itemImage": "./assets/product-images/1r0j2t5.avif"
+      },
+      "cardSectionsOverlap": false,
+      "cardOverlapsNav": false,
+      "actionSizes": [
+        {
+          "label": "Annuler la dernière action",
+          "width": 51,
+          "height": 51
+        },
+        {
+          "label": "Passer",
+          "width": 74,
+          "height": 74
+        },
+        {
+          "label": "Ajouter à ma liste",
+          "width": 51,
+          "height": 51
+        },
+        {
+          "label": "J’aime",
+          "width": 74,
+          "height": 74
+        },
+        {
+          "label": "Partager cet article",
+          "width": 51,
+          "height": 51
+        }
+      ],
+      "viewportSize": {
+        "width": 1440,
+        "height": 900
+      },
+      "view": "pour-toi",
+      "screenshot": "artifacts/visual-qa/desktop-1440-pour-toi.png",
+      "issues": []
+    },
+    {
+      "viewport": "desktop-1440",
+      "document": {
+        "width": 1440,
+        "height": 979
+      },
+      "horizontalOverflow": false,
+      "main": {
+        "x": 32,
+        "y": 70,
+        "width": 1376,
+        "height": 750,
+        "top": 70,
+        "right": 1408,
+        "bottom": 820
+      },
+      "card": null,
+      "actions": null,
+      "mobileNav": {
+        "x": 360,
+        "y": 816,
+        "width": 720,
+        "height": 72,
+        "top": 816,
+        "right": 1080,
+        "bottom": 888
+      },
+      "productImage": null,
+      "cardStyles": null,
+      "imageDebug": null,
+      "cardSectionsOverlap": false,
+      "cardOverlapsNav": false,
+      "actionSizes": [],
+      "viewportSize": {
+        "width": 1440,
+        "height": 900
+      },
+      "view": "wardrobe",
+      "screenshot": "artifacts/visual-qa/desktop-1440-wardrobe.png",
+      "issues": []
+    },
+    {
+      "viewport": "desktop-1440",
+      "document": {
+        "width": 1440,
+        "height": 14312
+      },
+      "horizontalOverflow": false,
+      "main": {
+        "x": 32,
+        "y": 70,
+        "width": 1376,
+        "height": 14083,
+        "top": 70,
+        "right": 1408,
+        "bottom": 14153
+      },
+      "card": {
+        "x": 500,
+        "y": 339,
+        "width": 440,
+        "height": 775,
+        "top": 339,
+        "right": 940,
+        "bottom": 1113
+      },
+      "actions": {
+        "x": 500,
+        "y": 1126,
+        "width": 440,
+        "height": 74,
+        "top": 1126,
+        "right": 940,
+        "bottom": 1200
+      },
+      "mobileNav": {
+        "x": 360,
+        "y": 816,
+        "width": 720,
+        "height": 72,
+        "top": 816,
+        "right": 1080,
+        "bottom": 888
+      },
+      "productImage": {
+        "productId": "web-1qqez5e",
+        "url": "./assets/product-images/1a1kh0w.avif",
+        "loaded": true,
+        "fallback": false,
+        "requestedSrc": "http://127.0.0.1:4173/assets/product-images/1a1kh0w.avif",
+        "naturalWidth": 1562,
+        "visual": {
+          "x": 518,
+          "y": 358,
+          "width": 404,
+          "height": 538,
+          "top": 358,
+          "right": 922,
+          "bottom": 897
+        },
+        "info": {
+          "x": 518,
+          "y": 897,
+          "width": 404,
+          "height": 196,
+          "top": 897,
+          "right": 922,
+          "bottom": 1093
+        }
+      },
+      "cardStyles": {
+        "bodyApp": false,
+        "appPage": false,
+        "wrapperDisplay": "flex",
+        "wrapperRows": "none",
+        "cardHeight": "774.688px",
+        "cardPosition": "relative",
+        "visualPosition": "relative",
+        "visualMinHeight": "0px",
+        "infoPosition": "static",
+        "actionsPosition": "static"
+      },
+      "imageDebug": {
+        "catalogCount": 251,
+        "requestedId": "web-1qqez5e",
+        "matchFound": true,
+        "matchedId": "web-1qqez5e",
+        "matchedImage": "./assets/product-images/1a1kh0w.avif",
+        "itemImage": "./assets/product-images/1a1kh0w.avif"
+      },
+      "cardSectionsOverlap": false,
+      "cardOverlapsNav": false,
+      "actionSizes": [
+        {
+          "label": "Annuler la dernière action",
+          "width": 51,
+          "height": 51
+        },
+        {
+          "label": "Passer",
+          "width": 74,
+          "height": 74
+        },
+        {
+          "label": "Ajouter à ma liste",
+          "width": 51,
+          "height": 51
+        },
+        {
+          "label": "J’aime",
+          "width": 74,
+          "height": 74
+        },
+        {
+          "label": "Partager cet article",
+          "width": 51,
+          "height": 51
+        }
+      ],
+      "viewportSize": {
+        "width": 1440,
+        "height": 900
+      },
+      "view": "training",
+      "screenshot": "artifacts/visual-qa/desktop-1440-training.png",
+      "issues": []
+    },
+    {
+      "viewport": "desktop-1440",
+      "document": {
+        "width": 1440,
+        "height": 13790
+      },
+      "horizontalOverflow": false,
+      "main": {
+        "x": 32,
+        "y": 70,
+        "width": 1376,
+        "height": 13561,
+        "top": 70,
+        "right": 1408,
+        "bottom": 13631
+      },
+      "card": null,
+      "actions": null,
+      "mobileNav": {
+        "x": 360,
+        "y": 816,
+        "width": 720,
+        "height": 72,
+        "top": 816,
+        "right": 1080,
+        "bottom": 888
+      },
+      "productImage": null,
+      "cardStyles": null,
+      "imageDebug": null,
+      "cardSectionsOverlap": false,
+      "cardOverlapsNav": false,
+      "actionSizes": [],
+      "viewportSize": {
+        "width": 1440,
+        "height": 900
+      },
+      "view": "outfits",
+      "screenshot": "artifacts/visual-qa/desktop-1440-outfits.png",
+      "issues": []
+    },
+    {
+      "viewport": "desktop-1440",
+      "document": {
+        "width": 1440,
+        "height": 1712
+      },
+      "horizontalOverflow": false,
+      "main": {
+        "x": 32,
+        "y": 70,
+        "width": 1376,
+        "height": 1483,
+        "top": 70,
+        "right": 1408,
+        "bottom": 1553
+      },
+      "card": null,
+      "actions": null,
+      "mobileNav": {
+        "x": 360,
+        "y": 816,
+        "width": 720,
+        "height": 72,
+        "top": 816,
+        "right": 1080,
+        "bottom": 888
+      },
+      "productImage": null,
+      "cardStyles": null,
+      "imageDebug": null,
+      "cardSectionsOverlap": false,
+      "cardOverlapsNav": false,
+      "actionSizes": [],
+      "viewportSize": {
+        "width": 1440,
+        "height": 900
+      },
+      "view": "profile",
+      "screenshot": "artifacts/visual-qa/desktop-1440-profile.png",
+      "issues": []
+    },
+    {
+      "viewport": "desktop-1440",
+      "document": {
+        "width": 1440,
+        "height": 3822
+      },
+      "horizontalOverflow": false,
+      "main": {
+        "x": 32,
+        "y": 70,
+        "width": 1376,
+        "height": 3593,
+        "top": 70,
+        "right": 1408,
+        "bottom": 3663
+      },
+      "card": null,
+      "actions": null,
+      "mobileNav": {
+        "x": 360,
+        "y": 816,
+        "width": 720,
+        "height": 72,
+        "top": 816,
+        "right": 1080,
+        "bottom": 888
+      },
+      "productImage": null,
+      "cardStyles": null,
+      "imageDebug": null,
+      "cardSectionsOverlap": false,
+      "cardOverlapsNav": false,
+      "actionSizes": [],
+      "viewportSize": {
+        "width": 1440,
+        "height": 900
+      },
+      "view": "settings",
+      "screenshot": "artifacts/visual-qa/desktop-1440-settings.png",
+      "issues": []
+    },
+    {
+      "viewport": "laptop-1024",
+      "document": {
+        "width": 1024,
+        "height": 768
+      },
+      "horizontalOverflow": false,
+      "main": {
+        "x": 0,
+        "y": 64,
+        "width": 1024,
+        "height": 704,
+        "top": 64,
+        "right": 1024,
+        "bottom": 768
+      },
+      "card": {
+        "x": 242,
+        "y": 136,
+        "width": 440,
+        "height": 432,
+        "top": 136,
+        "right": 682,
+        "bottom": 568
+      },
+      "actions": {
+        "x": 242,
+        "y": 579,
+        "width": 440,
+        "height": 67,
+        "top": 579,
+        "right": 682,
+        "bottom": 646
+      },
+      "mobileNav": {
+        "x": 152,
+        "y": 684,
+        "width": 720,
+        "height": 72,
+        "top": 684,
+        "right": 872,
+        "bottom": 756
+      },
+      "productImage": {
+        "productId": "web-1dkokqh",
+        "url": "./assets/product-images/1r0j2t5.avif",
+        "loaded": true,
+        "fallback": false,
+        "requestedSrc": "http://127.0.0.1:4173/assets/product-images/1r0j2t5.avif",
+        "naturalWidth": 1562,
+        "visual": {
+          "x": 259,
+          "y": 154,
+          "width": 407,
+          "height": 214,
+          "top": 154,
+          "right": 665,
+          "bottom": 368
+        },
+        "info": {
+          "x": 259,
+          "y": 368,
+          "width": 407,
+          "height": 181,
+          "top": 368,
+          "right": 665,
+          "bottom": 549
+        }
+      },
+      "cardStyles": {
+        "bodyApp": true,
+        "appPage": true,
+        "wrapperDisplay": "flex",
+        "wrapperRows": "none",
+        "cardHeight": "431.625px",
+        "cardPosition": "relative",
+        "visualPosition": "relative",
+        "visualMinHeight": "84.7872px",
+        "infoPosition": "static",
+        "actionsPosition": "static"
+      },
+      "imageDebug": {
+        "catalogCount": 251,
+        "requestedId": "web-1dkokqh",
+        "matchFound": true,
+        "matchedId": "web-1dkokqh",
+        "matchedImage": "./assets/product-images/1r0j2t5.avif",
+        "itemImage": "./assets/product-images/1r0j2t5.avif"
+      },
+      "cardSectionsOverlap": false,
+      "cardOverlapsNav": false,
+      "actionSizes": [
+        {
+          "label": "Annuler la dernière action",
+          "width": 47,
+          "height": 47
+        },
+        {
+          "label": "Passer",
+          "width": 67,
+          "height": 67
+        },
+        {
+          "label": "Ajouter à ma liste",
+          "width": 47,
+          "height": 47
+        },
+        {
+          "label": "J’aime",
+          "width": 67,
+          "height": 67
+        },
+        {
+          "label": "Partager cet article",
+          "width": 47,
+          "height": 47
+        }
+      ],
+      "viewportSize": {
+        "width": 1024,
+        "height": 768
+      },
+      "view": "pour-toi",
+      "screenshot": "artifacts/visual-qa/laptop-1024-pour-toi.png",
+      "issues": []
+    },
+    {
+      "viewport": "laptop-1024",
+      "document": {
+        "width": 1024,
+        "height": 963
+      },
+      "horizontalOverflow": false,
+      "main": {
+        "x": 24,
+        "y": 64,
+        "width": 976,
+        "height": 740,
+        "top": 64,
+        "right": 1000,
+        "bottom": 804
+      },
+      "card": null,
+      "actions": null,
+      "mobileNav": {
+        "x": 152,
+        "y": 684,
+        "width": 720,
+        "height": 72,
+        "top": 684,
+        "right": 872,
+        "bottom": 756
+      },
+      "productImage": null,
+      "cardStyles": null,
+      "imageDebug": null,
+      "cardSectionsOverlap": false,
+      "cardOverlapsNav": false,
+      "actionSizes": [],
+      "viewportSize": {
+        "width": 1024,
+        "height": 768
+      },
+      "view": "wardrobe",
+      "screenshot": "artifacts/visual-qa/laptop-1024-wardrobe.png",
+      "issues": []
+    },
+    {
+      "viewport": "laptop-1024",
+      "document": {
+        "width": 1024,
+        "height": 17537
+      },
+      "horizontalOverflow": false,
+      "main": {
+        "x": 24,
+        "y": 64,
+        "width": 976,
+        "height": 17314,
+        "top": 64,
+        "right": 1000,
+        "bottom": 17378
+      },
+      "card": {
+        "x": 292,
+        "y": 308,
+        "width": 440,
+        "height": 760,
+        "top": 308,
+        "right": 732,
+        "bottom": 1068
+      },
+      "actions": {
+        "x": 292,
+        "y": 1079,
+        "width": 440,
+        "height": 67,
+        "top": 1079,
+        "right": 732,
+        "bottom": 1146
+      },
+      "mobileNav": {
+        "x": 152,
+        "y": 684,
+        "width": 720,
+        "height": 72,
+        "top": 684,
+        "right": 872,
+        "bottom": 756
+      },
+      "productImage": {
+        "productId": "web-1qqez5e",
+        "url": "./assets/product-images/1a1kh0w.avif",
+        "loaded": true,
+        "fallback": false,
+        "requestedSrc": "http://127.0.0.1:4173/assets/product-images/1a1kh0w.avif",
+        "naturalWidth": 1562,
+        "visual": {
+          "x": 309,
+          "y": 326,
+          "width": 407,
+          "height": 543,
+          "top": 326,
+          "right": 715,
+          "bottom": 869
+        },
+        "info": {
+          "x": 309,
+          "y": 869,
+          "width": 407,
+          "height": 181,
+          "top": 869,
+          "right": 715,
+          "bottom": 1049
+        }
+      },
+      "cardStyles": {
+        "bodyApp": false,
+        "appPage": false,
+        "wrapperDisplay": "flex",
+        "wrapperRows": "none",
+        "cardHeight": "760px",
+        "cardPosition": "relative",
+        "visualPosition": "relative",
+        "visualMinHeight": "0px",
+        "infoPosition": "static",
+        "actionsPosition": "static"
+      },
+      "imageDebug": {
+        "catalogCount": 251,
+        "requestedId": "web-1qqez5e",
+        "matchFound": true,
+        "matchedId": "web-1qqez5e",
+        "matchedImage": "./assets/product-images/1a1kh0w.avif",
+        "itemImage": "./assets/product-images/1a1kh0w.avif"
+      },
+      "cardSectionsOverlap": false,
+      "cardOverlapsNav": false,
+      "actionSizes": [
+        {
+          "label": "Annuler la dernière action",
+          "width": 47,
+          "height": 47
+        },
+        {
+          "label": "Passer",
+          "width": 67,
+          "height": 67
+        },
+        {
+          "label": "Ajouter à ma liste",
+          "width": 47,
+          "height": 47
+        },
+        {
+          "label": "J’aime",
+          "width": 67,
+          "height": 67
+        },
+        {
+          "label": "Partager cet article",
+          "width": 47,
+          "height": 47
+        }
+      ],
+      "viewportSize": {
+        "width": 1024,
+        "height": 768
+      },
+      "view": "training",
+      "screenshot": "artifacts/visual-qa/laptop-1024-training.png",
+      "issues": []
+    },
+    {
+      "viewport": "laptop-1024",
+      "document": {
+        "width": 1024,
+        "height": 12586
+      },
+      "horizontalOverflow": false,
+      "main": {
+        "x": 24,
+        "y": 64,
+        "width": 976,
+        "height": 12363,
+        "top": 64,
+        "right": 1000,
+        "bottom": 12427
+      },
+      "card": null,
+      "actions": null,
+      "mobileNav": {
+        "x": 152,
+        "y": 684,
+        "width": 720,
+        "height": 72,
+        "top": 684,
+        "right": 872,
+        "bottom": 756
+      },
+      "productImage": null,
+      "cardStyles": null,
+      "imageDebug": null,
+      "cardSectionsOverlap": false,
+      "cardOverlapsNav": false,
+      "actionSizes": [],
+      "viewportSize": {
+        "width": 1024,
+        "height": 768
+      },
+      "view": "outfits",
+      "screenshot": "artifacts/visual-qa/laptop-1024-outfits.png",
+      "issues": []
+    },
+    {
+      "viewport": "laptop-1024",
+      "document": {
+        "width": 1024,
+        "height": 1669
+      },
+      "horizontalOverflow": false,
+      "main": {
+        "x": 24,
+        "y": 64,
+        "width": 976,
+        "height": 1446,
+        "top": 64,
+        "right": 1000,
+        "bottom": 1510
+      },
+      "card": null,
+      "actions": null,
+      "mobileNav": {
+        "x": 152,
+        "y": 684,
+        "width": 720,
+        "height": 72,
+        "top": 684,
+        "right": 872,
+        "bottom": 756
+      },
+      "productImage": null,
+      "cardStyles": null,
+      "imageDebug": null,
+      "cardSectionsOverlap": false,
+      "cardOverlapsNav": false,
+      "actionSizes": [],
+      "viewportSize": {
+        "width": 1024,
+        "height": 768
+      },
+      "view": "profile",
+      "screenshot": "artifacts/visual-qa/laptop-1024-profile.png",
+      "issues": []
+    },
+    {
+      "viewport": "laptop-1024",
+      "document": {
+        "width": 1024,
+        "height": 4215
+      },
+      "horizontalOverflow": false,
+      "main": {
+        "x": 24,
+        "y": 64,
+        "width": 976,
+        "height": 3992,
+        "top": 64,
+        "right": 1000,
+        "bottom": 4056
+      },
+      "card": null,
+      "actions": null,
+      "mobileNav": {
+        "x": 152,
+        "y": 684,
+        "width": 720,
+        "height": 72,
+        "top": 684,
+        "right": 872,
+        "bottom": 756
+      },
+      "productImage": null,
+      "cardStyles": null,
+      "imageDebug": null,
+      "cardSectionsOverlap": false,
+      "cardOverlapsNav": false,
+      "actionSizes": [],
+      "viewportSize": {
+        "width": 1024,
+        "height": 768
+      },
+      "view": "settings",
+      "screenshot": "artifacts/visual-qa/laptop-1024-settings.png",
+      "issues": []
+    },
+    {
+      "viewport": "tablet-768",
+      "document": {
+        "width": 768,
+        "height": 1024
+      },
+      "horizontalOverflow": false,
+      "main": {
+        "x": 0,
+        "y": 62,
+        "width": 768,
+        "height": 962,
+        "top": 62,
+        "right": 768,
+        "bottom": 1024
+      },
+      "card": {
+        "x": 158,
+        "y": 112,
+        "width": 440,
+        "height": 721,
+        "top": 112,
+        "right": 598,
+        "bottom": 833
+      },
+      "actions": {
+        "x": 158,
+        "y": 845,
+        "width": 440,
+        "height": 74,
+        "top": 845,
+        "right": 598,
+        "bottom": 919
+      },
+      "mobileNav": {
+        "x": 8,
+        "y": 954,
+        "width": 752,
+        "height": 62,
+        "top": 954,
+        "right": 760,
+        "bottom": 1016
+      },
+      "productImage": {
+        "productId": "web-1dkokqh",
+        "url": "./assets/product-images/1r0j2t5.avif",
+        "loaded": true,
+        "fallback": false,
+        "requestedSrc": "http://127.0.0.1:4173/assets/product-images/1r0j2t5.avif",
+        "naturalWidth": 1562,
+        "visual": {
+          "x": 176,
+          "y": 132,
+          "width": 404,
+          "height": 484,
+          "top": 132,
+          "right": 580,
+          "bottom": 616
+        },
+        "info": {
+          "x": 176,
+          "y": 616,
+          "width": 404,
+          "height": 196,
+          "top": 616,
+          "right": 580,
+          "bottom": 812
+        }
+      },
+      "cardStyles": {
+        "bodyApp": true,
+        "appPage": true,
+        "wrapperDisplay": "flex",
+        "wrapperRows": "none",
+        "cardHeight": "720.578px",
+        "cardPosition": "relative",
+        "visualPosition": "relative",
+        "visualMinHeight": "93.6px",
+        "infoPosition": "static",
+        "actionsPosition": "static"
+      },
+      "imageDebug": {
+        "catalogCount": 251,
+        "requestedId": "web-1dkokqh",
+        "matchFound": true,
+        "matchedId": "web-1dkokqh",
+        "matchedImage": "./assets/product-images/1r0j2t5.avif",
+        "itemImage": "./assets/product-images/1r0j2t5.avif"
+      },
+      "cardSectionsOverlap": false,
+      "cardOverlapsNav": false,
+      "actionSizes": [
+        {
+          "label": "Annuler la dernière action",
+          "width": 51,
+          "height": 51
+        },
+        {
+          "label": "Passer",
+          "width": 74,
+          "height": 74
+        },
+        {
+          "label": "Ajouter à ma liste",
+          "width": 51,
+          "height": 51
+        },
+        {
+          "label": "J’aime",
+          "width": 74,
+          "height": 74
+        },
+        {
+          "label": "Partager cet article",
+          "width": 51,
+          "height": 51
+        }
+      ],
+      "viewportSize": {
+        "width": 768,
+        "height": 1024
+      },
+      "view": "pour-toi",
+      "screenshot": "artifacts/visual-qa/tablet-768-pour-toi.png",
+      "issues": []
+    },
+    {
+      "viewport": "tablet-768",
+      "document": {
+        "width": 768,
+        "height": 1075
+      },
+      "horizontalOverflow": false,
+      "main": {
+        "x": 24,
+        "y": 64,
+        "width": 720,
+        "height": 874,
+        "top": 64,
+        "right": 744,
+        "bottom": 938
+      },
+      "card": null,
+      "actions": null,
+      "mobileNav": {
+        "x": 8,
+        "y": 954,
+        "width": 752,
+        "height": 62,
+        "top": 954,
+        "right": 760,
+        "bottom": 1016
+      },
+      "productImage": null,
+      "cardStyles": null,
+      "imageDebug": null,
+      "cardSectionsOverlap": false,
+      "cardOverlapsNav": false,
+      "actionSizes": [],
+      "viewportSize": {
+        "width": 768,
+        "height": 1024
+      },
+      "view": "wardrobe",
+      "screenshot": "artifacts/visual-qa/tablet-768-wardrobe.png",
+      "issues": []
+    },
+    {
+      "viewport": "tablet-768",
+      "document": {
+        "width": 768,
+        "height": 25991
+      },
+      "horizontalOverflow": false,
+      "main": {
+        "x": 24,
+        "y": 64,
+        "width": 720,
+        "height": 25790,
+        "top": 64,
+        "right": 744,
+        "bottom": 25854
+      },
+      "card": {
+        "x": 164,
+        "y": 312,
+        "width": 440,
+        "height": 775,
+        "top": 312,
+        "right": 604,
+        "bottom": 1087
+      },
+      "actions": {
+        "x": 164,
+        "y": 1099,
+        "width": 440,
+        "height": 74,
+        "top": 1099,
+        "right": 604,
+        "bottom": 1173
+      },
+      "mobileNav": {
+        "x": 8,
+        "y": 954,
+        "width": 752,
+        "height": 62,
+        "top": 954,
+        "right": 760,
+        "bottom": 1016
+      },
+      "productImage": {
+        "productId": "web-1qqez5e",
+        "url": "./assets/product-images/1a1kh0w.avif",
+        "loaded": true,
+        "fallback": false,
+        "requestedSrc": "http://127.0.0.1:4173/assets/product-images/1a1kh0w.avif",
+        "naturalWidth": 1562,
+        "visual": {
+          "x": 182,
+          "y": 332,
+          "width": 404,
+          "height": 538,
+          "top": 332,
+          "right": 586,
+          "bottom": 870
+        },
+        "info": {
+          "x": 182,
+          "y": 870,
+          "width": 404,
+          "height": 196,
+          "top": 870,
+          "right": 586,
+          "bottom": 1066
+        }
+      },
+      "cardStyles": {
+        "bodyApp": false,
+        "appPage": false,
+        "wrapperDisplay": "flex",
+        "wrapperRows": "none",
+        "cardHeight": "774.688px",
+        "cardPosition": "relative",
+        "visualPosition": "relative",
+        "visualMinHeight": "0px",
+        "infoPosition": "static",
+        "actionsPosition": "static"
+      },
+      "imageDebug": {
+        "catalogCount": 251,
+        "requestedId": "web-1qqez5e",
+        "matchFound": true,
+        "matchedId": "web-1qqez5e",
+        "matchedImage": "./assets/product-images/1a1kh0w.avif",
+        "itemImage": "./assets/product-images/1a1kh0w.avif"
+      },
+      "cardSectionsOverlap": false,
+      "cardOverlapsNav": false,
+      "actionSizes": [
+        {
+          "label": "Annuler la dernière action",
+          "width": 51,
+          "height": 51
+        },
+        {
+          "label": "Passer",
+          "width": 74,
+          "height": 74
+        },
+        {
+          "label": "Ajouter à ma liste",
+          "width": 51,
+          "height": 51
+        },
+        {
+          "label": "J’aime",
+          "width": 74,
+          "height": 74
+        },
+        {
+          "label": "Partager cet article",
+          "width": 51,
+          "height": 51
+        }
+      ],
+      "viewportSize": {
+        "width": 768,
+        "height": 1024
+      },
+      "view": "training",
+      "screenshot": "artifacts/visual-qa/tablet-768-training.png",
+      "issues": []
+    },
+    {
+      "viewport": "tablet-768",
+      "document": {
+        "width": 768,
+        "height": 17741
+      },
+      "horizontalOverflow": false,
+      "main": {
+        "x": 24,
+        "y": 64,
+        "width": 720,
+        "height": 17540,
+        "top": 64,
+        "right": 744,
+        "bottom": 17604
+      },
+      "card": null,
+      "actions": null,
+      "mobileNav": {
+        "x": 8,
+        "y": 954,
+        "width": 752,
+        "height": 62,
+        "top": 954,
+        "right": 760,
+        "bottom": 1016
+      },
+      "productImage": null,
+      "cardStyles": null,
+      "imageDebug": null,
+      "cardSectionsOverlap": false,
+      "cardOverlapsNav": false,
+      "actionSizes": [],
+      "viewportSize": {
+        "width": 768,
+        "height": 1024
+      },
+      "view": "outfits",
+      "screenshot": "artifacts/visual-qa/tablet-768-outfits.png",
+      "issues": []
+    },
+    {
+      "viewport": "tablet-768",
+      "document": {
+        "width": 768,
+        "height": 1645
+      },
+      "horizontalOverflow": false,
+      "main": {
+        "x": 24,
+        "y": 64,
+        "width": 720,
+        "height": 1444,
+        "top": 64,
+        "right": 744,
+        "bottom": 1508
+      },
+      "card": null,
+      "actions": null,
+      "mobileNav": {
+        "x": 8,
+        "y": 954,
+        "width": 752,
+        "height": 62,
+        "top": 954,
+        "right": 760,
+        "bottom": 1016
+      },
+      "productImage": null,
+      "cardStyles": null,
+      "imageDebug": null,
+      "cardSectionsOverlap": false,
+      "cardOverlapsNav": false,
+      "actionSizes": [],
+      "viewportSize": {
+        "width": 768,
+        "height": 1024
+      },
+      "view": "profile",
+      "screenshot": "artifacts/visual-qa/tablet-768-profile.png",
+      "issues": []
+    },
+    {
+      "viewport": "tablet-768",
+      "document": {
+        "width": 768,
+        "height": 5111
+      },
+      "horizontalOverflow": false,
+      "main": {
+        "x": 24,
+        "y": 64,
+        "width": 720,
+        "height": 4910,
+        "top": 64,
+        "right": 744,
+        "bottom": 4974
+      },
+      "card": null,
+      "actions": null,
+      "mobileNav": {
+        "x": 8,
+        "y": 954,
+        "width": 752,
+        "height": 62,
+        "top": 954,
+        "right": 760,
+        "bottom": 1016
+      },
+      "productImage": null,
+      "cardStyles": null,
+      "imageDebug": null,
+      "cardSectionsOverlap": false,
+      "cardOverlapsNav": false,
+      "actionSizes": [],
+      "viewportSize": {
+        "width": 768,
+        "height": 1024
+      },
+      "view": "settings",
+      "screenshot": "artifacts/visual-qa/tablet-768-settings.png",
+      "issues": []
+    },
+    {
+      "viewport": "phone-390",
+      "document": {
+        "width": 390,
+        "height": 844
+      },
+      "horizontalOverflow": false,
+      "main": {
+        "x": 0,
+        "y": 56,
+        "width": 390,
+        "height": 788,
+        "top": 56,
+        "right": 390,
+        "bottom": 844
+      },
+      "card": {
+        "x": 6,
+        "y": 106,
+        "width": 378,
+        "height": 550,
+        "top": 106,
+        "right": 384,
+        "bottom": 656
+      },
+      "actions": {
+        "x": 6,
+        "y": 668,
+        "width": 378,
+        "height": 72,
+        "top": 668,
+        "right": 384,
+        "bottom": 739
+      },
+      "mobileNav": {
+        "x": 6,
+        "y": 776,
+        "width": 378,
+        "height": 60,
+        "top": 776,
+        "right": 384,
+        "bottom": 836
+      },
+      "productImage": {
+        "productId": "web-1dkokqh",
+        "url": "./assets/product-images/1r0j2t5.avif",
+        "loaded": true,
+        "fallback": false,
+        "requestedSrc": "http://127.0.0.1:4173/assets/product-images/1r0j2t5.avif",
+        "naturalWidth": 1562,
+        "visual": {
+          "x": 24,
+          "y": 125,
+          "width": 343,
+          "height": 320,
+          "top": 125,
+          "right": 366,
+          "bottom": 445
+        },
+        "info": {
+          "x": 24,
+          "y": 445,
+          "width": 343,
+          "height": 190,
+          "top": 445,
+          "right": 366,
+          "bottom": 636
+        }
+      },
+      "cardStyles": {
+        "bodyApp": true,
+        "appPage": true,
+        "wrapperDisplay": "flex",
+        "wrapperRows": "none",
+        "cardHeight": "549.531px",
+        "cardPosition": "relative",
+        "visualPosition": "relative",
+        "visualMinHeight": "90.72px",
+        "infoPosition": "static",
+        "actionsPosition": "static"
+      },
+      "imageDebug": {
+        "catalogCount": 251,
+        "requestedId": "web-1dkokqh",
+        "matchFound": true,
+        "matchedId": "web-1dkokqh",
+        "matchedImage": "./assets/product-images/1r0j2t5.avif",
+        "itemImage": "./assets/product-images/1r0j2t5.avif"
+      },
+      "cardSectionsOverlap": false,
+      "cardOverlapsNav": false,
+      "actionSizes": [
+        {
+          "label": "Annuler la dernière action",
+          "width": 50,
+          "height": 50
+        },
+        {
+          "label": "Passer",
+          "width": 72,
+          "height": 72
+        },
+        {
+          "label": "Ajouter à ma liste",
+          "width": 50,
+          "height": 50
+        },
+        {
+          "label": "J’aime",
+          "width": 72,
+          "height": 72
+        },
+        {
+          "label": "Partager cet article",
+          "width": 50,
+          "height": 50
+        }
+      ],
+      "viewportSize": {
+        "width": 390,
+        "height": 844
+      },
+      "view": "pour-toi",
+      "screenshot": "artifacts/visual-qa/phone-390-pour-toi.png",
+      "issues": []
+    },
+    {
+      "viewport": "phone-390",
+      "document": {
+        "width": 390,
+        "height": 1016
+      },
+      "horizontalOverflow": false,
+      "main": {
+        "x": 14,
+        "y": 58,
+        "width": 362,
+        "height": 781,
+        "top": 58,
+        "right": 376,
+        "bottom": 839
+      },
+      "card": null,
+      "actions": null,
+      "mobileNav": {
+        "x": 6,
+        "y": 776,
+        "width": 378,
+        "height": 60,
+        "top": 776,
+        "right": 384,
+        "bottom": 836
+      },
+      "productImage": null,
+      "cardStyles": null,
+      "imageDebug": null,
+      "cardSectionsOverlap": false,
+      "cardOverlapsNav": false,
+      "actionSizes": [],
+      "viewportSize": {
+        "width": 390,
+        "height": 844
+      },
+      "view": "wardrobe",
+      "screenshot": "artifacts/visual-qa/phone-390-wardrobe.png",
+      "issues": []
+    },
+    {
+      "viewport": "phone-390",
+      "document": {
+        "width": 390,
+        "height": 45751
+      },
+      "horizontalOverflow": false,
+      "main": {
+        "x": 14,
+        "y": 58,
+        "width": 362,
+        "height": 45516,
+        "top": 58,
+        "right": 376,
+        "bottom": 45574
+      },
+      "card": {
+        "x": 14,
+        "y": 342,
+        "width": 362,
+        "height": 659,
+        "top": 342,
+        "right": 376,
+        "bottom": 1001
+      },
+      "actions": {
+        "x": 14,
+        "y": 1013,
+        "width": 362,
+        "height": 69,
+        "top": 1013,
+        "right": 376,
+        "bottom": 1082
+      },
+      "mobileNav": {
+        "x": 6,
+        "y": 776,
+        "width": 378,
+        "height": 60,
+        "top": 776,
+        "right": 384,
+        "bottom": 836
+      },
+      "productImage": {
+        "productId": "web-1qqez5e",
+        "url": "./assets/product-images/1a1kh0w.avif",
+        "loaded": true,
+        "fallback": false,
+        "requestedSrc": "http://127.0.0.1:4173/assets/product-images/1a1kh0w.avif",
+        "naturalWidth": 1562,
+        "visual": {
+          "x": 31,
+          "y": 360,
+          "width": 328,
+          "height": 438,
+          "top": 360,
+          "right": 359,
+          "bottom": 798
+        },
+        "info": {
+          "x": 31,
+          "y": 798,
+          "width": 328,
+          "height": 184,
+          "top": 798,
+          "right": 359,
+          "bottom": 982
+        }
+      },
+      "cardStyles": {
+        "bodyApp": false,
+        "appPage": false,
+        "wrapperDisplay": "flex",
+        "wrapperRows": "none",
+        "cardHeight": "659.188px",
+        "cardPosition": "relative",
+        "visualPosition": "relative",
+        "visualMinHeight": "0px",
+        "infoPosition": "static",
+        "actionsPosition": "static"
+      },
+      "imageDebug": {
+        "catalogCount": 251,
+        "requestedId": "web-1qqez5e",
+        "matchFound": true,
+        "matchedId": "web-1qqez5e",
+        "matchedImage": "./assets/product-images/1a1kh0w.avif",
+        "itemImage": "./assets/product-images/1a1kh0w.avif"
+      },
+      "cardSectionsOverlap": false,
+      "cardOverlapsNav": false,
+      "actionSizes": [
+        {
+          "label": "Annuler la dernière action",
+          "width": 48,
+          "height": 48
+        },
+        {
+          "label": "Passer",
+          "width": 69,
+          "height": 69
+        },
+        {
+          "label": "Ajouter à ma liste",
+          "width": 48,
+          "height": 48
+        },
+        {
+          "label": "J’aime",
+          "width": 69,
+          "height": 69
+        },
+        {
+          "label": "Partager cet article",
+          "width": 48,
+          "height": 48
+        }
+      ],
+      "viewportSize": {
+        "width": 390,
+        "height": 844
+      },
+      "view": "training",
+      "screenshot": "artifacts/visual-qa/phone-390-training.png",
+      "issues": []
+    },
+    {
+      "viewport": "phone-390",
+      "document": {
+        "width": 390,
+        "height": 29378
+      },
+      "horizontalOverflow": false,
+      "main": {
+        "x": 14,
+        "y": 58,
+        "width": 362,
+        "height": 29143,
+        "top": 58,
+        "right": 376,
+        "bottom": 29201
+      },
+      "card": null,
+      "actions": null,
+      "mobileNav": {
+        "x": 6,
+        "y": 776,
+        "width": 378,
+        "height": 60,
+        "top": 776,
+        "right": 384,
+        "bottom": 836
+      },
+      "productImage": null,
+      "cardStyles": null,
+      "imageDebug": null,
+      "cardSectionsOverlap": false,
+      "cardOverlapsNav": false,
+      "actionSizes": [],
+      "viewportSize": {
+        "width": 390,
+        "height": 844
+      },
+      "view": "outfits",
+      "screenshot": "artifacts/visual-qa/phone-390-outfits.png",
+      "issues": []
+    },
+    {
+      "viewport": "phone-390",
+      "document": {
+        "width": 390,
+        "height": 2487
+      },
+      "horizontalOverflow": false,
+      "main": {
+        "x": 14,
+        "y": 58,
+        "width": 362,
+        "height": 2252,
+        "top": 58,
+        "right": 376,
+        "bottom": 2310
+      },
+      "card": null,
+      "actions": null,
+      "mobileNav": {
+        "x": 6,
+        "y": 776,
+        "width": 378,
+        "height": 60,
+        "top": 776,
+        "right": 384,
+        "bottom": 836
+      },
+      "productImage": null,
+      "cardStyles": null,
+      "imageDebug": null,
+      "cardSectionsOverlap": false,
+      "cardOverlapsNav": false,
+      "actionSizes": [],
+      "viewportSize": {
+        "width": 390,
+        "height": 844
+      },
+      "view": "profile",
+      "screenshot": "artifacts/visual-qa/phone-390-profile.png",
+      "issues": []
+    },
+    {
+      "viewport": "phone-390",
+      "document": {
+        "width": 390,
+        "height": 6102
+      },
+      "horizontalOverflow": false,
+      "main": {
+        "x": 14,
+        "y": 58,
+        "width": 362,
+        "height": 5867,
+        "top": 58,
+        "right": 376,
+        "bottom": 5925
+      },
+      "card": null,
+      "actions": null,
+      "mobileNav": {
+        "x": 6,
+        "y": 776,
+        "width": 378,
+        "height": 60,
+        "top": 776,
+        "right": 384,
+        "bottom": 836
+      },
+      "productImage": null,
+      "cardStyles": null,
+      "imageDebug": null,
+      "cardSectionsOverlap": false,
+      "cardOverlapsNav": false,
+      "actionSizes": [],
+      "viewportSize": {
+        "width": 390,
+        "height": 844
+      },
+      "view": "settings",
+      "screenshot": "artifacts/visual-qa/phone-390-settings.png",
+      "issues": []
+    },
+    {
+      "viewport": "phone-320",
+      "document": {
+        "width": 320,
+        "height": 720
+      },
+      "horizontalOverflow": false,
+      "main": {
+        "x": 0,
+        "y": 56,
+        "width": 320,
+        "height": 664,
+        "top": 56,
+        "right": 320,
+        "bottom": 720
+      },
+      "card": {
+        "x": 6,
+        "y": 106,
+        "width": 308,
+        "height": 429,
+        "top": 106,
+        "right": 314,
+        "bottom": 535
+      },
+      "actions": {
+        "x": 6,
+        "y": 545,
+        "width": 308,
+        "height": 59,
+        "top": 545,
+        "right": 314,
+        "bottom": 604
+      },
+      "mobileNav": {
+        "x": 6,
+        "y": 652,
+        "width": 308,
+        "height": 60,
+        "top": 652,
+        "right": 314,
+        "bottom": 712
+      },
+      "productImage": {
+        "productId": "web-1dkokqh",
+        "url": "./assets/product-images/1r0j2t5.avif",
+        "loaded": true,
+        "fallback": false,
+        "requestedSrc": "http://127.0.0.1:4173/assets/product-images/1r0j2t5.avif",
+        "naturalWidth": 1562,
+        "visual": {
+          "x": 21,
+          "y": 122,
+          "width": 279,
+          "height": 233,
+          "top": 122,
+          "right": 299,
+          "bottom": 355
+        },
+        "info": {
+          "x": 21,
+          "y": 355,
+          "width": 279,
+          "height": 164,
+          "top": 355,
+          "right": 299,
+          "bottom": 519
+        }
+      },
+      "cardStyles": {
+        "bodyApp": true,
+        "appPage": true,
+        "wrapperDisplay": "flex",
+        "wrapperRows": "none",
+        "cardHeight": "429.25px",
+        "cardPosition": "relative",
+        "visualPosition": "relative",
+        "visualMinHeight": "73.92px",
+        "infoPosition": "static",
+        "actionsPosition": "static"
+      },
+      "imageDebug": {
+        "catalogCount": 251,
+        "requestedId": "web-1dkokqh",
+        "matchFound": true,
+        "matchedId": "web-1dkokqh",
+        "matchedImage": "./assets/product-images/1r0j2t5.avif",
+        "itemImage": "./assets/product-images/1r0j2t5.avif"
+      },
+      "cardSectionsOverlap": false,
+      "cardOverlapsNav": false,
+      "actionSizes": [
+        {
+          "label": "Annuler la dernière action",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "label": "Passer",
+          "width": 59,
+          "height": 59
+        },
+        {
+          "label": "Ajouter à ma liste",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "label": "J’aime",
+          "width": 59,
+          "height": 59
+        },
+        {
+          "label": "Partager cet article",
+          "width": 44,
+          "height": 44
+        }
+      ],
+      "viewportSize": {
+        "width": 320,
+        "height": 720
+      },
+      "view": "pour-toi",
+      "screenshot": "artifacts/visual-qa/phone-320-pour-toi.png",
+      "issues": []
+    },
+    {
+      "viewport": "phone-320",
+      "document": {
+        "width": 320,
+        "height": 1051
+      },
+      "horizontalOverflow": false,
+      "main": {
+        "x": 14,
+        "y": 58,
+        "width": 292,
+        "height": 816,
+        "top": 58,
+        "right": 306,
+        "bottom": 874
+      },
+      "card": null,
+      "actions": null,
+      "mobileNav": {
+        "x": 6,
+        "y": 652,
+        "width": 308,
+        "height": 60,
+        "top": 652,
+        "right": 314,
+        "bottom": 712
+      },
+      "productImage": null,
+      "cardStyles": null,
+      "imageDebug": null,
+      "cardSectionsOverlap": false,
+      "cardOverlapsNav": false,
+      "actionSizes": [],
+      "viewportSize": {
+        "width": 320,
+        "height": 720
+      },
+      "view": "wardrobe",
+      "screenshot": "artifacts/visual-qa/phone-320-wardrobe.png",
+      "issues": []
+    },
+    {
+      "viewport": "phone-320",
+      "document": {
+        "width": 320,
+        "height": 45616
+      },
+      "horizontalOverflow": false,
+      "main": {
+        "x": 14,
+        "y": 58,
+        "width": 292,
+        "height": 45381,
+        "top": 58,
+        "right": 306,
+        "bottom": 45439
+      },
+      "card": {
+        "x": 14,
+        "y": 353,
+        "width": 292,
+        "height": 542,
+        "top": 353,
+        "right": 306,
+        "bottom": 894
+      },
+      "actions": {
+        "x": 14,
+        "y": 904,
+        "width": 292,
+        "height": 56,
+        "top": 904,
+        "right": 306,
+        "bottom": 960
+      },
+      "mobileNav": {
+        "x": 6,
+        "y": 652,
+        "width": 308,
+        "height": 60,
+        "top": 652,
+        "right": 314,
+        "bottom": 712
+      },
+      "productImage": {
+        "productId": "web-1qqez5e",
+        "url": "./assets/product-images/1a1kh0w.avif",
+        "loaded": true,
+        "fallback": false,
+        "requestedSrc": "http://127.0.0.1:4173/assets/product-images/1a1kh0w.avif",
+        "naturalWidth": 1562,
+        "visual": {
+          "x": 28,
+          "y": 368,
+          "width": 264,
+          "height": 352,
+          "top": 368,
+          "right": 292,
+          "bottom": 720
+        },
+        "info": {
+          "x": 28,
+          "y": 720,
+          "width": 264,
+          "height": 159,
+          "top": 720,
+          "right": 292,
+          "bottom": 879
+        }
+      },
+      "cardStyles": {
+        "bodyApp": false,
+        "appPage": false,
+        "wrapperDisplay": "flex",
+        "wrapperRows": "none",
+        "cardHeight": "541.688px",
+        "cardPosition": "relative",
+        "visualPosition": "relative",
+        "visualMinHeight": "0px",
+        "infoPosition": "static",
+        "actionsPosition": "static"
+      },
+      "imageDebug": {
+        "catalogCount": 251,
+        "requestedId": "web-1qqez5e",
+        "matchFound": true,
+        "matchedId": "web-1qqez5e",
+        "matchedImage": "./assets/product-images/1a1kh0w.avif",
+        "itemImage": "./assets/product-images/1a1kh0w.avif"
+      },
+      "cardSectionsOverlap": false,
+      "cardOverlapsNav": false,
+      "actionSizes": [
+        {
+          "label": "Annuler la dernière action",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "label": "Passer",
+          "width": 56,
+          "height": 56
+        },
+        {
+          "label": "Ajouter à ma liste",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "label": "J’aime",
+          "width": 56,
+          "height": 56
+        },
+        {
+          "label": "Partager cet article",
+          "width": 44,
+          "height": 44
+        }
+      ],
+      "viewportSize": {
+        "width": 320,
+        "height": 720
+      },
+      "view": "training",
+      "screenshot": "artifacts/visual-qa/phone-320-training.png",
+      "issues": []
+    },
+    {
+      "viewport": "phone-320",
+      "document": {
+        "width": 320,
+        "height": 29734
+      },
+      "horizontalOverflow": false,
+      "main": {
+        "x": 14,
+        "y": 58,
+        "width": 292,
+        "height": 29499,
+        "top": 58,
+        "right": 306,
+        "bottom": 29557
+      },
+      "card": null,
+      "actions": null,
+      "mobileNav": {
+        "x": 6,
+        "y": 652,
+        "width": 308,
+        "height": 60,
+        "top": 652,
+        "right": 314,
+        "bottom": 712
+      },
+      "productImage": null,
+      "cardStyles": null,
+      "imageDebug": null,
+      "cardSectionsOverlap": false,
+      "cardOverlapsNav": false,
+      "actionSizes": [],
+      "viewportSize": {
+        "width": 320,
+        "height": 720
+      },
+      "view": "outfits",
+      "screenshot": "artifacts/visual-qa/phone-320-outfits.png",
+      "issues": []
+    },
+    {
+      "viewport": "phone-320",
+      "document": {
+        "width": 320,
+        "height": 2505
+      },
+      "horizontalOverflow": false,
+      "main": {
+        "x": 14,
+        "y": 58,
+        "width": 292,
+        "height": 2270,
+        "top": 58,
+        "right": 306,
+        "bottom": 2328
+      },
+      "card": null,
+      "actions": null,
+      "mobileNav": {
+        "x": 6,
+        "y": 652,
+        "width": 308,
+        "height": 60,
+        "top": 652,
+        "right": 314,
+        "bottom": 712
+      },
+      "productImage": null,
+      "cardStyles": null,
+      "imageDebug": null,
+      "cardSectionsOverlap": false,
+      "cardOverlapsNav": false,
+      "actionSizes": [],
+      "viewportSize": {
+        "width": 320,
+        "height": 720
+      },
+      "view": "profile",
+      "screenshot": "artifacts/visual-qa/phone-320-profile.png",
+      "issues": []
+    },
+    {
+      "viewport": "phone-320",
+      "document": {
+        "width": 320,
+        "height": 6954
+      },
+      "horizontalOverflow": false,
+      "main": {
+        "x": 14,
+        "y": 58,
+        "width": 292,
+        "height": 6719,
+        "top": 58,
+        "right": 306,
+        "bottom": 6777
+      },
+      "card": null,
+      "actions": null,
+      "mobileNav": {
+        "x": 6,
+        "y": 652,
+        "width": 308,
+        "height": 60,
+        "top": 652,
+        "right": 314,
+        "bottom": 712
+      },
+      "productImage": null,
+      "cardStyles": null,
+      "imageDebug": null,
+      "cardSectionsOverlap": false,
+      "cardOverlapsNav": false,
+      "actionSizes": [],
+      "viewportSize": {
+        "width": 320,
+        "height": 720
+      },
+      "view": "settings",
+      "screenshot": "artifacts/visual-qa/phone-320-settings.png",
+      "issues": []
+    },
+    {
+      "viewport": "phone-landscape",
+      "document": {
+        "width": 844,
+        "height": 390
+      },
+      "horizontalOverflow": false,
+      "main": {
+        "x": 0,
+        "y": 62,
+        "width": 844,
+        "height": 328,
+        "top": 62,
+        "right": 844,
+        "bottom": 390
+      },
+      "card": {
+        "x": 77,
+        "y": 109,
+        "width": 590,
+        "height": 162,
+        "top": 109,
+        "right": 667,
+        "bottom": 271
+      },
+      "actions": {
+        "x": 77,
+        "y": 276,
+        "width": 590,
+        "height": 56,
+        "top": 276,
+        "right": 667,
+        "bottom": 332
+      },
+      "mobileNav": {
+        "x": 8,
+        "y": 340,
+        "width": 828,
+        "height": 48,
+        "top": 340,
+        "right": 836,
+        "bottom": 387
+      },
+      "productImage": {
+        "productId": "web-1dkokqh",
+        "url": "./assets/product-images/1r0j2t5.avif",
+        "loaded": true,
+        "fallback": false,
+        "requestedSrc": "http://127.0.0.1:4173/assets/product-images/1r0j2t5.avif",
+        "naturalWidth": 1562,
+        "visual": {
+          "x": 86,
+          "y": 118,
+          "width": 281,
+          "height": 144,
+          "top": 118,
+          "right": 367,
+          "bottom": 262
+        },
+        "info": {
+          "x": 377,
+          "y": 118,
+          "width": 281,
+          "height": 144,
+          "top": 118,
+          "right": 658,
+          "bottom": 262
+        }
+      },
+      "cardStyles": {
+        "bodyApp": true,
+        "appPage": true,
+        "wrapperDisplay": "flex",
+        "wrapperRows": "none",
+        "cardHeight": "162px",
+        "cardPosition": "relative",
+        "visualPosition": "relative",
+        "visualMinHeight": "0px",
+        "infoPosition": "static",
+        "actionsPosition": "static"
+      },
+      "imageDebug": {
+        "catalogCount": 251,
+        "requestedId": "web-1dkokqh",
+        "matchFound": true,
+        "matchedId": "web-1dkokqh",
+        "matchedImage": "./assets/product-images/1r0j2t5.avif",
+        "itemImage": "./assets/product-images/1r0j2t5.avif"
+      },
+      "cardSectionsOverlap": false,
+      "cardOverlapsNav": false,
+      "actionSizes": [
+        {
+          "label": "Annuler la dernière action",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "label": "Passer",
+          "width": 56,
+          "height": 56
+        },
+        {
+          "label": "Ajouter à ma liste",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "label": "J’aime",
+          "width": 56,
+          "height": 56
+        },
+        {
+          "label": "Partager cet article",
+          "width": 44,
+          "height": 44
+        }
+      ],
+      "viewportSize": {
+        "width": 844,
+        "height": 390
+      },
+      "view": "pour-toi",
+      "screenshot": "artifacts/visual-qa/phone-landscape-pour-toi.png",
+      "issues": []
+    },
+    {
+      "viewport": "phone-landscape",
+      "document": {
+        "width": 844,
+        "height": 943
+      },
+      "horizontalOverflow": false,
+      "main": {
+        "x": 62,
+        "y": 64,
+        "width": 720,
+        "height": 742,
+        "top": 64,
+        "right": 782,
+        "bottom": 806
+      },
+      "card": null,
+      "actions": null,
+      "mobileNav": {
+        "x": 8,
+        "y": 340,
+        "width": 828,
+        "height": 48,
+        "top": 340,
+        "right": 836,
+        "bottom": 387
+      },
+      "productImage": null,
+      "cardStyles": null,
+      "imageDebug": null,
+      "cardSectionsOverlap": false,
+      "cardOverlapsNav": false,
+      "actionSizes": [],
+      "viewportSize": {
+        "width": 844,
+        "height": 390
+      },
+      "view": "wardrobe",
+      "screenshot": "artifacts/visual-qa/phone-landscape-wardrobe.png",
+      "issues": []
+    },
+    {
+      "viewport": "phone-landscape",
+      "document": {
+        "width": 844,
+        "height": 25350
+      },
+      "horizontalOverflow": false,
+      "main": {
+        "x": 62,
+        "y": 64,
+        "width": 720,
+        "height": 25149,
+        "top": 64,
+        "right": 782,
+        "bottom": 25213
+      },
+      "card": {
+        "x": 122,
+        "y": 316,
+        "width": 600,
+        "height": 156,
+        "top": 316,
+        "right": 722,
+        "bottom": 472
+      },
+      "actions": {
+        "x": 122,
+        "y": 477,
+        "width": 600,
+        "height": 56,
+        "top": 477,
+        "right": 722,
+        "bottom": 533
+      },
+      "mobileNav": {
+        "x": 8,
+        "y": 340,
+        "width": 828,
+        "height": 48,
+        "top": 340,
+        "right": 836,
+        "bottom": 387
+      },
+      "productImage": {
+        "productId": "web-1qqez5e",
+        "url": "./assets/product-images/1a1kh0w.avif",
+        "loaded": true,
+        "fallback": false,
+        "requestedSrc": "http://127.0.0.1:4173/assets/product-images/1a1kh0w.avif",
+        "naturalWidth": 1562,
+        "visual": {
+          "x": 131,
+          "y": 325,
+          "width": 286,
+          "height": 138,
+          "top": 325,
+          "right": 417,
+          "bottom": 463
+        },
+        "info": {
+          "x": 427,
+          "y": 325,
+          "width": 286,
+          "height": 138,
+          "top": 325,
+          "right": 713,
+          "bottom": 463
+        }
+      },
+      "cardStyles": {
+        "bodyApp": false,
+        "appPage": false,
+        "wrapperDisplay": "flex",
+        "wrapperRows": "none",
+        "cardHeight": "155.75px",
+        "cardPosition": "relative",
+        "visualPosition": "relative",
+        "visualMinHeight": "0px",
+        "infoPosition": "static",
+        "actionsPosition": "static"
+      },
+      "imageDebug": {
+        "catalogCount": 251,
+        "requestedId": "web-1qqez5e",
+        "matchFound": true,
+        "matchedId": "web-1qqez5e",
+        "matchedImage": "./assets/product-images/1a1kh0w.avif",
+        "itemImage": "./assets/product-images/1a1kh0w.avif"
+      },
+      "cardSectionsOverlap": false,
+      "cardOverlapsNav": false,
+      "actionSizes": [
+        {
+          "label": "Annuler la dernière action",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "label": "Passer",
+          "width": 56,
+          "height": 56
+        },
+        {
+          "label": "Ajouter à ma liste",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "label": "J’aime",
+          "width": 56,
+          "height": 56
+        },
+        {
+          "label": "Partager cet article",
+          "width": 44,
+          "height": 44
+        }
+      ],
+      "viewportSize": {
+        "width": 844,
+        "height": 390
+      },
+      "view": "training",
+      "screenshot": "artifacts/visual-qa/phone-landscape-training.png",
+      "issues": []
+    },
+    {
+      "viewport": "phone-landscape",
+      "document": {
+        "width": 844,
+        "height": 17745
+      },
+      "horizontalOverflow": false,
+      "main": {
+        "x": 62,
+        "y": 64,
+        "width": 720,
+        "height": 17544,
+        "top": 64,
+        "right": 782,
+        "bottom": 17608
+      },
+      "card": null,
+      "actions": null,
+      "mobileNav": {
+        "x": 8,
+        "y": 340,
+        "width": 828,
+        "height": 48,
+        "top": 340,
+        "right": 836,
+        "bottom": 387
+      },
+      "productImage": null,
+      "cardStyles": null,
+      "imageDebug": null,
+      "cardSectionsOverlap": false,
+      "cardOverlapsNav": false,
+      "actionSizes": [],
+      "viewportSize": {
+        "width": 844,
+        "height": 390
+      },
+      "view": "outfits",
+      "screenshot": "artifacts/visual-qa/phone-landscape-outfits.png",
+      "issues": []
+    },
+    {
+      "viewport": "phone-landscape",
+      "document": {
+        "width": 844,
+        "height": 1649
+      },
+      "horizontalOverflow": false,
+      "main": {
+        "x": 62,
+        "y": 64,
+        "width": 720,
+        "height": 1448,
+        "top": 64,
+        "right": 782,
+        "bottom": 1512
+      },
+      "card": null,
+      "actions": null,
+      "mobileNav": {
+        "x": 8,
+        "y": 340,
+        "width": 828,
+        "height": 48,
+        "top": 340,
+        "right": 836,
+        "bottom": 387
+      },
+      "productImage": null,
+      "cardStyles": null,
+      "imageDebug": null,
+      "cardSectionsOverlap": false,
+      "cardOverlapsNav": false,
+      "actionSizes": [],
+      "viewportSize": {
+        "width": 844,
+        "height": 390
+      },
+      "view": "profile",
+      "screenshot": "artifacts/visual-qa/phone-landscape-profile.png",
+      "issues": []
+    },
+    {
+      "viewport": "phone-landscape",
+      "document": {
+        "width": 844,
+        "height": 5114
+      },
+      "horizontalOverflow": false,
+      "main": {
+        "x": 62,
+        "y": 64,
+        "width": 720,
+        "height": 4913,
+        "top": 64,
+        "right": 782,
+        "bottom": 4977
+      },
+      "card": null,
+      "actions": null,
+      "mobileNav": {
+        "x": 8,
+        "y": 340,
+        "width": 828,
+        "height": 48,
+        "top": 340,
+        "right": 836,
+        "bottom": 387
+      },
+      "productImage": null,
+      "cardStyles": null,
+      "imageDebug": null,
+      "cardSectionsOverlap": false,
+      "cardOverlapsNav": false,
+      "actionSizes": [],
+      "viewportSize": {
+        "width": 844,
+        "height": 390
+      },
+      "view": "settings",
+      "screenshot": "artifacts/visual-qa/phone-landscape-settings.png",
+      "issues": []
+    }
+  ]
+}
