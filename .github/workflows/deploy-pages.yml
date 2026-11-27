@@ -51,7 +51,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A -- board.pdf board-print-a3.pdf DRESSOPP-Board-A3.pdf DRESSOPP-Board-Imprimeur-SRA3.pdf
+          git add -A -- DRESSOPP-Board-A3.pdf DRESSOPP-Board-Imprimeur-SRA3.pdf
           if git diff --cached --quiet; then
             echo "The generated print files are already up to date."
           else
