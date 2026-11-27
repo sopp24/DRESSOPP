@@ -4340,8 +4340,8 @@ body.showcase-embed--export .outfit-piece span { font-size: 12px !important; }
   body.showcase-embed--export .discovery-page--app { gap: 11px; }
   body.showcase-embed--export .discovery-page--app .deck-card-wrap { width: min(100%, 370px); }
   body.showcase-embed--export .discovery-page--app .deck-card-wrap .product-visual {
-    max-height: 34dvh;
-    min-height: 150px;
+    max-height: 24dvh;
+    min-height: 128px;
   }
   body.showcase-embed--export .discovery-page--app .deck-card-wrap .product-info {
     gap: 10px;
