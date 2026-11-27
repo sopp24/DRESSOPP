@@ -8,6 +8,7 @@ const outfits = readFileSync(new URL("../modules/outfits.js", import.meta.url), 
 const visionWorker = readFileSync(new URL("../workers/dressopp-agent/src/index.js", import.meta.url), "utf8");
 const pinterestSync = readFileSync(new URL("../scripts/sync-pinterest.mjs", import.meta.url), "utf8");
 const css = readFileSync(new URL("../styles.css", import.meta.url), "utf8");
+const board = readFileSync(new URL("../board.html", import.meta.url), "utf8");
 const index = readFileSync(new URL("../index.html", import.meta.url), "utf8");
 const sw = readFileSync(new URL("../sw.js", import.meta.url), "utf8");
 const visualQA = readFileSync(new URL("../scripts/visual-qa.mjs", import.meta.url), "utf8");
@@ -331,13 +332,18 @@ test("les vues de démonstration du board n'écrivent jamais dans le stockage pe
   assert.ok(app.includes("if (!showcaseView && state.settings.aiAgentConsent && remoteConfigured)"));
   assert.ok(app.includes('communityConfig = { enabled:false, apiKey:"", projectId:"" };'));
   assert.ok(app.includes('aiAgentConfig = { enabled:false, endpoint:"" };'));
-  assert.ok(app.includes('if (showcaseView) {\n    showToast("Mode démo : les données réelles de cet appareil ne peuvent pas être supprimées ici.", false);'));
+
 });
 
-test("les vues embarquées signalent visiblement leur mode démo", function() {
-  assert.ok(app.includes('demoBadge.className = "showcase-demo-badge"'));
-  assert.ok(app.includes("10 ARTICLES FIXES"));
-  assert.ok(css.includes("body.showcase-embed .showcase-demo-badge"));
+test("l'indication interactive apparaît une seule fois au-dessus du board web", function() {
+  assert.ok(!app.includes("showcase-demo-badge"));
+  assert.ok(!app.includes("10 ARTICLES FIXES"));
+  assert.ok(css.includes("body.showcase-embed #save-status"));
+  assert.ok(board.includes("<strong>Démo interactive</strong>"));
+  assert.equal((board.match(/Démo interactive/g) || []).length, 1);
+  assert.ok(board.includes(".board-toolbar,.interactive-demo-banner{display:none!important}"));
+  const boardMarkup = board.slice(board.indexOf('<main class="board"'), board.indexOf("</main>"));
+  assert.ok(!/mode démo|10 articles fixes|choix temporaires/i.test(boardMarkup));
 });
 
 
@@ -369,4 +375,28 @@ test("les aperçus du board ne chargent que les fichiers démo et ne paginent ja
   assert.ok(app.includes('state.settings.objective = "Tout";'));
   assert.ok(app.includes('state.settings.season = "Toute saison";'));
   assert.ok(app.includes('demoBadge.textContent = "MODE DÉMO · 10 ARTICLES FIXES"'));
+});
+
+
+test("le nombre de marques affiché correspond au catalogue réel actif, hors base démo", function() {
+  const directory = JSON.parse(readFileSync(new URL("../data/merchant-directory.json", import.meta.url), "utf8")).entries;
+  const normalizeBrand = value => String(value || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+  const directoryNames = new Set(directory.map(entry => normalizeBrand(entry.name)));
+  const pageFiles = Array.from({length:5}, (_, index) => "../data/catalog-pages/page-" + String(index + 1).padStart(4, "0") + ".json");
+  const products = pageFiles.flatMap(file => JSON.parse(readFileSync(new URL(file, import.meta.url), "utf8")).products || []);
+  const brands = new Set(products
+    .filter(product => product.catalogStatus !== "stale" && product.availabilityStatus !== "out_of_stock")
+    .map(product => normalizeBrand(product.brand))
+    .filter(brand => brand && directoryNames.has(brand)));
+  assert.equal(brands.size, 24);
+  assert.ok(board.includes("<strong>24</strong>"));
+  assert.ok(board.includes("MARQUES<br>REPRÉSENTÉES"));
+});
+
+test("le board est allégé et ne présente plus de statistiques en pied de page", function() {
+  const boardMarkup = board.slice(board.indexOf('<main class="board"'), board.indexOf("</main>"));
+  assert.ok(!boardMarkup.includes('class="head-facts"'));
+  assert.ok(!boardMarkup.includes('class="board-foot"'));
+  assert.ok(!boardMarkup.includes('class="foot-stats"'));
+  assert.equal((boardMarkup.match(/class="proof-card"/g) || []).length, 3);
 });
