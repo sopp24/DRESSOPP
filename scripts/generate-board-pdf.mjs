@@ -119,6 +119,22 @@ async function verifyPrintGeometry(page) {
   console.log("Print preflight OK: A3 trim 420x297 mm, 3 mm bleed on all sides, SRA3 450x320 mm.");
 }
 
+async function verifyFeaturedProducts(page) {
+  const frames = await page.locator("iframe").all();
+  if (frames.length < 2) throw new Error("Les aperçus desktop et mobile sont absents.");
+  const desktopProductId = await frames[0].evaluate(frame => {
+    const card = frame.contentDocument && frame.contentDocument.querySelector("#active-product-card");
+    return card ? card.getAttribute("data-product-id") : "";
+  });
+  const trainingProductId = await frames[1].evaluate(frame => {
+    const card = frame.contentDocument && frame.contentDocument.querySelector("#active-product-card");
+    return card ? card.getAttribute("data-product-id") : "";
+  });
+  if (desktopProductId !== "web-1utdu9o") throw new Error("Le premier écran doit présenter le hoodie : " + desktopProductId);
+  if (trainingProductId !== "web-1uijpt2") throw new Error("L'entraînement doit présenter les sneakers : " + trainingProductId);
+  console.log("Featured screens verified: hoodie on desktop, sneakers in training.");
+}
+
 async function writePdf(page, output, expectedWidth, expectedHeight) {
   await page.emulateMedia({ media: "print" });
   await page.pdf({
@@ -142,10 +158,12 @@ try {
   const page = await browser.newPage({ viewport: { width: 1920, height: 1358 }, deviceScaleFactor: 1 });
 
   await loadBoard(page, "http://127.0.0.1:4173/board.html");
+  await verifyFeaturedProducts(page);
   await writePdf(page, path.join(root, "board.pdf"), 420, 297);
 
   // Second PDF: A3 trim centred on SRA3, with 3 mm bleed on all sides and crop marks outside the trim.
   await loadBoard(page, "http://127.0.0.1:4173/board.html?cropMarks=1");
+  await verifyFeaturedProducts(page);
   if (!(await page.locator(".crop-sheet").count())) throw new Error("Les traits de coupe sont absents.");
   if (!(await page.locator(".bleed-underlay").count())) throw new Error("Le fond perdu est absent.");
   await verifyPrintGeometry(page);

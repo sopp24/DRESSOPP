@@ -400,3 +400,25 @@ test("le board est allégé et ne présente plus de statistiques en pied de page
   assert.ok(!boardMarkup.includes('class="foot-stats"'));
   assert.equal((boardMarkup.match(/class="proof-card"/g) || []).length, 3);
 });
+
+
+test("le board ouvre sur un sweat à capuche et l'entraînement sur des sneakers", function() {
+  const demoCatalog = JSON.parse(readFileSync(new URL("../data/demo-catalog.json", import.meta.url), "utf8"));
+  assert.ok(demoCatalog.products.some(product => product.id === "web-1utdu9o" && /hoodie/i.test(product.name)));
+  assert.ok(demoCatalog.products.some(product => product.id === "web-1uijpt2" && /sneaker/i.test(product.name)));
+  assert.ok(board.includes("demoProductId=web-1utdu9o"));
+  assert.ok(board.includes("demoProductId=web-1uijpt2"));
+  assert.ok(app.includes('get("demoProductId")'));
+  assert.ok(app.includes("!state.interactions.lastAction"));
+  assert.ok(app.includes("featuredIndex = products.findIndex"));
+});
+
+test("le board conserve le contexte et l’idée à gauche et les trois écrans à droite", function() {
+  const markup = board.slice(board.indexOf('<main class="board"'), board.indexOf("</main>"));
+  assert.ok(markup.includes("<h2>Contexte</h2>"));
+  assert.ok(markup.includes("<h2>Idée</h2>"));
+  assert.equal((markup.match(/<iframe /g) || []).length, 3);
+  assert.ok(markup.includes('class="copy-col"'));
+  assert.ok(markup.includes('class="screen-area"'));
+  assert.ok(markup.includes('class="phone-area"'));
+});

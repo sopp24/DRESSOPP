@@ -29,6 +29,7 @@ let state = null;
 let currentView = "discover";
 const showcaseRequestedView = new URLSearchParams(window.location.search).get("showcase");
 const showcaseView = ["discover", "training", "wardrobe", "outfits"].includes(showcaseRequestedView) ? showcaseRequestedView : null;
+const showcaseFeaturedProductId = showcaseView ? new URLSearchParams(window.location.search).get("demoProductId") : null;
 if (showcaseView) {
   currentView = showcaseView;
   document.body.classList.add("showcase-embed");
@@ -771,9 +772,19 @@ function renderGridCards(products, options) {
 }
 function renderDiscover(training) {
   const locallyRanked = rankProducts(state.products, state, { training: training, communitySignals: communitySignals });
-  const products = aiAgentState.status === "ready"
+  let products = aiAgentState.status === "ready"
     ? orderProductsByAgent(locallyRanked, aiAgentState.recommendations)
     : locallyRanked;
+  // Le produit d’ouverture est fixé uniquement pour la première carte de la démo.
+  // Dès la première action (oui/non/favori), le classement normal reprend la main.
+  if (showcaseView && showcaseFeaturedProductId && !state.interactions.lastAction) {
+    const featuredIndex = products.findIndex(function(product) {
+      return String(product.id) === String(showcaseFeaturedProductId);
+    });
+    if (featuredIndex > 0) {
+      products = [products[featuredIndex]].concat(products.slice(0, featuredIndex), products.slice(featuredIndex + 1));
+    }
+  }
   const yesCount = state.interactions.likes.length;
   const savedCount = state.likedProducts.length;
   const rejected = state.interactions.dislikes.length;

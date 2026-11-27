@@ -450,21 +450,26 @@
       "isBestSeller": false
     },
     {
-      "id": "web-1kyrb6l",
-      "name": "Sunlight Supplier Crewneck Sweatshirt Black",
-      "brand": "Paccbet",
+      "id": "web-1utdu9o",
+      "name": "Men's Carhartt Bob Marley Hoodie Black",
+      "brand": "Junya Watanabe MAN",
       "merchant": "Slam Jam",
-      "url": "https://slamjam.com/products/paccbet-clothing-men-sunlight-supplier-sweatshirt-knit-black-j256984",
-      "imageUrl": "./assets/product-images/12dgmlx.webp",
-      "imageFallbackUrl": "https://slamjam.com/cdn/shop/files/Paccbet-Clothing-Crewneck-MenSunlightSupplierSweatshirtKnitBlack-PACC12T0241-20230407144516_01.jpg?v=1739527459&amp;width=416",
-      "price": 86,
+      "url": "https://slamjam.com/products/junya-watanabe-man-clothing-bob-marley-hooded-sweatshirt-black-j310646",
+      "imageUrl": "./assets/product-images/1h8zyzp.webp",
+      "imageFallbackUrl": "https://slamjam.com/cdn/shop/files/JunyaWatanabeMAN-Clothing-Hoodies-BobMarleyHoodedSweatshirtBlack-WO-T901-100001-20250324191137_01.jpg?v=1742998210&amp;width=416",
+      "price": 337,
       "originalPrice": null,
       "objective": "Vêtements",
-      "category": "Sweatshirt",
+      "category": "Sweat à capuche",
       "gender": "men",
       "genderVerified": true,
       "audienceEvidence": "product",
-      "styleTags": [],
+      "styleTags": [
+        "Streetwear",
+        "Workwear",
+        "Vintage",
+        "Classique"
+      ],
       "seasonTags": [],
       "colors": [
         "Black"
@@ -472,17 +477,18 @@
       "materials": [],
       "cuts": [],
       "patterns": [],
-      "description": "PACCBET Sunlight Supplier Crewneck Sweatshirt BlackFounded by Gosha Rubchinskiy and his collaborator Tolya Titaev, Rassvet (PACCBET in Cyrillic) represents a new youth wave in skateboard street apparel, based on functionality and colorful graphics. The Sunlight Supplier crewneck represents the perfect balance to match it easily with all your outfits. 100% Cotton Relaxed Fit Ribbed Crewneck, Cuffs and Hem Graphic Printed at Chest and Back Style Code: PACC12T024 1",
+      "description": "Junya Watanabe MAN eYe Carhartt Bob Marley Hoodie BlackWatanabe’s inimitable style is characterized by a profound appreciation of the construction and quality of vintage mens workwear and military uniforms. This appreciation, in the masterful hands of Watanabe, leads to highly complex and unexpected new masculine hybrids, with layered use of fabrics, maniacal detailing and technologically advanced manufacturing methods. 100% Cotton French Terry Cotton Fabric Regular Fit Drawstring Hood Embroidered Logo at Front Kangaroo Pocket Knitted Graphic at Back Ribbed Cuffs and Hem Made in Japan Style Code: WO-T901-100 001",
       "sizes": [],
-      "availability": "Référence fixe de démonstration · disponibilité à vérifier sur la boutique.",
-      "availabilityStatus": "listed",
+      "availability": "En stock lors du dernier contrôle",
+      "availabilityStatus": "available",
       "source": "Slam Jam",
       "sourceType": "public-web",
       "catalogStatus": "active",
-      "verifiedAt": "2026-11-23T19:16:27.309Z",
-      "syncedAt": "2026-11-23T19:16:27.309Z",
-      "priceUpdatedAt": "2026-11-23T19:16:27.309Z",
-      "stockVerifiedAt": "2026-11-23T19:16:27.309Z",
+      "verifiedAt": "2026-11-23T19:16:33.828Z",
+      "syncedAt": "2026-11-23T19:16:33.828Z",
+      "priceUpdatedAt": "2026-11-23T19:16:33.828Z",
+      "stockVerifiedAt": "2026-11-23T19:16:33.828Z",
+      "expiresAt": "2026-11-30T19:16:33.828Z",
       "productRating": null,
       "productRatingCount": null,
       "productRatingSource": "",
@@ -492,5 +498,16 @@
       "popularityScore": null,
       "isBestSeller": false
     }
+  ],
+  "brands": [
+    "ARMOR-LUX",
+    "AUTRY",
+    "B.ANGEL",
+    "Carhartt WIP",
+    "COS",
+    "Jules",
+    "Junya Watanabe MAN",
+    "NIKE",
+    "Uniqlo"
   ]
 }
