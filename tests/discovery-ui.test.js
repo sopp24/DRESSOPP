@@ -317,3 +317,25 @@ test("Pinterest vision analyses each visible garment in its own outfit slot", fu
 test("the selected discovery layout is retained across reloads", function() {
   assert.ok(!app.includes('state.settings.discoveryView = "cards";'));
 });
+
+
+test("les vues de démonstration du board n'écrivent jamais dans le stockage personnel", function() {
+  const persistStart = app.indexOf("function persist()");
+  const persistEnd = app.indexOf("function imageMarkup", persistStart);
+  const persistBody = app.slice(persistStart, persistEnd);
+  assert.ok(app.includes('const stored = showcaseView ? null : await loadState();'));
+  assert.ok(persistBody.indexOf("if (showcaseView)") >= 0);
+  assert.ok(persistBody.indexOf("if (showcaseView)") < persistBody.indexOf("saveState(state)"));
+  assert.ok(persistBody.includes("persisted:false"));
+  assert.ok(app.includes("if (showcaseView || !state || !state.settings.communitySharing) return;"));
+  assert.ok(app.includes("if (!showcaseView && state.settings.aiAgentConsent && remoteConfigured)"));
+  assert.ok(app.includes('communityConfig = { enabled:false, apiKey:"", projectId:"" };'));
+  assert.ok(app.includes('aiAgentConfig = { enabled:false, endpoint:"" };'));
+  assert.ok(app.includes('if (showcaseView) {\n    showToast("Mode démo : les données réelles de cet appareil ne peuvent pas être supprimées ici.", false);'));
+});
+
+test("les vues embarquées signalent visiblement leur mode démo", function() {
+  assert.ok(app.includes('demoBadge.className = "showcase-demo-badge"'));
+  assert.ok(app.includes("CHOIX TEMPORAIRES"));
+  assert.ok(css.includes("body.showcase-embed .showcase-demo-badge"));
+});

@@ -32,7 +32,15 @@ const showcaseView = ["discover", "training", "wardrobe", "outfits"].includes(sh
 if (showcaseView) {
   currentView = showcaseView;
   document.body.classList.add("showcase-embed");
+  document.body.dataset.showcaseMode = "demo";
   if (window.matchMedia("(max-width: 850px)").matches) document.body.classList.add("showcase-embed--mobile");
+  const demoBadge = document.createElement("span");
+  demoBadge.className = "showcase-demo-badge";
+  demoBadge.textContent = "MODE DÉMO · CHOIX TEMPORAIRES";
+  demoBadge.setAttribute("role", "status");
+  demoBadge.setAttribute("aria-label", "Mode démonstration : les choix sont temporaires et ne sont jamais enregistrés.");
+  const showcaseTopbar = document.querySelector(".topbar");
+  if (showcaseTopbar) showcaseTopbar.appendChild(demoBadge);
 }
 let deckActionPending = false;
 let currentOutfitIdeas = [];
@@ -200,7 +208,7 @@ function communityActionCount() {
     (state && state.likedProducts ? state.likedProducts.length : 0);
 }
 async function refreshCommunity(showFeedback) {
-  if (!state || !state.settings.communitySharing) return;
+  if (showcaseView || !state || !state.settings.communitySharing) return;
   if (!communityConfig.enabled || !communityConfig.apiKey || !communityConfig.projectId) {
     communityStatus = "À configurer · voir le guide communautaire gratuit";
     if (showFeedback) showToast("Configure d'abord Firebase gratuit en suivant le guide communautaire.", false);
@@ -298,8 +306,8 @@ async function runAiAgent(showFeedback) {
     let result = localResult;
     let provider = "local";
     let remoteNotice = "";
-    const remoteConfigured = Boolean(aiAgentConfig.enabled && aiAgentConfig.endpoint);
-    if (state.settings.aiAgentConsent && remoteConfigured) {
+    const remoteConfigured = !showcaseView && Boolean(aiAgentConfig.enabled && aiAgentConfig.endpoint);
+    if (!showcaseView && state.settings.aiAgentConsent && remoteConfigured) {
       try {
         const controller = new AbortController();
         aiAgentController = controller;
@@ -386,6 +394,11 @@ function invalidateAiAgentResults() {
   };
 }
 function persist() {
+  // Une session board/demo travaille uniquement en mémoire : aucun accès à IndexedDB ou localStorage.
+  if (showcaseView) {
+    updateSaveStatus("Mode démo · rien n'est enregistré", "ok");
+    return Promise.resolve({ ok:true, demo:true, persisted:false });
+  }
   persistRevision += 1;
   if (persistPending) return persistPromise;
 
@@ -1230,7 +1243,7 @@ function render() {
       }
     });
   });
-  if (state && state.settings.aiAgentAutoRefresh && !aiAgentPending &&
+  if (!showcaseView && state && state.settings.aiAgentAutoRefresh && !aiAgentPending &&
       (currentView === "discover" || currentView === "training")) {
     const actionCount = aiAgentActionCount();
     if (actionCount - aiAgentLastActionCount >= 3) {
@@ -1671,6 +1684,10 @@ function resetProfile() {
   showToast("Profil algorithmique réinitialisé", false);
 }
 async function deleteAllData() {
+  if (showcaseView) {
+    showToast("Mode démo : les données réelles de cet appareil ne peuvent pas être supprimées ici.", false);
+    return;
+  }
   if (!window.confirm("Supprimer définitivement toutes les données DRESSOPP enregistrées sur cet appareil ? Exporte une sauvegarde avant de continuer.")) return;
   await persistPromise.catch(function() {});
   if (aiAgentController) aiAgentController.abort();
@@ -2109,14 +2126,17 @@ async function boot() {
     const response = await fetch("./data/catalog-meta.json", { cache: "no-store" });
     if (response.ok) catalogMeta = await response.json();
   } catch (error) { console.warn("État du catalogue marchand non chargé.", error); }
-  try {
-    const response = await fetch("./data/community-config.json", { cache: "no-store" });
-    if (response.ok) communityConfig = await response.json();
-  } catch (error) { console.warn("Configuration communautaire non chargée.", error); }
-  try {
-    const response = await fetch("./data/ai-agent-config.json", { cache: "no-store" });
-    if (response.ok) aiAgentConfig = await response.json();
-  } catch (error) { console.warn("Configuration du personal shopper IA non chargée.", error); }
+  // Les configurations personnelles/externes ne sont pas chargées dans la démonstration.
+  if (!showcaseView) {
+    try {
+      const response = await fetch("./data/community-config.json", { cache: "no-store" });
+      if (response.ok) communityConfig = await response.json();
+    } catch (error) { console.warn("Configuration communautaire non chargée.", error); }
+    try {
+      const response = await fetch("./data/ai-agent-config.json", { cache: "no-store" });
+      if (response.ok) aiAgentConfig = await response.json();
+    } catch (error) { console.warn("Configuration du personal shopper IA non chargée.", error); }
+  }
   // Les vues embarquées du board utilisent un état de démonstration éphémère.
   // Elles ne lisent ni n'écrivent jamais les favoris, tailles ou interactions personnels.
   const stored = showcaseView ? null : await loadState();
@@ -2217,11 +2237,16 @@ async function boot() {
     state.settings.objective = "Vêtements";
     state.settings.style = "Tous";
     state.settings.maxPrice = null;
+    state.settings.communitySharing = false;
+    state.settings.aiAgentConsent = false;
+    state.settings.aiAgentAutoRefresh = false;
+    communityConfig = { enabled:false, apiKey:"", projectId:"" };
+    aiAgentConfig = { enabled:false, endpoint:"" };
   }
   aiAgentLastActionCount = aiAgentActionCount();
   render();
-  updateSaveStatus("Stockage local prêt", "ok");
-  if (state.settings.communitySharing) refreshCommunity(false);
+  updateSaveStatus(showcaseView ? "Mode démo · rien n'est enregistré" : "Stockage local prêt", "ok");
+  if (!showcaseView && state.settings.communitySharing) refreshCommunity(false);
   if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
     navigator.serviceWorker.register("./sw.js").catch(function(error) { console.warn("Service worker non activé.", error); });
   }
