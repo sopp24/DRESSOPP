@@ -158,7 +158,10 @@ async function verifyShowcaseViews(page) {
   }, firstProductId, { timeout:8000 });
   await desktopFrame.goto(desktopFrame.url());
   await desktopFrame.waitForSelector("#active-product-card", { timeout:8000 });
-  console.log("Showcase screens verified: desktop Découvrir at " + views[0].viewportWidth + "px with a working swipe action, mobile Entraînement/Tenues at " + views[1].viewportWidth + "/" + views[2].viewportWidth + "px.");
+  await desktopFrame.locator("#active-product-card").press("Enter");
+  await desktopFrame.locator('[role="dialog"]').waitFor({ state:"visible", timeout:8000 });
+  await desktopFrame.locator('[role="dialog"] [data-action="close-modal"]').click();
+  console.log("Showcase screens verified: desktop Découvrir at " + views[0].viewportWidth + "px with working swipe and product details, mobile Entraînement/Tenues at " + views[1].viewportWidth + "/" + views[2].viewportWidth + "px.");
 }
 
 async function writePdf(page, output, expectedWidth, expectedHeight) {
