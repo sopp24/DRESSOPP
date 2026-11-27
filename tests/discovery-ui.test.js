@@ -472,6 +472,12 @@ test("les cadres du board adaptent les aperçus ordinateur et téléphone à leu
   assert.ok(!board.includes("--phone-scale"));
 });
 
+test("le workflow exécute le QA interactif du board sans remplacer les PDF fournis", function() {
+  assert.ok(workflow.includes("DRESSOPP_BOARD_QA_ONLY=1 node scripts/generate-board-pdf.mjs"));
+  assert.ok(boardPdfScript.includes('process.env.DRESSOPP_BOARD_QA_ONLY === "1"'));
+  assert.ok(boardPdfScript.includes("Interactive board QA passed; existing A3 PDFs were left untouched."));
+});
+
 test("la fenêtre ordinateur du board utilise un vrai viewport desktop ajusté à la fenêtre", function() {
   assert.ok(board.includes("width:1200px;height:1152px"));
   assert.ok(board.includes('container.classList.contains("browser-shell")'));
