@@ -463,3 +463,15 @@ test("le workflow préserve les PDF personnalisés, même s'ils sont déposés s
   assert.ok(workflow.includes('if [ -f "$file" ]; then cp "$file" "$backup_dir/$file"; fi'));
   assert.ok(workflow.includes('if [ -f "$backup_dir/$file" ]; then cp "$backup_dir/$file" "$file"; fi'));
 });
+
+
+test("les cadres du board adaptent les aperçus ordinateur et téléphone à leur largeur réelle", function() {
+  assert.ok(board.includes("transform:scale(var(--preview-scale,.48))"));
+  assert.ok(board.includes(".phone-screen{position:relative;"));
+  assert.ok(board.includes("transform:scale(var(--preview-scale,.58))"));
+  assert.ok(board.includes("container.clientWidth"));
+  assert.ok(board.includes("Math.min(1, availableWidth / viewportWidth)"));
+  assert.ok(board.includes("new ResizeObserver(fit)"));
+  assert.ok(!board.includes("--desktop-scale"));
+  assert.ok(!board.includes("--phone-scale"));
+});
