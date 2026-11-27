@@ -9,6 +9,7 @@ const visionWorker = readFileSync(new URL("../workers/dressopp-agent/src/index.j
 const pinterestSync = readFileSync(new URL("../scripts/sync-pinterest.mjs", import.meta.url), "utf8");
 const css = readFileSync(new URL("../styles.css", import.meta.url), "utf8");
 const board = readFileSync(new URL("../board.html", import.meta.url), "utf8");
+const workflow = readFileSync(new URL("../.github/workflows/deploy-pages.yml", import.meta.url), "utf8");
 const boardPdfScript = readFileSync(new URL("../scripts/generate-board-pdf.mjs", import.meta.url), "utf8");
 const index = readFileSync(new URL("../index.html", import.meta.url), "utf8");
 const sw = readFileSync(new URL("../sw.js", import.meta.url), "utf8");
@@ -447,4 +448,18 @@ test("les boutons PDF du header pointent vers les fichiers canoniques à la raci
   assert.ok(board.includes('href="./board-print-a3.pdf"'));
   assert.ok(board.includes('class="pdf-reader-button"'));
   assert.ok(board.includes('class="pdf-crop-button"'));
+});
+
+
+test("le board web conserve le format de référence A3 paysage", function() {
+  assert.ok(board.includes("@page{size:A3 landscape;margin:0}"));
+  assert.ok(board.includes("flex:0 0 80%;height:80%"));
+  assert.ok(board.includes("grid-template-columns:18.2fr 36.5fr 41.7fr"));
+});
+
+test("le workflow préserve les PDF personnalisés, même s'ils sont déposés séparément", function() {
+  assert.ok(workflow.includes('backup_dir="$(mktemp -d)"'));
+  assert.ok(workflow.includes("for file in board.pdf board-print-a3.pdf"));
+  assert.ok(workflow.includes('if [ -f "$file" ]; then cp "$file" "$backup_dir/$file"; fi'));
+  assert.ok(workflow.includes('if [ -f "$backup_dir/$file" ]; then cp "$backup_dir/$file" "$file"; fi'));
 });

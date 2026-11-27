@@ -33,13 +33,22 @@ jobs:
         run: |
           npm install --no-save --no-package-lock playwright
           npx playwright install --with-deps chromium
-      - name: Generate printable A3 landscape PDF when no supplied PDFs exist
+      - name: Generate missing printable A3 PDFs without overwriting supplied files
         run: |
-          if [ -f board.pdf ] && [ -f board-print-a3.pdf ]; then
-            echo "Both supplied PDF files found at the repository root; preserving them."
-          else
+          backup_dir="$(mktemp -d)"
+          for file in board.pdf board-print-a3.pdf; do
+            if [ -f "$file" ]; then cp "$file" "$backup_dir/$file"; fi
+          done
+
+          if [ ! -f board.pdf ] || [ ! -f board-print-a3.pdf ]; then
             node scripts/generate-board-pdf.mjs
+          else
+            echo "Both supplied PDF files are present; preserving them."
           fi
+
+          for file in board.pdf board-print-a3.pdf; do
+            if [ -f "$backup_dir/$file" ]; then cp "$backup_dir/$file" "$file"; fi
+          done
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
       - name: Upload site
