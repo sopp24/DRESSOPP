@@ -5,7 +5,6 @@ import { fileURLToPath } from "node:url";
 import { chromium } from "playwright";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const output = path.join(root, "board.pdf");
 const mime = {
   ".html": "text/html; charset=utf-8", ".js": "text/javascript; charset=utf-8",
   ".css": "text/css; charset=utf-8", ".json": "application/json; charset=utf-8",
@@ -17,7 +16,7 @@ const mime = {
 const server = createServer(async (req, res) => {
   try {
     const pathname = decodeURIComponent(new URL(req.url, "http://127.0.0.1").pathname);
-    const relative = pathname === "/" ? "index.html" : pathname.replace(/^\/+/, "");
+    const relative = pathname === "/" ? "index.html" : pathname.replace(/^\\/+/, "");
     const file = path.resolve(root, relative);
     if (file !== root && !file.startsWith(root + path.sep)) {
       res.writeHead(403).end("Forbidden");
@@ -43,23 +42,15 @@ await new Promise((resolve, reject) => {
   server.listen(4173, "127.0.0.1", resolve);
 });
 
-let browser;
-try {
-  browser = await chromium.launch({ headless: true, args: ["--no-sandbox", "--disable-dev-shm-usage"] });
-  const page = await browser.newPage({
-    viewport: { width: 1920, height: 1358 },
-    deviceScaleFactor: 1
-  });
+async function loadBoard(page, url) {
   page.setDefaultTimeout(90000);
-  const response = await page.goto("http://127.0.0.1:4173/board.html", { waitUntil: "domcontentloaded" });
+  const response = await page.goto(url, { waitUntil: "domcontentloaded" });
   if (!response || !response.ok()) throw new Error("Le board HTML n'a pas pu être chargé.");
-
-  // Attendre les vraies vues de l'application à l'intérieur des trois iframes.
   const frames = await page.locator("iframe").all();
   if (frames.length < 3) throw new Error("Les trois aperçus DRESSOPP sont absents du board.");
   for (const locator of frames) {
     await locator.evaluate(async (frame) => {
-      const waitForApp = () => new Promise((resolve, reject) => {
+      await new Promise((resolve, reject) => {
         const deadline = Date.now() + 90000;
         const poll = () => {
           try {
@@ -72,19 +63,15 @@ try {
         };
         poll();
       });
-      await waitForApp();
     });
   }
-
-  // Stabiliser les polices et les visuels visibles sans attendre les 60 Pins hors écran.
   await page.evaluate(async () => {
     const withDeadline = (promise, ms) => Promise.race([
       promise.catch(() => undefined),
       new Promise(resolve => setTimeout(resolve, ms))
     ]);
     await withDeadline(document.fonts.ready, 8000);
-    const frames = Array.from(document.querySelectorAll("iframe"));
-    for (const frame of frames) {
+    for (const frame of Array.from(document.querySelectorAll("iframe"))) {
       try {
         const win = frame.contentWindow;
         if (!win || !win.document) continue;
@@ -98,8 +85,9 @@ try {
       } catch {}
     }
   });
-  console.log("Visible board screens and product imagery are ready for A3 export.");
+}
 
+async function writePdf(page, output, expectedWidth, expectedHeight) {
   await page.emulateMedia({ media: "print" });
   await page.pdf({
     path: output,
@@ -109,12 +97,27 @@ try {
     margin: { top: "0mm", right: "0mm", bottom: "0mm", left: "0mm" },
     scale: 1
   });
-
   const pdf = await readFile(output);
   if (pdf.subarray(0, 5).toString() !== "%PDF-" || pdf.length < 50000) {
-    throw new Error("Le PDF généré semble incomplet.");
+    throw new Error("Le PDF généré semble incomplet : " + output);
   }
-  console.log("Board PDF generated:", output, pdf.length, "bytes");
+  console.log("Board PDF generated:", path.basename(output), pdf.length, "bytes", expectedWidth + "x" + expectedHeight + " mm");
+}
+
+let browser;
+try {
+  browser = await chromium.launch({ headless: true, args: ["--no-sandbox", "--disable-dev-shm-usage"] });
+  const page = await browser.newPage({ viewport: { width: 1920, height: 1358 }, deviceScaleFactor: 1 });
+
+  await loadBoard(page, "http://127.0.0.1:4173/board.html");
+  await writePdf(page, path.join(root, "board.pdf"), 420, 297);
+
+  // Second PDF: artwork remains exactly A3, centred on SRA3 with crop marks outside the trim.
+  await loadBoard(page, "http://127.0.0.1:4173/board.html?cropMarks=1");
+  if (!(await page.locator(".crop-sheet").count())) throw new Error("Les traits de coupe sont absents.");
+  await writePdf(page, path.join(root, "board-print-a3.pdf"), 450, 320);
+
+  console.log("Both A3 PDF variants are ready for GitHub Pages.");
 } finally {
   if (browser) await browser.close();
   await new Promise(resolve => server.close(resolve));
