@@ -493,6 +493,18 @@ test("la fenêtre ordinateur du board utilise un vrai viewport desktop ajusté �
   assert.ok(!css.includes("body.showcase-embed #modal-root { display: none !important; }"));
   assert.ok(boardPdfScript.includes("desktopFrame.locator(\"#active-product-card\").press(\"Enter\")"));
   assert.ok(boardPdfScript.includes("desktopFrame.locator('[role=\"dialog\"]').waitFor"));
+  assert.ok(app.includes('const desktopBoardShowcase = showcaseView === "discover" &&'));
+  assert.ok(app.includes("const appPresentation = !training && !desktopBoardShowcase;"));
+  assert.ok(css.includes("body.showcase-embed:not(.showcase-embed--mobile) .brand-logo"));
+  assert.ok(css.includes("width: 144px;"));
+  assert.ok(css.includes("body.showcase-embed:not(.showcase-embed--mobile) .mobile-nav"));
+  assert.ok(css.includes("aspect-ratio: 1.55 / 1;"));
+  assert.ok(css.includes("margin: 32px auto 0;"));
+  assert.ok(boardPdfScript.includes("desktopActionCount !== 5"));
+  assert.ok(boardPdfScript.includes("desktopLogo.width < 120"));
+  assert.ok(boardPdfScript.includes("desktopNav.bottom > desktop.viewportHeight"));
+  assert.ok(boardPdfScript.includes("desktopVisualRect.width / desktop.desktopVisualRect.height < 1.35"));
+  assert.ok(sw.includes('dressopp-static-v22'));
 });
 
 test("la démo affiche un écran de fin après les dix articles et peut être relancée", function() {
