@@ -336,15 +336,14 @@ test("les vues de démonstration du board n'écrivent jamais dans le stockage pe
 
 });
 
-test("l'indication interactive apparaît une seule fois au-dessus du board web", function() {
-  assert.ok(!app.includes("showcase-demo-badge"));
-  assert.ok(!app.includes("10 ARTICLES FIXES"));
+test("le libellé MODE DÉMO reste visible une seule fois au-dessus du board", function() {
   assert.ok(css.includes("body.showcase-embed #save-status"));
-  assert.ok(board.includes("<strong>Démo interactive</strong>"));
-  assert.equal((board.match(/Démo interactive/g) || []).length, 1);
-  assert.ok(board.includes(".board-toolbar,.interactive-demo-banner{display:none!important}"));
+  assert.ok(board.includes('<strong>MODE DÉMO</strong>'));
+  assert.equal((board.match(/MODE DÉMO/g) || []).length, 1);
+  assert.ok(board.includes("10 articles et 6 inspirations fixes"));
+  assert.ok(board.includes(".board-toolbar,.demo-mode-banner{display:none!important}"));
   const boardMarkup = board.slice(board.indexOf('<main class="board"'), board.indexOf("</main>"));
-  assert.ok(!/mode démo|10 articles fixes|choix temporaires/i.test(boardMarkup));
+  assert.ok(!/mode démo/i.test(boardMarkup));
 });
 
 
@@ -403,31 +402,47 @@ test("le board est allégé et ne présente plus de statistiques en pied de page
 });
 
 
-test("le board ouvre sur un sweat à capuche et l'entraînement sur des sneakers", function() {
-  const demoCatalog = JSON.parse(readFileSync(new URL("../data/demo-catalog.json", import.meta.url), "utf8"));
-  assert.ok(demoCatalog.products.some(product => product.id === "web-1utdu9o" && /hoodie/i.test(product.name)));
-  assert.ok(demoCatalog.products.some(product => product.id === "web-1uijpt2" && /sneaker/i.test(product.name)));
-  assert.ok(board.includes("demoProductId=web-1utdu9o"));
-  assert.ok(board.includes("demoProductId=web-1uijpt2"));
-  assert.ok(app.includes('get("demoProductId")'));
-  assert.ok(app.includes("!state.interactions.lastAction"));
-  assert.ok(app.includes("featuredIndex = products.findIndex"));
+test("les trois écrans du board ouvrent les vues de démonstration normales", function() {
+  assert.ok(board.includes('src="./?showcase=discover"'));
+  assert.ok(board.includes('src="./?showcase=training"'));
+  assert.ok(board.includes('src="./?showcase=outfits"'));
+  assert.ok(!board.includes("demoProductId="));
+  assert.ok(app.includes('const showcaseView = ["discover", "training", "wardrobe", "outfits"]'));
+  assert.ok(app.includes('fetch("./data/demo-catalog.json"'));
+  assert.ok(app.includes('fetch("./data/demo-pinterest-pins.json"'));
 });
 
-test("le board conserve le contexte et l’idée à gauche et les trois écrans à droite", function() {
+test("le board reprend la composition du document A3 fourni", function() {
   const markup = board.slice(board.indexOf('<main class="board"'), board.indexOf("</main>"));
-  assert.ok(markup.includes("<h2>Contexte</h2>"));
-  assert.ok(markup.includes("<h2>Idée</h2>"));
+  assert.ok(markup.includes("Ton style.<br>Pas une<br>tendance."));
+  assert.ok(markup.includes(">Contexte</span>"));
+  assert.ok(markup.includes(">L’idée</span>"));
+  assert.ok(markup.includes("Moins chercher.<br>Mieux choisir."));
+  assert.ok(markup.includes("Le swipe sur ordinateur"));
+  assert.ok(markup.includes("Affiner ses goûts"));
+  assert.ok(markup.includes("Composer un look"));
   assert.equal((markup.match(/<iframe /g) || []).length, 3);
   assert.ok(markup.includes('class="copy-col"'));
   assert.ok(markup.includes('class="screen-area"'));
   assert.ok(markup.includes('class="phone-area"'));
+  assert.ok(markup.includes("La sélection s’affine"));
+  assert.ok(markup.includes("Les inspirations prennent vie"));
+  assert.ok(markup.includes("Les tenues se composent"));
 });
 
 
-test("l’écran central du board embarque une vraie largeur desktop, les aperçus latéraux restent mobiles", function() {
-  assert.ok(board.includes(".browser-screen{display:block;flex:0 0 auto;width:950px;height:690px;transform:scale(.76)"));
-  assert.ok(board.includes(".browser-screen{width:100%;height:calc(100% - 30px);transform:none}"));
-  assert.ok(boardPdfScript.includes("desktop.viewportWidth < 851"));
-  assert.ok(boardPdfScript.includes("training.viewportWidth > 850"));
+test("la vue ordinateur et les vues mobiles gardent leurs largeurs propres", function() {
+  assert.ok(board.includes("width:950px;height:950px;transform:scale(var(--desktop-scale))"));
+  assert.ok(board.includes("width:390px;height:844px;transform:scale(var(--phone-scale))"));
+  assert.ok(board.includes("--desktop-scale:.505"));
+  assert.ok(board.includes("--phone-scale:.64"));
+  assert.ok(board.includes("@media (max-width:760px)"));
+});
+
+
+test("les boutons PDF du header pointent vers les fichiers canoniques à la racine", function() {
+  assert.ok(board.includes('href="./board.pdf"'));
+  assert.ok(board.includes('href="./board-print-a3.pdf"'));
+  assert.ok(board.includes('class="pdf-reader-button"'));
+  assert.ok(board.includes('class="pdf-crop-button"'));
 });

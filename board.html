@@ -13,105 +13,125 @@
 <style>@font-face{font-family:Poppins;src:url("./assets/fonts/poppins-latin-400-normal.woff2") format("woff2");font-weight:400;font-display:swap}
 @font-face{font-family:Poppins;src:url("./assets/fonts/poppins-latin-700-normal.woff2") format("woff2");font-weight:700;font-display:swap}
 @font-face{font-family:Poppins;src:url("./assets/fonts/poppins-latin-800-normal.woff2") format("woff2");font-weight:800;font-display:swap}
-:root{--red:#ff1717;--ink:#080808;--white:#f7f7f7;--muted:#b3b3b3}
+:root{--red:#f20d28;--white:#f7f5f5;--muted:#aaa}
 *{box-sizing:border-box}
-html,body{margin:0;min-height:100%;background:#080808;color:var(--white);font-family:Poppins,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+html,body{margin:0;min-height:100%;background:#050405;color:var(--white);font-family:Poppins,Arial,sans-serif;-webkit-font-smoothing:antialiased}
 body{padding:0}
-.board-toolbar{position:sticky;z-index:10;top:0;display:flex;justify-content:flex-end;gap:10px;padding:12px 20px;background:rgba(8,8,8,.94);border-bottom:1px solid #252525}
-.board-toolbar a,.board-toolbar button{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:38px;padding:0 15px;border:1px solid #3a3a3a;border-radius:999px;color:#fff;background:#171717;font:700 11px Poppins,sans-serif;text-decoration:none;cursor:pointer}
-.board-toolbar .pdf-reader-button{border-color:var(--red);background:var(--red)}
-.interactive-demo-banner{display:flex;align-items:center;justify-content:center;gap:12px;width:min(900px,calc(100% - 32px));margin:10px auto 0;padding:10px 16px;border:1px solid rgba(255,23,23,.32);border-radius:12px;background:rgba(255,23,23,.07);color:#d8d8d8;font-size:12px;line-height:1.35}
-.interactive-demo-banner strong{color:#fff;font-size:11px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;white-space:nowrap}
+.board-toolbar{position:sticky;z-index:20;top:0;display:flex;justify-content:flex-end;gap:10px;padding:10px 20px;background:rgba(7,5,6,.96);border-bottom:1px solid #292326;backdrop-filter:blur(14px)}
+.board-toolbar a,.board-toolbar button{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:38px;padding:0 15px;border:1px solid #3a3437;border-radius:999px;color:#fff;background:#171416;font:700 11px Poppins,sans-serif;text-decoration:none;cursor:pointer;transition:background .18s ease,border-color .18s ease,transform .18s ease}
+.board-toolbar a:hover{transform:translateY(-1px);border-color:#76656b;background:#211b1e}
+.board-toolbar .pdf-reader-button{border-color:var(--red);background:#ef1027}
+.board-toolbar .pdf-reader-button:hover{background:#ff2338;border-color:#ff5364}
+.demo-mode-banner{display:flex;align-items:center;justify-content:center;gap:12px;width:min(920px,calc(100% - 32px));margin:10px auto 12px;padding:9px 15px;border:1px solid rgba(242,13,40,.38);border-radius:999px;background:rgba(92,0,15,.23);color:#e7dfe1;font-size:11px;line-height:1.35}
+.demo-mode-banner strong{display:inline-flex;align-items:center;justify-content:center;min-height:22px;padding:2px 9px;border-radius:999px;background:var(--red);color:#fff;font-size:9px;font-weight:800;letter-spacing:.12em;white-space:nowrap}
 .crop-sheet,.bleed-underlay{display:none!important}
-.board{width:420mm;height:297mm;margin:12px auto 24px;padding:9mm;overflow:hidden;background:#090909;display:grid;grid-template-rows:29mm minmax(0,1fr) 39mm;gap:5mm;position:relative;isolation:isolate}
-.board:before{content:"";position:absolute;z-index:-1;inset:0;background:radial-gradient(ellipse at 53% 23%,rgba(130,0,0,.16),transparent 40%),linear-gradient(135deg,#090909 0%,#111 52%,#080808 100%)}
-.board-head{display:grid;grid-template-columns:42mm minmax(0,1fr) 32mm;align-items:center;gap:7mm;border-bottom:1px solid rgba(255,255,255,.18);padding-bottom:2mm}
-.board-logo{width:38mm;height:18mm;object-fit:contain;object-position:left center}
+.board{--desktop-scale:.505;--phone-scale:.64;position:relative;isolation:isolate;width:min(1480px,calc(100vw - 24px));aspect-ratio:420/297;margin:0 auto 28px;padding:2.5% 3.05% 4.5%;overflow:hidden;background:#070506;display:grid;grid-template-rows:10.8% minmax(0,1fr) 13%;color:var(--white)}
+.board:before{content:"";position:absolute;z-index:-1;inset:0;background:radial-gradient(ellipse at 52% -5%,rgba(86,0,14,.3),transparent 42%),linear-gradient(145deg,#080607 0%,#090607 55%,#050405 100%)}
+.board-head{display:grid;grid-template-columns:11% minmax(0,1fr) 8%;column-gap:1.5%;align-items:center;min-width:0;border-bottom:1px solid #35272b;padding-bottom:1.2%}
+.board-logo{display:block;width:min(100%,124px);height:auto;max-height:58px;object-fit:contain;object-position:left center}
 .head-copy{min-width:0}
-.head-title{margin:0;color:#fff;font-size:41pt;font-weight:800;letter-spacing:-.075em;line-height:.9;text-transform:none}
-.head-sub{margin:2mm 0 0;color:#ddd;font-size:10.5pt;font-weight:500;letter-spacing:.005em}
-.brand-count{display:flex;flex-direction:column;align-items:flex-start;justify-content:center;padding-left:4mm;border-left:1px solid #484848}
-.brand-count strong{color:#fff;font-size:31pt;line-height:.95;font-weight:800;letter-spacing:-.06em}
-.brand-count span{display:block;margin-top:1.5mm;color:#aaa;font-size:6.8pt;font-weight:800;line-height:1.3;letter-spacing:.12em}
-.board-main{display:grid;grid-template-columns:77mm minmax(0,1fr) 123mm;gap:5mm;min-height:0}
-.copy-col{display:flex;flex-direction:column;justify-content:flex-start;gap:7mm;min-height:0;padding:1mm 1mm 0 0}
-.copy-section h2{margin:0 0 2.5mm;color:#fff;font-size:21pt;font-weight:800;letter-spacing:-.045em;line-height:1;text-transform:uppercase}
-.copy-section p{margin:0 0 2.6mm;color:#e0e0e0;font-size:12.2pt;line-height:1.42;font-weight:400}
-.copy-section p:last-child{margin-bottom:0}
-.copy-section.idea{padding-top:4mm;border-top:1px solid #525252}
-.copy-punch{margin-top:auto;padding:3mm 0 0;border-top:1px solid rgba(255,255,255,.25)}
-.copy-punch strong{display:block;color:#fff;font-size:17pt;line-height:1.04;font-weight:800;letter-spacing:-.04em}
-.screen-area{display:flex;flex-direction:column;align-self:center;width:100%;height:151mm;min-width:0;min-height:0}
-.screen-label{display:flex;align-items:center;justify-content:space-between;margin:0 0 2.2mm;color:#f3f3f3;font-size:9pt;font-weight:800;letter-spacing:.1em;text-transform:uppercase}
-.screen-label span:last-child{color:#aaa;font-size:7.5pt;font-weight:600;letter-spacing:.045em}
-.browser-shell{flex:1;min-height:0;display:flex;flex-direction:column;overflow:hidden;border:1px solid #484848;border-radius:2.5mm;background:#080808;box-shadow:0 3mm 7mm rgba(0,0,0,.35)}
-.browser-bar{height:6mm;flex:0 0 6mm;display:flex;align-items:center;gap:1.3mm;padding:0 2.5mm;border-bottom:1px solid #333;background:#181818}
-.browser-dot{width:1.6mm;height:1.6mm;border-radius:50%;background:#555}
-.browser-dot:first-child{background:#e45a5a}.browser-dot:nth-child(2){background:#d2ad54}.browser-dot:nth-child(3){background:#5d9a70}
-.browser-url{margin-left:2mm;padding:.7mm 3.5mm;border-radius:999px;color:#999;background:#0c0c0c;font:5pt Arial,sans-serif;letter-spacing:.02em}
-.browser-screen{display:block;flex:0 0 auto;width:950px;height:690px;transform:scale(.76);transform-origin:top left;border:0;background:#080808}
-.phone-area{display:flex;flex-direction:column;align-self:center;width:100%;height:157mm;min-width:0;min-height:0}
-.phone-labels{display:grid;grid-template-columns:1fr 1fr;gap:4mm;margin-bottom:2.5mm}
-.phone-labels div{color:#f3f3f3;font-size:8pt;line-height:1.2;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
-.phone-labels small{display:block;margin-top:1mm;color:#aaa;font-size:6.8pt;font-weight:500;letter-spacing:.02em;text-transform:none}
-.phone-row{display:flex;justify-content:space-between;align-items:center;gap:4mm;flex:1;min-height:0}
-.phone-device{position:relative;width:55mm;height:140mm;flex:0 0 55mm;padding:2.1mm;border:1.2mm solid #343434;border-radius:7mm;background:#050505;box-shadow:0 3.5mm 8mm rgba(0,0,0,.45);overflow:hidden}
-.phone-device:before{content:"";position:absolute;z-index:3;top:1.7mm;left:50%;width:13mm;height:2.5mm;transform:translateX(-50%);border-radius:0 0 2mm 2mm;background:#050505}
-.phone-screen{width:100%;height:100%;overflow:hidden;border-radius:5mm;background:#080808}
-.phone-screen iframe{display:block;width:390px;height:844px;transform:scale(.47);transform-origin:top left;border:0;background:#080808}
-.proof-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5mm;min-height:0}
-.proof-card{position:relative;overflow:hidden;padding:3.2mm 4mm 2.5mm;border-top:1.2px solid #777;background:linear-gradient(140deg,rgba(255,255,255,.075),rgba(255,255,255,.02))}
-.proof-card h3{position:relative;margin:0 0 2mm;color:#fff;font-size:13pt;font-weight:800;letter-spacing:-.035em;line-height:1.05}
-.proof-card p{position:relative;max-width:97%;margin:0;color:#ddd;font-size:10.4pt;line-height:1.37}
-@media screen and (min-width:1551px) and (max-width:1700px){.board{transform:scale(.95);transform-origin:top center;margin:12px auto -14.85mm}}
-@media screen and (min-width:1401px) and (max-width:1550px){.board{transform:scale(.87);transform-origin:top center;margin:12px auto -38.61mm}}
-@media screen and (min-width:1201px) and (max-width:1400px){.board{transform:scale(.75);transform-origin:top center;margin:12px auto -74.25mm}}
-@media screen and (min-width:1050px) and (max-width:1200px){.board{transform:scale(.66);transform-origin:top center;margin:12px auto -100.98mm}}
-@media screen and (min-width:901px) and (max-width:1049px){.board{transform:scale(.56);transform-origin:top center;margin:12px auto -130.68mm}}
-@media screen and (min-width:761px) and (max-width:900px){.board{transform:scale(.47);transform-origin:top center;margin:12px auto -157.41mm}}
-@media screen and (max-width:760px){
- .board-toolbar{position:sticky;flex-wrap:wrap;justify-content:center;padding:10px;gap:7px}
- .board-toolbar a{font-size:10px;min-height:36px;padding:0 11px}
- .interactive-demo-banner{align-items:flex-start;flex-direction:column;gap:3px;width:calc(100% - 24px);margin-top:10px;padding:10px 12px;font-size:11px}
- .board{width:calc(100% - 20px);height:auto;min-height:0;aspect-ratio:auto;margin:12px auto 20px;padding:20px 16px;display:flex;flex-direction:column;gap:20px;transform:none}
- .board-head{grid-template-columns:62px 1fr 52px;gap:10px;padding-bottom:14px}
- .board-logo{width:60px;height:auto}
- .head-title{font-size:clamp(24px,7vw,39px)}
- .head-sub{font-size:10px;line-height:1.3}
+.head-title{margin:0;color:#fff;font-size:clamp(39px,4.55vw,68px);font-weight:800;letter-spacing:-.075em;line-height:.91;white-space:nowrap}
+.head-sub{margin:7px 0 0;color:#e0dadd;font-size:clamp(12px,1.2vw,17px);font-weight:400;letter-spacing:-.01em}
+.brand-count{display:flex;flex-direction:column;align-items:flex-start;justify-content:center;padding-left:13px;border-left:1px solid #46383d}
+.brand-count strong{color:#fff;font-size:clamp(35px,3.7vw,56px);line-height:.84;font-weight:800;letter-spacing:-.075em}
+.brand-count span{display:block;margin-top:9px;color:#d1c8cb;font-size:clamp(7px,.62vw,9px);font-weight:800;line-height:1.35;letter-spacing:.2em}
+.board-main{display:grid;grid-template-columns:18.2fr 36.5fr 41.7fr;column-gap:1.8%;min-width:0;min-height:0;padding:2.8% 0 5.3%}
+.copy-col{display:flex;flex-direction:column;min-width:0;min-height:0;padding:1px 0 0}
+.copy-title{margin:0 0 31px;color:#fff;font-size:clamp(29px,2.65vw,39px);font-weight:800;letter-spacing:-.055em;line-height:1.02}
+.copy-section{min-width:0}
+.copy-section-label{display:block;margin:0 0 7px;color:var(--red);font-size:11px;font-weight:800;letter-spacing:.2em;line-height:1.25;text-transform:uppercase}
+.copy-section p{margin:0;color:#ded8da;font-size:clamp(12px,1.08vw,16px);font-weight:400;line-height:1.43;letter-spacing:-.01em}
+.copy-section.idea{margin-top:43px}
+.copy-punch{margin-top:auto;padding-top:14px;border-top:1px solid #493e42}
+.copy-punch strong{display:block;color:#fff;font-size:clamp(20px,1.8vw,27px);font-weight:800;letter-spacing:-.045em;line-height:1.08}
+.screen-area{display:flex;flex-direction:column;min-width:0;min-height:0}
+.screen-label{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;min-height:34px;color:#fff}
+.screen-label-main strong,.phone-labels strong{display:block;color:#fff;font-size:11px;font-weight:800;letter-spacing:.17em;line-height:1.2}
+.screen-label-main small,.phone-labels small{display:block;margin-top:4px;color:#a69da1;font-size:11px;font-weight:400;line-height:1.2;letter-spacing:0}
+.screen-label-side{padding-top:2px;color:#aaa1a5;font-size:9px;font-weight:500;letter-spacing:.2em;white-space:nowrap}
+.browser-shell{position:relative;flex:0 0 84%;height:84%;min-height:0;margin-top:31px;overflow:hidden;border:1px solid #494044;border-radius:12px;background:#090708;box-shadow:0 16px 42px rgba(0,0,0,.38)}
+.browser-bar{position:relative;z-index:2;display:flex;align-items:center;gap:6px;height:28px;padding:0 12px;border-bottom:1px solid #393034;background:#1a1618}
+.browser-dot{width:7px;height:7px;border-radius:50%;background:#ef5b63}
+.browser-dot:nth-child(2){background:#f0c44d}.browser-dot:nth-child(3){background:#37c969}
+.browser-url{position:absolute;left:50%;transform:translateX(-50%);width:55%;padding:4px 12px;overflow:hidden;border-radius:999px;background:#090708;color:#a9a0a3;font:8px Arial,sans-serif;text-align:center;white-space:nowrap}
+.browser-screen{position:absolute;top:28px;left:0;display:block;width:950px;height:950px;transform:scale(var(--desktop-scale));transform-origin:top left;border:0;background:#080607}
+.phone-area{display:flex;flex-direction:column;min-width:0;min-height:0}
+.phone-labels{display:grid;grid-template-columns:1fr 1fr;gap:3.2%;min-height:34px}
+.phone-labels strong{font-size:11px}
+.phone-labels small{font-size:11px}
+.phone-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:3.2%;flex:1;min-height:0;align-items:center}
+.phone-device{position:relative;width:100%;height:92%;min-height:0;padding:6px;border:4px solid #373034;border-radius:42px;background:#050405;overflow:hidden;box-shadow:0 17px 38px rgba(0,0,0,.45)}
+.phone-device:before{content:"";position:absolute;z-index:4;top:6px;left:50%;width:92px;height:24px;transform:translateX(-50%);border-radius:0 0 15px 15px;background:#030303}
+.phone-screen{width:100%;height:100%;overflow:hidden;border-radius:32px;background:#080607}
+.phone-screen iframe{position:absolute;top:0;left:0;display:block;width:390px;height:844px;transform:scale(var(--phone-scale));transform-origin:top left;border:0;background:#080607}
+.proof-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1.6%;min-width:0;min-height:0;padding-top:1.8%}
+.proof-card{min-width:0;padding-top:17px;border-top:2px solid var(--red)}
+.proof-number{display:block;margin-bottom:7px;color:var(--red);font-size:11px;font-weight:800;letter-spacing:.16em}
+.proof-card h3{margin:0 0 9px;color:#fff;font-size:clamp(17px,1.68vw,25px);font-weight:800;letter-spacing:-.045em;line-height:1.05}
+.proof-card p{margin:0;color:#d2cbce;font-size:clamp(11px,1.08vw,16px);font-weight:400;line-height:1.42}
+@media (min-width:1300px){.board{--desktop-scale:.505;--phone-scale:.64}}
+@media (min-width:1150px) and (max-width:1299px){.board{--desktop-scale:.45;--phone-scale:.57}}
+@media (min-width:1000px) and (max-width:1149px){.board{--desktop-scale:.36;--phone-scale:.46}}
+@media (min-width:900px) and (max-width:999px){.board{--desktop-scale:.34;--phone-scale:.43}}
+@media (min-width:761px) and (max-width:899px){.board{--desktop-scale:.29;--phone-scale:.37}}
+@media (max-width:760px){
+ .board-toolbar{position:sticky;flex-wrap:wrap;justify-content:center;gap:7px;padding:9px 10px}
+ .board-toolbar a{min-height:35px;padding:0 11px;font-size:10px}
+ .demo-mode-banner{align-items:flex-start;flex-direction:column;gap:5px;width:calc(100% - 24px);margin:9px auto 12px;padding:10px 13px;border-radius:13px;font-size:11px}
+ .board{width:calc(100% - 18px);height:auto;min-height:0;aspect-ratio:auto;margin:0 auto 20px;padding:20px 16px 24px;display:flex;flex-direction:column;gap:27px;overflow:hidden}
+ .board-head{grid-template-columns:66px minmax(0,1fr) 48px;column-gap:10px;min-height:70px;padding-bottom:13px}
+ .board-logo{width:64px;max-height:none}
+ .head-title{font-size:clamp(24px,6.8vw,39px);letter-spacing:-.07em}
+ .head-sub{margin-top:5px;font-size:10px;line-height:1.3}
  .brand-count{padding-left:7px}
  .brand-count strong{font-size:23px}
- .brand-count span{font-size:5.3px}
- .board-main{display:flex;flex-direction:column;gap:20px}
- .copy-col{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:start}
- .copy-section h2{font-size:22px;margin-bottom:8px}
- .copy-section p{font-size:12px;line-height:1.45;margin-bottom:8px}
- .copy-section.idea{padding-top:0;border:0}
- .copy-punch{grid-column:1/-1;padding-top:10px;margin-top:0}
- .copy-punch strong{font-size:17px}
- .screen-area{height:auto;width:100%;min-height:370px}
- .screen-label{font-size:10px}
- .browser-shell{min-height:370px}
- .browser-bar{height:30px;flex-basis:30px}
- .browser-screen{width:100%;height:calc(100% - 30px);transform:none}
- .phone-area{height:auto;min-height:345px}
- .phone-row{justify-content:center;gap:14px}
- .phone-device{width:min(39vw,175px);height:min(92vw,390px);flex:0 0 auto;padding:6px;border-width:4px;border-radius:26px}
- .phone-screen{border-radius:19px}
- .phone-screen iframe{transform:scale(.46)}
- .proof-row{grid-template-columns:1fr;gap:12px}
- .proof-card{min-height:0;padding:13px 15px}
- .proof-card h3{font-size:16px}
- .proof-card p{font-size:12px}
+ .brand-count span{margin-top:5px;font-size:5.3px;letter-spacing:.12em}
+ .board-main{display:flex;flex-direction:column;gap:25px;padding:0}
+ .copy-col{display:flex;gap:0}
+ .copy-title{margin-bottom:25px;font-size:clamp(34px,9vw,42px)}
+ .copy-section-label{font-size:11px}
+ .copy-section p{font-size:14px;line-height:1.48}
+ .copy-section.idea{margin-top:27px}
+ .copy-punch{margin-top:25px;padding-top:12px}
+ .copy-punch strong{font-size:23px}
+ .screen-area{height:auto;min-height:0}
+ .screen-label{min-height:35px}
+ .screen-label-main strong,.phone-labels strong{font-size:10px}
+ .screen-label-main small,.phone-labels small{font-size:10px}
+ .browser-shell{flex:none;width:100%;height:390px;margin-top:8px}
+ .browser-screen{width:950px;height:950px;transform:scale(.36)}
+ .phone-area{height:auto;min-height:0}
+ .phone-labels{gap:10px;margin-bottom:8px}
+ .phone-row{gap:10px;align-items:start}
+ .phone-device{width:100%;height:auto;aspect-ratio:.49;padding:4px;border-width:3px;border-radius:28px}
+ .phone-device:before{top:4px;width:58px;height:15px}
+ .phone-screen{border-radius:22px}
+ .phone-screen iframe{transform:scale(.4)}
+ .proof-row{grid-template-columns:1fr;gap:15px;padding-top:0}
+ .proof-card{padding-top:12px}
+ .proof-number{font-size:10px;margin-bottom:5px}
+ .proof-card h3{font-size:18px;margin-bottom:6px}
+ .proof-card p{font-size:13px}
 }
-@page{size:A3 landscape;margin:0}
+@media (min-width:580px) and (max-width:760px){
+ .board{padding:24px 22px 28px}
+ .copy-title{font-size:44px}
+ .copy-section p{font-size:15px}
+ .browser-shell{height:680px}
+ .browser-screen{transform:scale(.68)}
+ .phone-device{max-width:235px}
+ .phone-screen iframe{transform:scale(.56)}
+ .proof-row{grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+ .proof-card h3{font-size:15px}
+ .proof-card p{font-size:11px}
+}
 @media print{
- html,body{width:420mm;height:297mm;margin:0!important;padding:0!important;background:#090909!important;print-color-adjust:exact;-webkit-print-color-adjust:exact}
- .board-toolbar,.interactive-demo-banner{display:none!important}
+ html,body{width:420mm;height:297mm;margin:0!important;padding:0!important;background:#070506!important;print-color-adjust:exact;-webkit-print-color-adjust:exact}
+ .board-toolbar,.demo-mode-banner{display:none!important}
  .crop-sheet,.bleed-underlay{display:none}
  .board{width:420mm;height:297mm;margin:0!important;transform:none!important;box-shadow:none!important;page-break-after:avoid;break-after:avoid}
  .board *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
  .browser-shell,.phone-device{box-shadow:none}
- a{color:inherit;text-decoration:none}
 }</style>
 </head>
 <body>
@@ -120,9 +140,9 @@ body{padding:0}
   <a class="pdf-reader-button" href="./board.pdf" target="_blank" rel="noopener noreferrer" aria-label="Ouvrir le PDF A3 dans le lecteur PDF">↗ Ouvrir le PDF A3</a>
   <a class="pdf-crop-button" href="./board-print-a3.pdf" target="_blank" rel="noopener noreferrer" aria-label="Ouvrir le PDF d’impression A3 avec 3 mm de fonds perdus et traits de coupe">✂ Imprimer en A3</a>
 </div>
-<div class="interactive-demo-banner" role="status">
-  <strong>Démo interactive</strong>
-  <span>Explore les écrans, essaie les actions et compose tes tenues directement ici.</span>
+<div class="demo-mode-banner" role="status" aria-label="Mode démo isolé">
+  <strong>MODE DÉMO</strong>
+  <span>10 articles et 6 inspirations fixes. Tes essais restent isolés : aucune donnée de ton dressing réel n’est modifiée.</span>
 </div>
 
 <svg class="crop-sheet" viewBox="0 0 450 320" width="450mm" height="320mm" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
@@ -131,53 +151,63 @@ body{padding:0}
   </g>
 </svg>
 <div class="bleed-underlay" aria-hidden="true"></div>
-<main class="board" aria-label="Présentation de DRESSOPP au format A3 paysage">
+<main class="board" aria-label="Présentation de DRESSOPP">
   <header class="board-head">
     <img class="board-logo" src="./assets/logo-horizontal.png" alt="DRESSOPP">
     <div class="head-copy">
       <h1 class="head-title">Mode diligente.</h1>
       <p class="head-sub">Un personal shopper visuel qui apprend tes goûts.</p>
     </div>
-    <div class="brand-count" aria-label="24 marques représentées dans le catalogue actif">
+    <div class="brand-count" aria-label="24 marques représentées">
       <strong>24</strong>
       <span>MARQUES<br>REPRÉSENTÉES</span>
     </div>
   </header>
   <section class="board-main">
     <aside class="copy-col">
+      <h2 class="copy-title">Ton style.<br>Pas une<br>tendance.</h2>
       <section class="copy-section">
-        <h2>Contexte</h2>
-        <p>Entre les catalogues interminables, les boutiques qui se multiplient et les inspirations sauvegardées partout, composer un vestiaire cohérent prend vite du temps. DRESSOPP rassemble ces signaux dans une même expérience, pensée pour la mode masculine.</p>
+        <span class="copy-section-label">Contexte</span>
+        <p>Sur les sites de mode, on fait défiler des centaines de pièces sans savoir lesquelles nous ressemblent. On perd du temps, et ce sont les tendances qui choisissent à notre place.</p>
       </section>
       <section class="copy-section idea">
-        <h2>Idée</h2>
-        <p>Nous allons transformer chaque Oui, Non et favori en indication utile. Les inspirations Pinterest donnent une direction ; les pièces réelles du catalogue permettent de passer de l’idée au vêtement. Plus tu découvres, plus la sélection s’affine.</p>
-        <p>Un personal shopper visuel qui apprend tes préférences, repère les pièces proches de tes références et compose des tenues à partir des produits disponibles. Le but : moins chercher au hasard, mieux choisir.</p>
+        <span class="copy-section-label">L’idée</span>
+        <p>DRESSOPP apprend de chaque oui, non et favori. Tes inspirations guident la sélection ; les pièces du catalogue donnent vie aux idées.</p>
       </section>
-      <div class="copy-punch"><strong>Ton style.<br>Pas une tendance.</strong></div>
+      <div class="copy-punch"><strong>Moins chercher.<br>Mieux choisir.</strong></div>
     </aside>
-    <section class="screen-area" aria-label="Écran principal ordinateur avec sweat à capuche">
-      <div class="screen-label"><span>Découvrir</span><span>Sweat à capuche</span></div>
+    <section class="screen-area" aria-label="Aperçu ordinateur de la fonction Découvrir">
+      <div class="screen-label">
+        <div class="screen-label-main"><strong>DÉCOUVRIR</strong><small>Le swipe sur ordinateur</small></div>
+        <span class="screen-label-side">ORDINATEUR</span>
+      </div>
       <div class="browser-shell">
-        <div class="browser-bar" aria-hidden="true"><i class="browser-dot"></i><i class="browser-dot"></i><i class="browser-dot"></i><span class="browser-url">sopp24.github.io / DRESSOPP</span></div>
-        <iframe class="browser-screen" title="Découvrir un sweat à capuche dans DRESSOPP" src="./?showcase=discover&amp;demoProductId=web-1utdu9o" loading="eager"></iframe>
+        <div class="browser-bar" aria-hidden="true">
+          <i class="browser-dot"></i><i class="browser-dot"></i><i class="browser-dot"></i>
+          <span class="browser-url">sopp24.github.io / DRESSOPP</span>
+        </div>
+        <iframe class="browser-screen" title="DRESSOPP — Découvrir sur ordinateur" src="./?showcase=discover" loading="eager"></iframe>
       </div>
     </section>
-    <aside class="phone-area" aria-label="Aperçus mobiles de DRESSOPP">
+    <aside class="phone-area" aria-label="Aperçus mobiles">
       <div class="phone-labels">
-        <div>Entraînement<small>Sneakers Autry</small></div>
-        <div>Tenues<small>Composer un look</small></div>
+        <div><strong>ENTRAÎNEMENT</strong><small>Affiner ses goûts</small></div>
+        <div><strong>TENUES</strong><small>Composer un look</small></div>
       </div>
       <div class="phone-row">
-        <div class="phone-device"><div class="phone-screen"><iframe title="Entraînement DRESSOPP avec une paire de sneakers Autry" src="./?showcase=training&amp;demoProductId=web-1uijpt2" loading="eager"></iframe></div></div>
-        <div class="phone-device"><div class="phone-screen"><iframe title="Composition de tenues dans DRESSOPP" src="./?showcase=outfits" loading="eager"></iframe></div></div>
+        <div class="phone-device"><div class="phone-screen">
+          <iframe title="DRESSOPP — Entraînement sur mobile" src="./?showcase=training" loading="eager"></iframe>
+        </div></div>
+        <div class="phone-device"><div class="phone-screen">
+          <iframe title="DRESSOPP — Tenues sur mobile" src="./?showcase=outfits" loading="eager"></iframe>
+        </div></div>
       </div>
     </aside>
   </section>
-  <section class="proof-row" aria-label="Fonctionnalités principales de DRESSOPP">
-    <article class="proof-card"><h3>Découvrir à son rythme</h3><p>Aimer, passer ou garder une pièce. Chaque réponse affine peu à peu tes préférences.</p></article>
-    <article class="proof-card"><h3>S’inspirer d’une image</h3><p>L’analyse visuelle repère les styles, les couleurs, les matières et les coupes.</p></article>
-    <article class="proof-card"><h3>Composer son vestiaire</h3><p>Retrouver des pièces du catalogue et construire des tenues selon tes envies.</p></article>
+  <section class="proof-row" aria-label="Trois fonctionnalités principales">
+    <article class="proof-card"><span class="proof-number">01</span><h3>La sélection s’affine</h3><p>Chaque oui, non ou favori fait évoluer les propositions.</p></article>
+    <article class="proof-card"><span class="proof-number">02</span><h3>Les inspirations prennent vie</h3><p>L’IA repère styles, couleurs, matières et coupes dans les images.</p></article>
+    <article class="proof-card"><span class="proof-number">03</span><h3>Les tenues se composent</h3><p>Des pièces du catalogue rapprochées selon tes goûts et ton budget.</p></article>
   </section>
 </main>
 <script>
