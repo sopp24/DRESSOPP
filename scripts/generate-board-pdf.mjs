@@ -145,7 +145,7 @@ async function verifyExportEmbedVisibility(page) {
     const view=params.get("showcase");
     const firstNav=document.querySelector(".mobile-nav button span");
     const navLabel=document.querySelector(".mobile-nav button small");
-    const actionSelector=view==="training"?".deck-actions .deck-action":".outfit-proposal-actions button, .outfit-quick-feedback button";
+    const actionSelector=(view==="discover"||view==="training")?".deck-actions .deck-action":".outfit-proposal-actions button, .outfit-quick-feedback button";
     const firstAction=document.querySelector(actionSelector);
     const filter=document.querySelector(".filter-menu-trigger");
     const styleOption=document.querySelector(".outfit-style-option span");
@@ -166,12 +166,12 @@ async function verifyExportEmbedVisibility(page) {
   });
   const desktopMetrics=await read(desktop);
   const desktopUrl=new URL(desktop.url());
-  if(!desktopMetrics.exportMode || desktopUrl.searchParams.get("boardExport")!=="1" || desktopMetrics.productTitle<25 || desktopMetrics.filterHeight<47) {
+  if(!desktopMetrics.exportMode || desktopUrl.searchParams.get("boardExport")!=="1" || desktopMetrics.productTitle<26 || desktopMetrics.filterHeight<47 || !desktopMetrics.action || desktopMetrics.action.height<90) {
     throw new Error("L'aperçu ordinateur export n'est pas assez lisible : "+JSON.stringify(desktopMetrics));
   }
   for(const frame of phones){
     const m=await read(frame);
-    const commonFail=!m.exportMode||!m.mobileMode||!new URL(frame.url()).searchParams.get("boardExport")||m.navIcon<22||m.navLabel<10.5||!m.navButton||m.navButton.height<52||!m.action||m.action.height<32;
+    const commonFail=!m.exportMode||!m.mobileMode||!new URL(frame.url()).searchParams.get("boardExport")||m.navIcon<22||m.navLabel<10.5||!m.navButton||m.navButton.height<52||!m.action||m.action.height<(m.view==="training"?48:32);
     const viewFail=m.view==="training"
       ? m.filterHeight<43||m.filterFont<13||m.productTitle<21
       : m.filterHeight<32||m.filterFont<11||m.outfitHeading<14;
