@@ -379,19 +379,12 @@ test("les aperçus du board ne chargent que les fichiers démo et ne paginent ja
 });
 
 
-test("le nombre de marques affiché correspond au catalogue réel actif, hors base démo", function() {
+test("le nombre d’enseignes affiché correspond au répertoire des marchands", function() {
   const directory = JSON.parse(readFileSync(new URL("../data/merchant-directory.json", import.meta.url), "utf8")).entries;
-  const normalizeBrand = value => String(value || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
-  const directoryNames = new Set(directory.map(entry => normalizeBrand(entry.name)));
-  const pageFiles = Array.from({length:5}, (_, index) => "../data/catalog-pages/page-" + String(index + 1).padStart(4, "0") + ".json");
-  const products = pageFiles.flatMap(file => JSON.parse(readFileSync(new URL(file, import.meta.url), "utf8")).products || []);
-  const brands = new Set(products
-    .filter(product => product.catalogStatus !== "stale" && product.availabilityStatus !== "out_of_stock")
-    .map(product => normalizeBrand(product.brand))
-    .filter(brand => brand && directoryNames.has(brand)));
-  assert.equal(brands.size, 24);
-  assert.ok(board.includes("<strong>24</strong>"));
-  assert.ok(board.includes("MARQUES<br>REPRÉSENTÉES"));
+  assert.equal(directory.length, 255);
+  assert.ok(board.includes("<strong>" + directory.length + "</strong>"));
+  assert.ok(board.includes('aria-label="' + directory.length + ' enseignes représentées"'));
+  assert.ok(board.includes("ENSEIGNES<br>REPRÉSENTÉES"));
 });
 
 test("le board est allégé et ne présente plus de statistiques en pied de page", function() {
