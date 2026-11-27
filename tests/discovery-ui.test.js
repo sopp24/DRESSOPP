@@ -9,6 +9,7 @@ const visionWorker = readFileSync(new URL("../workers/dressopp-agent/src/index.j
 const pinterestSync = readFileSync(new URL("../scripts/sync-pinterest.mjs", import.meta.url), "utf8");
 const css = readFileSync(new URL("../styles.css", import.meta.url), "utf8");
 const board = readFileSync(new URL("../board.html", import.meta.url), "utf8");
+const boardPdfScript = readFileSync(new URL("../scripts/generate-board-pdf.mjs", import.meta.url), "utf8");
 const index = readFileSync(new URL("../index.html", import.meta.url), "utf8");
 const sw = readFileSync(new URL("../sw.js", import.meta.url), "utf8");
 const visualQA = readFileSync(new URL("../scripts/visual-qa.mjs", import.meta.url), "utf8");
@@ -427,6 +428,6 @@ test("le board conserve le contexte et l’idée à gauche et les trois écrans 
 test("l’écran central du board embarque une vraie largeur desktop, les aperçus latéraux restent mobiles", function() {
   assert.ok(board.includes(".browser-screen{display:block;flex:0 0 auto;width:950px;height:690px;transform:scale(.76)"));
   assert.ok(board.includes(".browser-screen{width:100%;height:calc(100% - 30px);transform:none}"));
-  assert.ok(script.includes("desktop.viewportWidth < 851"));
-  assert.ok(script.includes("training.viewportWidth > 850"));
+  assert.ok(boardPdfScript.includes("desktop.viewportWidth < 851"));
+  assert.ok(boardPdfScript.includes("training.viewportWidth > 850"));
 });
