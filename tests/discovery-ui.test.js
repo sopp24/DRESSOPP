@@ -440,8 +440,10 @@ test("la vue ordinateur et les vues mobiles gardent leurs largeurs propres", fun
 
 
 test("les boutons PDF du header pointent vers les fichiers canoniques à la racine", function() {
-  assert.ok(board.includes('href="./board.pdf"'));
-  assert.ok(board.includes('href="./board-print-a3.pdf"'));
+  assert.ok(board.includes('href="./DRESSOPP-Board-A3.pdf"'));
+  assert.ok(board.includes('href="./DRESSOPP-Board-Imprimeur-SRA3.pdf"'));
+  assert.ok(!board.includes('href="./board.pdf"'));
+  assert.ok(!board.includes('href="./board-print-a3.pdf"'));
   assert.ok(board.includes('class="pdf-reader-button"'));
   assert.ok(board.includes('class="pdf-crop-button"'));
 });
@@ -453,11 +455,25 @@ test("le board web conserve le format de référence A3 paysage", function() {
   assert.ok(board.includes("grid-template-columns:18.2fr 36.5fr 41.7fr"));
 });
 
-test("le workflow préserve les PDF personnalisés, même s'ils sont déposés séparément", function() {
-  assert.ok(workflow.includes('backup_dir="$(mktemp -d)"'));
-  assert.ok(workflow.includes("for file in board.pdf board-print-a3.pdf"));
-  assert.ok(workflow.includes('if [ -f "$file" ]; then cp "$file" "$backup_dir/$file"; fi'));
-  assert.ok(workflow.includes('if [ -f "$backup_dir/$file" ]; then cp "$backup_dir/$file" "$file"; fi'));
+test("les trois titres de fonctionnalité et leurs sous-titres sont lisibles sur le board A3", function() {
+  assert.ok(board.includes("font-size:clamp(16px,1vw,18px)"));
+  assert.ok(board.includes("font-size:clamp(13px,.82vw,15px)"));
+  assert.ok(board.includes("min-height:48px"));
+  assert.ok(board.includes("font-size:13px;letter-spacing:.11em"));
+  assert.ok(boardPdfScript.includes("async function verifyBoardTypography"));
+  assert.ok(boardPdfScript.includes('["desktopTitle", 16]'));
+  assert.ok(boardPdfScript.includes('["outfitsSubtitle", 13]'));
+});
+
+test("les nouveaux PDF disposent de noms propres, de fond perdu et de traits de coupe", function() {
+  assert.ok(boardPdfScript.includes('"DRESSOPP-Board-A3.pdf"'));
+  assert.ok(boardPdfScript.includes('"DRESSOPP-Board-Imprimeur-SRA3.pdf"'));
+  assert.ok(boardPdfScript.includes("fond perdu réel de 3 mm"));
+  assert.ok(workflow.includes("python scripts/prepress-pdfs.py"));
+  assert.ok(workflow.includes("git push origin HEAD:main"));
+  assert.ok(workflow.includes("contents: write"));
+  assert.ok(workflow.includes("rm -f board.pdf board-print-a3.pdf"));
+  assert.ok(!workflow.includes("Both supplied PDF files are present; preserving them."));
 });
 
 
@@ -475,7 +491,7 @@ test("les cadres du board adaptent les aperçus ordinateur et téléphone à leu
 test("le workflow exécute le QA interactif du board sans remplacer les PDF fournis", function() {
   assert.ok(workflow.includes("DRESSOPP_BOARD_QA_ONLY=1 node scripts/generate-board-pdf.mjs"));
   assert.ok(boardPdfScript.includes('process.env.DRESSOPP_BOARD_QA_ONLY === "1"'));
-  assert.ok(boardPdfScript.includes("Interactive board QA passed; existing A3 PDFs were left untouched."));
+  assert.ok(boardPdfScript.includes("Interactive board QA and feature-label typography checks passed"));
 });
 
 test("la fenêtre ordinateur du board utilise un vrai viewport desktop ajusté à la fenêtre", function() {
