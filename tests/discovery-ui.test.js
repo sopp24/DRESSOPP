@@ -477,6 +477,9 @@ test("la fenêtre ordinateur du board utilise un vrai viewport desktop ajusté �
   assert.ok(boardPdfScript.includes("views[0].viewportWidth < 1101"));
   assert.ok(boardPdfScript.includes("desktopCard"));
   assert.ok(boardPdfScript.includes("desktopVoteActions !== 2"));
+  assert.ok(boardPdfScript.includes("await desktopFrame.locator('[data-action=\"vote\"][data-vote=\"no\"]').click()"));
+  assert.ok(boardPdfScript.includes("desktopFrame.waitForFunction"));
+  assert.ok(css.includes("body.showcase-embed .demo-complete-state"));
 });
 
 test("la démo affiche un écran de fin après les dix articles et peut être relancée", function() {
