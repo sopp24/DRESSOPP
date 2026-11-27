@@ -469,7 +469,7 @@ test("les fenêtres des deux PDF agrandissent menus, textes et icônes uniquemen
   assert.ok(css.includes("font-size: clamp(26px,2.45vw,32px) !important"));
   assert.ok(boardPdfScript.includes('desktopMetrics.action.height<90'));
   assert.ok(boardPdfScript.includes("async function verifyExportEmbedVisibility"));
-  assert.ok(boardPdfScript.includes("desktopMetrics.productTitle<25"));
+  assert.ok(boardPdfScript.includes("desktopMetrics.productTitle<26"));
 });
 
 test("la version web mobile propose un affichage plein écran en paysage sans changer le format PDF", function() {
