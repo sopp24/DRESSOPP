@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
@@ -16,6 +16,7 @@ concurrency:
 
 jobs:
   test-and-deploy:
+    if: github.actor != 'github-actions[bot]'
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -35,22 +36,27 @@ jobs:
           npx playwright install --with-deps chromium
       - name: Verify interactive board embeds without changing supplied PDFs
         run: DRESSOPP_BOARD_QA_ONLY=1 node scripts/generate-board-pdf.mjs
-      - name: Generate missing printable A3 PDFs without overwriting supplied files
+      - name: Generate new A3 and SRA3 printer PDFs
         run: |
-          backup_dir="$(mktemp -d)"
-          for file in board.pdf board-print-a3.pdf; do
-            if [ -f "$file" ]; then cp "$file" "$backup_dir/$file"; fi
-          done
+          rm -f board.pdf board-print-a3.pdf
+          node scripts/generate-board-pdf.mjs
 
-          if [ ! -f board.pdf ] || [ ! -f board-print-a3.pdf ]; then
-            node scripts/generate-board-pdf.mjs
+      - name: Add print metadata and PDF page boxes
+        run: |
+          python -m pip install --user pypdf
+          python scripts/prepress-pdfs.py
+
+      - name: Remove legacy boards and commit the new PDF deliverables
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A -- board.pdf board-print-a3.pdf DRESSOPP-Board-A3.pdf DRESSOPP-Board-Imprimeur-SRA3.pdf
+          if git diff --cached --quiet; then
+            echo "The generated print files are already up to date."
           else
-            echo "Both supplied PDF files are present; preserving them."
+            git commit -m "Regenerate DRESSOPP presentation and printer PDFs"
+            git push origin HEAD:main
           fi
-
-          for file in board.pdf board-print-a3.pdf; do
-            if [ -f "$backup_dir/$file" ]; then cp "$backup_dir/$file" "$file"; fi
-          done
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
       - name: Upload site
