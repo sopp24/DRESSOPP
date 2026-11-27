@@ -87,6 +87,38 @@ async function loadBoard(page, url) {
   });
 }
 
+async function verifyPrintGeometry(page) {
+  await page.emulateMedia({ media: "print" });
+  const metrics = await page.evaluate(() => {
+    const read = selector => {
+      const node = document.querySelector(selector);
+      if (!node) throw new Error("Élément de prépresse manquant : " + selector);
+      const rect = node.getBoundingClientRect();
+      return {
+        x: rect.x * 25.4 / 96,
+        y: rect.y * 25.4 / 96,
+        width: rect.width * 25.4 / 96,
+        height: rect.height * 25.4 / 96
+      };
+    };
+    return {
+      bleed: read(".bleed-underlay"),
+      trim: read(".board"),
+      marks: read(".crop-sheet")
+    };
+  });
+  const within = (actual, expected) => Math.abs(actual - expected) <= 0.5;
+  const valid =
+    within(metrics.bleed.x,12) && within(metrics.bleed.y,8.5) &&
+    within(metrics.bleed.width,426) && within(metrics.bleed.height,303) &&
+    within(metrics.trim.x,15) && within(metrics.trim.y,11.5) &&
+    within(metrics.trim.width,420) && within(metrics.trim.height,297) &&
+    within(metrics.marks.x,0) && within(metrics.marks.y,0) &&
+    within(metrics.marks.width,450) && within(metrics.marks.height,320);
+  if (!valid) throw new Error("Géométrie d'impression invalide : " + JSON.stringify(metrics));
+  console.log("Print preflight OK: A3 trim 420x297 mm, 3 mm bleed on all sides, SRA3 450x320 mm.");
+}
+
 async function writePdf(page, output, expectedWidth, expectedHeight) {
   await page.emulateMedia({ media: "print" });
   await page.pdf({
@@ -112,12 +144,14 @@ try {
   await loadBoard(page, "http://127.0.0.1:4173/board.html");
   await writePdf(page, path.join(root, "board.pdf"), 420, 297);
 
-  // Second PDF: artwork remains exactly A3, centred on SRA3 with crop marks outside the trim.
+  // Second PDF: A3 trim centred on SRA3, with 3 mm bleed on all sides and crop marks outside the trim.
   await loadBoard(page, "http://127.0.0.1:4173/board.html?cropMarks=1");
   if (!(await page.locator(".crop-sheet").count())) throw new Error("Les traits de coupe sont absents.");
+  if (!(await page.locator(".bleed-underlay").count())) throw new Error("Le fond perdu est absent.");
+  await verifyPrintGeometry(page);
   await writePdf(page, path.join(root, "board-print-a3.pdf"), 450, 320);
 
-  console.log("Both A3 PDF variants are ready for GitHub Pages.");
+  console.log("Both A3 PDF variants are ready; the print version includes 3 mm bleed and crop marks.");
 } finally {
   if (browser) await browser.close();
   await new Promise(resolve => server.close(resolve));
