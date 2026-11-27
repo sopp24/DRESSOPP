@@ -145,7 +145,20 @@ async function verifyShowcaseViews(page) {
   if (views[1].viewportWidth > 850 || views[2].viewportWidth > 850) {
     throw new Error("Les aperçus Entraînement et Tenues doivent rester au format mobile : " + JSON.stringify(views));
   }
-  console.log("Showcase screens verified: desktop Découvrir at " + views[0].viewportWidth + "px, mobile Entraînement/Tenues at " + views[1].viewportWidth + "/" + views[2].viewportWidth + "px.");
+  const desktopFrame = page.frames().find(frame => {
+    try { return new URL(frame.url()).searchParams.get("showcase") === "discover"; }
+    catch (error) { return false; }
+  });
+  if (!desktopFrame) throw new Error("La fenêtre ordinateur interactive est introuvable.");
+  const firstProductId = await desktopFrame.locator("#active-product-card").getAttribute("data-product-id");
+  await desktopFrame.locator('[data-action="vote"][data-vote="no"]').click();
+  await desktopFrame.waitForFunction(previousId => {
+    const card = document.querySelector("#active-product-card");
+    return Boolean(card && card.dataset.productId !== previousId);
+  }, firstProductId, { timeout:8000 });
+  await desktopFrame.goto(desktopFrame.url());
+  await desktopFrame.waitForSelector("#active-product-card", { timeout:8000 });
+  console.log("Showcase screens verified: desktop Découvrir at " + views[0].viewportWidth + "px with a working swipe action, mobile Entraînement/Tenues at " + views[1].viewportWidth + "/" + views[2].viewportWidth + "px.");
 }
 
 async function writePdf(page, output, expectedWidth, expectedHeight) {
