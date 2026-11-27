@@ -29,11 +29,14 @@ let state = null;
 let currentView = "discover";
 const showcaseRequestedView = new URLSearchParams(window.location.search).get("showcase");
 const showcaseView = ["discover", "training", "wardrobe", "outfits"].includes(showcaseRequestedView) ? showcaseRequestedView : null;
-const showcaseFeaturedProductId = showcaseView ? new URLSearchParams(window.location.search).get("demoProductId") : null;
+const showcaseParams = new URLSearchParams(window.location.search);
+const showcaseFeaturedProductId = showcaseView ? showcaseParams.get("demoProductId") : null;
+const showcaseBoardExport = Boolean(showcaseView && showcaseParams.get("boardExport") === "1");
 if (showcaseView) {
   currentView = showcaseView;
   document.body.classList.add("showcase-embed");
   if (window.matchMedia("(max-width: 850px)").matches) document.body.classList.add("showcase-embed--mobile");
+  if (showcaseBoardExport) document.body.classList.add("showcase-embed--export");
 }
 let deckActionPending = false;
 let currentOutfitIdeas = [];
