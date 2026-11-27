@@ -480,6 +480,10 @@ test("la fenêtre ordinateur du board utilise un vrai viewport desktop ajusté �
   assert.ok(boardPdfScript.includes("await desktopFrame.locator('[data-action=\"vote\"][data-vote=\"no\"]').click()"));
   assert.ok(boardPdfScript.includes("desktopFrame.waitForFunction"));
   assert.ok(css.includes("body.showcase-embed .demo-complete-state"));
+  assert.ok(css.includes("body.showcase-embed .app-footer { display: none !important; }"));
+  assert.ok(!css.includes("body.showcase-embed #modal-root { display: none !important; }"));
+  assert.ok(boardPdfScript.includes("desktopFrame.locator(\"#active-product-card\").press(\"Enter\")"));
+  assert.ok(boardPdfScript.includes("desktopFrame.locator('[role=\"dialog\"]').waitFor"));
 });
 
 test("la démo affiche un écran de fin après les dix articles et peut être relancée", function() {
