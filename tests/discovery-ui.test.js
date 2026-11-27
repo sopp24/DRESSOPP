@@ -468,3 +468,26 @@ test("les cadres du board adaptent les aperçus ordinateur et téléphone à leu
   assert.ok(!board.includes("--desktop-scale"));
   assert.ok(!board.includes("--phone-scale"));
 });
+
+test("la fenêtre ordinateur du board utilise un vrai viewport desktop ajusté à la fenêtre", function() {
+  assert.ok(board.includes("width:1200px;height:1152px"));
+  assert.ok(board.includes('container.classList.contains("browser-shell")'));
+  assert.ok(board.includes("availableHeight / viewportHeight"));
+  assert.ok(board.includes("frame.style.left"));
+  assert.ok(boardPdfScript.includes("views[0].viewportWidth < 1101"));
+  assert.ok(boardPdfScript.includes("desktopCard"));
+  assert.ok(boardPdfScript.includes("desktopVoteActions !== 2"));
+});
+
+test("la démo affiche un écran de fin après les dix articles et peut être relancée", function() {
+  assert.ok(app.includes("function showcaseDemoComplete()"));
+  assert.ok(app.includes("state.interactions.likes"));
+  assert.ok(app.includes("state.interactions.dislikes"));
+  assert.ok(app.includes("state.interactions.saves"));
+  assert.ok(app.includes("state.likedProducts"));
+  assert.ok(app.includes("function renderShowcaseDemoComplete()"));
+  assert.ok(app.includes("Tu as parcouru les ' + count + ' articles de la démo !"));
+  assert.ok(app.includes('data-action="restart-demo"'));
+  assert.ok(app.includes('action === "restart-demo" && showcaseView)'));
+  assert.ok(app.includes("state.products = state.products.slice(0, 10);"));
+});
