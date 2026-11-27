@@ -125,11 +125,36 @@ async function verifyShowcaseViews(page) {
   const views = await Promise.all(frames.map(frame => frame.evaluate(node => {
     const url = new URL(node.contentWindow.location.href);
     const main = node.contentDocument && node.contentDocument.querySelector("#app-main");
+    const doc = node.contentDocument;
+    const win = node.contentWindow;
+    const rect = element => {
+      if (!element) return null;
+      const box = element.getBoundingClientRect();
+      return {x:box.x,y:box.y,width:box.width,height:box.height,right:box.right,bottom:box.bottom};
+    };
+    const logo = doc && doc.querySelector(".topbar .brand-logo");
+    const nav = doc && doc.querySelector(".mobile-nav");
+    const filter = main && main.querySelector(".filter-menu-trigger");
+    const card = main && main.querySelector("#active-product-card");
+    const visual = card && card.querySelector(".product-visual");
+    const actions = main && main.querySelector(".deck-actions");
+    const content = doc && doc.querySelector(".main-content");
     return {
       view: url.searchParams.get("showcase"),
-      viewportWidth: node.contentWindow ? node.contentWindow.innerWidth : 0,
-      desktopCard: Boolean(main && main.querySelector("#active-product-card")),
+      viewportWidth: win ? win.innerWidth : 0,
+      viewportHeight: win ? win.innerHeight : 0,
+      desktopCard: Boolean(card),
       desktopVoteActions: main ? main.querySelectorAll('[data-action="vote"]').length : 0,
+      desktopActionCount: actions ? actions.querySelectorAll("button").length : 0,
+      desktopLogo: rect(logo),
+      desktopTopbar: rect(doc && doc.querySelector(".topbar")),
+      desktopNav: rect(nav),
+      desktopFilter: rect(filter),
+      desktopContent: rect(content),
+      desktopCardRect: rect(card),
+      desktopVisualRect: rect(visual),
+      desktopActionsRect: rect(actions),
+      usesClassicCard: Boolean(main && main.querySelector(".discovery-page") && !main.querySelector(".discovery-page--app")),
       ready: Boolean(main && main.children.length && !main.querySelector(".boot-loader"))
     };
   })));
@@ -139,8 +164,25 @@ async function verifyShowcaseViews(page) {
     if (!view.ready) throw new Error("La vue embarquée n'est pas prête : " + expected[index]);
   });
   if (views[0].viewportWidth < 1101) throw new Error("L'écran principal n'utilise pas le layout ordinateur : " + views[0].viewportWidth + "px");
-  if (!views[0].desktopCard || views[0].desktopVoteActions !== 2) {
-    throw new Error("La fenêtre ordinateur n'affiche pas la carte et les deux actions de swipe : " + JSON.stringify(views[0]));
+  const desktop = views[0];
+  if (!desktop.desktopCard || desktop.desktopVoteActions !== 2 || desktop.desktopActionCount !== 5) {
+    throw new Error("La fenêtre ordinateur n'affiche pas la fiche et ses cinq actions : " + JSON.stringify(desktop));
+  }
+  if (!desktop.usesClassicCard || !desktop.desktopLogo || desktop.desktopLogo.width < 120 || desktop.desktopLogo.height < 50) {
+    throw new Error("La fenêtre ordinateur ne reprend pas le header/logo de la page de référence : " + JSON.stringify(desktop));
+  }
+  if (!desktop.desktopNav || desktop.desktopNav.width < 900 || desktop.desktopNav.height < 50 ||
+      desktop.desktopNav.bottom > desktop.viewportHeight) {
+    throw new Error("La navigation inférieure n'est pas visible dans la fenêtre ordinateur : " + JSON.stringify(desktop));
+  }
+  if (!desktop.desktopFilter || desktop.desktopFilter.right < desktop.desktopContent.right - 60) {
+    throw new Error("Le bouton Filtres n'est pas aligné à droite comme sur le PDF : " + JSON.stringify(desktop));
+  }
+  if (!desktop.desktopVisualRect || desktop.desktopVisualRect.width / desktop.desktopVisualRect.height < 1.35) {
+    throw new Error("La photo produit n'a pas retrouvé son cadrage horizontal dans le board : " + JSON.stringify(desktop));
+  }
+  if (!desktop.desktopActionsRect || desktop.desktopActionsRect.bottom >= desktop.desktopNav.y - 10) {
+    throw new Error("Les actions produit sont coupées par la navigation du bas : " + JSON.stringify(desktop));
   }
   if (views[1].viewportWidth > 850 || views[2].viewportWidth > 850) {
     throw new Error("Les aperçus Entraînement et Tenues doivent rester au format mobile : " + JSON.stringify(views));
