@@ -45,9 +45,9 @@ body{padding:0}
 .copy-punch{margin-top:auto;padding-top:14px;border-top:1px solid #493e42}
 .copy-punch strong{display:block;color:#fff;font-size:clamp(20px,1.8vw,27px);font-weight:800;letter-spacing:-.045em;line-height:1.08}
 .screen-area{display:flex;flex-direction:column;min-width:0;min-height:0}
-.screen-label{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;min-height:48px;color:#fff}
-.screen-label-main strong,.phone-labels strong{display:block;color:#fff;font-size:clamp(16px,1vw,18px);font-weight:800;letter-spacing:.13em;line-height:1.15}
-.screen-label-main small,.phone-labels small{display:block;margin-top:6px;color:#b8adb2;font-size:clamp(13px,.82vw,15px);font-weight:500;line-height:1.25;letter-spacing:0}
+.screen-label{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;min-height:54px;color:#fff}
+.screen-label-main strong,.phone-labels strong{display:block;color:#fff;font-size:clamp(18px,1.2vw,20px);font-weight:800;letter-spacing:.13em;line-height:1.15}
+.screen-label-main small,.phone-labels small{display:block;margin-top:6px;color:#b8adb2;font-size:clamp(15px,1vw,17px);font-weight:500;line-height:1.25;letter-spacing:0}
 .screen-label-side{padding-top:3px;color:#aaa1a5;font-size:11px;font-weight:600;letter-spacing:.16em;white-space:nowrap}
 .browser-shell{position:relative;flex:0 0 80%;height:80%;min-height:0;margin-top:16px;overflow:hidden;border:1px solid #494044;border-radius:12px;background:#090708;box-shadow:0 16px 42px rgba(0,0,0,.38)}
 .browser-bar{position:relative;z-index:2;display:flex;align-items:center;gap:6px;height:28px;padding:0 12px;border-bottom:1px solid #393034;background:#1a1618}
@@ -56,7 +56,7 @@ body{padding:0}
 .browser-url{position:absolute;left:50%;transform:translateX(-50%);width:55%;padding:4px 12px;overflow:hidden;border-radius:999px;background:#090708;color:#a9a0a3;font:8px Arial,sans-serif;text-align:center;white-space:nowrap}
 .browser-screen{position:absolute;top:28px;left:0;display:block;width:1200px;height:1152px;transform:scale(var(--preview-scale,.48));transform-origin:top left;border:0;background:#080607}
 .phone-area{display:flex;flex-direction:column;min-width:0;min-height:0}
-.phone-labels{display:grid;grid-template-columns:1fr 1fr;gap:3.2%;min-height:48px}
+.phone-labels{display:grid;grid-template-columns:1fr 1fr;gap:3.2%;min-height:54px}
 .phone-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:3.2%;flex:1;min-height:0;align-items:center}
 .phone-device{position:relative;width:100%;height:92%;min-height:0;padding:6px;border:4px solid #373034;border-radius:42px;background:#050405;overflow:hidden;box-shadow:0 17px 38px rgba(0,0,0,.45)}
 .phone-device:before{content:"";position:absolute;z-index:4;top:6px;left:50%;width:92px;height:24px;transform:translateX(-50%);border-radius:0 0 15px 15px;background:#030303}
@@ -88,10 +88,10 @@ body{padding:0}
  .copy-punch{margin-top:25px;padding-top:12px}
  .copy-punch strong{font-size:23px}
  .screen-area{height:auto;min-height:0}
- .screen-label{min-height:42px}
- .screen-label-main strong,.phone-labels strong{font-size:13px;letter-spacing:.11em}
- .screen-label-main small,.phone-labels small{font-size:12px;margin-top:5px}
- .browser-shell{flex:none;width:100%;height:390px;margin-top:6px}
+ .screen-label{min-height:46px}
+ .screen-label-main strong,.phone-labels strong{font-size:15px;letter-spacing:.1em}
+ .screen-label-main small,.phone-labels small{font-size:14px;margin-top:5px}
+ .browser-shell{flex:none;width:100%;height:390px;margin-top:4px}
  .browser-screen{width:1200px;height:1152px}
  .phone-area{height:auto;min-height:0}
  .phone-labels{min-height:42px;gap:10px;margin-bottom:8px}
@@ -108,8 +108,8 @@ body{padding:0}
 }
 @media (min-width:580px) and (max-width:760px){
  .board{padding:24px 22px 28px}
- .screen-label-main strong,.phone-labels strong{font-size:14px}
- .screen-label-main small,.phone-labels small{font-size:12.5px}
+ .screen-label-main strong,.phone-labels strong{font-size:16px}
+ .screen-label-main small,.phone-labels small{font-size:14px}
  .copy-title{font-size:44px}
  .copy-section p{font-size:15px}
  .browser-shell{height:680px}
