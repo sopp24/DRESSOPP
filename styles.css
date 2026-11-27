@@ -3863,3 +3863,293 @@ body.showcase-embed #save-status { display:none !important; }
     flex: 1 1 0;
   }
 }
+
+
+/* ==========================================================
+   DRESSOPP — ajustements ciblés de lisibilité
+   Tailles et contrastes renforcés sans modifier la mise en page.
+========================================================== */
+:root {
+  --muted: #b0b0b0;
+  --muted-2: #929292;
+}
+
+/* Navigation, actions et repères généraux */
+.nav-link {
+  color: #c2c2c2;
+  font-size: 12px;
+}
+.add-button,
+.button-primary,
+.button-secondary,
+.button-quiet,
+.button-danger {
+  font-size: 12px;
+}
+.button-small {
+  font-size: 10.5px;
+}
+.top-actions .footer-legal-link {
+  color: #c4c4c4;
+  font-size: 10px;
+}
+.mobile-nav button {
+  color: #b7b7b7;
+}
+.mobile-nav button small {
+  color: inherit;
+  font-size: clamp(8.5px, 2.4vw, 10px);
+  font-weight: 600;
+  letter-spacing: 0;
+}
+.app-footer {
+  color: #999;
+  font-size: 10px;
+}
+.footer-board-link {
+  font-size: 10px;
+}
+
+/* Formulaires, filtres et textes d'aide */
+.field label,
+.field-label {
+  color: #bcbcbc;
+  font-size: 10.5px;
+}
+.field input,
+.field select,
+.field textarea,
+.search-input,
+.toolbar select {
+  font-size: 13px;
+}
+.field input::placeholder,
+.field textarea::placeholder,
+.search-input::placeholder {
+  color: #929292;
+  opacity: 1;
+}
+.filter-bar .field input,
+.filter-bar .field select,
+.outfit-extra-filters .field input,
+.outfit-extra-filters .field select {
+  font-size: 12px;
+}
+.field-hint,
+.modal-note,
+.retailer-disclaimer {
+  color: #aaa;
+  font-size: 11px;
+  line-height: 1.6;
+}
+.result-count {
+  color: #b0b0b0;
+  font-size: 11px;
+}
+
+/* Découverte et informations des articles */
+.deck-topline {
+  color: #aaa;
+  font-size: 10px;
+}
+.discovery-level {
+  color: #c0c0c0;
+  font-size: 10px;
+}
+.product-brand {
+  color: #b8b8b8;
+  font-size: 10px;
+}
+.product-meta {
+  color: #b5b5b5;
+  font-size: 11px;
+}
+.product-source {
+  color: #c0c0c0;
+  font-size: 11px;
+}
+.photo-label {
+  font-size: 10px;
+}
+.grid-content .product-brand {
+  color: #b9b9b9;
+  font-size: 10px;
+}
+.product-grid .grid-card .product-meta {
+  color: #bcbcbc !important;
+  font-size: 11.5px;
+}
+.inspiration-copy small,
+.pinterest-status-strip span,
+.pinterest-status-strip small {
+  color: #b0b0b0;
+  font-size: 10.5px;
+}
+.inspiration-tags span {
+  color: #d0d0d0;
+  font-size: 9.5px;
+}
+.aside-title span,
+.aside-card p,
+.empty-state p,
+.connector-item small,
+.connector-item p,
+.stat-box small {
+  color: #b0b0b0;
+}
+.aside-title span,
+.connector-item small {
+  font-size: 10.5px;
+}
+.aside-card p,
+.empty-state p,
+.connector-item p {
+  font-size: 12px;
+}
+.stat-box small {
+  font-size: 10px;
+}
+.source-note {
+  color: #c2c2c2;
+  font-size: 11px;
+}
+.catalog-status-main > small,
+.catalog-status-side > span,
+.retailer-group h3 {
+  color: #b5b5b5;
+  font-size: 11px;
+}
+.catalog-status .eyebrow,
+.retailer-directory .eyebrow {
+  color: #c0c0c0;
+  font-size: 10px;
+}
+
+/* Conseils visibles sur la carte de découverte mobile */
+.discovery-page--app .deck-hint,
+.discovery-page--app .deck-hint-touch {
+  color: rgba(255,255,255,.9);
+  font-size: 10px !important;
+  line-height: 1.35;
+  letter-spacing: .02em;
+  text-transform: none;
+}
+.discovery-page--app .swipe-category {
+  font-size: 9.5px;
+}
+.discovery-page--app .product-details-pill {
+  font-size: 10.5px;
+}
+.discovery-page--app .product-card-links .product-original-link {
+  font-size: 10px;
+}
+
+/* Tenues : les descriptions et les métadonnées restent secondaires,
+   mais ne doivent plus être difficiles à lire. */
+.outfit-feedback > span {
+  color: #c4c4c4;
+  font-size: 11px;
+}
+.outfit-rate-button small,
+.outfit-feedback-summary span {
+  color: #c0c0c0;
+  font-size: 10px;
+}
+.outfit-reference-copy p,
+.outfit-detail-reference p,
+.outfit-detail-footer p,
+.outfit-carousel-copy p,
+.outfit-proposal-copy p {
+  color: #b5b5b5;
+  font-size: 11px !important;
+  line-height: 1.55;
+}
+.outfit-column h3 {
+  color: #e2e2e2;
+  font-size: 11px !important;
+}
+.outfit-piece small,
+.outfit-piece span {
+  color: #b0b0b0 !important;
+  font-size: 10px !important;
+  line-height: 1.45;
+}
+.outfit-piece strong {
+  color: #f0f0f0;
+  font-size: 11px !important;
+}
+.outfit-piece button,
+.outfit-proposal-actions .button-small,
+.outfit-carousel-actions .button-small {
+  font-size: 10px !important;
+}
+.outfit-proposal-copy .eyebrow,
+.outfit-detail-reference .eyebrow {
+  font-size: 9px !important;
+}
+.outfit-proposal-meta span,
+.outfit-detail-toolbar small,
+.outfit-carousel-copy .product-brand,
+.outfit-in-wardrobe,
+.outfit-saved-label,
+.outfit-missing-note {
+  color: #b5b5b5;
+  font-size: 10px !important;
+}
+.outfit-style-option span {
+  color: #c5c5c5;
+  font-size: 10px !important;
+}
+.outfit-filter-heading small,
+.outfit-filter-label {
+  color: #bcbcbc;
+  font-size: 10px !important;
+}
+.outfit-filter-note {
+  color: #aaa;
+  font-size: 10.5px !important;
+  line-height: 1.55;
+}
+.outfit-quick-feedback button {
+  color: #bcbcbc;
+}
+
+/* Panneaux d'information et états secondaires */
+.ai-agent-result-note,
+.ai-agent-hints,
+.ai-agent-disclaimer,
+.ai-agent-guide,
+.ai-agent-product-reason {
+  color: #b0b0b0;
+  font-size: 11px;
+}
+.ai-agent-status {
+  color: #c0c0c0;
+  font-size: 10.5px;
+}
+.details-copy .product-freshness {
+  color: #b0b0b0;
+}
+.detail-row {
+  font-size: 12px;
+}
+.status-pill {
+  color: #c4c4c4;
+  font-size: 10px;
+}
+
+@media (max-width: 600px) {
+  .mobile-nav button small {
+    font-size: clamp(8px, 2.4vw, 9.5px);
+  }
+  .top-actions .footer-legal-link {
+    color: #d0d0d0;
+    font-size: 9.5px;
+  }
+  .add-button {
+    font-size: 10px;
+  }
+  .app-footer {
+    font-size: 9.5px;
+  }
+}
