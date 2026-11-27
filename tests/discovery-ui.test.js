@@ -458,7 +458,7 @@ test("le board web conserve le format de référence A3 paysage", function() {
 test("les trois titres de fonctionnalité et leurs sous-titres sont lisibles sur le board A3", function() {
   assert.ok(board.includes("font-size:clamp(18px,1.2vw,20px)"));
   assert.ok(board.includes("font-size:clamp(15px,1vw,17px)"));
-  assert.ok(board.includes("min-height:48px"));
+  assert.ok(board.includes("min-height:54px"));
   assert.ok(board.includes("font-size:15px;letter-spacing:.1em"));
   assert.ok(boardPdfScript.includes("async function verifyBoardTypography"));
   assert.ok(boardPdfScript.includes('["desktopTitle", 18]'));
