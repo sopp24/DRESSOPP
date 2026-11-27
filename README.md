@@ -2,202 +2,311 @@
 
 **Mode diligente.**
 
-DRESSOPP — « Mode diligente. » — est un personal shopper visuel pour la mode masculine uniquement (homme, ou unisexe lorsque la pièce se porte aussi côté homme ; femme et pièces typiquement féminines exclues) : une expérience de découverte façon Tinder, construite autour d'un catalogue multi-boutiques et d'un moteur qui apprend de chaque réponse Oui, Non et de chaque article sauvegardé. Les Pins Pinterest synchronisés ou ajoutés comme inspirations alimentent le profil stylistique et les propositions de tenues ; leurs images sont analysées côté serveur par un modèle de vision, sans ajouter d'information technique à l'interface.
+DRESSOPP est un personal shopper visuel consacré au vestiaire masculin. L'application aide à découvrir des vêtements, à préciser ses goûts et à composer des tenues à partir d'un catalogue multi-boutiques et d'inspirations Pinterest.
 
-Site : https://sopp24.github.io/DRESSOPP/
+Son principe : **tu découvres une pièce, tu réponds Oui, Non ou tu l'ajoutes à ta liste ; la sélection apprend progressivement ce qui te correspond.** Les inspirations Pinterest donnent une direction stylistique, tandis que les fiches produits servent à retrouver des pièces réelles.
 
-## État vérifié du dépôt — 12 novembre 2026
+> DRESSOPP est un outil de découverte et de composition. Il renvoie vers les fiches des marchands, mais ne gère ni panier, ni paiement, ni commande.
 
-Les éléments ci-dessous ont été comparés aux fichiers réellement présents sur la branche `main`. Les compteurs de catalogue sont un instantané daté, pas une promesse de volume permanent.
+## Accès
 
-| Élément | État constaté |
+| Ressource | Adresse |
 |---|---|
-| Répertoire des boutiques | **236 enseignes** ; les neuf catégories et leurs sous-totaux correspondent à `data/merchant-directory.json`. |
-| Dernier catalogue publié | Généré le **12 novembre 2026 à 16:01:36 UTC** ; statut `partial`. |
-| Fiches du catalogue | **211 au total** : 180 fiches publiques actives, 16 références éditoriales et 15 fiches publiques périmées. Parmi les fiches actives, **82 sont proposables** (homme confirmé, boutique masculine ou unisexe adapté aux hommes) ; les références femme, les pièces typiquement féminines et les fiches dont le public est inconnu restent exclues de la découverte. |
-| Sources actives du dernier instantané | 12 sources ont fourni des fiches exploitables ; 36 enseignes ont été examinées et 276 pages contrôlées. |
-| Dernière collecte | 36 enseignes examinées et 276 pages contrôlées pendant cette exécution. |
-| Pinterest | Tableau `mode` confirmé **PUBLIC** ; **36 Pins synchronisés**, dont 34 reconnus comme mode masculine, 1 unisexe et 1 non vestimentaire exclus des inspirations. Dernière synchronisation vérifiée : **12 novembre 2026 à 18:38:51 UTC**. |
-| Analyse visuelle Pinterest | **36/36 images analysées (schéma v3)** par Gemma 4 via Cloudflare Workers AI ; public, pièces, styles, couleurs, matières, coupes, motifs, détails et silhouette sont enregistrés dans `visualAnalysis`. Les signaux alimentent le moteur sans être affichés dans l'interface. |
-| Personal shopper IA | Le mode local est disponible. Le Worker Cloudflare `dressopp-agent` est déployé et son endpoint de santé répond. Les recommandations distantes nécessitent toujours un consentement explicite dans l'application. |
-| Partage communautaire | Désactivé et non configuré dans les fichiers publiés (`enabled: false`, sans identifiants de projet). |
-| Avis | 43 fiches sur 211 comportent une note de **produit** ; aucune ne comporte actuellement de note de **marchand**. |
+| Application | [sopp24.github.io/DRESSOPP](https://sopp24.github.io/DRESSOPP/) |
+| Board de présentation interactif | [board.html](https://sopp24.github.io/DRESSOPP/board.html) |
+| PDF A3 | [board.pdf](https://sopp24.github.io/DRESSOPP/board.pdf) |
+| PDF imprimeur | [board-print-a3.pdf](https://sopp24.github.io/DRESSOPP/board-print-a3.pdf) |
+| Politique de confidentialité | [privacy.html](https://sopp24.github.io/DRESSOPP/privacy.html) |
+| Dépôt GitHub | [sopp24/DRESSOPP](https://github.com/sopp24/DRESSOPP) |
 
-Le statut `partial` signifie que la collecte ne produit pas encore des fiches exploitables auprès de toutes les enseignes visées. Le répertoire de 200 boutiques est une liste de cibles, pas 200 flux marchands déjà connectés.
+## L'expérience dans l'application
 
-## Brief utilisateur — priorités permanentes
+La navigation principale comporte six espaces : **Découvrir**, **Vêtements**, **Entraînement**, **Tenues**, **Profil** et **Réglages**. Sur mobile, une barre de navigation basse reprend les vues principales.
 
-Cette section conserve la demande de référence pour faire évoluer les sources et les recommandations. Elle ne doit pas être remplacée par une simple liste de boutiques crawlables.
+### Découvrir
 
-1. **Pinterest en priorité stylistique.** Tableau principal : https://fr.pinterest.com/sopppx24/mode/. Le tableau peut contenir des Pins non vestimentaires, féminins ou mixtes ; seules les références dont le public masculin est confirmé par l’analyse visuelle sont conservées pour les inspirations et les tenues. L'algorithme doit en extraire les styles, couleurs, matières, coupes et associations sans considérer chaque Pin comme une fiche produit.
-2. **Zalando en priorité commerciale.** Zalando est bien présent dans le répertoire avec une priorité de collecte élevée. En revanche, aucune API catalogue partenaire ni connexion à un compte client Zalando n'est configurée dans ce dépôt. Lors de la dernière collecte enregistrée (12 novembre 2026), le domaine Zalando a été signalé comme bloqué/inaccessible au robot ; cela n'empêche pas la présence de références éditoriales liées à Zalando dans le catalogue. Aucune wishlist personnelle n'est actuellement lue et aucun mot de passe ne doit être demandé ou stocké. Un import de wishlist n'est pas encore automatisé : il faudrait d'abord définir et valider un format d'export compatible.
-3. **Adapter les propositions au style, à la catégorie et au budget.** Les univers prioritaires comprennent les multimarques (Zalando, ASOS, UNIQLO…), l'accessible/casual (BZB, Pull & Bear…), le premium et le luxe (Louis Vuitton, Dior, Lothaire…), les sneakers et le sport (Nike, adidas, Courir…) et les sous-vêtements (Calvin Klein, Undiz…).
-4. **Fiabilité des marchands.** Trustpilot, Google Avis clients, Avis Vérifiés, Trusted Shops et Custplace sont des sources envisagées, pas des connecteurs actuellement intégrés. Le collecteur public ne renseigne pas les notes de marchands ; il peut récupérer une note de produit publiée dans les données structurées Schema.org. Une note produit ne doit jamais être assimilée à la fiabilité du vendeur.
-5. **Publicités mode.** Meta Ad Library est une piste de veille, mais aucun collecteur Meta Ad Library n'est actuellement présent dans le dépôt. Si cette source est ajoutée, elle devra se limiter aux données publiques accessibles par un moyen autorisé. Elle ne donne pas accès au fil Instagram personnalisé de l'utilisateur et ne prouve pas qu'un produit est apprécié personnellement.
-6. **Couverture internationale.** Le répertoire comprend 236 enseignes couvrant plusieurs univers de mode masculine, dans les mêmes univers que les références fournies. Les pays, devises, livraison et accès techniques varient selon les enseignes.
+Le flux présente une pièce à la fois, avec sa photo, son nom, sa marque, son prix, ses caractéristiques disponibles et un lien vers l'article original.
 
-## Expérience de découverte en flux continu
+Les cinq commandes de la carte sont :
 
-- Une pièce à la fois en mode swipe, ou une grille.
-- Glisser à gauche / **Non** : préférence négative ; glisser à droite / **Oui** : intérêt ; **Ajouter à ma liste** : sauvegarde.
-- Les articles déjà évalués ou sauvegardés ne reviennent pas dans le flux normal.
-- Le moteur local classe les produits selon les préférences apprises, le profil, les tailles, les marques, les couleurs, matières, coupes, le style, le budget, la saison et la fraîcheur des fiches.
-- Le catalogue est découpé en pages de 120 produits. Le site charge la première page, puis précharge la suivante quand il reste environ huit propositions à découvrir. En mode grille, le prochain lot se charge aussi au défilement.
-- Quand toutes les pages publiées ont été parcourues, le site vérifie périodiquement si un nouveau manifeste est disponible. Une nouvelle collecte peut donc être consommée sans recharger manuellement l'application.
-- Le workflow catalogue explore **36 enseignes par jour** parmi les 200, dont 12 priorités hautes et 24 sources en rotation. Les curseurs de rotation sont conservés dans `data/catalog-meta.json`.
-- Ce fonctionnement supprime la limite artificielle de swipes. Il ne promet pas une infinité mathématique de vêtements : le volume réel dépend des produits que les sources publient, de leurs accès autorisés et de la disponibilité des articles. L'instantané publié le 12 novembre 2026 contient 180 fiches publiques actives, mais seules 18 références masculines confirmées sont actuellement actives ; le statut général de la collecte reste `partial`.
+- **Annuler** : revenir sur la dernière décision ;
+- **Passer / Non** : signaler que la pièce ne correspond pas ;
+- **Ajouter à ma liste** : conserver l'article ;
+- **J'aime / Oui** : signaler un intérêt ;
+- **Partager** : partager la fiche produit.
 
-## Apprentissage par les swipes
+Les gestes tactiles et souris permettent également de faire défiler les cartes. Les raccourcis clavier sont disponibles : flèche gauche pour passer, flèche droite pour aimer, flèche bas pour ajouter à la liste, Entrée pour ouvrir les détails et Ctrl/Cmd + Z pour annuler la dernière action.
 
-- **Ce qui est appris.** Chaque Oui, Non ou ajout à la liste met à jour des signaux sur le type de pièce (pull, pantalon, t-shirt, baskets…), la matière, la couleur, la coupe, le style, la marque et les mots-clés du titre. Un ajout à la liste compte plus qu'un Oui ; les décisions récentes pèsent plus que les anciennes.
-- **Point de départ.** Les Pins Pinterest analysés (pièces visibles, mots-clés, requêtes de boutique) donnent un profil initial léger que quelques swipes suffisent à corriger : le classement est recalculé après chaque décision, et l'influence du profil appris augmente avec le nombre de décisions.
-- **Agent IA.** Toutes les trois décisions, l'agent est relancé ; la charge utile contient un résumé `learned` (à privilégier / à éviter) que le Worker traite en priorité. L'agent local utilise les mêmes préférences apprises.
-- **Analyse des Pins (version 5).** Pour chaque pièce, le Worker renvoie en plus des mots-clés de boutique et son importance (`hero` ou `supporting`), et pour chaque Pin des requêtes de boutique (`searchQueries`). Le classement s'en sert pour rapprocher les articles du tableau. Redéployer le Worker, puis relancer la synchronisation Pinterest pour réanalyser les Pins.
+Les articles déjà évalués ou enregistrés sont écartés du flux normal. Les filtres permettent de choisir une catégorie, un style, une saison et un budget maximum. Tu peux enregistrer plusieurs combinaisons de filtres et régler l'équilibre entre tes goûts connus et la découverte de nouvelles pièces.
 
-## Pertinence Pinterest et public masculin
+### Vêtements
 
-- **Public.** Une fiche est proposée si elle est confirmée homme (texte, déclaration vérifiée ou boutique marquée `audience: "men"` dans le répertoire) ou unisexe avec une pièce qui se porte côté homme. Les fiches femme, les pièces typiquement féminines (robe, jupe, lingerie…) et celles dont le public est inconnu ne sont jamais proposées. Le prédicat unique est `isMenFit` (`modules/audience.js`).
-- **Classement.** Chaque pièce est comparée aux Pins masculins analysés (pièces, couleurs, matières, coupes, détails) ; les trois meilleures correspondances forment un score de proximité qui s'ajoute au profil appris. Les couleurs, matières et coupes absentes d'une fiche sont lues dans son titre et sa description.
-- **Collecte.** Le collecteur visite en priorité les pages produit au rayon homme et proches des pièces du tableau, et relègue les rayons femme/enfant.
+Cette vue rassemble les articles ajoutés à ta liste. Tu peux rechercher une pièce par nom, marque, matière ou couleur, filtrer par catégorie, style, saison et prix, puis trier par date d'ajout, prix ou nom.
 
-## Le répertoire permanent des 236 enseignes
+Retirer un favori de la garde-robe ne crée pas de vote négatif dans le profil de style.
 
-Le fichier de référence et ses métadonnées (domaine, URL, famille, gamme de prix indicative, région, priorité et statut de collecte) sont dans [`data/merchant-directory.json`](./data/merchant-directory.json). La liste est éditoriale, adaptée au brief, et n'est pas un classement mondial par chiffre d'affaires. Sa présence ne garantit ni que la boutique accepte le crawl, ni qu'elle livre dans tous les pays, ni qu'elle expose des fiches exploitables.
+### Entraînement
 
-### Multi-marques & grands magasins (28)
+L'entraînement reprend le flux de découverte avec un réglage qui favorise davantage l'exploration. Il affiche aussi l'évolution des décisions Oui/Non et des articles enregistrés.
 
-Zalando · ASOS · ABOUT YOU · La Redoute · Galeries Lafayette · Printemps · 24S · Farfetch · SSENSE · END. · MR PORTER · Mytheresa · LUISAVIAROMA · YOOX · Browns · Selfridges · Harrods · Flannels · Nordstrom · Macy's · Urban Outfitters · NEXT · Marks & Spencer · Boozt · Care of Carl · L'Exception · Beige Habilleur · LYNDI
+Les inspirations Pinterest synchronisées ou ajoutées manuellement sont accessibles dans cette vue. Les cartes d'inspiration présentent les éléments visuels disponibles dans l'analyse : styles, couleurs, matières, coupes et pièces repérées. Un Pin peut être ouvert sur Pinterest, marqué comme vu ou utilisé pour démarrer une composition de tenue.
 
-### Accessible, casual & essentiels (34)
+### Tenues
 
-UNIQLO · Zara · BZB · Pull & Bear · Bershka · H&M · Mango Man · C&A · Celio · Jules · Kiabi · Primark · GAP · J.Crew · Abercrombie & Fitch · Hollister · American Eagle · Cotton On · PacSun · Selected Homme · Only & Sons · Jack & Jones · GU · MUJI · River Island · Industrie · The Iconic · Asphalte · Octobre Éditions · FAGUO · Olow · LePantalon · Montlimart · Armor Lux
+Les propositions de tenues partent exclusivement d'une inspiration Pinterest. DRESSOPP rapproche les pièces identifiées dans le Pin des produits du catalogue et des articles de ta garde-robe.
 
-### Premium, heritage & créateurs (50)
+Tu peux préciser les styles souhaités, la saison et le budget total du look. Les propositions tiennent également compte de tes préférences et de tes tailles lorsqu'elles sont renseignées. Tu peux donner un avis positif ou négatif, ouvrir le détail d'un look, enregistrer une tenue complète ou conserver certaines pièces.
 
-COS · ARKET · Massimo Dutti · Levi's · Carhartt WIP · Weekday · Charles Tyrwhitt · Lacoste · Fred Perry · Tommy Hilfiger · Polo Ralph Lauren · GANT · Barbour · Paul Smith · Sandro · AMI Paris · A.P.C. · Maison Kitsuné · Acne Studios · Our Legacy · Norse Projects · Folk · Universal Works · Percival · Edwin · Nudie Jeans · G-Star RAW · Diesel · Wrangler · Lee · Dickies · Filson · Rains · K-Way · Lothaire · Asket · Hast · BonneGueule · A Day's March · Homecore · Hircus · Officine Générale · Le Mont Saint Michel · NN07 · Samsøe Samsøe · mfpen · Wax London · Kestin · John Smedley · Story MFG
+Une composition nécessite au moins deux articles. Si les fiches disponibles ne permettent pas de remplir les critères, l'application affiche un état vide plutôt que d'inventer des produits.
 
-### Luxe & maisons de mode (28)
+### Profil
 
-Louis Vuitton · Dior · Gucci · Prada · Saint Laurent · Balenciaga · Bottega Veneta · Celine · Loewe · Givenchy · Burberry · Moncler · Canada Goose · Stone Island · C.P. Company · Loro Piana · Zegna · Brunello Cucinelli · Hermès · Maison Margiela · Jacquemus · Off-White · Valentino · Alexander McQueen · Kenzo · Studio Nicholson · LEMAIRE · Drake's
+Le profil est facultatif et sert à préciser :
 
-### Sneakers, chaussures & sport (29)
+- les tailles de hauts, bas, vestes, chaussures et sous-vêtements ;
+- les marques, couleurs, matières, coupes et styles appréciés ou à éviter ;
+- le niveau de confort et la coupe préférée ;
+- des notes personnelles.
 
-Nike · adidas · New Balance · Puma · ASICS · Converse · Courir · JD Sports · Foot Locker · SNIPES · Decathlon · Footpatrol · Size? · BSTN · Asphaltgold · Vans · Reebok · On · HOKA · Salomon · Mizuno · Saucony · VEJA · Autry · Golden Goose · Aigle · Gramicci · Patagonia · nanamica
+Ces informations affinent le classement et les propositions de tenues. Les tailles et notes personnelles ne sont pas envoyées au Worker IA distant.
 
-### Sous-vêtements & essentiels (17)
+### Réglages
 
-Calvin Klein · Undiz · Intimissimi Uomo · HOM · Sloggi · DIM · Hanes · Jockey · Björn Borg · SAXX · CDLP · Sunspel · Derek Rose · Zimmerli · Pump! · Falke · Skims
+Les réglages regroupent le suivi des synchronisations Pinterest et du catalogue, les options de partage communautaire, les informations sur les notes produit, les liens vers Meta Ad Library et les commandes de sauvegarde.
 
-### Streetwear & labels asiatiques (23)
+Tu peux exporter tes données au format JSON, restaurer une sauvegarde, importer un catalogue JSON ou supprimer toutes les données locales. L'application permet aussi d'ajouter manuellement un article ou une inspiration ; les formulaires demandent une confirmation du caractère masculin de la fiche ou de l'épingle.
 
-BAPE · Human Made · NEEDLES · COMME des GARÇONS · Yohji Yamamoto · ISSEY MIYAKE · Ader Error · thisisneverthat · MUSINSA · BEAMS · United Arrows · NANO universe · Urban Research · Stüssy · Supreme · Palace · Kith · Represent · Dover Street Market · Daily Paper · Patta · Arte Antwerp · Manastash
+## Apprentissage et classement
 
-### Seconde main & marketplaces mode (8)
+Le moteur local combine plusieurs familles de signaux :
 
-Vestiaire Collective · Vinted · Depop · Grailed · StockX · GOAT · The RealReal · eBay
+- les réponses Oui et Non ;
+- les articles enregistrés ;
+- les préférences du profil ;
+- les caractéristiques connues des produits : catégorie, marque, style, couleur, matière, coupe et motif ;
+- les signaux stylistiques extraits des Pins Pinterest ;
+- la saison, le budget, les tailles renseignées et la fraîcheur des fiches.
 
-### Amériques, Asie-Pacifique & autres marchés (19)
+Les décisions récentes ont davantage de poids que les anciennes. Un article enregistré constitue un signal positif distinct d'un simple Oui ; un Non contribue à éviter les pièces similaires. Les filtres et le niveau de découverte modifient ensuite l'ordre des propositions.
 
-Myntra · AJIO · Tata CLiQ Fashion · Renner · Dafiti · Reserva · Hering · Osklen · Liverpool · El Palacio de Hierro · Falabella · Ripley · Netshoes · Centauro · Country Road · Assembly Label · Academy Brand · David Jones · Riachuelo
+La sélection est réservée aux pièces confirmées pour homme ou aux pièces unisexes explicitement adaptées au vestiaire masculin. Les fiches féminines, les pièces typiquement féminines et les articles dont le public n'est pas confirmé sont exclus par la règle commune de `modules/audience.js`.
 
-## Collecte et qualité des fiches
+## État des données — vérifié le 27 novembre 2026
 
-Le collecteur `scripts/refresh-public-catalog.mjs` :
-- sélectionne un lot tournant dans le répertoire ; les boutiques prioritaires sont revisitées plus souvent ;
-- lit les sitemaps et les pages publiques en respectant `robots.txt` ;
-- limite les pages explorées et espace les requêtes par domaine ;
-- extrait les produits structurés Schema.org et, en secours, certaines métadonnées Open Graph ;
-- exige un nom, un prix en EUR, une URL produit HTTPS et une image HTTPS ;
-- déduplique les fiches par URL, conserve les références éditoriales et marque les fiches périmées ;
-- ne contourne ni authentification, ni CAPTCHA, ni blocage HTTP 401/403/429.
+Les compteurs ci-dessous sont un instantané des fichiers publiés, pas une promesse de disponibilité permanente. Le catalogue a été actualisé le **26 novembre 2026 à 17:46 UTC** ; le flux Pinterest a été synchronisé le **26 novembre 2026 à 19:54 UTC**.
 
-La synchronisation publie :
-- [`data/catalog-manifest.json`](./data/catalog-manifest.json) : index des pages et compteurs ;
-- `data/catalog-pages/page-XXXX.json` : pages de produits ;
-- [`data/catalog-meta.json`](./data/catalog-meta.json) : état des sources, dates, résultats et curseurs ;
-- [`data/catalog.json`](./data/catalog.json) : aperçu de compatibilité (première page).
+### Catalogue multi-boutiques
 
-Le prix et le stock correspondent au dernier contrôle. Le marchand reste la référence avant achat. Les descriptions, images et autres contenus restent soumis aux conditions des boutiques et aux droits applicables ; respecter `robots.txt` ne constitue pas une licence générale de réutilisation. Les pages inaccessibles ou dépourvues de données structurées sont signalées et non contournées.
+| Indicateur | État publié |
+|---|---:|
+| Enseignes dans le répertoire | **255** |
+| Fiches dans le manifeste | **489** |
+| Fiches publiques actives | **200** |
+| Références éditoriales | **16** |
+| Fiches périmées | **273** |
+| Enseignes ayant fourni des produits | **23** |
+| Enseignes examinées lors du dernier passage | **36** |
+| Pages consultées lors de ce passage | **275** |
+| Pagination | **5 pages**, jusqu'à 120 fiches par page |
 
-## Personal shopper IA intégré
+Le statut général de collecte est **partial**. Au dernier relevé, les résultats par enseigne comprenaient 23 sources productives, 75 bloquées, 140 sans données structurées exploitables et 17 indisponibles. Le répertoire est une liste de cibles de sourcing : sa présence ne signifie pas que chaque boutique fournit un flux exploitable.
 
-Le personal shopper local est **disponible sans configuration externe**. L'utilisateur le lance depuis le panneau dédié ; il croise les préférences, les votes Oui/Non, les favoris, les attributs des vêtements et les titres, tags et analyses visuelles des Pins Pinterest synchronisés ou ajoutés manuellement. Il diversifie les boutiques et les catégories, et explique ses recommandations à partir des informations présentes dans les fiches. Ce mode fonctionne dans le navigateur, sans clé API ni transfert de données. L'actualisation automatique est une option distincte, désactivée par défaut ; lorsqu'elle est activée, l'analyse peut être relancée après trois nouvelles décisions.
+Le répertoire est organisé en neuf familles :
 
-Le mode génératif Cloudflare Workers AI est déployé dans `workers/dressopp-agent/` et utilise le modèle `@cf/google/gemma-4-26b-a4b-it` ([documentation Cloudflare](https://developers.cloudflare.com/workers-ai/models/gemma-4-26b-a4b-it/)). Son endpoint est `https://dressopp-agent.asoppelsa.workers.dev` ; son état peut être contrôlé avec [l'endpoint de santé](https://dressopp-agent.asoppelsa.workers.dev/health). Les recommandations personnalisées à partir du profil, des votes et des fiches candidates ne sont envoyées à ce Worker qu'après accord explicite dans DRESSOPP. En cas d'erreur ou d'indisponibilité, le personal shopper local prend le relais.
+| Famille | Enseignes |
+|---|---:|
+| Multi-marques & grands magasins | 32 |
+| Accessible, casual & essentiels | 34 |
+| Premium, heritage & créateurs | 57 |
+| Luxe & maisons de mode | 33 |
+| Sneakers, chaussures & sport | 29 |
+| Sous-vêtements & essentiels | 17 |
+| Streetwear & labels asiatiques | 26 |
+| Seconde main & marketplaces mode | 8 |
+| Amériques, Asie-Pacifique & autres marchés | 19 |
+| **Total** | **255** |
 
-Le même Worker fournit une route privée d'analyse visuelle utilisée par le workflow Pinterest. Elle reçoit les images publiques du tableau, les analyse avec la capacité de vision de Gemma 4 et renvoie des caractéristiques normalisées. Cette tâche de synchronisation traite les références publiques du tableau ; elle ne transmet pas le profil personnel, les tailles ou les interactions de l'utilisateur.
+Le collecteur public exige une fiche avec un nom, un prix en euros, un lien produit HTTPS et une image HTTPS. Il lit les sitemaps et les données structurées Schema.org `Product` / `Offer`, avec certaines métadonnées Open Graph en secours. Les fiches publiques non revalidées au-delà de leur durée de fraîcheur sont marquées périmées et sortent de la découverte.
 
-L'agent classe au maximum 50 candidats déjà présents dans le catalogue. Il ne fabrique pas de produits et ne remplace pas le collecteur : les connecteurs et la collecte quotidienne trouvent les pièces réelles, l'agent choisit celles à afficher en premier. L'option d'actualisation automatique relance l'analyse locale après trois nouvelles décisions ; l'envoi à Cloudflare n'a lieu que si le consentement est actif.
+Les prix et stocks sont une photographie du dernier contrôle. Ils doivent être vérifiés sur le site marchand avant tout achat. Le robot respecte `robots.txt`, espace les requêtes et ne contourne ni authentification, ni CAPTCHA, ni blocage HTTP 401/403/429. Respecter `robots.txt` ne constitue pas une licence de réutilisation des contenus.
 
-## Pinterest — source stylistique prioritaire
+### Pinterest
 
-Le tableau `sopppx24/mode` est la référence d'inspiration prioritaire. Le workflow `.github/workflows/pinterest-daily.yml` synchronise le tableau via Pinterest API v5, puis déclenche l'analyse visuelle des images nouvelles, modifiées ou encore dépourvues d'analyse valide. Le flux utilise les autorisations `boards:read` et `pins:read` et le mécanisme Client Credentials pour les ressources publiques ([documentation officielle Pinterest](https://dev.pinterest.com/docs/getting-started/set-up-authentication-and-authorization/)). Le tableau doit être public pour le mécanisme de publication dans ce dépôt public. Les tableaux secrets nécessitent une autorisation utilisateur adaptée et un stockage privé : aucun Pin privé ne doit être publié ici.
+Le tableau de référence est [sopppx24 / mode](https://fr.pinterest.com/sopppx24/mode/). Le flux publié dans `data/pinterest-pins.json` contient **60 épingles** et confirme que le tableau est public. **59 épingles disposent d'une analyse visuelle version 5** lors de la dernière synchronisation. 55 sont classées comme mode masculine ; les épingles unisexes, ambiguës ou non vestimentaires ne sont pas considérées comme des inspirations masculines confirmées.
 
-**État vérifié au 12 novembre 2026 :** l'API confirme `privacy: PUBLIC` pour le tableau `mode`. Le fichier `data/pinterest-pins.json` contient **36 Pins**, chacun muni d'une analyse visuelle valide (version 3), soit **36/36 images analysées**. 34 Pins sont reconnus comme mode masculine ; 1 Pin unisexe et 1 Pin non vestimentaire sont écartés. Dernière synchronisation : `2026-11-12T18:38:51.901Z` (UTC).
+La synchronisation utilise l'API officielle Pinterest v5. Le Worker Cloudflare analyse les images publiques accessibles sur le CDN Pinterest et renvoie des éléments structurés : public, résumé, styles, couleurs, matières, coupes, motifs, pièces visibles, détails, silhouette, superpositions, saisons et formules de tenue.
 
-### Analyse visuelle automatique
+Ces analyses alimentent le moteur de découverte et les rapprochements entre les inspirations et les produits. Un Pin reste une source d'inspiration : il n'est jamais transformé en fiche marchande, prix ou lien produit fictif.
 
-Le workflow GitHub Actions envoie les images publiques au Worker Cloudflare `dressopp-agent`, route privée `/analyze-pins`. L'accès à cette route est protégé par le secret partagé `PINTEREST_SYNC_TOKEN`, stocké dans les secrets GitHub Actions et dans les secrets du Worker ; sa valeur ne doit jamais être ajoutée au dépôt. Le Worker n'accepte que les images HTTPS du domaine `i.pinimg.com`, contrôle les redirections et limite le type et la taille des images.
+### Mode démo du board
 
-Le modèle Gemma 4 renvoie un résumé descriptif ainsi que des listes normalisées de styles, couleurs, matières, coupes et motifs, avec un indicateur de confiance. Les signaux sont enregistrés dans le champ technique `visualAnalysis` de chaque Pin. Ils alimentent les correspondances entre les tenues Pinterest, la garde-robe et les produits du catalogue, ainsi que les inspirations transmises au personal shopper distant lorsque l'utilisateur a donné son consentement.
+La page [board.html](https://sopp24.github.io/DRESSOPP/board.html) contient trois vues interactives intégrées : Découvrir sur ordinateur, Entraînement sur mobile et Tenues sur mobile.
 
-Les caractéristiques issues de la vision ne sont pas ajoutées aux tags affichés sur les cartes Pinterest et ne créent pas de nouvelle rubrique ou de réglage dans l'application. Les analyses sont réutilisées tant que l'URL de l'image ne change pas ; seules les images nouvelles, modifiées ou en échec sont renvoyées au modèle lors des synchronisations suivantes. Une image non vestimentaire peut être classée comme telle et ne fournit alors aucun signal de mode.
+La démonstration repose sur deux fichiers fixes :
 
-Cette analyse porte sur les images du tableau public et ses métadonnées sont conservées dans le dépôt public. Elle ne transforme jamais un Pin en fiche commerciale et ne fabrique ni marque, ni prix, ni lien produit.
+- `data/demo-catalog.json` : **10 articles**, 9 marques et 10 catégories ;
+- `data/demo-pinterest-pins.json` : **6 inspirations**.
 
-La configuration et les étapes d'activation sont détaillées dans [`docs/PINTEREST.md`](./docs/PINTEREST.md).
+Le mode démo charge uniquement ces deux fichiers : il ne consulte pas le manifeste du catalogue réel, le répertoire des boutiques ni le flux Pinterest réel. Les vues embarquées n'appellent pas le stockage personnel IndexedDB/localStorage ; les votes, favoris et autres essais restent en mémoire pendant la session. Les préférences et données du dressing réel ne sont donc pas modifiées.
 
-## Zalando et comptes personnels
+Les exports du board sont conservés à la racine du dépôt :
 
-Zalando est une source prioritaire du répertoire, mais le dépôt ne contient actuellement ni connecteur partenaire Zalando ni connexion à un compte client. La dernière collecte enregistrée a signalé le domaine comme bloqué/inaccessible au robot. DRESSOPP ne doit jamais demander le mot de passe Zalando, automatiser une connexion en contournant les protections ou prétendre avoir accès à une wishlist qui n'a pas été fournie. Un éventuel import manuel nécessitera un format compatible à définir ; aucun importateur de wishlist Zalando dédié n'est actuellement implémenté.
+- `board.pdf` : PDF de présentation ;
+- `board-print-a3.pdf` : version destinée à l'impression.
 
-## Avis marchands, popularité et publicités
+Les boutons du header de `board.html` ouvrent ces fichiers. Le workflow de publication préserve chaque PDF déjà présent ; il ne génère que les fichiers manquants.
 
-Les plateformes citées dans le brief (Trustpilot, Google Avis clients, Avis Vérifiés, Trusted Shops, Custplace) ne constituent pas un flux libre et universel. **Aucun connecteur direct vers ces plateformes n'est actuellement implémenté.** Le collecteur peut lire une note de produit lorsqu'elle apparaît dans les données structurées Schema.org de la fiche ; il renseigne séparément `productRating` et laisse `merchantRating` vide pour les fiches importées du Web public. Dans l'instantané du 12 novembre 2026, 43 fiches sur 211 ont une note de produit et aucune n'a une note de marchand. Une donnée de réputation future ne sera utilisable que si son origine, sa date, sa portée et les droits d'accès sont vérifiables.
+## Personal shopper IA
 
-Meta Ad Library peut aider à analyser certaines publicités publiques, mais **aucune intégration de cette source n'est actuellement implémentée**. Elle ne permet pas de reconstruire le fil publicitaire personnalisé d'un compte Instagram. Une publicité est un signal de visibilité, pas une preuve de qualité, de stock ou de préférence personnelle.
+### Mode local
 
-## Vie privée et données
+Le personal shopper local fonctionne dans le navigateur, sans clé API ni transfert de données. Il croise les filtres, le profil, les votes, les articles enregistrés, les caractéristiques des produits et les analyses Pinterest disponibles. Il classe uniquement des produits déjà présents dans le catalogue et peut expliquer les correspondances retenues.
 
-Par défaut, le profil, les tailles, les votes, les préférences, la garde-robe et les interactions sont stockés dans IndexedDB, avec un repli localStorage. Le classement et le personal shopper local ne transmettent pas ces données. **Si l'utilisateur donne son consentement au mode Cloudflare**, un sous-ensemble de préférences générales, filtres, retours récents et résumés de 50 fiches candidates maximum est transmis au Worker ; les tailles exactes, notes privées, e-mail, URL et images ne font pas partie du payload décrit par les tests. Le consentement peut être retiré.
+### Mode Cloudflare facultatif
 
-Le partage communautaire est actuellement désactivé et non configuré dans `data/community-config.json`. S'il est activé ultérieurement, DRESSOPP transmet des étiquettes de goûts et des identifiants hachés de fiches publiques à Firebase. Ces identifiants sont pseudonymisés, pas anonymes au sens strict ; les règles décrites dans `docs/COMMUNITY.md` permettent aux utilisateurs authentifiés de lire les profils communautaires. Lire cette documentation et configurer les règles Firestore avant toute activation.
+Le dépôt contient un Worker Cloudflare configuré avec le modèle `@cf/google/gemma-4-26b-a4b-it`. Son endpoint est défini dans `data/ai-agent-config.json` :
 
-Le dépôt est public : seules des données de sources publiques doivent y être publiées. Le flux Pinterest contient les Pins du tableau confirmé public `sopppx24/mode` ainsi que leurs métadonnées d'analyse visuelle (`visualAnalysis`) ; ces métadonnées sont donc elles aussi publiques. Les images sont analysées côté Worker à partir du CDN public Pinterest. Les interactions, tailles, notes privées et préférences personnelles restent dans IndexedDB ; elles ne sont pas incluses dans le flux Pinterest. Aucun jeton, identifiant ou mot de passe Pinterest/Zalando ne doit être committé.
+`https://dressopp-agent.asoppelsa.workers.dev`
 
-## Automatisations GitHub
+Le mode distant ne fonctionne qu'après consentement explicite dans le panneau du personal shopper. Le navigateur transmet alors des filtres, des préférences générales, un résumé des retours récents et jusqu'à 50 fiches candidates. Les tailles exactes, notes personnelles, adresses e-mail, URL de produits et images ne font pas partie du payload de recommandation. Le Worker classe les produits transmis : il ne fait pas de recherche Internet autonome et ne crée pas de nouveaux articles.
 
-- Catalogue : [workflow catalogue](https://github.com/sopp24/DRESSOPP/actions/workflows/refresh-public-catalog.yml), planifié chaque jour à 08 h 17 (Europe/Paris).
-- Pinterest : [workflow Pinterest](https://github.com/sopp24/DRESSOPP/actions/workflows/pinterest-daily.yml), planifié chaque jour à 12 h (Europe/Paris). Il synchronise les Pins publics, analyse uniquement les images à enrichir via Cloudflare Workers AI, puis commit le flux JSON actualisé.
-- Chaque mise à jour du catalogue republie le site GitHub Pages après la génération des pages.
-- Les horaires GitHub Actions sont des heures cibles et peuvent être retardés.
+L'option d'actualisation automatique est distincte ; lorsqu'elle est activée, l'agent peut être relancé après trois nouvelles décisions. Si le Worker est indisponible ou si le consentement n'est pas donné, le classement local reste disponible.
 
-Le dépôt étant public et les workflows utilisant `ubuntu-latest`, les runners standard GitHub Actions pour dépôts publics sont gratuits selon la documentation GitHub ([référence des runners](https://docs.github.com/fr/actions/reference/runners/github-hosted-runners)). GitHub Pages n'est toutefois pas destiné ni autorisé comme hébergement gratuit d'une activité en ligne, d'un site e-commerce ou d'un SaaS ([limites officielles de GitHub Pages](https://docs.github.com/en/pages/getting-started-with-github-pages/github-pages-limits)). Si DRESSOPP devient principalement un service commercial, transactionnel ou SaaS, il faudra donc migrer vers un hébergement adapté avant cette évolution.
+Le même Worker fournit la route serveur d'analyse des images Pinterest. Les routes principales sont `/health`, `/recommend` et `/analyze-pins`.
 
-## Développement
+Guide : [docs/AI-AGENT.md](./docs/AI-AGENT.md).
 
-- Site : https://sopp24.github.io/DRESSOPP/
-- Prérequis pour les tests et le Worker : Node.js 22 (version utilisée dans les workflows GitHub Actions).
-- Lancer localement : `python3 -m http.server 8000`, puis ouvrir http://localhost:8000.
-- Tests : `npm test` (vérifications de syntaxe JavaScript puis suite de tests Node.js).
+## Confidentialité et stockage
 
-### Structure
+DRESSOPP ne demande pas de compte, de mot de passe ou d'adresse e-mail pour les fonctions principales.
 
-- `app.js` : interface, swipe, vues et chargement progressif.
-- `modules/engine.js` : filtres, apprentissage et classement local (le tableau Pinterest pèse dans le score).
-- `modules/audience.js` : règle unique « homme ou unisexe adapté » (`isMenFit`), boutiques 100 % homme.
-- `modules/agent.js` : préparation et validation des recommandations IA.
-- `modules/outfits.js` : extraction de signaux stylistiques des Pins, proximité produit/Pin (`pinterestAffinity`) et associations de tenues.
-- `modules/store.js` : stockage local.
-- `scripts/refresh-public-catalog.mjs` : collecte et pagination des produits publics autorisés.
-- `scripts/sync-pinterest.mjs` : synchronisation Pinterest officielle.
-- `data/merchant-directory.json` : répertoire éditorial des 236 enseignes.
-- `data/public-sources.json` : paramètres de rotation (36 enseignes par exécution, dont 12 emplacements prioritaires).
-- `data/catalog-seeds.json` : références produits éditoriales conservées lors des collectes.
-- `data/catalog-manifest.json` et `data/catalog-pages/` : manifeste et pages du catalogue.
-- `data/pinterest-pins.json` : instantané du tableau Pinterest public, avec les Pins synchronisés et leurs analyses visuelles dans `visualAnalysis`.
-- `workers/dressopp-agent/` : code du Worker Cloudflare du mode génératif.
-- `docs/SOURCES.md`, `docs/AI-AGENT.md`, `docs/PINTEREST.md`, `docs/COMMUNITY.md` et `docs/DEPLOYMENT.md` : documentation technique détaillée.
-- `.github/workflows/refresh-public-catalog.yml` : actualisation quotidienne du catalogue et déclenchement de Pages si les données changent.
-- `.github/workflows/pinterest-daily.yml` : synchronisation Pinterest lorsque les secrets et autorisations sont configurés.
-- `.github/workflows/deploy-pages.yml` : tests et déploiement GitHub Pages à chaque push sur `main` ou lancement manuel.
+- Le profil, les votes, les filtres, les favoris, les tenues et les inspirations manuelles sont conservés sur l'appareil, principalement dans **IndexedDB**, avec un repli dans **localStorage**.
+- Les sauvegardes sont exportées en JSON et peuvent être réimportées depuis les paramètres.
+- Les images importées manuellement restent dans le stockage local du navigateur.
+- Le partage communautaire Firebase est **désactivé et non configuré** dans la version publiée (`enabled: false`). Il nécessite une configuration Firestore, des règles de sécurité et un consentement explicite.
+- Si le partage communautaire est activé ultérieurement, il transmet des étiquettes générales de goûts et des identifiants hachés de fiches publiques. Ces identifiants sont pseudonymisés, pas anonymes ni chiffrés.
+- Le flux Pinterest et le catalogue sont publiés dans un dépôt GitHub public. Le contenu et les métadonnées de ces fichiers ne sont donc pas privés.
+- Les secrets Pinterest et Cloudflare doivent rester dans les secrets GitHub Actions et Cloudflare ; ils ne doivent jamais être committés.
+
+L'application ne peut pas lire ton compte Zalando, ta wishlist personnelle ou ton fil Instagram publicitaire personnalisé. La section Meta Ad Library ouvre une bibliothèque de publicités publiques ; elle ne constitue pas un collecteur automatique. Les notes de produit, lorsqu'elles existent dans une fiche source, restent distinctes de la fiabilité du marchand : aucun connecteur Trustpilot, Google Avis, Avis Vérifiés, Trusted Shops ou Custplace n'est intégré.
+
+Politique complète : [privacy.html](https://sopp24.github.io/DRESSOPP/privacy.html).
+
+## PWA, responsive et interface
+
+DRESSOPP est une application web statique conçue pour ordinateur, tablette et mobile :
+
+- le manifeste `manifest.webmanifest` décrit l'application installable en mode autonome ;
+- le service worker `sw.js` met en cache les ressources essentielles, les polices, les icônes et la première page du catalogue ;
+- les réponses GET du même domaine sont mises en cache après chargement réussi, avec recours au cache lorsqu'une ressource n'est plus accessible sur le réseau ;
+- l'interface utilise Poppins et une direction visuelle sombre ;
+- les interactions de swipe, les boutons et la navigation mobile sont testés sur plusieurs formats d'écran.
+
+Le cache hors ligne porte sur les ressources déjà mises en cache ; il ne garantit pas que toutes les pages du catalogue, les images distantes ou les fonctions nécessitant une API soient disponibles sans connexion.
+
+## Automatisations GitHub Actions
+
+| Workflow | Déclenchement | Rôle |
+|---|---|---|
+| [Deploy DRESSOPP to GitHub Pages](https://github.com/sopp24/DRESSOPP/actions/workflows/deploy-pages.yml) | Push sur `main` ou lancement manuel | Lance `npm test`, installe Chromium, génère les PDF manquants si besoin, publie le site et déclenche le contrôle visuel responsive. |
+| [Catalogue public multi-sources](https://github.com/sopp24/DRESSOPP/actions/workflows/refresh-public-catalog.yml) | Chaque jour à **08:17** (Europe/Paris), certains changements de fichiers ou lancement manuel | Examine un lot de 36 enseignes : 12 priorités et 24 en rotation. Met à jour les pages, le manifeste et les métadonnées du catalogue si des données changent. |
+| [Synchronisation Pinterest quotidienne](https://github.com/sopp24/DRESSOPP/actions/workflows/pinterest-daily.yml) | Chaque jour à **12:00** (Europe/Paris), changement du workflow ou lancement manuel | Synchronise le tableau public via Pinterest API v5, enrichit les images éligibles avec l'analyse visuelle et publie le flux si celui-ci change. |
+| [Responsive QA (pre-merge)](https://github.com/sopp24/DRESSOPP/actions/workflows/responsive-qa.yml) | Pull request vers `main`, branche de QA dédiée ou lancement manuel | Lance les tests et vérifie les mises en page et interactions dans Chromium. |
+
+Les horaires cron sont des heures cibles : GitHub Actions peut retarder le démarrage. Le contrôle visuel après déploiement teste six formats d'écran et les interactions essentielles ; les captures et rapports sont publiés comme artefacts de workflow.
+
+### Secrets nécessaires aux automatisations
+
+Pour synchroniser Pinterest, le workflow utilise les secrets GitHub Actions suivants :
+
+- `PINTEREST_APP_ID` et `PINTEREST_APP_SECRET`, ou un `PINTEREST_ACCESS_TOKEN` ;
+- `PINTEREST_SYNC_TOKEN`, qui doit correspondre au secret configuré sur le Worker Cloudflare.
+
+Le nom du tableau est `mode`. Les scopes publics utilisés sont `boards:read` et `pins:read`. Le workflow n'a pas vocation à publier des tableaux privés dans ce dépôt public.
+
+Le collecteur de catalogue public n'utilise pas d'identifiant de compte marchand ; il lit uniquement les pages accessibles conformément aux règles d'accès. Le partage Firebase reste désactivé tant que `data/community-config.json` n'est pas configuré.
+
+## Développement local
+
+### Prérequis
+
+- Node.js **22** pour exécuter les tests et les workflows ;
+- Python 3 ou un autre serveur HTTP statique pour ouvrir le site localement.
+
+Le dépôt utilise des modules JavaScript natifs et ne nécessite pas d'étape de compilation pour lancer l'application.
+
+### Lancer le site
+
+Depuis la racine du dépôt :
+
+```bash
+python3 -m http.server 8000
+```
+
+Ouvre ensuite [http://localhost:8000](http://localhost:8000).
+
+### Lancer les tests
+
+```bash
+npm test
+```
+
+La commande vérifie la syntaxe des modules principaux et du Worker, puis lance la suite de tests Node.js. Les tests couvrent notamment le flux de découverte, l'apprentissage, l'éligibilité masculine, les tenues Pinterest, le stockage local, les fonctions de démonstration, les PDF et les workflows.
+
+### Contrôle visuel responsive
+
+Le script `scripts/visual-qa.mjs` utilise Playwright/Chromium pour ouvrir les vues principales, vérifier les dimensions, débordements, interactions tactiles et captures. Les workflows installent Playwright et Chromium à la volée ; aucun dossier `node_modules` n'est nécessaire dans le dépôt pour publier le site.
+
+### Déployer le Worker Cloudflare
+
+Depuis la racine du dépôt, avec un compte Cloudflare autorisé :
+
+```bash
+npx wrangler deploy --config workers/dressopp-agent/wrangler.jsonc
+```
+
+Les secrets du Worker doivent être configurés séparément sur Cloudflare. Le guide de déploiement se trouve dans [docs/DEPLOYMENT.md](./docs/DEPLOYMENT.md).
+
+## Architecture du dépôt
+
+| Chemin | Rôle |
+|---|---|
+| `index.html` | Shell de l'application, navigation, zones d'affichage et liens globaux. |
+| `app.js` | Rendu des vues, interactions, formulaires, chargement du catalogue et orchestration des modules. |
+| `styles.css` | Direction visuelle, cartes, animations, responsive et navigation mobile. |
+| `modules/audience.js` | Règle commune d'éligibilité homme / unisexe adapté. |
+| `modules/engine.js` | État initial, filtres, préférences apprises, score et classement des produits. |
+| `modules/agent.js` | Agent local, préparation des données et appel facultatif au Worker Cloudflare. |
+| `modules/outfits.js` | Lecture des signaux Pinterest, rapprochements produits/épingles et composition des tenues. |
+| `modules/store.js` | Persistance IndexedDB et repli localStorage. |
+| `modules/community.js` | Construction et synchronisation facultative des signaux communautaires Firebase. |
+| `modules/integrations.js` | Informations sur la persistance et les intégrations référencées dans l'interface. |
+| `data/merchant-directory.json` | Répertoire des 255 enseignes candidates. |
+| `data/public-sources.json` | Taille des lots et paramètres de rotation du collecteur. |
+| `data/catalog-manifest.json` | Compteurs, pagination et index des pages produits. |
+| `data/catalog-pages/` | Catalogue multi-pages (120 fiches maximum par page). |
+| `data/catalog.json` | Aperçu de compatibilité de la première page. |
+| `data/catalog-meta.json` | État des collectes, dates, résultats par enseigne et curseurs de rotation. |
+| `data/catalog-seeds.json` | Références éditoriales conservées par le collecteur. |
+| `data/pinterest-pins.json` | Flux public des Pins synchronisés et de leurs analyses visuelles. |
+| `data/demo-catalog.json` / `data/demo-pinterest-pins.json` | Jeux fixes du board de démonstration. |
+| `data/ai-agent-config.json` | Activation et endpoint du Worker de recommandation. |
+| `data/community-config.json` | Configuration Firebase facultative (désactivée dans la version publiée). |
+| `assets/product-images/` | Images produit référencées localement par le catalogue. |
+| `workers/dressopp-agent/` | Worker Cloudflare pour les recommandations et l'analyse visuelle Pinterest. |
+| `scripts/refresh-public-catalog.mjs` | Collecte tournante des fiches produits publiques. |
+| `scripts/sync-pinterest.mjs` | Synchronisation Pinterest et enrichissement des analyses. |
+| `scripts/generate-board-pdf.mjs` | Génération des PDF A3 lorsque les fichiers correspondants ne sont pas déjà fournis. |
+| `scripts/visual-qa.mjs` | Contrôle visuel responsive et interactions avec Playwright. |
+| `tests/` | Tests unitaires, règles de classement, confidentialité et intégrations. |
+| `docs/` | Guides détaillés sur les sources, l'agent IA, Pinterest, la communauté et le déploiement. |
+
+### Documentation complémentaire
+
+- [Sources et alimentation du catalogue](./docs/SOURCES.md)
+- [Personal shopper IA](./docs/AI-AGENT.md)
+- [Pinterest et analyse visuelle](./docs/PINTEREST.md)
+- [Partage communautaire Firebase](./docs/COMMUNITY.md)
+- [Déploiement](./docs/DEPLOYMENT.md)
+
+Les compteurs et dates de ce README sont issus des fichiers JSON publiés au 27 novembre 2026. Pour les chiffres les plus récents, les sources de vérité sont `data/catalog-manifest.json`, `data/catalog-meta.json`, `data/merchant-directory.json` et `data/pinterest-pins.json`. Certains guides techniques peuvent conserver des exemples ou compteurs historiques ; les données JSON publiées font foi pour l'état courant.
