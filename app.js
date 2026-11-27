@@ -496,6 +496,32 @@ function renderEmptyProducts(training) {
     '<button class="button-primary" type="button" data-action="add-product">Ajouter un article</button>' +
     '<button class="button-secondary" type="button" data-action="import-catalog">Importer un catalogue JSON</button></div></div>';
 }
+function showcaseDemoComplete() {
+  if (!showcaseView || !state || !Array.isArray(state.products) || !state.products.length) return false;
+  const reviewedIds = new Set();
+  const collectReviewed = function(items) {
+    (Array.isArray(items) ? items : []).forEach(function(item) {
+      if (item && item.productId != null) reviewedIds.add(String(item.productId));
+    });
+  };
+  collectReviewed(state.interactions && state.interactions.likes);
+  collectReviewed(state.interactions && state.interactions.dislikes);
+  collectReviewed(state.interactions && state.interactions.saves);
+  collectReviewed(state.likedProducts);
+  return state.products.every(function(product) {
+    return product && reviewedIds.has(String(product.id));
+  });
+}
+function renderShowcaseDemoComplete() {
+  const count = state && Array.isArray(state.products) ? state.products.length : 10;
+  return '<section class="empty-state demo-complete-state" role="status" aria-live="polite">' +
+    '<div class="empty-mark" aria-hidden="true">✓</div>' +
+    '<span class="eyebrow">DÉMO TERMINÉE</span>' +
+    '<h2>Tu as parcouru les ' + count + ' articles de la démo !</h2>' +
+    '<p>Tu es arrivé au bout de cette version de démonstration. Tes choix sont restés limités à cette session : ton dressing réel n’a pas été modifié.</p>' +
+    '<div class="empty-actions"><button class="button-primary" type="button" data-action="restart-demo">Recommencer la démo</button></div>' +
+    '</section>';
+}
 function productColorSwatch(value) {
   const key = String(value || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
   const palette = {
@@ -794,7 +820,7 @@ function renderDiscover(training) {
   const appToolbar = !training
     ? '<div class="discovery-app-toolbar"><div class="discovery-app-controls">' + renderFilterBar(false) + '</div></div>'
     : "";
-  const body = products.length ? renderDeckCard(products[0],training) : renderEmptyProducts(training);
+  const body = products.length ? renderDeckCard(products[0],training) : (showcaseDemoComplete() ? renderShowcaseDemoComplete() : renderEmptyProducts(training));
   const trainingFilter = training ? renderFilterBar(true) : "";
   const trainingExtras = training
     ? '<div class="deck-topline"><span><strong>Exploration active</strong> · ' + products.length + ' article(s) à découvrir</span><span>Nouveauté prioritaire</span></div>' +
@@ -1735,7 +1761,8 @@ function handleClick(event) {
   if (["add-product","add-inspiration","details","show-outfit","open-saved-outfit"].includes(action)) {
     modalReturnFocus = document.activeElement;
   }
-  if (action === "run-ai-agent") runAiAgent(true);
+  if (action === "restart-demo" && showcaseView) window.location.reload();
+  else if (action === "run-ai-agent") runAiAgent(true);
   else if (action === "add-product") openProductForm();
   else if (action === "add-inspiration") openInspirationForm();
   else if (action === "close-modal") closeModal(); else if (action === "details") openProductDetails(actionButton.dataset.id);
