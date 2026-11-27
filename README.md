@@ -14,8 +14,10 @@ Son principe : **tu découvres une pièce, tu réponds Oui, Non ou tu l'ajoutes 
 |---|---|
 | Application | [sopp24.github.io/DRESSOPP](https://sopp24.github.io/DRESSOPP/) |
 | Board de présentation interactif | [board.html](https://sopp24.github.io/DRESSOPP/board.html) |
-| PDF A3 | [board.pdf](https://sopp24.github.io/DRESSOPP/board.pdf) |
-| PDF imprimeur | [board-print-a3.pdf](https://sopp24.github.io/DRESSOPP/board-print-a3.pdf) |
+| PDF A3 présentation | [DRESSOPP-Board-A3.pdf](https://sopp24.github.io/DRESSOPP/DRESSOPP-Board-A3.pdf) |
+| PDF imprimeur SRA3 | [DRESSOPP-Board-Imprimeur-SRA3.pdf](https://sopp24.github.io/DRESSOPP/DRESSOPP-Board-Imprimeur-SRA3.pdf) |
+
+Le PDF imprimeur est fourni sur une feuille SRA3 (450 × 320 mm), avec un format fini A3 paysage (420 × 297 mm), 3 mm de fond perdu sur les quatre côtés, traits de coupe et boîtes PDF MediaBox / BleedBox / TrimBox. Les fichiers sont exportés depuis Chromium / Playwright à l'échelle 1, avec les fonds activés, sans réduction de résolution des images source. Les couleurs restent en RVB ; le profil CMJN doit être choisi par l'imprimeur selon sa presse et son papier.
 | Politique de confidentialité | [privacy.html](https://sopp24.github.io/DRESSOPP/privacy.html) |
 | Dépôt GitHub | [sopp24/DRESSOPP](https://github.com/sopp24/DRESSOPP) |
 
