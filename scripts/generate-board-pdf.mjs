@@ -113,12 +113,12 @@ async function verifyBoardTypography(page) {
     };
   });
   const required = [
-    ["desktopTitle", 16],
-    ["desktopSubtitle", 13],
-    ["trainingTitle", 16],
-    ["trainingSubtitle", 13],
-    ["outfitsTitle", 16],
-    ["outfitsSubtitle", 13]
+    ["desktopTitle", 18],
+    ["desktopSubtitle", 15],
+    ["trainingTitle", 18],
+    ["trainingSubtitle", 15],
+    ["outfitsTitle", 18],
+    ["outfitsSubtitle", 15]
   ];
   for (const [key, minimum] of required) {
     const item = metrics[key];
@@ -126,7 +126,7 @@ async function verifyBoardTypography(page) {
       throw new Error("Libellé trop petit ou tronqué dans le PDF : " + key + " " + JSON.stringify(item));
     }
   }
-  console.log("Board typography verified: three feature titles >=16px and subtitles >=13px.", metrics);
+  console.log("Board typography verified: three feature titles >=18px and subtitles >=15px.", metrics);
 }
 
 async function verifyPrintGeometry(page) {
