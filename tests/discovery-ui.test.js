@@ -374,7 +374,7 @@ test("les aperçus du board ne chargent que les fichiers démo et ne paginent ja
   assert.ok(app.includes("state.products = state.products.slice(0, 10);"));
   assert.ok(app.includes('state.settings.objective = "Tout";'));
   assert.ok(app.includes('state.settings.season = "Toute saison";'));
-  assert.ok(app.includes('demoBadge.textContent = "MODE DÉMO · 10 ARTICLES FIXES"'));
+  assert.ok(!app.includes("showcase-demo-badge"));
 });
 
 
