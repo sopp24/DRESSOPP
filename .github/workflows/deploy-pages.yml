@@ -11,7 +11,7 @@ permissions:
   id-token: write
 
 concurrency:
-  group: dressopp-pages-pdf
+  group: dressopp-board-pdf-generation
   cancel-in-progress: false
 
 jobs:
