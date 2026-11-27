@@ -54,7 +54,7 @@ body{padding:0}
 .browser-dot{width:7px;height:7px;border-radius:50%;background:#ef5b63}
 .browser-dot:nth-child(2){background:#f0c44d}.browser-dot:nth-child(3){background:#37c969}
 .browser-url{position:absolute;left:50%;transform:translateX(-50%);width:55%;padding:4px 12px;overflow:hidden;border-radius:999px;background:#090708;color:#a9a0a3;font:8px Arial,sans-serif;text-align:center;white-space:nowrap}
-.browser-screen{position:absolute;top:28px;left:0;display:block;width:950px;height:950px;transform:scale(var(--preview-scale,.48));transform-origin:top left;border:0;background:#080607}
+.browser-screen{position:absolute;top:28px;left:0;display:block;width:1200px;height:1152px;transform:scale(var(--preview-scale,.48));transform-origin:top left;border:0;background:#080607}
 .phone-area{display:flex;flex-direction:column;min-width:0;min-height:0}
 .phone-labels{display:grid;grid-template-columns:1fr 1fr;gap:3.2%;min-height:34px}
 .phone-labels strong{font-size:11px}
@@ -94,7 +94,7 @@ body{padding:0}
  .screen-label-main strong,.phone-labels strong{font-size:10px}
  .screen-label-main small,.phone-labels small{font-size:10px}
  .browser-shell{flex:none;width:100%;height:390px;margin-top:8px}
- .browser-screen{width:950px;height:950px}
+ .browser-screen{width:1200px;height:1152px}
  .phone-area{height:auto;min-height:0}
  .phone-labels{gap:10px;margin-bottom:8px}
  .phone-row{gap:10px;align-items:start}
@@ -210,11 +210,21 @@ body{padding:0}
 document.querySelectorAll(".browser-shell, .phone-screen").forEach(function(container) {
   const frame = container.querySelector("iframe");
   if (!frame) return;
-  const viewportWidth = container.classList.contains("browser-shell") ? 950 : 390;
+  const desktopPreview = container.classList.contains("browser-shell");
+  const viewportWidth = desktopPreview ? 1200 : 390;
+  const viewportHeight = desktopPreview ? 1152 : 844;
+  const topBarHeight = desktopPreview ? 28 : 0;
   const fit = function() {
     const availableWidth = container.clientWidth;
-    if (availableWidth <= 0) return;
-    const scale = Math.min(1, availableWidth / viewportWidth);
+    const availableHeight = Math.max(0, container.clientHeight - topBarHeight);
+    if (availableWidth <= 0 || availableHeight <= 0) return;
+    const scale = desktopPreview
+      ? Math.min(1, availableWidth / viewportWidth, availableHeight / viewportHeight)
+      : Math.min(1, availableWidth / viewportWidth);
+    const renderedWidth = viewportWidth * scale;
+    const renderedHeight = viewportHeight * scale;
+    frame.style.left = Math.max(0, (availableWidth - renderedWidth) / 2) + "px";
+    frame.style.top = topBarHeight + Math.max(0, (availableHeight - renderedHeight) / 2) + "px";
     frame.style.setProperty("--preview-scale", String(scale));
   };
   fit();
