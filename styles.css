@@ -3682,11 +3682,11 @@ body.showcase-embed #save-status { display:none !important; }
     gap: 12px;
   }
   body.showcase-embed:not(.showcase-embed--mobile) .discovery-app-toolbar {
-    width: min(100%, 600px);
+    width: 100%;
     min-height: 38px;
-    align-self: center;
+    align-self: stretch;
     justify-content: flex-end;
-    margin: 0 auto;
+    margin: 0;
   }
   body.showcase-embed:not(.showcase-embed--mobile) .discovery-app-controls {
     justify-content: flex-end;
