@@ -10,8 +10,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="./styles.css">
-<style>
-@font-face{font-family:Poppins;src:url("./assets/fonts/poppins-latin-400-normal.woff2") format("woff2");font-weight:400;font-display:swap}
+<style>@font-face{font-family:Poppins;src:url("./assets/fonts/poppins-latin-400-normal.woff2") format("woff2");font-weight:400;font-display:swap}
 @font-face{font-family:Poppins;src:url("./assets/fonts/poppins-latin-700-normal.woff2") format("woff2");font-weight:700;font-display:swap}
 @font-face{font-family:Poppins;src:url("./assets/fonts/poppins-latin-800-normal.woff2") format("woff2");font-weight:800;font-display:swap}
 :root{--red:#ff1717;--ink:#080808;--white:#f7f7f7;--muted:#b3b3b3}
@@ -21,101 +20,95 @@ body{padding:0}
 .board-toolbar{position:sticky;z-index:10;top:0;display:flex;justify-content:flex-end;gap:10px;padding:12px 20px;background:rgba(8,8,8,.94);border-bottom:1px solid #252525}
 .board-toolbar a,.board-toolbar button{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:38px;padding:0 15px;border:1px solid #3a3a3a;border-radius:999px;color:#fff;background:#171717;font:700 11px Poppins,sans-serif;text-decoration:none;cursor:pointer}
 .board-toolbar .pdf-reader-button{border-color:var(--red);background:var(--red)}
-.board{width:420mm;height:297mm;margin:22px auto;padding:8mm 10mm;overflow:hidden;background:#090909;display:grid;grid-template-rows:29mm 1fr 48mm 14mm;gap:4mm;position:relative;isolation:isolate}
+.interactive-demo-banner{display:flex;align-items:center;justify-content:center;gap:12px;width:min(900px,calc(100% - 32px));margin:12px auto 0;padding:10px 16px;border:1px solid rgba(255,23,23,.32);border-radius:12px;background:rgba(255,23,23,.07);color:#d8d8d8;font-size:12px;line-height:1.35}
+.interactive-demo-banner strong{color:#fff;font-size:11px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;white-space:nowrap}
+.crop-sheet,.bleed-underlay{display:none}
+.board{width:420mm;height:297mm;margin:12px auto 24px;padding:9mm;overflow:hidden;background:#090909;display:grid;grid-template-rows:27mm minmax(0,1fr) 42mm;gap:5mm;position:relative;isolation:isolate}
 .board:before{content:"";position:absolute;z-index:-1;inset:0;background:radial-gradient(ellipse at 53% 23%,rgba(130,0,0,.16),transparent 40%),linear-gradient(135deg,#090909 0%,#111 52%,#080808 100%)}
-.board-head{display:grid;grid-template-columns:42mm 1fr auto;align-items:center;gap:7mm;border-bottom:1px solid rgba(255,255,255,.18);padding-bottom:3mm}
+.board-head{display:grid;grid-template-columns:42mm minmax(0,1fr) 31mm;align-items:center;gap:7mm;border-bottom:1px solid rgba(255,255,255,.18);padding-bottom:2mm}
 .board-logo{width:38mm;height:18mm;object-fit:contain;object-position:left center}
 .head-copy{min-width:0}
-.head-title{margin:0;color:#fff;font-size:35pt;font-weight:800;letter-spacing:-.075em;line-height:.86;text-transform:none}
-.head-sub{margin:2mm 0 0;color:#ddd;font-size:9pt;font-weight:500;letter-spacing:.015em}
-.head-facts{display:flex;gap:5mm;align-items:center}
-.head-fact{min-width:22mm;padding-left:4mm;border-left:1px solid #444}
-.head-fact b{display:block;color:#fff;font-size:19pt;line-height:1;font-weight:800;letter-spacing:-.05em}
-.head-fact span{display:block;margin-top:1mm;color:#aaa;font-size:6pt;font-weight:700;letter-spacing:.13em;text-transform:uppercase}
-.board-main{display:grid;grid-template-columns:73mm minmax(0,1fr) 113mm;gap:4mm;min-height:0}
-.copy-col{display:flex;flex-direction:column;gap:5mm;min-height:0;padding:1mm 1mm 0 0}
-.copy-section h2{margin:0 0 1.5mm;color:#fff;font-size:12pt;font-weight:800;letter-spacing:-.04em;text-transform:uppercase}
-.copy-section p{margin:0;color:#d0d0d0;font-size:7.3pt;line-height:1.52;font-weight:400}
-.copy-section p strong{color:#fff;font-weight:700}
-.copy-section.idea{padding-top:3mm;border-top:1px solid #3c3c3c}
-.copy-punch{margin-top:auto;padding:3mm;border-left:2mm solid var(--red);background:rgba(255,255,255,.055)}
-.copy-punch strong{display:block;color:#fff;font-size:13pt;line-height:1.05;font-weight:800;text-transform:uppercase}
-.copy-punch span{display:block;margin-top:1.5mm;color:#c8c8c8;font-size:6.5pt;line-height:1.4}
+.head-title{margin:0;color:#fff;font-size:43pt;font-weight:800;letter-spacing:-.075em;line-height:.9;text-transform:none}
+.head-sub{margin:2mm 0 0;color:#ddd;font-size:10pt;font-weight:500;letter-spacing:.005em}
+.brand-count{display:flex;flex-direction:column;align-items:flex-start;justify-content:center;padding-left:4mm;border-left:1px solid #484848}
+.brand-count strong{color:#fff;font-size:29pt;line-height:.95;font-weight:800;letter-spacing:-.06em}
+.brand-count span{display:block;margin-top:1.5mm;color:#aaa;font-size:6.2pt;font-weight:800;line-height:1.3;letter-spacing:.12em}
+.board-main{display:grid;grid-template-columns:52mm minmax(0,1fr) 124mm;gap:5mm;min-height:0}
+.copy-col{display:flex;flex-direction:column;justify-content:space-between;min-height:0;padding:2mm 0}
+.copy-col h2{margin:0 0 4mm;color:#fff;font-size:19pt;font-weight:800;line-height:1.02;letter-spacing:-.055em}
+.copy-col p{margin:0;color:#d0d0d0;font-size:9.6pt;line-height:1.48;font-weight:400}
+.copy-punch{padding:3.5mm 0 0;border-top:1px solid rgba(255,255,255,.25)}
+.copy-punch strong{display:block;color:#fff;font-size:16pt;line-height:1.05;font-weight:800;letter-spacing:-.04em}
 .screen-area{display:flex;flex-direction:column;min-width:0;min-height:0}
-.screen-label{display:flex;align-items:center;justify-content:space-between;margin:0 0 2mm;color:#f3f3f3;font-size:7pt;font-weight:800;letter-spacing:.13em;text-transform:uppercase}
-.screen-label span:last-child{color:#858585;font-size:5.5pt;font-weight:500;letter-spacing:.08em}
-.browser-shell{flex:1;min-height:0;display:flex;flex-direction:column;overflow:hidden;border:1px solid #484848;border-radius:3mm;background:#080808;box-shadow:0 6mm 12mm rgba(0,0,0,.4)}
-.browser-bar{height:7mm;flex:0 0 7mm;display:flex;align-items:center;gap:1.3mm;padding:0 2.5mm;border-bottom:1px solid #333;background:#181818}
-.browser-dot{width:1.7mm;height:1.7mm;border-radius:50%;background:#555}
+.screen-label{display:flex;align-items:center;justify-content:space-between;margin:0 0 2mm;color:#f3f3f3;font-size:8pt;font-weight:800;letter-spacing:.1em;text-transform:uppercase}
+.screen-label span:last-child{color:#858585;font-size:6.5pt;font-weight:500;letter-spacing:.06em}
+.browser-shell{flex:1;min-height:0;display:flex;flex-direction:column;overflow:hidden;border:1px solid #484848;border-radius:2.5mm;background:#080808;box-shadow:0 3mm 7mm rgba(0,0,0,.35)}
+.browser-bar{height:6mm;flex:0 0 6mm;display:flex;align-items:center;gap:1.3mm;padding:0 2.5mm;border-bottom:1px solid #333;background:#181818}
+.browser-dot{width:1.6mm;height:1.6mm;border-radius:50%;background:#555}
 .browser-dot:first-child{background:#e45a5a}.browser-dot:nth-child(2){background:#d2ad54}.browser-dot:nth-child(3){background:#5d9a70}
-.browser-url{margin-left:2mm;padding:1mm 4mm;border-radius:999px;color:#999;background:#0c0c0c;font:5.5pt Arial,sans-serif;letter-spacing:.02em}
-.browser-screen{width:100%;height:calc(100% - 7mm);border:0;background:#080808}
+.browser-url{margin-left:2mm;padding:.7mm 3.5mm;border-radius:999px;color:#999;background:#0c0c0c;font:5pt Arial,sans-serif;letter-spacing:.02em}
+.browser-screen{width:100%;height:calc(100% - 6mm);border:0;background:#080808}
 .phone-area{display:flex;flex-direction:column;min-width:0;min-height:0}
-.phone-labels{display:grid;grid-template-columns:1fr 1fr;gap:4mm;margin-bottom:2mm}
-.phone-labels div{color:#f3f3f3;font-size:6.4pt;line-height:1.2;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
-.phone-labels small{display:block;margin-top:1mm;color:#858585;font-size:5pt;font-weight:500;letter-spacing:.03em;text-transform:none}
-.phone-row{display:flex;justify-content:space-between;align-items:center;gap:4mm;flex:1;min-height:0}
-.phone-device{position:relative;width:53mm;height:116mm;flex:0 0 53mm;padding:2.2mm;border:1.2mm solid #343434;border-radius:7mm;background:#050505;box-shadow:0 5mm 12mm rgba(0,0,0,.55);overflow:hidden}
+.phone-labels{display:grid;grid-template-columns:1fr 1fr;gap:5mm;margin-bottom:2mm}
+.phone-labels div{color:#f3f3f3;font-size:7pt;line-height:1.2;font-weight:800;letter-spacing:.05em;text-transform:uppercase}
+.phone-labels small{display:block;margin-top:1mm;color:#858585;font-size:5.6pt;font-weight:500;letter-spacing:.02em;text-transform:none}
+.phone-row{display:flex;justify-content:space-between;align-items:center;gap:5mm;flex:1;min-height:0}
+.phone-device{position:relative;width:58mm;height:143mm;flex:0 0 58mm;padding:2.2mm;border:1.2mm solid #343434;border-radius:7mm;background:#050505;box-shadow:0 3.5mm 8mm rgba(0,0,0,.45);overflow:hidden}
 .phone-device:before{content:"";position:absolute;z-index:3;top:1.7mm;left:50%;width:13mm;height:2.5mm;transform:translateX(-50%);border-radius:0 0 2mm 2mm;background:#050505}
 .phone-screen{width:100%;height:100%;overflow:hidden;border-radius:5mm;background:#080808}
-.phone-screen iframe{display:block;width:390px;height:844px;transform:scale(.445);transform-origin:top left;border:0;background:#080808}
-.proof-row{display:grid;grid-template-columns:repeat(4,1fr);gap:3mm;min-height:0}
-.proof-card{position:relative;overflow:hidden;padding:4mm 4mm 3mm;border-top:1px solid #5a5a5a;background:linear-gradient(140deg,rgba(255,255,255,.075),rgba(255,255,255,.02))}
-.proof-card:before{content:attr(data-no);position:absolute;right:3mm;top:1mm;color:rgba(255,255,255,.09);font-size:30pt;font-weight:800;letter-spacing:-.1em}
-.proof-card h3{position:relative;margin:0 0 2mm;color:#fff;font-size:10pt;font-weight:800;letter-spacing:-.04em;text-transform:uppercase}
-.proof-card p{position:relative;max-width:90%;margin:0;color:#bdbdbd;font-size:6.7pt;line-height:1.45}
-.proof-card p strong{color:#fff}
-.board-foot{display:flex;align-items:center;justify-content:space-between;gap:5mm;border-top:1px solid #464646;color:#a5a5a5;font-size:6.2pt;letter-spacing:.04em}
-.foot-stats{display:flex;gap:5mm;align-items:center;flex-wrap:nowrap}
-.foot-stats b{color:#fff;font-size:10pt;font-weight:800;letter-spacing:-.04em}
-.foot-note{white-space:nowrap;text-align:right;color:#777;font-size:5.5pt}
-.demo-note{position:absolute;left:10mm;bottom:7mm;color:#666;font-size:0;pointer-events:none}
-@media screen and (max-width:1100px){
- .board{transform-origin:top center;transform:scale(.78);margin:0 auto -65mm}
-}
+.phone-screen iframe{display:block;width:390px;height:844px;transform:scale(.49);transform-origin:top left;border:0;background:#080808}
+.proof-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5mm;min-height:0}
+.proof-card{position:relative;overflow:hidden;padding:3.2mm 4mm 2.5mm;border-top:1px solid #666;background:linear-gradient(140deg,rgba(255,255,255,.075),rgba(255,255,255,.02))}
+.proof-card h3{position:relative;margin:0 0 2mm;color:#fff;font-size:12pt;font-weight:800;letter-spacing:-.035em;line-height:1.05}
+.proof-card p{position:relative;max-width:97%;margin:0;color:#c4c4c4;font-size:8.8pt;line-height:1.42}
+@media screen and (min-width:1401px) and (max-width:1700px){.board{transform:scale(.9);transform-origin:top center;margin:12px auto -29.7mm}}
+@media screen and (min-width:1201px) and (max-width:1400px){.board{transform:scale(.82);transform-origin:top center;margin:12px auto -53.5mm}}
+@media screen and (min-width:1101px) and (max-width:1200px){.board{transform:scale(.72);transform-origin:top center;margin:12px auto -83.2mm}}
+@media screen and (min-width:901px) and (max-width:1100px){.board{transform:scale(.64);transform-origin:top center;margin:12px auto -106.9mm}}
+@media screen and (min-width:761px) and (max-width:900px){.board{transform:scale(.52);transform-origin:top center;margin:12px auto -142.6mm}}
 @media screen and (max-width:760px){
- .board-toolbar{position:sticky;padding:10px}
- .board{width:100%;height:auto;min-height:100vh;margin:0;padding:24px 16px;display:flex;flex-direction:column;gap:22px;transform:none}
- .board-head{grid-template-columns:80px 1fr;gap:14px;padding-bottom:14px}
- .board-logo{width:76px;height:auto}
- .head-title{font-size:clamp(28px,8vw,45px)}
- .head-facts{grid-column:1/-1;justify-content:flex-end}
+ .board-toolbar{position:sticky;flex-wrap:wrap;justify-content:center;padding:10px;gap:7px}
+ .board-toolbar a{font-size:10px;min-height:36px;padding:0 11px}
+ .interactive-demo-banner{align-items:flex-start;flex-direction:column;gap:3px;width:calc(100% - 24px);margin-top:10px;padding:10px 12px;font-size:11px}
+ .board{width:calc(100% - 20px);height:auto;min-height:0;aspect-ratio:auto;margin:12px auto 20px;padding:20px 16px;display:flex;flex-direction:column;gap:22px;transform:none}
+ .board-head{grid-template-columns:70px 1fr 48px;gap:12px;padding-bottom:14px}
+ .board-logo{width:68px;height:auto}
+ .head-title{font-size:clamp(25px,7vw,39px)}
+ .head-sub{font-size:10px;line-height:1.3}
+ .brand-count{padding-left:7px}
+ .brand-count strong{font-size:24px}
+ .brand-count span{font-size:5px}
  .board-main{display:flex;flex-direction:column;gap:22px}
- .copy-col{display:grid;grid-template-columns:1fr 1fr;gap:16px}
- .copy-section p{font-size:12px}
- .copy-section h2{font-size:17px}
- .copy-punch{grid-column:1/-1;margin-top:0}
- .screen-area{min-height:420px}
+ .copy-col{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:start}
+ .copy-col h2{font-size:22px}
+ .copy-col p{font-size:12px}
+ .copy-punch{padding:0;border:0}
+ .copy-punch strong{font-size:17px}
+ .screen-area{min-height:440px}
  .screen-label{font-size:10px}
- .browser-shell{min-height:420px}
- .browser-bar{height:32px;flex-basis:32px}
- .browser-screen{height:calc(100% - 32px)}
- .phone-area{min-height:390px}
- .phone-row{justify-content:center;gap:20px}
- .phone-device{width:min(39vw,180px);height:min(85vw,390px);flex:0 0 auto;padding:7px;border-width:4px;border-radius:28px}
+ .browser-shell{min-height:440px}
+ .browser-bar{height:30px;flex-basis:30px}
+ .browser-screen{height:calc(100% - 30px)}
+ .phone-area{min-height:360px}
+ .phone-row{justify-content:center;gap:16px}
+ .phone-device{width:min(39vw,190px);height:min(88vw,410px);flex:0 0 auto;padding:6px;border-width:4px;border-radius:26px}
  .phone-screen{border-radius:19px}
- .phone-screen iframe{transform:scale(.44)}
- .proof-row{grid-template-columns:1fr 1fr;gap:10px}
- .proof-card{min-height:120px;padding:14px}
- .proof-card h3{font-size:15px}
- .proof-card p{font-size:11px}
- .board-foot{align-items:flex-start;flex-direction:column;gap:10px;padding-top:12px}
- .foot-stats{flex-wrap:wrap;gap:12px}
- .foot-note{text-align:left;white-space:normal}
+ .phone-screen iframe{transform:scale(.48)}
+ .proof-row{grid-template-columns:1fr;gap:12px}
+ .proof-card{min-height:0;padding:14px 16px}
+ .proof-card h3{font-size:17px}
+ .proof-card p{font-size:12px}
 }
 @page{size:A3 landscape;margin:0}
 @media print{
  html,body{width:420mm;height:297mm;margin:0!important;padding:0!important;background:#090909!important;print-color-adjust:exact;-webkit-print-color-adjust:exact}
- .board-toolbar{display:none!important}
+ .board-toolbar,.interactive-demo-banner{display:none!important}
+ .crop-sheet,.bleed-underlay{display:none}
  .board{width:420mm;height:297mm;margin:0!important;transform:none!important;box-shadow:none!important;page-break-after:avoid;break-after:avoid}
  .board *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
  .browser-shell,.phone-device{box-shadow:none}
  a{color:inherit;text-decoration:none}
-.board-toolbar .pdf-crop-button{border-color:#666;background:#252525}
-.crop-sheet,.bleed-underlay{display:none}
-@media print{.crop-sheet,.bleed-underlay{display:none!important}}
-}
-</style>
+}</style>
 </head>
 <body>
 <div class="board-toolbar">
@@ -123,94 +116,60 @@ body{padding:0}
   <a class="pdf-reader-button" href="./board.pdf" target="_blank" rel="noopener noreferrer" aria-label="Ouvrir le PDF A3 dans le lecteur PDF">↗ Ouvrir le PDF A3</a>
   <a class="pdf-crop-button" href="./board-print-a3.pdf" target="_blank" rel="noopener noreferrer" aria-label="Ouvrir le PDF d’impression A3 avec 3 mm de fonds perdus et traits de coupe">✂ Imprimer en A3</a>
 </div>
+<div class="interactive-demo-banner" role="status">
+  <strong>Démo interactive</strong>
+  <span>Teste les écrans et compose tes tenues. Tes choix restent temporaires.</span>
+</div>
+
 <svg class="crop-sheet" viewBox="0 0 450 320" width="450mm" height="320mm" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
   <g fill="none" stroke="#111" stroke-width=".2">
     <path d="M7 11.5H13 M15 3.5V9.5 M437 11.5H443 M435 3.5V9.5 M7 308.5H13 M15 310.5V316.5 M437 308.5H443 M435 310.5V316.5"/>
   </g>
 </svg>
 <div class="bleed-underlay" aria-hidden="true"></div>
-<main class="board" aria-label="Board de présentation DRESSOPP au format A3 paysage">
+<main class="board" aria-label="Présentation de DRESSOPP au format A3 paysage">
   <header class="board-head">
     <img class="board-logo" src="./assets/logo-horizontal.png" alt="DRESSOPP">
     <div class="head-copy">
       <h1 class="head-title">Mode diligente.</h1>
-      <p class="head-sub">Et si trouver ton style ne se résumait pas à faire défiler des vêtements ?</p>
+      <p class="head-sub">Un personal shopper visuel qui apprend tes goûts.</p>
     </div>
-    <div class="head-facts" aria-label="Données Pinterest">
-      <div class="head-fact"><b>6</b><span>Inspirations</span></div>
-      <div class="head-fact"><b>6</b><span>Analysées par IA</span></div>
+    <div class="brand-count" aria-label="24 marques représentées dans le catalogue actif">
+      <strong>24</strong>
+      <span>MARQUES<br>REPRÉSENTÉES</span>
     </div>
   </header>
-
   <section class="board-main">
     <aside class="copy-col">
-      <section class="copy-section">
-        <h2>Contexte</h2>
-        <p>Entre les catalogues interminables, les boutiques qui se multiplient et les inspirations sauvegardées partout, composer un vestiaire cohérent prend vite du temps. <strong>DRESSOPP rassemble ces signaux dans une même expérience, pensée pour la mode masculine.</strong></p>
-      </section>
-      <section class="copy-section idea">
-        <h2>Idée</h2>
-        <p>Nous allons transformer chaque Oui, Non et favori en indication utile. Les inspirations Pinterest donnent une direction ; les pièces réelles du catalogue permettent de passer de l'idée au vêtement. <strong>Plus tu découvres, plus la sélection s'affine.</strong></p>
-      </section>
-      <section class="copy-section idea">
-        <h2>Le principe</h2>
-        <p>Un personal shopper visuel qui apprend tes préférences, repère les pièces proches de tes références et compose des tenues à partir des produits disponibles. Le but : moins chercher au hasard, mieux choisir.</p>
-      </section>
-      <div class="copy-punch">
-        <strong>Ton style.<br>Pas une tendance.</strong>
-        <span>Une sélection qui évolue avec tes choix, tes inspirations et ta garde-robe. Base fixe de 10 articles et 6 inspirations. Tes essais restent temporaires et ne touchent jamais au dressing réel.</span>
+      <div>
+        <h2>Ton style.<br>Pas une tendance.</h2>
+        <p>DRESSOPP apprend de chaque oui, non et favori. Tes inspirations guident la sélection ; les pièces du catalogue donnent vie aux idées.</p>
       </div>
+      <div class="copy-punch"><strong>Moins chercher.<br>Mieux choisir.</strong></div>
     </aside>
-
-    <section class="screen-area" aria-label="Écran principal réel de l'application">
-      <div class="screen-label"><span>01 / Découvrir · L'expérience principale</span><span>Mode démo · choix temporaires, non enregistrés</span></div>
+    <section class="screen-area" aria-label="Interface principale sur ordinateur">
+      <div class="screen-label"><span>Découvrir</span><span>Ordinateur</span></div>
       <div class="browser-shell">
         <div class="browser-bar" aria-hidden="true"><i class="browser-dot"></i><i class="browser-dot"></i><i class="browser-dot"></i><span class="browser-url">sopp24.github.io / DRESSOPP</span></div>
-        <iframe class="browser-screen" title="Vraie vue ordinateur de la découverte DRESSOPP" src="./?showcase=discover" loading="eager"></iframe>
+        <iframe class="browser-screen" title="Interface DRESSOPP sur ordinateur" src="./?showcase=discover" loading="eager"></iframe>
       </div>
     </section>
-
-    <aside class="phone-area" aria-label="Écrans mobiles réels de l'application">
+    <aside class="phone-area" aria-label="Fonctionnalités sur mobile">
       <div class="phone-labels">
-        <div>02 / Entraînement<small>Affiner ses goûts</small></div>
-        <div>03 / Tenues<small>Relier l'inspiration au réel</small></div>
+        <div>Entraînement<small>Affiner ses goûts</small></div>
+        <div>Tenues<small>Composer un look</small></div>
       </div>
       <div class="phone-row">
-        <div class="phone-device"><div class="phone-screen"><iframe title="Vraie vue mobile Entraînement DRESSOPP" src="./?showcase=training" loading="eager"></iframe></div></div>
-        <div class="phone-device"><div class="phone-screen"><iframe title="Vraie vue mobile Tenues DRESSOPP" src="./?showcase=outfits" loading="eager"></iframe></div></div>
+        <div class="phone-device"><div class="phone-screen"><iframe title="Interface mobile DRESSOPP — entraînement" src="./?showcase=training" loading="eager"></iframe></div></div>
+        <div class="phone-device"><div class="phone-screen"><iframe title="Interface mobile DRESSOPP — tenues" src="./?showcase=outfits" loading="eager"></iframe></div></div>
       </div>
     </aside>
   </section>
-
-  <section class="proof-row" aria-label="Les quatre éléments innovants de DRESSOPP">
-    <article class="proof-card" data-no="01">
-      <h3>Swipe & learn</h3>
-      <p>Une pièce à la fois. <strong>Oui, Non ou Ajouter à ma liste</strong> : chaque décision nourrit le profil de style et fait évoluer le classement.</p>
-    </article>
-    <article class="proof-card" data-no="02">
-      <h3>Vision Pinterest</h3>
-      <p>Les images sont analysées pour repérer <strong>styles, couleurs, matières, coupes et pièces</strong>. Les inspirations restent des inspirations, pas de faux produits.</p>
-    </article>
-    <article class="proof-card" data-no="03">
-      <h3>Personal shopper IA</h3>
-      <p>Le mode local fonctionne dans le navigateur. Le mode Cloudflare est <strong>facultatif et soumis à ton accord</strong> ; le local prend le relais en cas d'indisponibilité.</p>
-    </article>
-    <article class="proof-card" data-no="04">
-      <h3>Tenues composées</h3>
-      <p>Chaque look part d'une référence Pinterest et rapproche des pièces du catalogue et de ta garde-robe, <strong>selon ton style et ton budget</strong>.</p>
-    </article>
+  <section class="proof-row" aria-label="Trois fonctionnalités clés de DRESSOPP">
+    <article class="proof-card"><h3>La sélection s'affine</h3><p>Chaque oui, non ou favori fait évoluer les propositions.</p></article>
+    <article class="proof-card"><h3>Les inspirations prennent vie</h3><p>L'IA repère styles, couleurs, matières et coupes dans les images.</p></article>
+    <article class="proof-card"><h3>Les tenues se composent</h3><p>Des pièces du catalogue rapprochées selon tes goûts et ton budget.</p></article>
   </section>
-
-  <footer class="board-foot">
-    <div class="foot-stats">
-      <span><b>10</b> articles fixes</span>
-      <span><b>9</b> marques représentées</span>
-      <span><b>6</b> inspirations</span>
-      <span><b>6</b> analysées par IA</span>
-    </div>
-    <div class="foot-note">Base démo figée au 25.11.2026 · Prix et stocks à vérifier chez les marchands · Choix temporaires</div>
-  </footer>
-  <span class="demo-note">Les interactions visibles dans les aperçus servent uniquement à illustrer l'interface.</span>
 </main>
 <script>
 if (new URLSearchParams(window.location.search).get("cropMarks") === "1") {
