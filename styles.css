@@ -3596,9 +3596,7 @@ body.showcase-embed .main-content {
   overflow: auto;
   padding: 12px 0 18px;
 }
-body.showcase-embed .app-footer,
-body.showcase-embed .toast-root,
-body.showcase-embed #modal-root { display: none !important; }
+body.showcase-embed .app-footer { display: none !important; }
 body.showcase-embed .demo-complete-state {
   border-style: solid;
   border-color: rgba(255,0,0,.28);
