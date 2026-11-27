@@ -496,6 +496,15 @@ function renderEmptyProducts(training) {
     '<button class="button-primary" type="button" data-action="add-product">Ajouter un article</button>' +
     '<button class="button-secondary" type="button" data-action="import-catalog">Importer un catalogue JSON</button></div></div>';
 }
+function renderShowcaseNoMatches() {
+  return '<section class="empty-state demo-complete-state" role="status">' +
+    '<div class="empty-mark" aria-hidden="true">⌕</div>' +
+    '<span class="eyebrow">MODE DÉMO · 10 ARTICLES</span>' +
+    '<h2>Aucun article ne correspond à tes filtres</h2>' +
+    '<p>La sélection de démonstration reste limitée à ses 10 articles. Réinitialise les filtres pour reprendre ton exploration.</p>' +
+    '<div class="empty-actions"><button class="button-primary" type="button" data-action="reset-demo-filters">Réinitialiser les filtres</button></div>' +
+    '</section>';
+}
 function showcaseDemoComplete() {
   if (!showcaseView || !state || !Array.isArray(state.products) || !state.products.length) return false;
   const reviewedIds = new Set();
@@ -820,7 +829,7 @@ function renderDiscover(training) {
   const appToolbar = !training
     ? '<div class="discovery-app-toolbar"><div class="discovery-app-controls">' + renderFilterBar(false) + '</div></div>'
     : "";
-  const body = products.length ? renderDeckCard(products[0],training) : (showcaseDemoComplete() ? renderShowcaseDemoComplete() : renderEmptyProducts(training));
+  const body = products.length ? renderDeckCard(products[0],training) : (showcaseView ? (showcaseDemoComplete() ? renderShowcaseDemoComplete() : renderShowcaseNoMatches()) : renderEmptyProducts(training));
   const trainingFilter = training ? renderFilterBar(true) : "";
   const trainingExtras = training
     ? '<div class="deck-topline"><span><strong>Exploration active</strong> · ' + products.length + ' article(s) à découvrir</span><span>Nouveauté prioritaire</span></div>' +
@@ -1762,6 +1771,14 @@ function handleClick(event) {
     modalReturnFocus = document.activeElement;
   }
   if (action === "restart-demo" && showcaseView) window.location.reload();
+  else if (action === "reset-demo-filters" && showcaseView) {
+    state.settings.objective = "Tout";
+    state.settings.style = "Tous";
+    state.settings.season = "Toute saison";
+    state.settings.maxPrice = null;
+    persist(); render();
+  }
+  else if ((action === "add-product" || action === "import-catalog") && showcaseView) return;
   else if (action === "run-ai-agent") runAiAgent(true);
   else if (action === "add-product") openProductForm();
   else if (action === "add-inspiration") openInspirationForm();
