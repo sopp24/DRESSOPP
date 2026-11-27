@@ -547,7 +547,7 @@ test("la fenêtre ordinateur du board utilise un vrai viewport desktop ajusté �
   assert.ok(boardPdfScript.includes("desktopLogo.width < 120"));
   assert.ok(boardPdfScript.includes("desktopNav.bottom > desktop.viewportHeight"));
   assert.ok(boardPdfScript.includes("desktopVisualRect.width / desktop.desktopVisualRect.height < 1.35"));
-  assert.ok(sw.includes('dressopp-static-v23'));
+  assert.ok(sw.includes('dressopp-static-v24'));
 });
 
 test("la démo affiche un écran de fin après les dix articles et peut être relancée", function() {
