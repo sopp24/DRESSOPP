@@ -823,6 +823,10 @@ function renderDiscover(training) {
   const yesCount = state.interactions.likes.length;
   const savedCount = state.likedProducts.length;
   const rejected = state.interactions.dislikes.length;
+  // Le board desktop reprend la présentation classique de la page Découvrir :
+  // carte produit claire et actions sous la fiche. Le layout app reste actif ailleurs.
+  const desktopBoardShowcase = showcaseView === "discover" &&
+    !document.body.classList.contains("showcase-embed--mobile");
   const heading = training
     ? renderPageHeading("Élargis ton univers", "Entraînement", "Explore volontairement de nouvelles coupes, matières et associations. Tes réponses Oui et Non affinent le profil, sans ajout automatique à ta liste.", '<button class="button-secondary" type="button" data-view="discover">Retour à Pour toi</button>')
     : "";
@@ -841,7 +845,8 @@ function renderDiscover(training) {
       '<section class="panel training-pins-panel"><div class="training-pins-heading"><span class="eyebrow">Tes références visuelles</span><h2>Pins Pinterest</h2><p>Les épingles synchronisées nourrissent ton exploration et tes propositions de tenues.</p></div>' + renderInspirations() + '</section>' +
       renderCatalogStatus() + renderRetailerDirectory() + renderAiAgentPanel()
     : "";
-  return '<div class="discovery-page' + (!training ? ' discovery-page--app' : '') + '">' +
+  const appPresentation = !training && !desktopBoardShowcase;
+  return '<div class="discovery-page' + (appPresentation ? ' discovery-page--app' : '') + '">' +
     (training ? heading + trainingFilter : appToolbar) +
     '<div class="discovery-layout discovery-layout--swipe"><section class="deck-column">' +
     (training ? trainingExtras.split('<aside')[0] : "") + body + '</section>' +
