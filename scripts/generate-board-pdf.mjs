@@ -119,28 +119,28 @@ async function verifyPrintGeometry(page) {
   console.log("Print preflight OK: A3 trim 420x297 mm, 3 mm bleed on all sides, SRA3 450x320 mm.");
 }
 
-async function verifyFeaturedProducts(page) {
+async function verifyShowcaseViews(page) {
   const frames = await page.locator("iframe").all();
-  if (frames.length < 2) throw new Error("Les aperçus desktop et mobile sont absents.");
-  const desktop = await frames[0].evaluate(frame => {
-    const card = frame.contentDocument && frame.contentDocument.querySelector("#active-product-card");
+  if (frames.length !== 3) throw new Error("Les trois vues DRESSOPP ne sont pas présentes.");
+  const views = await Promise.all(frames.map(frame => frame.evaluate(node => {
+    const url = new URL(node.contentWindow.location.href);
+    const main = node.contentDocument && node.contentDocument.querySelector("#app-main");
     return {
-      productId: card ? card.getAttribute("data-product-id") : "",
-      viewportWidth: frame.contentWindow ? frame.contentWindow.innerWidth : 0
+      view: url.searchParams.get("showcase"),
+      viewportWidth: node.contentWindow ? node.contentWindow.innerWidth : 0,
+      ready: Boolean(main && main.children.length && !main.querySelector(".boot-loader"))
     };
+  })));
+  const expected = ["discover","training","outfits"];
+  views.forEach((view,index) => {
+    if (view.view !== expected[index]) throw new Error("Vue embarquée inattendue : " + JSON.stringify(view));
+    if (!view.ready) throw new Error("La vue embarquée n'est pas prête : " + expected[index]);
   });
-  const training = await frames[1].evaluate(frame => {
-    const card = frame.contentDocument && frame.contentDocument.querySelector("#active-product-card");
-    return {
-      productId: card ? card.getAttribute("data-product-id") : "",
-      viewportWidth: frame.contentWindow ? frame.contentWindow.innerWidth : 0
-    };
-  });
-  if (desktop.productId !== "web-1utdu9o") throw new Error("Le premier écran doit présenter le hoodie : " + desktop.productId);
-  if (training.productId !== "web-1uijpt2") throw new Error("L'entraînement doit présenter les sneakers : " + training.productId);
-  if (desktop.viewportWidth < 851) throw new Error("L'écran principal n'utilise pas le layout ordinateur : " + desktop.viewportWidth + "px");
-  if (training.viewportWidth > 850) throw new Error("L'aperçu entraînement ne respecte pas le format mobile : " + training.viewportWidth + "px");
-  console.log("Featured screens verified: desktop hoodie at " + desktop.viewportWidth + "px, mobile sneakers at " + training.viewportWidth + "px.");
+  if (views[0].viewportWidth < 851) throw new Error("L'écran principal n'utilise pas le layout ordinateur : " + views[0].viewportWidth + "px");
+  if (views[1].viewportWidth > 850 || views[2].viewportWidth > 850) {
+    throw new Error("Les aperçus Entraînement et Tenues doivent rester au format mobile : " + JSON.stringify(views));
+  }
+  console.log("Showcase screens verified: desktop Découvrir at " + views[0].viewportWidth + "px, mobile Entraînement/Tenues at " + views[1].viewportWidth + "/" + views[2].viewportWidth + "px.");
 }
 
 async function writePdf(page, output, expectedWidth, expectedHeight) {
@@ -166,12 +166,12 @@ try {
   const page = await browser.newPage({ viewport: { width: 1920, height: 1358 }, deviceScaleFactor: 1 });
 
   await loadBoard(page, "http://127.0.0.1:4173/board.html");
-  await verifyFeaturedProducts(page);
+  await verifyShowcaseViews(page);
   await writePdf(page, path.join(root, "board.pdf"), 420, 297);
 
   // Second PDF: A3 trim centred on SRA3, with 3 mm bleed on all sides and crop marks outside the trim.
   await loadBoard(page, "http://127.0.0.1:4173/board.html?cropMarks=1");
-  await verifyFeaturedProducts(page);
+  await verifyShowcaseViews(page);
   if (!(await page.locator(".crop-sheet").count())) throw new Error("Les traits de coupe sont absents.");
   if (!(await page.locator(".bleed-underlay").count())) throw new Error("Le fond perdu est absent.");
   await verifyPrintGeometry(page);

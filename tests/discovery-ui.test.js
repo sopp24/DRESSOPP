@@ -437,6 +437,8 @@ test("la vue ordinateur et les vues mobiles gardent leurs largeurs propres", fun
   assert.ok(board.includes("--desktop-scale:.505"));
   assert.ok(board.includes("--phone-scale:.64"));
   assert.ok(board.includes("@media (max-width:760px)"));
+  assert.ok(boardPdfScript.includes("async function verifyShowcaseViews"));
+  assert.ok(boardPdfScript.includes('const expected = ["discover","training","outfits"]'));
 });
 
 
