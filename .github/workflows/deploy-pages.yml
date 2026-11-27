@@ -33,6 +33,8 @@ jobs:
         run: |
           npm install --no-save --no-package-lock playwright
           npx playwright install --with-deps chromium
+      - name: Verify interactive board embeds without changing supplied PDFs
+        run: DRESSOPP_BOARD_QA_ONLY=1 node scripts/generate-board-pdf.mjs
       - name: Generate missing printable A3 PDFs without overwriting supplied files
         run: |
           backup_dir="$(mktemp -d)"
