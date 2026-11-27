@@ -186,19 +186,25 @@ try {
   browser = await chromium.launch({ headless: true, args: ["--no-sandbox", "--disable-dev-shm-usage"] });
   const page = await browser.newPage({ viewport: { width: 1920, height: 1358 }, deviceScaleFactor: 1 });
 
-  await loadBoard(page, "http://127.0.0.1:4173/board.html");
-  await verifyShowcaseViews(page);
-  await writePdf(page, path.join(root, "board.pdf"), 420, 297);
+  if (process.env.DRESSOPP_BOARD_QA_ONLY === "1") {
+    await loadBoard(page, "http://127.0.0.1:4173/board.html");
+    await verifyShowcaseViews(page);
+    console.log("Interactive board QA passed; existing A3 PDFs were left untouched.");
+  } else {
+    await loadBoard(page, "http://127.0.0.1:4173/board.html");
+    await verifyShowcaseViews(page);
+    await writePdf(page, path.join(root, "board.pdf"), 420, 297);
 
-  // Second PDF: A3 trim centred on SRA3, with 3 mm bleed on all sides and crop marks outside the trim.
-  await loadBoard(page, "http://127.0.0.1:4173/board.html?cropMarks=1");
-  await verifyShowcaseViews(page);
-  if (!(await page.locator(".crop-sheet").count())) throw new Error("Les traits de coupe sont absents.");
-  if (!(await page.locator(".bleed-underlay").count())) throw new Error("Le fond perdu est absent.");
-  await verifyPrintGeometry(page);
-  await writePdf(page, path.join(root, "board-print-a3.pdf"), 450, 320);
+    // Second PDF: A3 trim centred on SRA3, with 3 mm bleed on all sides and crop marks outside the trim.
+    await loadBoard(page, "http://127.0.0.1:4173/board.html?cropMarks=1");
+    await verifyShowcaseViews(page);
+    if (!(await page.locator(".crop-sheet").count())) throw new Error("Les traits de coupe sont absents.");
+    if (!(await page.locator(".bleed-underlay").count())) throw new Error("Le fond perdu est absent.");
+    await verifyPrintGeometry(page);
+    await writePdf(page, path.join(root, "board-print-a3.pdf"), 450, 320);
 
-  console.log("Both A3 PDF variants are ready; the print version includes 3 mm bleed and crop marks.");
+    console.log("Both A3 PDF variants are ready; the print version includes 3 mm bleed and crop marks.");
+  }
 } finally {
   if (browser) await browser.close();
   await new Promise(resolve => server.close(resolve));
