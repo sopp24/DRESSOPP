@@ -433,10 +433,10 @@ test("le board reprend la composition du document A3 fourni", function() {
 
 
 test("la vue ordinateur et les vues mobiles gardent leurs largeurs propres", function() {
-  assert.ok(board.includes("width:950px;height:950px;transform:scale(var(--desktop-scale))"));
-  assert.ok(board.includes("width:390px;height:844px;transform:scale(var(--phone-scale))"));
-  assert.ok(board.includes("--desktop-scale:.505"));
-  assert.ok(board.includes("--phone-scale:.64"));
+  assert.ok(board.includes("width:950px;height:950px;transform:scale(var(--preview-scale,.48))"));
+  assert.ok(board.includes("width:390px;height:844px;transform:scale(var(--preview-scale,.58))"));
+  assert.ok(board.includes("container.clientWidth"));
+  assert.ok(board.includes("new ResizeObserver(fit)"));
   assert.ok(board.includes("@media (max-width:760px)"));
   assert.ok(boardPdfScript.includes("async function verifyShowcaseViews"));
   assert.ok(boardPdfScript.includes('const expected = ["discover","training","outfits"]'));
