@@ -128,6 +128,8 @@ async function verifyShowcaseViews(page) {
     return {
       view: url.searchParams.get("showcase"),
       viewportWidth: node.contentWindow ? node.contentWindow.innerWidth : 0,
+      desktopCard: Boolean(main && main.querySelector("#active-product-card")),
+      desktopVoteActions: main ? main.querySelectorAll('[data-action="vote"]').length : 0,
       ready: Boolean(main && main.children.length && !main.querySelector(".boot-loader"))
     };
   })));
@@ -136,7 +138,10 @@ async function verifyShowcaseViews(page) {
     if (view.view !== expected[index]) throw new Error("Vue embarquée inattendue : " + JSON.stringify(view));
     if (!view.ready) throw new Error("La vue embarquée n'est pas prête : " + expected[index]);
   });
-  if (views[0].viewportWidth < 851) throw new Error("L'écran principal n'utilise pas le layout ordinateur : " + views[0].viewportWidth + "px");
+  if (views[0].viewportWidth < 1101) throw new Error("L'écran principal n'utilise pas le layout ordinateur : " + views[0].viewportWidth + "px");
+  if (!views[0].desktopCard || views[0].desktopVoteActions !== 2) {
+    throw new Error("La fenêtre ordinateur n'affiche pas la carte et les deux actions de swipe : " + JSON.stringify(views[0]));
+  }
   if (views[1].viewportWidth > 850 || views[2].viewportWidth > 850) {
     throw new Error("Les aperçus Entraînement et Tenues doivent rester au format mobile : " + JSON.stringify(views));
   }
