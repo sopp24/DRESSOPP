@@ -81,7 +81,7 @@ test("all local files referenced by the application shell exist", function() {
 });
 
 test("the PWA refreshes its cache and preloads the app icons and first catalogue page", function() {
-  assert.ok(sw.includes('dressopp-static-v23'));
+  assert.ok(sw.includes('dressopp-static-v24'));
   for (const path of [
     "./assets/logo-horizontal.png",
     "./assets/logo-square.png",
@@ -397,9 +397,9 @@ test("le board est allégé et ne présente plus de statistiques en pied de page
 
 
 test("les trois écrans du board ouvrent les vues de démonstration normales", function() {
-  assert.ok(board.includes('src="./?showcase=discover"'));
-  assert.ok(board.includes('src="./?showcase=training"'));
-  assert.ok(board.includes('src="./?showcase=outfits"'));
+  assert.ok(board.includes('src="./?showcase=discover&amp;boardExport=1"'));
+  assert.ok(board.includes('src="./?showcase=training&amp;boardExport=1"'));
+  assert.ok(board.includes('src="./?showcase=outfits&amp;boardExport=1"'));
   assert.ok(!board.includes("demoProductId="));
   assert.ok(app.includes('const showcaseView = ["discover", "training", "wardrobe", "outfits"]'));
   assert.ok(app.includes('fetch("./data/demo-catalog.json"'));
@@ -429,12 +429,13 @@ test("la vue ordinateur et les vues mobiles gardent leurs largeurs propres", fun
   assert.ok(board.includes("width:1200px;height:1152px;transform:scale(var(--preview-scale,.48))"));
   assert.ok(board.includes("width:390px;height:844px;transform:scale(var(--preview-scale,.58))"));
   assert.ok(board.includes('const viewportWidth = desktopPreview ? 1200 : 390'));
-  assert.ok(board.includes('const viewportHeight = desktopPreview ? 1152 : 844'));
+  assert.ok(board.includes('const viewportHeight = desktopPreview ? (landscapeMode ? 760 : 1152) : 844'));
   assert.ok(board.includes("availableHeight / viewportHeight"));
   assert.ok(board.includes("container.clientWidth"));
   assert.ok(board.includes("new ResizeObserver(fit)"));
   assert.ok(board.includes("@media (max-width:760px)"));
   assert.ok(boardPdfScript.includes("async function verifyShowcaseViews"));
+  assert.ok(boardPdfScript.includes("async function verifyExportEmbedVisibility"));
   assert.ok(boardPdfScript.includes('const expected = ["discover","training","outfits"]'));
 });
 
@@ -453,6 +454,32 @@ test("le board web conserve le format de référence A3 paysage", function() {
   assert.ok(board.includes("@page{size:A3 landscape;margin:0}"));
   assert.ok(board.includes("flex:0 0 80%;height:80%"));
   assert.ok(board.includes("grid-template-columns:18.2fr 36.5fr 41.7fr"));
+});
+
+test("les fenêtres des deux PDF agrandissent menus, textes et icônes uniquement dans les embeds exportables", function() {
+  assert.ok(app.includes('showcaseParams.get("boardExport") === "1"'));
+  assert.ok(app.includes('document.body.classList.add("showcase-embed--export")'));
+  assert.ok(board.includes('showcase=discover&amp;boardExport=1'));
+  assert.ok(board.includes('showcase=training&amp;boardExport=1'));
+  assert.ok(board.includes('showcase=outfits&amp;boardExport=1'));
+  assert.ok(css.includes("body.showcase-embed--export .topbar .nav-link"));
+  assert.ok(css.includes("body.showcase-embed--export .mobile-nav button span { font-size: 23px"));
+  assert.ok(css.includes("body.showcase-embed--export .discovery-page--app .deck-action-icon"));
+  assert.ok(boardPdfScript.includes("async function verifyExportEmbedVisibility"));
+  assert.ok(boardPdfScript.includes("desktopMetrics.productTitle<25"));
+});
+
+test("la version web mobile propose un affichage plein écran en paysage sans changer le format PDF", function() {
+  assert.ok(board.includes('id="board-landscape-toggle"'));
+  assert.ok(board.includes('id="board-landscape-exit"'));
+  assert.ok(board.includes("requestFullscreen"));
+  assert.ok(board.includes('screen.orientation.lock("landscape")'));
+  assert.ok(board.includes(".board.is-landscape-mode"));
+  assert.ok(board.includes("@media (orientation:portrait)"));
+  assert.ok(board.includes(".phone-row{display:grid;grid-template-columns:none;grid-auto-flow:column"));
+  assert.ok(board.includes(".landscape-button,.landscape-exit,.mobile-board-hint{display:none}"));
+  assert.ok(board.includes(".landscape-button,.landscape-exit,.mobile-board-hint{display:none!important}"));
+  assert.ok(board.includes("@page{size:A3 landscape;margin:0}"));
 });
 
 test("les trois titres de fonctionnalité et leurs sous-titres sont lisibles sur le board A3", function() {
@@ -482,7 +509,7 @@ test("les cadres du board adaptent les aperçus ordinateur et téléphone à leu
   assert.ok(board.includes(".phone-screen{position:relative;"));
   assert.ok(board.includes("transform:scale(var(--preview-scale,.58))"));
   assert.ok(board.includes("container.clientWidth"));
-  assert.ok(board.includes("Math.min(1, availableWidth / viewportWidth)"));
+  assert.ok(board.includes("Math.min(1, availableWidth / viewportWidth, availableHeight / viewportHeight)"));
   assert.ok(board.includes("new ResizeObserver(fit)"));
   assert.ok(!board.includes("--desktop-scale"));
   assert.ok(!board.includes("--phone-scale"));
