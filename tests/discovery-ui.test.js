@@ -422,3 +422,11 @@ test("le board conserve le contexte et l’idée à gauche et les trois écrans 
   assert.ok(markup.includes('class="screen-area"'));
   assert.ok(markup.includes('class="phone-area"'));
 });
+
+
+test("l’écran central du board embarque une vraie largeur desktop, les aperçus latéraux restent mobiles", function() {
+  assert.ok(board.includes(".browser-screen{display:block;flex:0 0 auto;width:950px;height:690px;transform:scale(.76)"));
+  assert.ok(board.includes(".browser-screen{width:100%;height:calc(100% - 30px);transform:none}"));
+  assert.ok(script.includes("desktop.viewportWidth < 851"));
+  assert.ok(script.includes("training.viewportWidth > 850"));
+});

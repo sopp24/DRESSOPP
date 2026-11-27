@@ -122,17 +122,25 @@ async function verifyPrintGeometry(page) {
 async function verifyFeaturedProducts(page) {
   const frames = await page.locator("iframe").all();
   if (frames.length < 2) throw new Error("Les aperçus desktop et mobile sont absents.");
-  const desktopProductId = await frames[0].evaluate(frame => {
+  const desktop = await frames[0].evaluate(frame => {
     const card = frame.contentDocument && frame.contentDocument.querySelector("#active-product-card");
-    return card ? card.getAttribute("data-product-id") : "";
+    return {
+      productId: card ? card.getAttribute("data-product-id") : "",
+      viewportWidth: frame.contentWindow ? frame.contentWindow.innerWidth : 0
+    };
   });
-  const trainingProductId = await frames[1].evaluate(frame => {
+  const training = await frames[1].evaluate(frame => {
     const card = frame.contentDocument && frame.contentDocument.querySelector("#active-product-card");
-    return card ? card.getAttribute("data-product-id") : "";
+    return {
+      productId: card ? card.getAttribute("data-product-id") : "",
+      viewportWidth: frame.contentWindow ? frame.contentWindow.innerWidth : 0
+    };
   });
-  if (desktopProductId !== "web-1utdu9o") throw new Error("Le premier écran doit présenter le hoodie : " + desktopProductId);
-  if (trainingProductId !== "web-1uijpt2") throw new Error("L'entraînement doit présenter les sneakers : " + trainingProductId);
-  console.log("Featured screens verified: hoodie on desktop, sneakers in training.");
+  if (desktop.productId !== "web-1utdu9o") throw new Error("Le premier écran doit présenter le hoodie : " + desktop.productId);
+  if (training.productId !== "web-1uijpt2") throw new Error("L'entraînement doit présenter les sneakers : " + training.productId);
+  if (desktop.viewportWidth < 851) throw new Error("L'écran principal n'utilise pas le layout ordinateur : " + desktop.viewportWidth + "px");
+  if (training.viewportWidth > 850) throw new Error("L'aperçu entraînement ne respecte pas le format mobile : " + training.viewportWidth + "px");
+  console.log("Featured screens verified: desktop hoodie at " + desktop.viewportWidth + "px, mobile sneakers at " + training.viewportWidth + "px.");
 }
 
 async function writePdf(page, output, expectedWidth, expectedHeight) {
