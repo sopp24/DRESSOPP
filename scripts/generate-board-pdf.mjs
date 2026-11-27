@@ -87,6 +87,48 @@ async function loadBoard(page, url) {
   });
 }
 
+async function verifyBoardTypography(page) {
+  const metrics = await page.evaluate(() => {
+    const read = selector => {
+      const node = document.querySelector(selector);
+      if (!node) throw new Error("Libellé de présentation absent : " + selector);
+      const style = getComputedStyle(node);
+      const box = node.getBoundingClientRect();
+      return {
+        text: node.textContent.trim(),
+        fontSize: Number.parseFloat(style.fontSize),
+        width: box.width,
+        height: box.height,
+        scrollWidth: node.scrollWidth,
+        clientWidth: node.clientWidth
+      };
+    };
+    return {
+      desktopTitle: read(".screen-label-main strong"),
+      desktopSubtitle: read(".screen-label-main small"),
+      trainingTitle: read(".phone-labels > div:first-child strong"),
+      trainingSubtitle: read(".phone-labels > div:first-child small"),
+      outfitsTitle: read(".phone-labels > div:last-child strong"),
+      outfitsSubtitle: read(".phone-labels > div:last-child small")
+    };
+  });
+  const required = [
+    ["desktopTitle", 16],
+    ["desktopSubtitle", 13],
+    ["trainingTitle", 16],
+    ["trainingSubtitle", 13],
+    ["outfitsTitle", 16],
+    ["outfitsSubtitle", 13]
+  ];
+  for (const [key, minimum] of required) {
+    const item = metrics[key];
+    if (item.fontSize < minimum || item.scrollWidth > item.clientWidth + 1) {
+      throw new Error("Libellé trop petit ou tronqué dans le PDF : " + key + " " + JSON.stringify(item));
+    }
+  }
+  console.log("Board typography verified: three feature titles >=16px and subtitles >=13px.", metrics);
+}
+
 async function verifyPrintGeometry(page) {
   await page.emulateMedia({ media: "print" });
   const metrics = await page.evaluate(() => {
@@ -208,6 +250,8 @@ async function verifyShowcaseViews(page) {
 
 async function writePdf(page, output, expectedWidth, expectedHeight) {
   await page.emulateMedia({ media: "print" });
+  await page.evaluate(() => document.fonts.ready);
+  await verifyBoardTypography(page);
   await page.pdf({
     path: output,
     printBackground: true,
@@ -231,21 +275,23 @@ try {
   if (process.env.DRESSOPP_BOARD_QA_ONLY === "1") {
     await loadBoard(page, "http://127.0.0.1:4173/board.html");
     await verifyShowcaseViews(page);
-    console.log("Interactive board QA passed; existing A3 PDFs were left untouched.");
+    await verifyBoardTypography(page);
+    console.log("Interactive board QA and feature-label typography checks passed; PDF files are generated in the full export job.");
   } else {
     await loadBoard(page, "http://127.0.0.1:4173/board.html");
     await verifyShowcaseViews(page);
-    await writePdf(page, path.join(root, "board.pdf"), 420, 297);
+    await writePdf(page, path.join(root, "DRESSOPP-Board-A3.pdf"), 420, 297);
 
-    // Second PDF: A3 trim centred on SRA3, with 3 mm bleed on all sides and crop marks outside the trim.
+    // Imprimeur : format SRA3 (450 x 320 mm), coupe A3 (420 x 297 mm),
+    // fond perdu réel de 3 mm sur les quatre côtés et repères hors coupe.
     await loadBoard(page, "http://127.0.0.1:4173/board.html?cropMarks=1");
     await verifyShowcaseViews(page);
     if (!(await page.locator(".crop-sheet").count())) throw new Error("Les traits de coupe sont absents.");
     if (!(await page.locator(".bleed-underlay").count())) throw new Error("Le fond perdu est absent.");
     await verifyPrintGeometry(page);
-    await writePdf(page, path.join(root, "board-print-a3.pdf"), 450, 320);
+    await writePdf(page, path.join(root, "DRESSOPP-Board-Imprimeur-SRA3.pdf"), 450, 320);
 
-    console.log("Both A3 PDF variants are ready; the print version includes 3 mm bleed and crop marks.");
+    console.log("Fresh DRESSOPP A3 and SRA3 printer PDFs are ready.");
   }
 } finally {
   if (browser) await browser.close();
