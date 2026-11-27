@@ -3599,7 +3599,11 @@ body.showcase-embed .main-content {
 body.showcase-embed .app-footer,
 body.showcase-embed .toast-root,
 body.showcase-embed #modal-root { display: none !important; }
-body.showcase-embed:not(.showcase-embed--mobile) .discovery-layout--swipe { width: min(100%, 760px); }
+body.showcase-embed .demo-complete-state {
+  border-style: solid;
+  border-color: rgba(255,0,0,.28);
+  background: rgba(255,0,0,.025);
+}
 body.showcase-embed .discovery-page--app .deck-card-wrap { width: min(100%, 510px); }
 body.showcase-embed .discovery-page--app .deck-card-wrap .product-visual { max-height: 260px; min-height: 190px; }
 body.showcase-embed .discovery-page--app .deck-card-wrap .product-info { gap: 9px; padding-top: 12px; }
